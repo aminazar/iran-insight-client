@@ -9,6 +9,6 @@ describe('iran-insight-client App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to 2i!');
+    expect(page.getParagraphText()).toEqual('Welcome to ii!');
   });
 });

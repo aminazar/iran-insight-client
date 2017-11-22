@@ -6,6 +6,6 @@ export class AppPage {
   }
 
   getParagraphText() {
-    return element(by.css('2i-root h1')).getText();
+    return element(by.css('ii-root h1')).getText();
   }
 }
