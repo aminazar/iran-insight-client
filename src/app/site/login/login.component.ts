@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ii-login',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router : Router, private breadCrumbService : BreadcrumbService) { }
 
   ngOnInit() {
+
+    this.breadCrumbService.pushChild('login' , this.router.url);
   }
+
 
 }
