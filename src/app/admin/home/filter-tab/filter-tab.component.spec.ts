@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchMainComponent } from './search-main.component';
+import { AdminFilterTabComponent } from './filter-tab.component';
 
-describe('SearchMainComponent', () => {
-  let component: SearchMainComponent;
-  let fixture: ComponentFixture<SearchMainComponent>;
+describe('SearchTabComponent', () => {
+  let component: AdminFilterTabComponent;
+  let fixture: ComponentFixture<AdminFilterTabComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchMainComponent ]
+      declarations: [ AdminFilterTabComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchMainComponent);
+    fixture = TestBed.createComponent(AdminFilterTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

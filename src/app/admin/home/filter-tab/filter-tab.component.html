@@ -1,0 +1,9 @@
+<mat-card>
+  <mat-card-header>
+    <label *ngIf="tabInfo === null || tabInfo === undefined">Global Search</label>
+    <label *ngIf="tabInfo !== null && tabInfo !== undefined">{{tabInfo.title}}</label>
+  </mat-card-header>
+  <mat-card-content>
+    <ii-search-fields [target]="tabInfo" (searching)="getResult($event)"></ii-search-fields>
+  </mat-card-content>
+</mat-card>

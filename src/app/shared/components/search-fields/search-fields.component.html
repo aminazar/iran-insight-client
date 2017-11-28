@@ -1,0 +1,88 @@
+<mat-card>
+  <mat-card-header>Filtering Options</mat-card-header>
+  <mat-card-content>
+    <div class="flex-container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+         fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+      <div *ngIf="target === null || target === undefined" class="flex-item" fxFlex="30" fxFlex.sm="50" fxFlex.xs="50">
+        <button mat-raised-button [matMenuTriggerFor]="menu">Target</button>
+        <mat-menu #menu="matMenu">
+          <button *ngFor="let trg of targetList; let i = index" mat-menu-item (click)="addTarget(i)">{{trg}}</button>
+        </mat-menu>
+        <div *ngIf="targets.length > 0">Search in:</div>
+        <div>
+          <button *ngFor="let trg of targets" class="trg-btn" mat-raised-button color="primary"
+                  (click)="removeTarget(trg)">{{trg}}
+          </button>
+        </div>
+      </div>
+      <div class="flex-item" fxFlex="70" fxFlex.sm="50" fxFlex.xs="50">
+        <form>
+          <div>
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="phrase" [formControl]="searchCtrl"/>
+            </mat-input-container>
+          </div>
+          <div *ngIf="target.index == targetEnum.investment" class="flex-container" fxLayout="row" fxLayout.sm="column"
+               fxLayout.xs="column"
+               fxLayoutAlign="center center" fxLayoutAlign.sm="center start" fxLayoutAlign.xs="center start">
+            <div class="flex-item" fxFlex="40">
+              <mat-input-container class="field">
+                <input matInput type="number" placeholder="amount" name="amount" [(ngModel)]="amount"
+                       [formControl]="amountCtrl"/>
+              </mat-input-container>
+            </div>
+            <div class="flex-item" fxFlex="20">
+              <mat-checkbox name="lt" [(ngModel)]="comparison.lt" (ngModelChange)="searchOnData()">Less than
+              </mat-checkbox>
+            </div>
+            <div class="flex-item" fxFlex="20">
+              <mat-checkbox name="eq" [(ngModel)]="comparison.eq" (ngModelChange)="searchOnData()">Equal to</mat-checkbox>
+            </div>
+            <div class="flex-item" fxFlex="20">
+              <mat-checkbox name="gt" [(ngModel)]="comparison.gt" (ngModelChange)="searchOnData()">Greater than
+              </mat-checkbox>
+            </div>
+          </div>
+          <div class="flex-container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+               fxLayoutAlign="start center" fxLayoutAlign.sm="center start" fxLayoutAlign.xs="center start">
+            <div *ngIf="target.index == targetEnum.expertise" class="flex-item" fxFlex="33">
+              <mat-checkbox name="is_education" [ngModel]="isEducation" (change)="changeState(elementEnum.isEducation)"
+                            [indeterminate]="isEducation === null">Is Education
+              </mat-checkbox>
+            </div>
+            <div *ngIf="target.index == targetEnum.consultancy" class="flex-item" fxFlex="33">
+              <mat-checkbox name="is_mentor" [ngModel]="isMentor" (change)="changeState(elementEnum.isMentor)"
+                            [indeterminate]="isMentor === null">Is Mentor
+              </mat-checkbox>
+            </div>
+            <div *ngIf="target.index == targetEnum.investment" class="flex-item" fxFlex="33">
+              <mat-checkbox name="is_lead" [ngModel]="isLead" (change)="changeState(elementEnum.isLead)"
+                            [indeterminate]="isLead === null">Is Lead
+              </mat-checkbox>
+            </div>
+          </div>
+          <div *ngIf="target.index == targetEnum.lce || target.index == targetEnum.event"
+               class="flex-container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+               fxLayoutAlign="start center" fxLayoutAlign.sm="center start" fxLayoutAlign.xs="center start">
+            <div class="flex-item" fxFlex="50">
+              <mat-form-field>
+                <input matInput [matDatepicker]="start_picker" placeholder="Start Date" [(ngModel)]="startDate"
+                       name="start_date" (ngModelChange)="searchOnData()">
+                <mat-datepicker-toggle matSuffix [for]="start_picker"></mat-datepicker-toggle>
+                <mat-datepicker #start_picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="flex-item" fxFlex="50">
+              <mat-form-field>
+                <input matInput [matDatepicker]="end_picker" placeholder="End Date" [(ngModel)]="endDate"
+                       name="end_date" (ngModelChange)="searchOnData()">
+                <mat-datepicker-toggle matSuffix [for]="end_picker"></mat-datepicker-toggle>
+                <mat-datepicker #end_picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

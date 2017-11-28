@@ -8,4 +8,5 @@ export enum TargetEnum {
   expertise = 6,
   investment = 7,
   consultancy = 8,
+  type = 9,
 }

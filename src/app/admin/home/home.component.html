@@ -1,3 +1,7 @@
-<p>
-  admin works!
-</p>
+<div>
+  <mat-tab-group (selectedIndexChange)="changeTab($event)">
+    <mat-tab label="{{info.title}}" *ngFor="let info of tabsInfo; let i = index">
+      <ii-admin-filter-tab [tabInfo]="info" [isActiveTab]="i === activeTabNumber"></ii-admin-filter-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>
