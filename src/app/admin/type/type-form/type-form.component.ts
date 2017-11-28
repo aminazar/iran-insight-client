@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
-import {ActivatedRoute} from '@angular/router';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {NgForm} from '@angular/forms/forms';
 import {RestService} from '../../../shared/services/rest.service';
+import {Subscription} from 'rxjs/Subscription';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'ii-type-form',
