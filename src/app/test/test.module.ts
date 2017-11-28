@@ -7,27 +7,48 @@ import {HeaderComponent} from '../shared/components/header/header.component';
 import {BreadcrumbComponent} from '../shared/components/breadcrumb/breadcrumb.component';
 import {FormsModule} from '@angular/forms';
 import {BreadcrumbService} from '../shared/services/breadcrumb.service';
+import {AuthService} from '../shared/services/auth.service';
 import {BidiModule} from '@angular/cdk/bidi';
 import {BreadcrumbModule} from 'primeng/primeng';
 import {HomeComponent} from '../site/home/home.component';
 import {ProfileComponent} from '../site/profile/profile.component';
 import {AppComponent} from "../app.component";
 import {AdminHomeComponent} from '../admin/home/home.component';
+import {LoginComponent} from "../admin/login/login.component";
+import {RestService} from "../shared/services/rest.service";
+import {HttpClientModule} from "@angular/common/http";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {SearchService} from "../shared/services/search.service";
+import {SearchFieldsComponent} from "../site/search/search-fields/search-fields.component";
+import {SearchMainComponent} from "../site/search/search-main/search-main.component";
+import {SearchResultComponent} from "../site/search/search-result/search-result.component";
+import {TypeFormComponent} from "../admin/type/type-form/type-form.component";
+import {TypeComponent} from "../admin/type/type.component";
 
 
 @NgModule({
   imports: [
     CommonModule,
     RouterTestingModule,
+    BrowserAnimationsModule,
     material.MatFormFieldModule,
     material.MatInputModule,
     material.MatToolbarModule,
     material.MatButtonModule,
-    BrowserAnimationsModule,
+    material.MatCardModule,
+    material.MatButtonModule,
+    material.MatInputModule,
+    material.MatIconModule,
+    material.MatOptionModule,
+    material.MatCheckboxModule,
+    material.MatSelectModule,
+    material.MatDialogModule,
     FormsModule,
     BrowserAnimationsModule,
     BidiModule,
     BreadcrumbModule,
+    HttpClientModule,
+    HttpClientTestingModule,
   ],
   declarations: [
     AppComponent,
@@ -36,7 +57,13 @@ import {AdminHomeComponent} from '../admin/home/home.component';
     BreadcrumbComponent,
     ProfileComponent,
     HomeComponent,
+    LoginComponent,
+    SearchFieldsComponent,
+    SearchResultComponent,
+    SearchMainComponent,
+    TypeFormComponent,
+    TypeComponent,
   ],
-  providers: [BreadcrumbService],
+  providers: [BreadcrumbService, AuthService, RestService, SearchService],
 })
 export class TestModule { }
