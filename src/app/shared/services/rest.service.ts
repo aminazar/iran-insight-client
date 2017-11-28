@@ -17,7 +17,7 @@ export class RestService {
   }
 
   get(url): Observable<any> {
-    return this.call(url).map((data: Response) => data.json());
+    return this.call(url).map((data: Response) => data.body);
   };
 
   getWithParams(table, values): Observable<any> {
@@ -34,6 +34,6 @@ export class RestService {
   }
 
   post(url, values): Observable<any>{
-    return this.http.post('/api/' + url, values);
+    return this.http.post('/api/' + url, values, {observe: 'response'});
   }
 }
