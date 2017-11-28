@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+.page{
+  padding: 15px;
+  margin: 10px;
+}
+
+.field{
+  width: 100%;
+}
+
+.maximum-width{
+  width: 100%;
+}
