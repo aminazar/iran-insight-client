@@ -1,4 +1,3 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
@@ -12,7 +11,6 @@ import {AdminModule} from './admin/admin.module';
     AppComponent,
   ],
   imports: [
-    BrowserModule,
     SharedModule,
     SiteModule,
     AdminModule,
