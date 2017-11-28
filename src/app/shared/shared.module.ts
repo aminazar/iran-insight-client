@@ -3,14 +3,13 @@ import {HeaderComponent} from './components/header/header.component';
 import {RouterModule} from '@angular/router';
 import {BreadcrumbComponent} from './components/breadcrumb/breadcrumb.component';
 import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
 import {BreadcrumbService} from './services/breadcrumb.service';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatButtonModule} from '@angular/material';
 import {BidiModule} from '@angular/cdk/bidi';
 import {BreadcrumbModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
+import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import {HttpClientModule} from '@angular/common/http';
+import {RestService} from './services/rest.service';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -20,15 +19,18 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   imports: [
     RouterModule,
     FormsModule,
-    CommonModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
     BidiModule,
     BreadcrumbModule,
+    MatToolbarModule,
+    MatButtonModule,
+    HttpClientModule
   ],
-  providers: [BreadcrumbService],
-  exports: [HeaderComponent]
+  providers: [BreadcrumbService, RestService],
+  exports: [
+    HeaderComponent,
+
+  ]
 })
 export class SharedModule {
 }

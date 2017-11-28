@@ -1,0 +1,55 @@
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h1>{{typeId ? 'Edit type' : 'Add new type'}}</h1></mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      <mat-form-field>
+        <mat-select name="cat" [(ngModel)]="cat" (change)="onChange($event.value)" required>
+          <mat-option *ngFor="let cat of cats" [value]="cat">{{cat}}</mat-option>
+        </mat-select>
+        <mat-placeholder>Select Type</mat-placeholder>
+      </mat-form-field>
+
+      <div fxLayout="row">
+        <div fxFlex="50">
+
+          <mat-form-field>
+            <input matInput name="name" [(ngModel)]="name" placeholder="name" required>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" dir="rtl">
+          <mat-form-field>
+            <input matInput name="name_fa" [(ngModel)]="name_fa" placeholder="نام فارسی" required>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div style="margin: 10px 0">
+          <b>Suggested by:</b><span style="margin-left: 5px;">{{suggested_by}}</span>
+      </div>
+      <div fxLayout="row">
+
+        <mat-checkbox fxFlex="50"
+                      name="isKiller"
+                      [(ngModel)]="is_killer"
+                      [disabled]="!has_killer">
+          Is Killer?
+        </mat-checkbox>
+
+        <mat-checkbox fxFlex="50"
+                      name="isActive"
+                      [(ngModel)]="is_active">
+          Is Active?
+        </mat-checkbox>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button type="submit" color="primary" [disabled]="!f.valid">Save</button>
+      <button mat-raised-button color="warn">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
