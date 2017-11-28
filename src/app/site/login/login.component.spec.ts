@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
-import {RouterTestingModule} from '@angular/router/testing';
-import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
+import {TestModule} from "../../test/test.module";
 
 
 describe('LoginComponent', () => {
@@ -10,9 +9,9 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
-      imports: [RouterTestingModule],
-      providers: [BreadcrumbService],
+      declarations: [],
+      imports: [TestModule],
+      providers: [],
     })
     .compileComponents();
   }));

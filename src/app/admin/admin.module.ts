@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
-import { HomeComponent } from './home/home.component';
+import { AdminHomeComponent } from './home/home.component';
 import {adminRouting} from './admin.routing';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [AdminHomeComponent],
 
   imports: [
     adminRouting
