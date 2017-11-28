@@ -1,0 +1,28 @@
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="flex-item" fxFlex="33">
+    &nbsp;
+  </div>
+  <div class="flex-item" fxFlex="33">
+    <mat-card>
+      <mat-card-header>
+        <label>Login</label>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="login(f)" #f="ngForm">
+          <mat-input-container>
+            <input matInput type="text" name="username" [(ngModel)]="username" required>
+          </mat-input-container>
+          <mat-input-container>
+            <input matInput type="password" name="password" [(ngModel)]="password" required>
+          </mat-input-container>
+          <button mat-fab color="primary" type="submit" [disabled]="!f.valid">
+            Login
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="flex-item" fxFlex="33">
+    &nbsp;
+  </div>
+</div>

@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+
 import {AppComponent} from './app.component';
 import {SharedModule} from './shared/shared.module';
 import {SiteModule} from './site/site.module';
-import {RouterModule} from '@angular/router';
 import {AdminModule} from './admin/admin.module';
 
 

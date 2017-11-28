@@ -11,3 +11,17 @@
   /*font-weight: normal;*/
   /*font-style: normal;*/
 /*}*/
+
+
+.page{
+  padding: 15px;
+  margin: 10px;
+}
+
+.field{
+  width: 100%;
+}
+
+.maximum-width{
+  width: 100%;
+}

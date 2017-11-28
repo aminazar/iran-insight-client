@@ -9,7 +9,10 @@ import {BreadcrumbModule} from 'primeng/primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatToolbarModule} from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
-import {RestService} from './services/rest.service';
+import {RestService} from "./services/rest.service";
+import {SearchService} from "./services/search.service";
+import {AuthService} from "./services/auth.service";
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -26,7 +29,7 @@ import {RestService} from './services/rest.service';
     MatButtonModule,
     HttpClientModule
   ],
-  providers: [BreadcrumbService, RestService],
+  providers: [RestService, SearchService, AuthService, BreadcrumbService],
   exports: [
     HeaderComponent,
 
