@@ -3,18 +3,20 @@ import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'ii-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'ii-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
-export class LoginComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
   constructor(private router : Router, private breadCrumbService : BreadcrumbService) { }
 
   ngOnInit() {
 
-    this.breadCrumbService.pushChild('login' , this.router.url);
+    this.breadCrumbService.pushChild('profile' , this.router.url);
   }
+
+
 
 
 }
