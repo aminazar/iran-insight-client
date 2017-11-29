@@ -9,6 +9,16 @@ export class AdminHomeComponent implements OnInit {
 
   constructor() { }
 
+
+  navLinks =[
+
+    {
+      label: 'type',
+      path: '/admin/type'
+    }
+  ];
+
+
   ngOnInit() {
   }
 
