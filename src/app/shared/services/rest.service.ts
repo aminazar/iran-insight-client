@@ -13,7 +13,7 @@ export class RestService {
   }
 
   put(url, values): Observable<any> {
-    return this.http.put('/api/' + url, values).map((data: Response) => data.json());
+    return this.http.put('/api/' + url, values).map((data: Response) => data.body);
   }
 
   get(url): Observable<any> {
