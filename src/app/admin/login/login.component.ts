@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {NgForm} from '@angular/forms/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {AuthService} from "../../shared/services/auth.service";
+import {AuthService} from '../../shared/services/auth.service';
 
 @Component({
   selector: 'ii-login',
@@ -11,19 +11,28 @@ import {AuthService} from "../../shared/services/auth.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  //Form variables
-  username: string = null;
-  password: string = null;
+  form: FormGroup;
 
-  constructor(private router : Router, private breadCrumbService : BreadcrumbService,
-              private authService: AuthService) { }
-
-  ngOnInit() {
-    this.breadCrumbService.pushChild('login' , this.router.url);
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService,
+              private authService: AuthService, private fb: FormBuilder) {
   }
 
-  login(form){
-    console.log('form data: ', form.value);
-    this.authService.login(form.value.username, form.value.password);
+  ngOnInit() {
+    this.breadCrumbService.pushChild('login', this.router.url);
+    this.form = this.fb.group({
+      username: ['', [
+        Validators.required,
+        Validators.pattern('[^ @]*@[^ @]*')]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8)]],
+    });
+  }
+
+  login() {
+    if (this.form.valid) {
+      console.log('form data: ', this.form.value);
+      this.authService.login(this.form.value.username, this.form.value.password);
+    }
   }
 }
