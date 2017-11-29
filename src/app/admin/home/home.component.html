@@ -1,7 +1,10 @@
-<div>
-  <mat-tab-group (selectedIndexChange)="changeTab($event)">
-    <mat-tab label="{{info.title}}" *ngFor="let info of tabsInfo; let i = index">
-      <ii-admin-filter-tab [tabInfo]="info" [isActiveTab]="i === activeTabNumber"></ii-admin-filter-tab>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+<nav mat-tab-nav-bar>
+  <a mat-tab-link
+     *ngFor="let link of navLinks"
+     [routerLink]="link.path"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">
+    {{link.label}}
+  </a>
+</nav>
+<router-outlet></router-outlet>

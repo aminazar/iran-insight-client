@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -9,7 +9,10 @@ import {TypeFormComponent} from './type-form/type-form.component';
   templateUrl: './type.component.html',
   styleUrls: ['./type.component.css']
 })
-export class TypeComponent implements OnInit {
+export class TypeComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+  }
+
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog) {
   }
 

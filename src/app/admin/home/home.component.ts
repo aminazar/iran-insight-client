@@ -13,6 +13,16 @@ export class AdminHomeComponent implements OnInit {
 
   constructor() { }
 
+
+  navLinks =[
+
+    {
+      label: 'type',
+      path: '/admin/type'
+    }
+  ];
+
+
   ngOnInit() {
     Object.keys(this.targetEnum).forEach(el => {
       if(el.charCodeAt(0) < 48 || el.charCodeAt(0) > 57)
