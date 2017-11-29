@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminFilterTabComponent } from './filter-tab.component';
+import {TestModule} from "../../../test/test.module";
 
 describe('SearchTabComponent', () => {
   let component: AdminFilterTabComponent;
@@ -8,7 +9,9 @@ describe('SearchTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminFilterTabComponent ]
+      declarations: [ AdminFilterTabComponent ],
+      imports: [TestModule],
+      providers: [],
     })
     .compileComponents();
   }));

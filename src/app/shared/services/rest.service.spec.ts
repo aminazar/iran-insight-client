@@ -1,11 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { RestService } from './rest.service';
+import {TestModule} from "../../test/test.module";
 
 describe('RestService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RestService]
+      declarations: [],
+      imports: [TestModule],
+      providers: [],
     });
   });
 

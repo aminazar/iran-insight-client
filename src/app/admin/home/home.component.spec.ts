@@ -1,14 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import {TestModule} from "../../test/test.module";
 import { AdminHomeComponent } from './home.component';
 
-describe('SearchComponent', () => {
+describe('AdminHomeComponent', () => {
   let component: AdminHomeComponent;
   let fixture: ComponentFixture<AdminHomeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminHomeComponent ]
+      declarations: [ AdminHomeComponent ],
+      imports: [TestModule],
+      providers: [],
     })
     .compileComponents();
   }));
