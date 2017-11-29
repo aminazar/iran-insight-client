@@ -8,7 +8,7 @@
     <mat-card-content>
 
       <mat-form-field>
-        <mat-select name="cat" [(ngModel)]="cat" (change)="onChange($event.value)" required>
+        <mat-select name="cat" [(ngModel)]="cat" (change)="onChange($event.value)" required [disabled]="typeId">
           <mat-option *ngFor="let cat of cats" [value]="cat">{{cat}}</mat-option>
         </mat-select>
         <mat-placeholder>Select Type</mat-placeholder>
@@ -34,22 +34,22 @@
       <div fxLayout="row">
 
         <mat-checkbox fxFlex="50"
-                      name="isKiller"
+                      name="is_killer"
                       [(ngModel)]="is_killer"
                       [disabled]="!has_killer">
           Is Killer?
         </mat-checkbox>
 
         <mat-checkbox fxFlex="50"
-                      name="isActive"
-                      [(ngModel)]="is_active">
+                      name="active"
+                      [(ngModel)]="active">
           Is Active?
         </mat-checkbox>
       </div>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button type="submit" color="primary" [disabled]="!f.valid">Save</button>
-      <button mat-raised-button color="warn">Cancel</button>
+      <button mat-raised-button type="button" (click)="onCancel()" color="warn">Cancel</button>
     </mat-card-actions>
   </mat-card>
 </form>
