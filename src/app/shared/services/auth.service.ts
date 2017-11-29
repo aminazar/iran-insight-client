@@ -13,7 +13,7 @@ export class AuthService {
       (data) => {
         this.isLoggedIn.next(true);
         console.log('You are logged in');
-        this.router.navigate(['admin/home']);
+        this.router.navigate(['admin/type']);
       },
       (err) => {
         console.log('Not logged in: ', err);
@@ -27,7 +27,7 @@ export class AuthService {
     this.restService.post('login', {username: username, password: password}).subscribe(
       (data) => {
         this.isLoggedIn.next(true);
-        this.router.navigate(['admin/home']);
+        this.router.navigate(['admin/type']);
       },
       (err) => {
         this.isLoggedIn.next(false);

@@ -6,10 +6,12 @@ export class SearchService {
 
   constructor(private restService: RestService) { }
 
-  search(phrase, target, offset, options){
-    return this.restService.post('search/' + offset, {
-      phrase: phrase,
-      options: Object.assign({target: target}, options),
-    });
+  search(data, offset){
+    return this.restService.post('search/' + (offset ? offset : 0), data);
+
+    // return this.restService.post('search/' + offset, {
+    //   phrase: phrase,
+    //   options: Object.assign({target: target}, options),
+    // });
   }
 }
