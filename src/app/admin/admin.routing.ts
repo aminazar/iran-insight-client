@@ -10,8 +10,7 @@ const Admin_ROUTES: Routes = [
       {path: 'type', loadChildren: 'app/admin/type/type.module#TypeModule', canActivate: [AuthGuard]},
     ],
   },
-  {path: 'admin/login', loadChildren: 'app/admin/login/login.module#LoginModule'}
-
+  {path: 'admin/login', loadChildren: 'app/admin/login/login.module#LoginModule'},
 ];
 
 export const adminRouting = RouterModule.forChild(Admin_ROUTES);

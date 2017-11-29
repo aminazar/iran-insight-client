@@ -7,14 +7,11 @@ import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTabsMo
 import {adminRouting} from './admin.routing';
 import {SharedModule} from "../shared/shared.module";
 import {AuthGuard} from "./auth.guard";
-
 import {AdminHomeComponent} from "./home/home.component";
-import {AdminFilterTabComponent} from "./home/filter-tab/filter-tab.component";
 
 @NgModule({
   declarations: [
     AdminHomeComponent,
-    AdminFilterTabComponent,
   ],
   imports: [
     adminRouting,

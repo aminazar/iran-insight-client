@@ -15,7 +15,6 @@ export class AdminHomeComponent implements OnInit {
 
 
   navLinks =[
-
     {
       label: 'type',
       path: '/admin/type'

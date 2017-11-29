@@ -14,7 +14,6 @@ import {AppComponent} from "../app.component";
 
 //Admin
 import {AdminHomeComponent} from '../admin/home/home.component';
-import {AdminFilterTabComponent} from "../admin/home/filter-tab/filter-tab.component";
 import {LoginComponent} from "../admin/login/login.component";
 import {TypeFormComponent} from "../admin/type/type-form/type-form.component";
 import {TypeComponent} from "../admin/type/type.component";
@@ -63,7 +62,6 @@ import {ProfileComponent} from '../site/profile/profile.component';
     AppComponent,
     HeaderComponent,
     AdminHomeComponent,
-    AdminFilterTabComponent,
     BreadcrumbComponent,
     ProfileComponent,
     HomeComponent,
