@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import {TypeComponent} from './type.component';
-import {TypeFormComponent} from './type-form/type-form.component';
+import {TypeFormComponent} from './components/type-form/type-form.component';
 
 
 const TYPE_ROUTES: Routes = [

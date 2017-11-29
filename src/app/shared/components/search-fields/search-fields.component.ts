@@ -1,16 +1,15 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {TargetEnum} from '../../enum/target.enum';
-import {FormControl} from "@angular/forms";
+import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
-import {MatSnackBar} from "@angular/material";
+import {MatSnackBar} from '@angular/material';
 
 enum ElementEnum {
   isMentor,
   isEducation,
   isLead,
   isActive,
-}
-;
+};
 
 @Component({
   selector: 'ii-search-fields',
@@ -79,7 +78,7 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.targetList = null;
     this.target = null;
     this.targets = null;
@@ -138,13 +137,13 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
         },
         amount: this.amount,
         show_all: (this.target
-        && (phrase === null || phrase === '')
-        && this.isMentor === null
-        && this.isEducation === null
-        && this.isLead === null
-        && this.isActive === null
-        && this.amount === null
-        && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq),
+          && (phrase === null || phrase === '')
+          && this.isMentor === null
+          && this.isEducation === null
+          && this.isLead === null
+          && this.isActive === null
+          && this.amount === null
+          && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq),
       }
     };
 
@@ -202,11 +201,11 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
         ;
         break;
       case this.elementEnum.isActive: {
-        if(this.isActive === null)
+        if (this.isActive === null)
           this.isActive = true;
-        else if(this.isActive === true)
+        else if (this.isActive === true)
           this.isActive = false;
-        else if(this.isActive === false)
+        else if (this.isActive === false)
           this.isActive = null;
       }
         ;

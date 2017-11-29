@@ -15,7 +15,7 @@ import {AppComponent} from '../app.component';
 // Admin
 import {AdminHomeComponent} from '../admin/home/home.component';
 import {LoginComponent} from '../admin/login/login.component';
-import {TypeFormComponent} from '../admin/type/type-form/type-form.component';
+import {TypeFormComponent} from '../admin/type/components/type-form/type-form.component';
 import {TypeComponent} from '../admin/type/type.component';
 
 // Shared Components
@@ -68,8 +68,8 @@ import {ProfileComponent} from '../site/profile/profile.component';
     HomeComponent,
     LoginComponent,
     SearchFieldsComponent,
-    TypeFormComponent,
     TypeComponent,
+    TypeFormComponent
   ],
   providers: [BreadcrumbService, AuthService, RestService, SearchService],
 })

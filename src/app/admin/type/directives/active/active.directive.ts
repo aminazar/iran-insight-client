@@ -8,14 +8,9 @@ export class ActiveDirective {
   @HostBinding('style.color') get setColor() {
     return this.color;
   };
-  @Input('type_active') defaultColor = 'green';
+  @Input('type_active') color = 'green';
 
-  private color: string;
   constructor() {
-  }
-
-  ngOnInit() {
-    this.color = this.defaultColor;
   }
 
 }
