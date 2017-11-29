@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {TargetEnum} from '../../enum/target.enum';
 import {FormControl} from "@angular/forms";
 import 'rxjs/add/operator/debounceTime';
@@ -7,6 +7,7 @@ enum ElementEnum {
   isMentor,
   isEducation,
   isLead,
+  isActive,
 }
 ;
 
@@ -15,7 +16,7 @@ enum ElementEnum {
   templateUrl: './search-fields.component.html',
   styleUrls: ['./search-fields.component.css']
 })
-export class SearchFieldsComponent implements OnInit {
+export class SearchFieldsComponent implements OnInit, OnDestroy {
   @Input() target = null;
   @Output() searching = new EventEmitter<any>();
   targets = [];
@@ -31,6 +32,7 @@ export class SearchFieldsComponent implements OnInit {
   isEducation = null;
   isLead = null;
   isMentor = null;
+  isActive = null;
   comparison = {
     lt: false,
     gt: false,
@@ -46,10 +48,10 @@ export class SearchFieldsComponent implements OnInit {
     Object.keys(this.targetEnum).forEach(el => {
       if (el.charCodeAt(0) < 48 || el.charCodeAt(0) > 57)
         this.targetList.push(el);
-        this.targetList.sort();
+      this.targetList.sort();
     });
 
-    if (this.target !== null && this.target !== undefined) {
+    if (this.target) {
       this.targetList = this.targetList.filter(el => el.toLowerCase() !== this.target.title.toLowerCase());
       this.targets.push(this.target.title);
       this.searchOnData(null);
@@ -76,6 +78,21 @@ export class SearchFieldsComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(){
+    this.targetList = null;
+    this.target = null;
+    this.targets = null;
+    this.phrase = null;
+    this.amount = null;
+    this.isEducation = null;
+    this.isLead = null;
+    this.isMentor = null;
+    this.isActive = null;
+    this.comparison = null;
+    this.startDate = null;
+    this.endDate = null;
+  }
+
   addTarget(target_index) {
     let target_title = this.targetList[target_index];
     this.targets.push(target_title);
@@ -89,13 +106,13 @@ export class SearchFieldsComponent implements OnInit {
   }
 
   searchOnData(phrase?) {
-    if(!phrase)
+    if (!phrase)
       phrase = this.phrase;
 
-    if((phrase === null || phrase === undefined || phrase === '') && (this.target === null || this.target === undefined))
+    if ((phrase === null || phrase === undefined || phrase === '') && (this.target === null || this.target === undefined))
       return;
 
-    if(!this.checkValidation())
+    if (!this.checkValidation())
       return;
 
     let trg = {};
@@ -112,33 +129,35 @@ export class SearchFieldsComponent implements OnInit {
         is_mentor: this.isMentor,
         is_lead: this.isLead,
         is_education: this.isEducation,
+        is_active: this.isActive,
         comparison_type: {
           lt: this.comparison.lt,
           gt: this.comparison.gt,
           eq: this.comparison.eq,
         },
         amount: this.amount,
-        show_all: (this.target !== null && this.target !== undefined
-               && (phrase === null || phrase === '')
-               && this.isMentor === null
-               && this.isEducation === null
-               && this.isLead === null
-               && this.amount === null
-               && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq),
+        show_all: (this.target
+        && (phrase === null || phrase === '')
+        && this.isMentor === null
+        && this.isEducation === null
+        && this.isLead === null
+        && this.isActive === null
+        && this.amount === null
+        && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq),
       }
     };
 
     this.searching.emit(searchData);
   }
 
-  checkValidation(){
-    if(!this.amount && (this.comparison.lt || this.comparison.gt || this.comparison.eq)){
+  checkValidation() {
+    if (!this.amount && (this.comparison.lt || this.comparison.gt || this.comparison.eq)) {
       //ToDo: Show error/warning
 
       return false;
     }
 
-    if((this.startDate !== null && this.endDate !== null) && this.startDate > this.endDate){
+    if ((this.startDate && this.endDate) && this.startDate > this.endDate) {
       //ToDo: Show error/warning
 
       return false;
@@ -176,6 +195,16 @@ export class SearchFieldsComponent implements OnInit {
           this.isMentor = false;
         else if (this.isMentor === false)
           this.isMentor = null;
+      }
+        ;
+        break;
+      case this.elementEnum.isActive: {
+        if(this.isActive === null)
+          this.isActive = true;
+        else if(this.isActive === true)
+          this.isActive = false;
+        else if(this.isActive === false)
+          this.isActive = null;
       }
         ;
         break;
