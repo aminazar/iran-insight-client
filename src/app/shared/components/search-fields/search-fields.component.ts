@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {TargetEnum} from '../../enum/target.enum';
 import {FormControl} from "@angular/forms";
 import 'rxjs/add/operator/debounceTime';
+import {MatSnackBar} from "@angular/material";
 
 enum ElementEnum {
   isMentor,
@@ -41,7 +42,7 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
   startDate = null;
   endDate = null;
 
-  constructor() {
+  constructor(private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -152,14 +153,16 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
 
   checkValidation() {
     if (!this.amount && (this.comparison.lt || this.comparison.gt || this.comparison.eq)) {
-      //ToDo: Show error/warning
-
+      this.snackBar.open('Comparison fields are not valid when no amount value is declared', null, {
+        duration: 2500,
+      });
       return false;
     }
 
     if ((this.startDate && this.endDate) && this.startDate > this.endDate) {
-      //ToDo: Show error/warning
-
+      this.snackBar.open('Start date must be before end date', null, {
+        duration: 2000,
+      });
       return false;
     }
 

@@ -6,7 +6,7 @@ import {BreadcrumbModule} from 'primeng/primeng';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatInputModule,
-  MatMenuModule, MatNativeDateModule, MatOptionModule,
+  MatMenuModule, MatNativeDateModule, MatOptionModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
@@ -47,6 +47,7 @@ import {SearchFieldsComponent} from "./components/search-fields/search-fields.co
     MatAutocompleteModule,
     MatOptionModule,
     HttpClientModule,
+    MatSnackBarModule,
   ],
   providers: [RestService, SearchService, AuthService, BreadcrumbService],
   exports: [
