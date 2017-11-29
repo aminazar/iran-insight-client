@@ -1,11 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SearchFieldsComponent } from './search-fields.component';
+import {SearchFieldsComponent} from './search-fields.component';
 import {TestModule} from "../../../test/test.module";
 
 describe('SearchFieldsComponent', () => {
   let component: SearchFieldsComponent;
   let fixture: ComponentFixture<SearchFieldsComponent>;
+  let addTrgBtn, trgBtn, rmTrgBtn, phraseField, amountField, ltCB, gtCB, eqCB, isEducationCB,
+    isMentorCB, isLeadCB,isActiveCB, startDateField, startDatePicket,
+    endDateField, endDatePicket: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -13,13 +16,15 @@ describe('SearchFieldsComponent', () => {
       imports: [TestModule],
       providers: [],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchFieldsComponent);
     component = fixture.componentInstance;
+    component.ngOnInit();
     fixture.detectChanges();
+    
   });
 
   it('should create', () => {
