@@ -53,8 +53,8 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
     });
 
     if (this.target) {
-      this.targetList = this.targetList.filter(el => el.toLowerCase() !== this.target.title.toLowerCase());
-      this.targets.push(this.target.title);
+      this.targetList = this.targetList.filter(el => el.toLowerCase() !== this.target.toLowerCase());
+      this.targets.push(this.target);
       this.searchOnData(null);
     }
 
