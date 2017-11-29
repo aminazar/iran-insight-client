@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BreadcrumbComponent } from './breadcrumb.component';
-import {TestModule} from "../../../test/test.module";
+import {TestModule} from '../../../test/test.module';
+import {SiteTestRouting} from '../../../site/site.routing';
 
 describe('BreadcrumbComponent', () => {
   let component: BreadcrumbComponent;
@@ -8,8 +9,11 @@ describe('BreadcrumbComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ],
-      imports:[TestModule],
+      declarations: [BreadcrumbComponent],
+      imports: [
+        TestModule,
+        SiteTestRouting,
+      ],
       providers: [],
     })
     .compileComponents();
