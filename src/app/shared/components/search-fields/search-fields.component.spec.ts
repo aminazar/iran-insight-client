@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchFieldsComponent } from './search-fields.component';
-import {TestModule} from "../../../test/test.module";
+import {TestModule} from '../../../test/test.module';
+import {SiteTestRouting} from '../../../site/site.routing';
 
 describe('SearchFieldsComponent', () => {
   let component: SearchFieldsComponent;
@@ -9,8 +10,11 @@ describe('SearchFieldsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [TestModule],
+      declarations: [SearchFieldsComponent],
+      imports: [
+        TestModule,
+        SiteTestRouting,
+      ],
       providers: [],
     })
     .compileComponents();

@@ -3,6 +3,7 @@ import {LoginComponent} from './login.component';
 import {TestModule} from '../../test/test.module';
 import {By} from '@angular/platform-browser';
 import {AuthService} from '../../shared/services/auth.service';
+import {AdminTestRouting} from '../admin.routing';
 
 
 describe('LoginComponent', () => {
@@ -12,8 +13,13 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [TestModule],
+      declarations: [
+        LoginComponent,
+      ],
+      imports: [
+        TestModule,
+        AdminTestRouting,
+      ],
       providers: [],
     })
       .compileComponents();

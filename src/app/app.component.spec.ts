@@ -1,14 +1,20 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {TestModule} from "./test/test.module";
+import {TestModule} from './test/test.module';
+import {SiteTestRouting} from './site/site.routing';
+import {HeaderComponent} from './shared/components/header/header.component';
+import {BreadcrumbComponent} from './shared/components/breadcrumb/breadcrumb.component';
 
 
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [TestModule],
+      declarations: [AppComponent, HeaderComponent, BreadcrumbComponent],
+      imports: [
+        TestModule,
+        SiteTestRouting,
+      ],
       providers: [],
     }).compileComponents();
   }));
