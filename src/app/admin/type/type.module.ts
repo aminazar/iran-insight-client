@@ -6,9 +6,10 @@ import {TypeFormComponent} from './type-form/type-form.component';
 import {FormsModule} from '@angular/forms';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule,
-  MatSelectModule,
+  MatSelectModule, MatSnackBarModule,
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { ActiveDirective } from './active/active.directive';
 
 @NgModule({
   imports: [
@@ -24,9 +25,10 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MatOptionModule,
     MatSelectModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
-  declarations: [TypeComponent, TypeFormComponent]
+  declarations: [TypeComponent, TypeFormComponent, ActiveDirective]
 })
 export class TypeModule {
 }

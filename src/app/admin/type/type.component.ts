@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -10,10 +10,20 @@ import {TypeFormComponent} from './type-form/type-form.component';
   styleUrls: ['./type.component.css']
 })
 export class TypeComponent implements OnInit {
-  constructor(private router : Router, private breadCrumbService : BreadcrumbService,private dialog: MatDialog) { }
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog) {
+  }
+
+  type1 = {
+    id : 1,
+    type: 'lce',
+    name: 'merge',
+    name_fa: 'اتحاد',
+    active: true
+  };
+
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('type' , this.router.url);
+    this.breadCrumbService.pushChild('type', this.router.url);
   }
 
   openForm(id: number): void {
@@ -26,8 +36,7 @@ export class TypeComponent implements OnInit {
       console.log('The dialog was closed');
     });
 
-}
-
+  }
 
 
 }
