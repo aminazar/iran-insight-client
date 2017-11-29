@@ -8,14 +8,14 @@
         <label>Login</label>
       </mat-card-header>
       <mat-card-content>
-        <form (ngSubmit)="login(f)" #f="ngForm">
+        <form (ngSubmit)="login()" [formGroup]="form">
           <mat-input-container>
-            <input matInput type="text" name="username" [(ngModel)]="username" required>
+            <input matInput type="text" placeholder="Username" formControlName="username" role="username" required>
           </mat-input-container>
           <mat-input-container>
-            <input matInput type="password" name="password" [(ngModel)]="password" required>
+            <input matInput type="password" placeholder="Password" formControlName="password" role="password" required>
           </mat-input-container>
-          <button mat-fab color="primary" type="submit" [disabled]="!f.valid">
+          <button mat-fab color="primary" type="submit" role="submit" [disabled]="!form.valid">
             Login
           </button>
         </form>
