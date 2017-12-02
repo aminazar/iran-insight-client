@@ -93,7 +93,6 @@ describe('SearchFieldsComponent', () => {
       });
 
     const spy = spyOn(component, 'checkValidation').and.callThrough();
-    const snackSpy = spyOn(component.snackBar, 'open').and.callThrough();
     amountField = fixture.debugElement.query(By.css('[role="amount-field"]')).nativeNode;
     ltCB = fixture.debugElement.query(By.css('[role="less-than-button"]')).nativeElement;
     gtCB = fixture.debugElement.query(By.css('[role="greater-than-button"]')).nativeElement;
