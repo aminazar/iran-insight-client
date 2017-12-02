@@ -9,7 +9,7 @@ describe('AdminHomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminHomeComponent ],
+      declarations: [],
       imports: [TestModule],
       providers: [],
     })

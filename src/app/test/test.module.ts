@@ -13,7 +13,6 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AppComponent} from '../app.component';
 
 // Admin
-import {AdminHomeComponent} from '../admin/home/home.component';
 import {LoginComponent} from '../admin/login/login.component';
 import {TypeFormComponent} from '../admin/type/type-form/type-form.component';
 import {TypeComponent} from '../admin/type/type.component';
@@ -32,6 +31,8 @@ import {SearchService} from '../shared/services/search.service';
 // Site
 import {HomeComponent} from '../site/home/home.component';
 import {ProfileComponent} from '../site/profile/profile.component';
+import {ActiveDirective} from "../admin/type/active/active.directive";
+import {AdminHomeComponent} from "../admin/home/home.component";
 
 
 @NgModule({
@@ -45,12 +46,15 @@ import {ProfileComponent} from '../site/profile/profile.component';
     material.MatButtonModule,
     material.MatCardModule,
     material.MatButtonModule,
-    material.MatInputModule,
     material.MatIconModule,
     material.MatOptionModule,
     material.MatCheckboxModule,
     material.MatSelectModule,
     material.MatDialogModule,
+    material.MatTabsModule,
+    material.MatMenuModule,
+    material.MatDatepickerModule,
+    material.MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -61,8 +65,9 @@ import {ProfileComponent} from '../site/profile/profile.component';
   ],
   declarations: [
     AppComponent,
-    HeaderComponent,
     AdminHomeComponent,
+    ActiveDirective,
+    HeaderComponent,
     BreadcrumbComponent,
     ProfileComponent,
     HomeComponent,
