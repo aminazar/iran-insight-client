@@ -5,7 +5,8 @@ import {typeRouting} from './type.routing';
 import {TypeFormComponent} from './components/type-form/type-form.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule,
+  MatOptionModule,
   MatSelectModule, MatSnackBarModule,
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -29,6 +30,7 @@ import {SharedModule} from '../../shared/shared.module';
     MatInputModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatGridListModule,
     SharedModule
   ],
   declarations: [TypeComponent, TypeFormComponent, ActiveDirective]

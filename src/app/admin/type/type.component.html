@@ -9,9 +9,9 @@
   </button>
 </div>
 
+
 <div fxLayout="row" class="row">
   <div fxFlex="10" *ngFor="let type of types" class="type-card">
-
     <mat-card (click)="openForm(type.type_name, type.id)">
       <mat-card-header>
         <mat-card-title><b>{{type.type_name}}</b></mat-card-title>
@@ -24,5 +24,6 @@
       </mat-card-content>
 
     </mat-card>
+
   </div>
 </div>

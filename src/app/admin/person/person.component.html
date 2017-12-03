@@ -1,14 +1,16 @@
-<button mat-raised-button color="primary" (click)="openForm()">
-  <mat-icon>
-    <i class="material-icons">add</i>
-  </mat-icon>
-</button>
-<div>
-  <ii-search-fields [target]="'person'" (searching)="search($event)"></ii-search-fields>
+
+<div fxLayout="row" class="row">
+  <ii-search-fields fxFlex="100"  [target]="'person'" (searching)="search($event)"></ii-search-fields>
+</div>
+<div fxLayout="row" class="row">
+
+  <button mat-fab color="primary" (click)="openForm()">
+    <mat-icon aria-label="add new type">add</mat-icon>
+  </button>
 </div>
 
-<mat-grid-list style="margin-top: 30px" cols="5">
-  <mat-grid-tile *ngFor="let p of people">
+<div fxLayout="row" class="row">
+  <div fxFlex="10" *ngFor="let p of people" class="person-card">
     <mat-card (click)="showDetails(p.pid)">
       <mat-card-content>
         <div>
@@ -19,17 +21,25 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
 
-<div *ngIf="showInDeep">
-  <mat-tab-group>
-    <mat-tab label="Information">
-      <ii-person-form [personId]="personId"></ii-person-form>
-    </mat-tab>
-    <mat-tab label="Expertise">
+  </div>
+</div>
+<div fxLayout="row" *ngIf="showInDeep" class="row">
 
-    </mat-tab>
-    <mat-tab label="Partnership"></mat-tab>
-  </mat-tab-group>
+  <mat-card fxFlex="30" fxFlexOffset="35">
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab label="Information">
+          <ii-person-form [personId]="personId"></ii-person-form>
+        </mat-tab>
+        <mat-tab label="Expertise">
+
+        </mat-tab>
+        <mat-tab label="Partnership"></mat-tab>
+      </mat-tab-group>
+
+    </mat-card-content>
+
+  </mat-card>
+
 </div>
