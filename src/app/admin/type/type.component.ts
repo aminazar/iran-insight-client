@@ -17,12 +17,11 @@ export class TypeComponent implements OnInit, OnDestroy {
   types: IType[] = [];
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog, private searchService: SearchService) {
-
   }
 
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('type', this.router.url);
+    this.breadCrumbService.pushChild('Type', this.router.url , true);
   }
 
   openForm(type_name: string, id: number): void {
@@ -33,17 +32,18 @@ export class TypeComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      const type: IType[] = this.types.filter(t => t.type_name === result.type_name && t.id === parseInt(result.id));
-      if (type.length === 1) { // update type card
+      if (result) {
+        const type: IType[] = this.types.filter(t => t.type_name === result.type_name && t.id === parseInt(result.id));
+        if (type.length === 1) { // update type card
 
-        type[0].name = result.name;
-        type[0].name_fa = result.name_fa;
-        type[0].active = result.active;
+          type[0].name = result.name;
+          type[0].name_fa = result.name_fa;
+          type[0].active = result.active;
 
-      } else if (type.length === 0) { // insert new card
-        this.types.push(result);
+        } else if (type.length === 0) { // insert new card
+          this.types.push(result);
+        }
       }
-
 
     });
   }
