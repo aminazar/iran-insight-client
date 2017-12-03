@@ -1,23 +1,20 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {FlexLayoutModule} from "@angular/flex-layout";
-import {
-  MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTabLink,
-  MatTabsModule
-} from '@angular/material';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTabsModule} from '@angular/material';
 
-import {adminRouting} from './admin.routing';
-import {SharedModule} from "../shared/shared.module";
-import {AuthGuard} from "./auth.guard";
-import {AdminHomeComponent} from "./home/home.component";
+import {AdminRouting} from './admin.routing';
+import {SharedModule} from '../shared/shared.module';
+import {AuthGuard} from './auth.guard';
+import {AdminHomeComponent} from './home/home.component';
 
 @NgModule({
   declarations: [
     AdminHomeComponent,
   ],
   imports: [
-    adminRouting,
+    AdminRouting,
     CommonModule,
     FormsModule,
     FlexLayoutModule,
