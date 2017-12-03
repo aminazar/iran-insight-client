@@ -22,6 +22,22 @@
   width: 100%;
 }
 
+.field-90{
+  width: 90%;
+}
+
 .maximum-width{
   width: 100%;
+}
+
+.farsi-direction{
+  direction: rtl;
+}
+
+.right-column{
+  text-align: right;
+}
+
+.left-text{
+  text-align: left;
 }

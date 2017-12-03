@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {TargetEnum} from '../../enum/target.enum';
-import {FormControl} from "@angular/forms";
+import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
-import {MatSnackBar} from "@angular/material";
+import {MatSnackBar} from '@angular/material';
 
 enum ElementEnum {
   isMentor,

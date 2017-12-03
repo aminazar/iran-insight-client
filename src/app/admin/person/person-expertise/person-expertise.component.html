@@ -1,0 +1,10 @@
+<div>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Expertise name" [matAutocomplete]="auto" [formControl]="expertiseForm"/>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let exp of filteredExpertise | async" [value]="exp.name">
+        {{exp.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

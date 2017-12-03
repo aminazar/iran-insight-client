@@ -34,6 +34,6 @@ export class RestService {
   }
 
   post(url, values): Observable<any>{
-    return this.http.post('/api/' + url, values, {observe: 'response'});
+    return this.http.post('/api/' + url, values, {observe: 'response'}).map(data => data.body);
   }
 }
