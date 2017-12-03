@@ -1,3 +1,106 @@
-<p>
-  person-form works!
-</p>
+<div style="padding: 10px; margin: 5px">
+  <form (ngSubmit)="modifyUser()" [formGroup]="personForm">
+    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-input-container class="field-90">
+          <input matInput type="email" placeholder="Email" formControlName="username" rol="username">
+        </mat-input-container>
+      </div>
+      <div fxFlex="50">
+        <!--<mat-input-container>-->
+        <!--<input type="file" placeholder="Image" formControlName="image" role="image"/>-->
+        <!--</mat-input-container>-->
+      </div>
+    </div>
+    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-input-container class="field-90">
+          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" role="firstname-en"/>
+        </mat-input-container>
+      </div>
+      <div fxFlex="50" dir="rtl">
+        <mat-input-container class="field-90">
+          <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa"/>
+        </mat-input-container>
+      </div>
+    </div>
+    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-input-container class="field-90">
+          <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en"/>
+        </mat-input-container>
+      </div>
+      <div fxFlex="50" dir="rtl">
+        <mat-input-container class="field-90">
+          <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa">
+        </mat-input-container>
+      </div>
+    </div>
+    <div *ngIf="personId" flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-input-container class="field-90">
+          <input matInput type="password" placeholder="Password" formControlName="password" rol="password">
+        </mat-input-container>
+      </div>
+      <div fxFlex="50" class="right-column">
+        <mat-input-container class="field-90">
+          <input matInput class="left-text" type="password" placeholder="Confirm Password" formControlName="re_password"
+                 role="re-password">
+        </mat-input-container>
+      </div>
+    </div>
+    <div>
+      <mat-input-container class="field">
+        <textarea matInput placeholder="Address" formControlName="address_en" role="address-en"></textarea>
+      </mat-input-container>
+    </div>
+    <div dir="rtl">
+      <mat-input-container class="field">
+        <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"></textarea>
+      </mat-input-container>
+    </div>
+    <div>
+      <!--<mat-select placeholder="Country">-->
+      <!--<mat-option></mat-option>-->
+      <!--</mat-select>-->
+      <mat-input-container class="field-90">
+        <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no"/>
+      </mat-input-container>
+    </div>
+    <div>
+      <!--<mat-select placeholder="Counter">-->
+      <!--<mat-option></mat-option>-->
+      <!--</mat-select>-->
+      <!--<mat-select placeholder="City">-->
+      <!--<mat-option></mat-option>-->
+      <!--</mat-select>-->
+      <mat-input-container class="field-90">
+        <input matInput type="text" placeholder="Phone number" formControlName="phone_no"/>
+      </mat-input-container>
+    </div>
+    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-form-field class="field-90">
+          <input matInput [matDatepicker]="birth_picker" placeholder="Birth Date" formControlName="birth_date"
+                 role="birth-date">
+          <mat-datepicker-toggle matSuffix [for]="birth_picker" role="birth-date-picker"></mat-datepicker-toggle>
+          <mat-datepicker #birth_picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50" class="right-column">
+        <mat-form-field class="left-text field-90">
+          <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period">
+            <mat-option *ngFor="let pt of periodTypes" [value]="pt.value">{{pt.title}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!personForm.valid">
+        <span *ngIf="!personId">Add</span>
+        <span *ngIf="personId">Update</span>
+      </button>
+      <button mat-raised-button color="primary" *ngIf="personId">Delete</button>
+    </div>
+  </form>
+</div>

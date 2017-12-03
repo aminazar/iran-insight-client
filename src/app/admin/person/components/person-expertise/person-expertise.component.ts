@@ -3,7 +3,7 @@ import {FormControl} from "@angular/forms";
 import {startWith} from "rxjs/operators/startWith";
 import {Observable} from "rxjs/Observable";
 import {map} from "rxjs/operators/map";
-import {RestService} from "../../../shared/services/rest.service";
+import {RestService} from "../../../../shared/services/rest.service";
 
 @Component({
   selector: 'ii-person-expertise',
