@@ -20,7 +20,7 @@ export class AuthService {
         this.isLoggedIn.next(false);
         this.router.navigate(['admin/login']);
       }
-    )
+    );
   }
 
   login(username, password){

@@ -16,7 +16,7 @@ export class BreadcrumbComponent implements OnInit {
 
   ngOnInit() {
 
-    this.breadCrumbService.bcRoutes().subscribe((res: Breadcrumb[]) => {
+    this.breadCrumbService.routes$.subscribe((res: Breadcrumb[]) => {
       this.items = res;
     });
 

@@ -1,14 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TypeFormComponent } from './type-form.component';
-import {TestModule} from '../../../test/test.module';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {AdminTestRouting} from '../../admin.routing';
+import {TestModule} from "../../../../test/test.module";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 
-class MockDialogRef {
+class MockDialogRef{
+
+}
+class MockDialogData{
+
 }
 
-class MockDialogData {
-}
 
 describe('TypeFormComponent', () => {
   let component: TypeFormComponent;
@@ -16,13 +17,8 @@ describe('TypeFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TypeFormComponent,
-      ],
-      imports: [
-        TestModule,
-        AdminTestRouting,
-      ],
+      declarations: [],
+      imports: [TestModule],
       providers: [
         {
           provide: MatDialogRef,
