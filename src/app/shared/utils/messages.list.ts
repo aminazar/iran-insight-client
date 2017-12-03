@@ -8,20 +8,21 @@ interface IError {
   friendlyMessage_fa: string;
 }
 
-const illegalTypeName: IError = {
-  friendlyMessage_fa: '',
-  friendlyMessage: 'illegal type name is specified',
-  error: new Error('illegal type name is specified'),
-  code: 404
-};
+const errors: IError[] = [
+  {
+    friendlyMessage_fa: '',
+    friendlyMessage: 'illegal type name is specified',
+    error: new Error('illegal type name is specified'),
+    code: 404
+  }, {
 
-const noType: IError = {
+    friendlyMessage_fa: '',
+    friendlyMessage: 'type with this id is not found',
+    error: new Error('No type found'),
+    code: 404
+  }
+];
 
-  friendlyMessage_fa: '',
-  friendlyMessage: 'type with this id is not found',
-  error: new Error('No type found'),
-  code: 404
-};
 
 /**
  * Messages
@@ -42,11 +43,9 @@ const typeUpdateSuccessful: IMessage = {
 };
 
 export {
-
-  illegalTypeName,
-  noType,
   typeInsertSuccessful,
-  typeUpdateSuccessful
+  typeUpdateSuccessful,
+  errors
 };
 
 

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {RestService} from '../../../../shared/services/rest.service';
-import {illegalTypeName, noType, typeInsertSuccessful, typeUpdateSuccessful} from '../../../../shared/utils/messages.list';
+import {typeInsertSuccessful, typeUpdateSuccessful} from '../../../../shared/utils/messages.list';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IType} from '../../interfaces/type.interface';
 

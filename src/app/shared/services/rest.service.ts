@@ -10,7 +10,6 @@ export class RestService {
 
   get(url): Observable<any> {
     return this.http.get('/api/' + url, {observe: 'response'}).map(data => data.body);
-    ;
   }
 
   put(url, values): Observable<any> {
