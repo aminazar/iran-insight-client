@@ -6,7 +6,7 @@ import {AuthService} from '../../shared/services/auth.service';
 import {AdminTestRouting} from '../admin.routing';
 
 
-fdescribe('LoginComponent', () => {
+describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let usernameEl, pwdEl, submitEl, submitCpnt, authService: any;
