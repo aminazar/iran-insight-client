@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TestModule} from "../../test/test.module";
+import {TestModule} from '../../test/test.module';
 import { AdminHomeComponent } from './home.component';
 
 describe('AdminHomeComponent', () => {
@@ -9,7 +9,7 @@ describe('AdminHomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminHomeComponent ],
+      declarations: [ ],
       imports: [TestModule],
       providers: [],
     })

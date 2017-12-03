@@ -2,7 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTabsModule} from "@angular/material";
+import {
+  MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTabLink,
+  MatTabsModule
+} from '@angular/material';
 
 import {adminRouting} from './admin.routing';
 import {SharedModule} from "../shared/shared.module";

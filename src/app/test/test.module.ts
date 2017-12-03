@@ -52,8 +52,11 @@ import {ProfileComponent} from '../site/profile/profile.component';
     material.MatOptionModule,
     material.MatCheckboxModule,
     material.MatSelectModule,
+    material.MatSnackBarModule,
     material.MatDialogModule,
     material.MatTabsModule,
+    material.MatDatepickerModule,
+    material.MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -65,7 +68,6 @@ import {ProfileComponent} from '../site/profile/profile.component';
   declarations: [
     AppComponent,
     HeaderComponent,
-    AdminHomeComponent,
     BreadcrumbComponent,
     ProfileComponent,
     HomeComponent,
@@ -74,6 +76,7 @@ import {ProfileComponent} from '../site/profile/profile.component';
     TypeFormComponent,
     TypeComponent,
     ActiveDirective,
+    AdminHomeComponent,
   ],
   providers: [BreadcrumbService, AuthService, RestService, SearchService],
 })

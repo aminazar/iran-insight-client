@@ -5,7 +5,7 @@ import {By} from '@angular/platform-browser';
 import {AuthService} from '../../shared/services/auth.service';
 
 
-describe('LoginComponent', () => {
+fdescribe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let usernameEl, pwdEl, submitEl, submitCpnt, authService: any;
@@ -58,5 +58,6 @@ describe('LoginComponent', () => {
     submitEl.click();
     expect(spy.calls.count()).toBe(1);
     expect(authSpy).toHaveBeenCalledWith(user, pwd);
+    console.log(spy);
   }));
 });

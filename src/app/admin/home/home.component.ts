@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {TargetEnum} from "../../shared/enum/target.enum";
+import {TargetEnum} from '../../shared/enum/target.enum';
 
 @Component({
   selector: 'ii-admin-home',
