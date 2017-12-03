@@ -4,7 +4,7 @@ import {TypeFormComponent} from './components/type-form/type-form.component';
 
 
 const TYPE_ROUTES: Routes = [
-    { path: '', component: TypeComponent},
+    { path: '', component: TypeComponent, pathMatch: 'full'},
     { path: ':id', component: TypeFormComponent}
 ];
 

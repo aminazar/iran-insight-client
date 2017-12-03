@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.breadCrumbService.pushChild('login', this.router.url);
     this.form = this.fb.group({
-      username: ['', [
+      username: [null, [
         Validators.required,
         Validators.pattern('[^ @]*@[^ @]*')]],
-      password: ['', [
+      password: [null, [
         Validators.required,
         Validators.minLength(8)]],
     });

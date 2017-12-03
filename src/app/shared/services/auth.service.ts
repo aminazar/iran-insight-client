@@ -35,4 +35,12 @@ export class AuthService {
       }
     )
   }
+
+  setUserProfile(data){
+    return this.restService.post('user/profile', data);
+  }
+
+  getPersonInfo(personId){
+    return this.restService.get('user/profile/' + personId);
+  }
 }

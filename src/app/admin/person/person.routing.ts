@@ -1,11 +1,10 @@
-import { Routes, RouterModule } from '@angular/router';
-import {PersonComponent} from './person.component';
-import {PersonFormComponent} from './components/person-form/person-form.component';
+import {RouterModule, Routes} from "@angular/router";
+import {PersonComponent} from "./person.component";
+import {PersonFormComponent} from "./person-form/person-form.component";
 
-
-const PERSON_ROUTES: Routes = [
-    { path: '', component: PersonComponent},
-    { path: ':id', component: PersonFormComponent}
+const Person_ROUTES: Routes = [
+  {path: '', component: PersonComponent, pathMatch: 'full'},
+  {path: ':id', component: PersonFormComponent},
 ];
 
-export const personRouting = RouterModule.forChild(PERSON_ROUTES);
+export const personRouting = RouterModule.forChild(Person_ROUTES);
