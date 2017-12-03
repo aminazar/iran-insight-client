@@ -10,23 +10,15 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 
 // Admin
-import {LoginComponent} from '../admin/login/login.component';
-import {TypeFormComponent} from '../admin/type/type-form/type-form.component';
-import {TypeComponent} from '../admin/type/type.component';
 
 // Shared Services and components
-import {BreadcrumbComponent} from '../shared/components/breadcrumb/breadcrumb.component';
-import {HeaderComponent} from '../shared/components/header/header.component';
-import {SearchFieldsComponent} from '../shared/components/search-fields/search-fields.component';
 import {AuthService} from '../shared/services/auth.service';
 import {BreadcrumbService} from '../shared/services/breadcrumb.service';
 import {RestService} from '../shared/services/rest.service';
 import {SearchService} from '../shared/services/search.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeComponent} from '../site/home/home.component';
-import {ProfileComponent} from '../site/profile/profile.component';
-import {ActiveDirective} from "../admin/type/active/active.directive";
-import {AdminHomeComponent} from "../admin/home/home.component";
+import {AdminHomeComponent} from '../admin/home/home.component';
 
 
 @NgModule({
