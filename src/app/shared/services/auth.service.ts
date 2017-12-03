@@ -14,7 +14,8 @@ export class AuthService {
         this.isLoggedIn.next(true);
         console.log('You are logged in');
         this.router.navigate(['admin/type']);
-      },
+      }
+      ,
       (err) => {
         console.log('Not logged in: ', err);
         this.isLoggedIn.next(false);
