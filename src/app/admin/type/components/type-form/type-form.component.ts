@@ -80,7 +80,7 @@ export class TypeFormComponent implements OnInit {
       const body: any = {
         name: this.form.value.name,
         name_fa: this.form.value.name_fa,
-        active: this.form.value.active,
+        active: !!this.form.value.active,
       };
 
 
@@ -88,7 +88,7 @@ export class TypeFormComponent implements OnInit {
         this.type_name = this.form.value.type_name;
 
       if (this.type_name === 'lce')
-        body.is_killer = this.form.value.is_killer;
+        body.is_killer = !!this.form.value.is_killer;
 
       const rest = this.typeId ?
         this.restService.put(`type/${this.type_name}_type/${this.typeId}`, body) : // update
@@ -97,7 +97,7 @@ export class TypeFormComponent implements OnInit {
       rest.subscribe(res => {
 
         this.dialogRef.close(<IType>{
-          id: res.body.id,
+          id: res.id,
           type_name: this.form.value.type_name,
           name: this.form.value.name,
           name_fa: this.form.value.name_fa,

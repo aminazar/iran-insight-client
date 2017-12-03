@@ -21,7 +21,7 @@ export class TypeComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('Type', this.router.url , true);
+    this.breadCrumbService.pushChild('Type', this.router.url, true);
   }
 
   openForm(type_name: string, id: number): void {
@@ -53,13 +53,13 @@ export class TypeComponent implements OnInit, OnDestroy {
     this.searchService.search(searchBundle, 0).subscribe(res => {
 
       this.types = [];
-      Object.keys(res.body.type).forEach(index => {
+      res.type.forEach(type => {
         this.types.push(<IType>{
-          id: res.body.type[index].id,
-          name: res.body.type[index].name,
-          name_fa: res.body.type[index].name_fa,
-          type_name: res.body.type[index].table_name,
-          active: res.body.type[index].active
+          id: type.id,
+          name: type.name,
+          name_fa: type.name_fa,
+          type_name: type.table_name,
+          active: type.active
 
         });
       });
