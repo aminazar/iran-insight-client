@@ -24,7 +24,6 @@ export class TypeComponent implements OnInit, OnDestroy {
     active: true
   };
 
-
   ngOnInit() {
     this.breadCrumbService.pushChild('type', this.router.url);
   }
@@ -38,8 +37,5 @@ export class TypeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
-
   }
-
-
 }
