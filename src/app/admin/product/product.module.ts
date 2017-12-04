@@ -1,5 +1,8 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ProductComponent } from './product.component';
+import {productRouting} from './product.routing';
+import {SharedModule} from '../../shared/shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
@@ -10,19 +13,15 @@ import {
   MatSelectModule,
   MatSnackBarModule, MatTabsModule
 } from '@angular/material';
-import {PersonFormComponent} from './components/person-form/person-form.component';
-import {SharedModule} from '../../shared/shared.module';
-import { PersonExpertiseComponent } from './components/person-expertise/person-expertise.component';
-import { PersonPartnershipComponent } from './components/person-partnership/person-partnership.component';
-import {personRouting} from './person.routing';
-import {PersonComponent} from './person.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+
 
 @NgModule({
   imports: [
-    personRouting,
     CommonModule,
-    FormsModule,
+    productRouting,
     SharedModule,
+    FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatCardModule,
@@ -38,12 +37,6 @@ import {PersonComponent} from './person.component';
     MatAutocompleteModule,
     MatTabsModule,
   ],
-  declarations: [
-    PersonComponent,
-    PersonFormComponent,
-    PersonExpertiseComponent,
-    PersonPartnershipComponent,
-  ],
+  declarations: [ProductComponent, ProductFormComponent]
 })
-export class PersonModule {
-}
+export class ProductModule { }

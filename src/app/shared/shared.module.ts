@@ -14,10 +14,6 @@ import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {BreadcrumbComponent} from './components/breadcrumb/breadcrumb.component';
 import {HeaderComponent} from './components/header/header.component';
-import {BreadcrumbService} from './services/breadcrumb.service';
-import {RestService} from './services/rest.service';
-import {SearchService} from './services/search.service';
-import {AuthService} from './services/auth.service';
 import {SearchFieldsComponent} from './components/search-fields/search-fields.component';
 
 @NgModule({
@@ -49,7 +45,6 @@ import {SearchFieldsComponent} from './components/search-fields/search-fields.co
     HttpClientModule,
     MatSnackBarModule,
   ],
-  providers: [RestService, SearchService, AuthService, BreadcrumbService],
   exports: [
     HeaderComponent,
     SearchFieldsComponent,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TargetEnum} from '../../shared/enum/target.enum';
 
 @Component({
@@ -7,13 +7,15 @@ import {TargetEnum} from '../../shared/enum/target.enum';
   styleUrls: ['./home.component.css']
 })
 export class AdminHomeComponent implements OnInit {
-  constructor() { }
+  constructor() {
 
-  navLinks =[];
+  }
+
+  navLinks = [];
 
   ngOnInit() {
     Object.keys(TargetEnum).forEach(el => {
-      if(el.charCodeAt(0) < 48 || el.charCodeAt(0) > 57)
+      if (el.charCodeAt(0) < 48 || el.charCodeAt(0) > 57)
         this.navLinks.push({
           label: el,
           path: '/admin/' + el,

@@ -1,20 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
+import {SearchService} from '../../shared/services/search.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 
-import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {PersonFormComponent} from './components/person-form/person-form.component';
-import {SearchService} from '../../shared/services/search.service';
-
 @Component({
-  selector: 'ii-person',
-  templateUrl: './person.component.html',
-  styleUrls: ['./person.component.css']
+  selector: 'ii-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css']
 })
-export class PersonComponent implements OnInit {
+export class ProductComponent implements OnInit {
   offset = 0;
-  people = [];
-  personId: number = null;
+  products = [];
+  productId: number = null;
   showInDeep = false;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
@@ -22,19 +20,20 @@ export class PersonComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('person', this.router.url, true);
+    this.breadCrumbService.pushChild('product', this.router.url, true);
   }
 
   openForm(id: number): void {
-     // Navigate to new page (3 tabs: Information, Expertise and Partnership)
-    this.personId = id;
+    console.log('In product open form function!!!');
+    this.productId = id;
     this.showInDeep = true;
   }
 
   search(data) {
+    console.log('In product search function!!!');
     this.searchService.search(data, this.offset).subscribe(
       (data) => {
-        this.people = data.person;
+        this.products = data.product;
       },
       (err) => {
         console.error('Cannot get data', err);
@@ -45,8 +44,9 @@ export class PersonComponent implements OnInit {
     );
   }
 
-  showDetails(pid) {
-    this.personId = pid;
+  showDetails(product_id) {
+    this.productId = product_id;
     this.showInDeep = true;
   }
 }
+

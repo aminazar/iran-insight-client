@@ -1,8 +1,7 @@
-import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from "@angular/material";
-import {RestService} from "../../../shared/services/rest.service";
-import {AuthService} from "../../../shared/services/auth.service";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { MatSnackBar} from '@angular/material';
+import {AuthService} from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'ii-person-form',
@@ -35,7 +34,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   personForm: FormGroup;
   _personId: number = null;
   originalPerson: any = null;
-  anyChanges: boolean = false;
+  anyChanges = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar) {
   }
@@ -121,11 +120,11 @@ export class PersonFormComponent implements OnInit, OnDestroy {
           duration: 2500,
         });
       }
-    )
+    );
   }
 
   modifyUser() {
-    let data = {
+    const data = {
       username: this.personForm.controls['username'].value,
       firstname_en: this.personForm.controls['firstname_en'].value,
       firstname_fa: this.personForm.controls['firstname_fa'].value,
@@ -161,8 +160,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   matchingPassword(AC: AbstractControl) {
-    let password = AC.get('password').value;
-    let confirmPassword = AC.get('re_password').value;
+    const password = AC.get('password').value;
+    const confirmPassword = AC.get('re_password').value;
     if (password !== confirmPassword)
       AC.get('re_password').setErrors({MathPassword: true});
     else

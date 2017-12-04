@@ -20,7 +20,7 @@ export class AuthService {
         this.isLoggedIn.next(false);
         this.router.navigate(['admin/login']);
       }
-    )
+    );
   }
 
   login(username, password){
@@ -42,5 +42,13 @@ export class AuthService {
 
   getPersonInfo(personId){
     return this.restService.get('user/profile/' + personId);
+  }
+
+  setProductInfo(data){
+    return this.restService.put('product', data);
+  }
+
+  getProductInfo(productId){
+    return this.restService.get('/product/one/' + productId);
   }
 }

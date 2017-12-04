@@ -9,7 +9,7 @@ import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 })
 export class HomeComponent implements OnInit{
 
-  constructor(private router : Router, private breadCrumbService : BreadcrumbService) { }
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService) { }
 
   ngOnInit() {
 

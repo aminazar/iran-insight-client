@@ -1,20 +1,26 @@
-<button mat-raised-button color="primary" (click)="openForm(null)">
-  <mat-icon aria-label="add new type">add</mat-icon>
-</button>
+<div fxLayout="row" class="row">
 
+  <ii-search-fields fxFlex="100"  [target]="'type'" (searching)="search($event)"></ii-search-fields>
+</div>
+<div fxLayout="row" class="row">
 
-<div fxLayout="row">
-  <div fxFlex="10">
+  <button mat-fab color="primary" (click)="openForm()">
+    <mat-icon aria-label="add new type">add</mat-icon>
+  </button>
+</div>
 
-    <mat-card (click) ="openForm(type1.id)" >
+<div fxLayout="row" class="row">
+  <div fxFlex="10" *ngFor="let type of types" class="type-card">
+
+    <mat-card (click)="openForm(type.type_name, type.id)">
       <mat-card-header>
-        <mat-card-title><p>{{type1.type}}</p></mat-card-title>
+        <mat-card-title><b>{{type.type_name}}</b></mat-card-title>
         <mat-card-subtitle></mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>{{type1.name}}</p>
-        <p>{{type1.name_fa}}</p>
-        <p [type_active]="type1.active ? 'green' : 'red'"> {{type1.active ? 'active' : 'deactive'}}</p>
+        <p>{{type.name}}</p>
+        <p>{{type.name_fa}}</p>
+        <p [type_active]="type.active ? 'green' : 'red'"> {{type.active ? 'active' : 'deactive'}}</p>
       </mat-card-content>
 
     </mat-card>

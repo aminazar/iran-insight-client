@@ -60,7 +60,8 @@ import {AdminHomeComponent} from '../admin/home/home.component';
     HomeComponent,
     AdminHomeComponent,
   ],
-  providers: [BreadcrumbService, AuthService, RestService, SearchService],
+  providers: [
+    BreadcrumbService, AuthService, RestService, SearchService],
   exports: [
     CommonModule,
     BrowserAnimationsModule,
