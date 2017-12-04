@@ -8,13 +8,13 @@
 </div>
 <mat-grid-list style="margin-top: 30px" cols="5">
     <mat-grid-tile *ngFor="let p of products">
-        <mat-card (click)="openForm(p.product_id)">
+        <mat-card (click)="showDetails(p.product_id)">
             <mat-card-content>
                 <div>
-                    Name: {{p.name}}
+                    <b>{{p.name}}</b>
                 </div>
                 <div>
-                    نام فارسی: {{p.name_fa}}
+                    {{p.name_fa}}
                 </div>
             </mat-card-content>
         </mat-card>
