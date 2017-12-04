@@ -20,7 +20,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeComponent} from '../site/home/home.component';
 import {AdminHomeComponent} from '../admin/home/home.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -39,6 +38,8 @@ import {AdminHomeComponent} from '../admin/home/home.component';
     material.MatDatepickerModule,
     material.MatSnackBarModule,
     material.MatTabsModule,
+    material.MatNativeDateModule,
+    material.MatAutocompleteModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,19 +61,19 @@ import {AdminHomeComponent} from '../admin/home/home.component';
     material.MatFormFieldModule,
     material.MatInputModule,
     material.MatToolbarModule,
-    material.MatButtonModule,
     material.MatCardModule,
     material.MatButtonModule,
-    material.MatInputModule,
     material.MatIconModule,
     material.MatOptionModule,
     material.MatCheckboxModule,
     material.MatSelectModule,
     material.MatDialogModule,
-    material.MatDatepickerModule,
     material.MatMenuModule,
+    material.MatDatepickerModule,
     material.MatSnackBarModule,
     material.MatTabsModule,
+    material.MatNativeDateModule,
+    material.MatAutocompleteModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

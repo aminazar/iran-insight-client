@@ -5,7 +5,8 @@ import { AdminHomeComponent } from './home.component';
 import {AdminTestRouting} from '../admin.routing';
 import {LoginComponent} from '../login/login.component';
 import {TypeComponent} from '../type/type.component';
-import {ActiveDirective} from '../type/active/active.directive';
+import {ActiveDirective} from '../type/directives/active/active.directive';
+import {SearchFieldsComponent} from '../../shared/components/search-fields/search-fields.component';
 
 describe('AdminHomeComponent', () => {
   let component: AdminHomeComponent;
@@ -17,6 +18,7 @@ describe('AdminHomeComponent', () => {
         LoginComponent,
         TypeComponent,
         ActiveDirective,
+        SearchFieldsComponent,
       ],
       imports: [
         TestModule,

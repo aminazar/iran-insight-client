@@ -2,8 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TypeComponent } from './type.component';
 import {TestModule} from '../../test/test.module';
 import {AdminTestRouting} from '../admin.routing';
-import {ActiveDirective} from './active/active.directive';
-import {TypeFormComponent} from './type-form/type-form.component';
+import {ActiveDirective} from './directives/active/active.directive';
+import {TypeFormComponent} from './components/type-form/type-form.component';
+import {SearchFieldsComponent} from '../../shared/components/search-fields/search-fields.component';
 
 describe('TypeComponent', () => {
   let component: TypeComponent;
@@ -15,6 +16,7 @@ describe('TypeComponent', () => {
         TypeComponent,
         TypeFormComponent,
         ActiveDirective,
+        SearchFieldsComponent,
       ],
       imports: [
         TestModule,
