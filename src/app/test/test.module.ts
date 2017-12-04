@@ -20,7 +20,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeComponent} from '../site/home/home.component';
 import {AdminHomeComponent} from '../admin/home/home.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -39,6 +38,8 @@ import {AdminHomeComponent} from '../admin/home/home.component';
     material.MatDatepickerModule,
     material.MatSnackBarModule,
     material.MatTabsModule,
+    material.MatAutocompleteModule,
+    material.MatNativeDateModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

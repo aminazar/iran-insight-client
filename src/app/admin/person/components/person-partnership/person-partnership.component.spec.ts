@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PersonPartnershipComponent } from './person-partnership.component';
+import {TestModule} from '../../../../test/test.module';
+import {AdminTestRouting} from '../../../admin.routing';
 
 describe('PersonPartnershipComponent', () => {
   let component: PersonPartnershipComponent;
@@ -8,7 +10,11 @@ describe('PersonPartnershipComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PersonPartnershipComponent ]
+      declarations: [ PersonPartnershipComponent ],
+      imports: [
+        TestModule,
+        AdminTestRouting,
+      ]
     })
     .compileComponents();
   }));
