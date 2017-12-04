@@ -1,7 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
+import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
+import {ActionEnum} from "../../../../shared/enum/action.enum";
 
 @Component({
   selector: 'ii-person-form',
@@ -13,10 +15,15 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   set personId(id) {
     this._personId = id;
     this.initPerson();
+    this.personForm = null;
+    this.initForm();
   }
+
   get personId() {
     return this._personId;
   }
+
+  @Output() changedPerson = new EventEmitter();
 
   periodTypes = [{
     title: 'Daily',
@@ -35,13 +42,23 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   _personId: number = null;
   originalPerson: any = null;
   anyChanges = false;
+  actionEnum = ActionEnum;
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar) {
+  constructor(private authService: AuthService, private snackBar: MatSnackBar,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.initForm();
-    this.initPerson();
+
+    this.personForm.valueChanges.subscribe(
+      (data) => {
+        this.fieldChanged();
+      },
+      (err) => {
+        console.log('Error: ', err);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -54,7 +71,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       firstname_fa: [null],
       surname_en: [null],
       surname_fa: [null],
-      username: [null, [
+      username: [{value: null, disabled: this.personId ? true : false}, [
         Validators.required,
         Validators.pattern('[^ @]*@[^ @]*'),
       ]],
@@ -72,10 +89,10 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(500),
       ]],
       phone_no: [null, [
-        Validators.pattern('^\d$')
+        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/)
       ]],
       mobile_no: [null, [
-        Validators.pattern('^\d$')
+        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/)
       ]],
       birth_date: [null],
       notify_period: ['d', [
@@ -89,7 +106,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   initPerson() {
-    if (!this.personId){
+    if (!this.personId) {
       this.personForm = null;
       this.initForm();
       return;
@@ -113,6 +130,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.personForm.controls['birth_date'].setValue(data.birth_date);
         this.personForm.controls['display_name_en'].setValue(data.display_name_en);
         this.personForm.controls['display_name_fa'].setValue(data.display_name_fa);
+        this.personForm.controls['notify_period'].setValue(data.notify_period);
       },
       (err) => {
         console.log(err);
@@ -124,7 +142,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   modifyUser() {
-    const data = {
+    const personData = {
+      pid: this.personId,
       username: this.personForm.controls['username'].value,
       firstname_en: this.personForm.controls['firstname_en'].value,
       firstname_fa: this.personForm.controls['firstname_fa'].value,
@@ -142,18 +161,24 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       diplay_name_fa: this.personForm.controls['display_name_fa'].value,
     };
 
-    if (!this.personId)
-      delete data.secret;
+    if (!this.personId){
+      delete personData.secret;
+      delete personData.pid;
+    }
 
-    this.authService.setUserProfile(data).subscribe(
+    this.authService.setUserProfile(personData).subscribe(
       (data) => {
-        this.snackBar.open('This person is added', null, {
-          duration: 1800,
+        this.snackBar.open(this.personId ? 'Person is updated' : 'Person is added', null, {
+          duration: 2300,
         });
+
+        this.anyChanges = false;
+        this.originalPerson = Object.assign({pid: data.pid}, personData);
+        this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
       },
       (err) => {
         this.snackBar.open('Cannot add this person. Try again', null, {
-          duration: 2300,
+          duration: 3200,
         });
       }
     );
@@ -166,5 +191,86 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       AC.get('re_password').setErrors({MathPassword: true});
     else
       return null;
+  }
+
+  fieldChanged() {
+    if(!this.originalPerson)
+      return;
+
+    this.anyChanges = false;
+
+    if (this.personForm.controls['firstname_en'].value !== this.originalPerson.firstname_en && (this.personForm.controls['firstname_en'].value !== '' || this.originalPerson.firstname_en !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['firstname_fa'].value !== this.originalPerson.firstname_fa && (this.personForm.controls['firstname_fa'].value !== '' || this.originalPerson.firstname_fa !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['surname_en'].value !== this.originalPerson.surname_en && (this.personForm.controls['surname_en'].value !== '' || this.originalPerson.surname_en !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['surname_fa'].value !== this.originalPerson.surname_fa && (this.personForm.controls['surname_fa'].value !== '' || this.originalPerson.surname_fa !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['display_name_en'].value !== this.originalPerson.display_name_en && (this.personForm.controls['display_name_en'].value !== '' || this.originalPerson.display_name_en !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['display_name_fa'].value !== this.originalPerson.display_name_fa && (this.personForm.controls['display_name_fa'].value !== '' || this.originalPerson.display_name_fa !== null))
+      this.anyChanges = true;
+    // if(this.personForm.controls['image'].value !== this.originalPerson.image)
+    //   this.anyChanges = true;
+    if (this.personForm.controls['address_en'].value !== this.originalPerson.address_en && (this.personForm.controls['address_en'].value !== '' || this.originalPerson.address_en !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['address_fa'].value !== this.originalPerson.address_fa && (this.personForm.controls['address_fa'].value !== '' || this.originalPerson.address_fa !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['phone_no'].value !== this.originalPerson.phone_no && (this.personForm.controls['phone_no'].value !== '' || this.originalPerson.phone_no !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['mobile_no'].value !== this.originalPerson.mobile_no && (this.personForm.controls['mobile_no'].value !== '' || this.originalPerson.mobile_no !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['birth_date'].value !== this.originalPerson.birth_date && (this.personForm.controls['birth_date'].value !== '' || this.originalPerson.birth_date !== null))
+      this.anyChanges = true;
+    if (this.personForm.controls['notify_period'].value !== this.originalPerson.notify_period && (this.personForm.controls['notify_period'].value !== '' || this.originalPerson.notify_period !== null))
+      this.anyChanges = true;
+  }
+
+  deletePerson() {
+    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '230px'
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          this.authService.deletePerson(this.personId).subscribe(
+            (data) => {
+              this.snackBar.open('Person delete successfully', null, {
+                duration: 2000,
+              });
+
+              this.changedPerson.emit({action: this.actionEnum.delete, value: this.personId});
+            },
+            (error) => {
+              this.snackBar.open('Cannot delete this person. Please try again', null, {
+                duration: 2700
+              });
+            }
+          )
+        }
+      },
+      (err) => {
+        console.log('Error in dialog: ', err);
+      }
+    )
+  }
+
+  resetPassword(){
+    this.authService.resetPassword(this.personForm.controls['username'].value).subscribe(
+      (data) => {
+        this.snackBar.open('Resetting password mail sent to ' + this.personForm.controls['username'].value, null, {
+          duration: 2700,
+        });
+      },
+      (err) => {
+        console.error('Cannot send change mail. ', err);
+        this.snackBar.open('Cannot reset password. Please try again', null, {
+          duration: 3000,
+        });
+      }
+    );
   }
 }
