@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TypeFormComponent } from './type-form.component';
 import {TestModule} from "../../../../test/test.module";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {SearchFieldsComponent} from '../../../../shared/components/search-fields/search-fields.component';
 
 class MockDialogRef{
 
@@ -17,7 +18,10 @@ describe('TypeFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [
+        SearchFieldsComponent,
+        TypeFormComponent,
+      ],
       imports: [TestModule],
       providers: [
         {
