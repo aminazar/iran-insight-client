@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PersonFormComponent } from './person-form.component';
+import {TestModule} from '../../../../test/test.module';
+import {AdminTestRouting} from '../../../admin.routing';
 
 describe('PersonFormComponent', () => {
   let component: PersonFormComponent;
@@ -8,7 +10,13 @@ describe('PersonFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PersonFormComponent ]
+      declarations: [
+        PersonFormComponent
+      ],
+      imports: [
+        TestModule,
+        AdminTestRouting,
+      ]
     })
     .compileComponents();
   }));
