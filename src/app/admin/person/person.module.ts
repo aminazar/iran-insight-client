@@ -38,7 +38,6 @@ import {PersonComponent} from './person.component';
     MatAutocompleteModule,
     MatTabsModule,
     MatPaginatorModule,
-    MatTableModule,
   ],
   declarations: [
     PersonComponent,

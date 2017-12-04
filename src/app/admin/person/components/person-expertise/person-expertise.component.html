@@ -1,4 +1,5 @@
 <div>
+  <br/>
   <mat-input-container style="width: 100%">
     <input matInput type="text" placeholder="Expertise name" [matAutocomplete]="auto" [formControl]="expertiseCtrl"/>
     <mat-autocomplete #auto="matAutocomplete">
@@ -8,37 +9,26 @@
     </mat-autocomplete>
   </mat-input-container>
 </div>
-<div>
-  <mat-table #table [dataSource]="personExpertiseDataSource">
-
-    <!--Position Column-->
-    <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.position}}</mat-cell>
-    </ng-container>
-
-    <!--Name Column-->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>\
-      <mat-cell *matCellDef="let element">{{element.name_en}}</mat-cell>
-    </ng-container>
-
-    <!--Persian Name Column-->
-    <ng-container matColumnDef="name_fa">
-      <mat-header-cell *matHeaderCellDef>Persian Name</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.name_fa}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="remove">
-      <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="removePersonExpertise(element.expertise_id)">
-          <mat-icon aria-label="clear person expertise">clear</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+<br/>
+<div class="rs-table">
+  <table class="table">
+    <thead>
+      <td>No.</td>
+      <td>Name</td>
+      <td>Persian Name</td>
+      <td>Remove</td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of userExpertiseList; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.name_en}}</td>
+        <td>{{item.name_fa}}</td>
+        <td>
+          <button mat-icon-button (click)="removePersonExpertise(item.expertise_id)">
+            <mat-icon aria-label="clear person expertise">clear</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
