@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PersonExpertiseComponent } from './person-expertise.component';
-import {TestModule} from "../../../../test/test.module";
-import {AdminTestRouting} from "../../../admin.routing";
+import {TestModule} from '../../../../test/test.module';
+import {AdminTestRouting} from '../../../admin.routing';
 
-fdescribe('PersonExpertiseComponent', () => {
+describe('PersonExpertiseComponent', () => {
   let component: PersonExpertiseComponent;
   let fixture: ComponentFixture<PersonExpertiseComponent>;
 
@@ -16,8 +16,7 @@ fdescribe('PersonExpertiseComponent', () => {
       imports: [
         TestModule,
         AdminTestRouting,
-      ],
-      providers: [],
+      ]
     })
     .compileComponents();
   }));

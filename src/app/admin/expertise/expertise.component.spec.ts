@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpertiseComponent } from './expertise.component';
+import {TestModule} from '../../test/test.module';
+import {AdminTestRouting} from '../admin.routing';
+import {ExpertiseFormComponent} from './expertise-form/expertise-form.component';
 
 describe('ExpertiseComponent', () => {
   let component: ExpertiseComponent;
@@ -8,7 +11,14 @@ describe('ExpertiseComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExpertiseComponent ]
+      declarations: [
+        ExpertiseComponent,
+        ExpertiseFormComponent,
+      ],
+      imports: [
+        TestModule,
+        AdminTestRouting,
+      ]
     })
     .compileComponents();
   }));
