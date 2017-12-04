@@ -6,7 +6,7 @@ import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatGridListModule, MatIconModule,
   MatInputModule,
-  MatNativeDateModule,
+  MatNativeDateModule, MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule, MatTabsModule
 } from '@angular/material';
@@ -37,6 +37,7 @@ import {PersonComponent} from './person.component';
     MatGridListModule,
     MatAutocompleteModule,
     MatTabsModule,
+    MatPaginatorModule,
   ],
   declarations: [
     PersonComponent,
