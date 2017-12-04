@@ -5,7 +5,7 @@ import { AdminHomeComponent } from './home.component';
 import {AdminTestRouting} from '../admin.routing';
 import {LoginComponent} from '../login/login.component';
 import {TypeComponent} from '../type/type.component';
-import {ActiveDirective} from '../type/active/active.directive';
+import {ActiveDirective} from '../type/directives/active/active.directive';
 
 describe('AdminHomeComponent', () => {
   let component: AdminHomeComponent;

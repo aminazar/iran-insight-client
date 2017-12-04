@@ -13,7 +13,7 @@ export class AuthService {
       (data) => {
         this.isLoggedIn.next(true);
         console.log('You are logged in');
-        this.router.navigate(['admin/type']);
+        this.router.navigate(['admin/person']);
       },
       (err) => {
         console.log('Not logged in: ', err);
@@ -27,7 +27,7 @@ export class AuthService {
     this.restService.post('login', {username: username, password: password}).subscribe(
       (data) => {
         this.isLoggedIn.next(true);
-        this.router.navigate(['admin/type']);
+        this.router.navigate(['admin/person']);
       },
       (err) => {
         this.isLoggedIn.next(false);
@@ -42,5 +42,13 @@ export class AuthService {
 
   getPersonInfo(personId){
     return this.restService.get('user/profile/' + personId);
+  }
+
+  deletePerson(personId){
+    return this.restService.delete('user', personId);
+  }
+
+  resetPassword(person_mail){
+    return this.restService.post('user/auth/link', {email: person_mail, is_forgot_mail: true});
   }
 }

@@ -1,4 +1,7 @@
 <div style="padding: 10px; margin: 5px">
+  <div *ngIf="!personId">Add new person</div>
+  <div *ngIf="personId">Edit Person</div>
+  <br/>
   <form (ngSubmit)="modifyUser()" [formGroup]="personForm">
     <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
       <div fxFlex="50">
@@ -15,48 +18,38 @@
     <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" role="firstname-en"/>
+          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" role="firstname-en" (ngModelChange)="fieldChanged($event)"/>
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa"/>
+          <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
     </div>
     <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en"/>
+          <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa">
+          <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
     </div>
-    <div *ngIf="personId" flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
-      <div fxFlex="50">
-        <mat-input-container class="field-90">
-          <input matInput type="password" placeholder="Password" formControlName="password" rol="password">
-        </mat-input-container>
-      </div>
-      <div fxFlex="50" class="right-column">
-        <mat-input-container class="field-90">
-          <input matInput class="left-text" type="password" placeholder="Confirm Password" formControlName="re_password"
-                 role="re-password">
-        </mat-input-container>
-      </div>
+    <div *ngIf="personId">
+      <button mat-raised-button type="button" (click)="resetPassword()">Reset Password</button>
     </div>
     <div>
       <mat-input-container class="field">
-        <textarea matInput placeholder="Address" formControlName="address_en" role="address-en"></textarea>
+        <textarea matInput placeholder="Address" formControlName="address_en" role="address-en" (ngModelChange)="fieldChanged()"></textarea>
       </mat-input-container>
     </div>
     <div dir="rtl">
       <mat-input-container class="field">
-        <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"></textarea>
+        <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa" (ngModelChange)="fieldChanged()"></textarea>
       </mat-input-container>
     </div>
     <div>
@@ -64,7 +57,7 @@
       <!--<mat-option></mat-option>-->
       <!--</mat-select>-->
       <mat-input-container class="field-90">
-        <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no"/>
+        <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" (ngModelChange)="fieldChanged()"/>
       </mat-input-container>
     </div>
     <div>
@@ -75,32 +68,32 @@
       <!--<mat-option></mat-option>-->
       <!--</mat-select>-->
       <mat-input-container class="field-90">
-        <input matInput type="text" placeholder="Phone number" formControlName="phone_no"/>
+        <input matInput type="text" placeholder="Phone number" formControlName="phone_no" (ngModelChange)="fieldChanged()"/>
       </mat-input-container>
     </div>
     <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-form-field class="field-90">
           <input matInput [matDatepicker]="birth_picker" placeholder="Birth Date" formControlName="birth_date"
-                 role="birth-date">
+                 role="birth-date" (ngModelChange)="fieldChanged()"/>
           <mat-datepicker-toggle matSuffix [for]="birth_picker" role="birth-date-picker"></mat-datepicker-toggle>
           <mat-datepicker #birth_picker></mat-datepicker>
         </mat-form-field>
       </div>
       <div fxFlex="50" class="right-column">
         <mat-form-field class="left-text field-90">
-          <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period">
+          <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period" (ngModelChange)="fieldChanged()">
             <mat-option *ngFor="let pt of periodTypes" [value]="pt.value">{{pt.title}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
     <div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!personForm.valid">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!personForm.valid || (personId && !anyChanges)">
         <span *ngIf="!personId">Add</span>
         <span *ngIf="personId">Update</span>
       </button>
-      <button mat-raised-button color="primary" *ngIf="personId">Delete</button>
+      <button mat-raised-button color="primary" type="button" *ngIf="personId" (click)="deletePerson()">Delete</button>
     </div>
   </form>
 </div>

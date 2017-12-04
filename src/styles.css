@@ -41,3 +41,20 @@
 .left-text{
   text-align: left;
 }
+
+.center{
+  text-align: center;
+}
+
+.card-view{
+  height: 100px;
+}
+
+.card-header{
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-content{
+  font-weight: normal;
+}
