@@ -1,10 +1,44 @@
 <div>
-  <mat-form-field>
-    <input matInput type="text" placeholder="Expertise name" [matAutocomplete]="auto" [formControl]="expertiseForm"/>
+  <mat-input-container style="width: 100%">
+    <input matInput type="text" placeholder="Expertise name" [matAutocomplete]="auto" [formControl]="expertiseCtrl"/>
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let exp of filteredExpertise | async" [value]="exp.name">
-        {{exp.name}}
+      <mat-option *ngFor="let exp of filteredExpertise | async" [value]="exp" (click)="addExpertise(exp)">
+        {{exp}}
       </mat-option>
     </mat-autocomplete>
-  </mat-form-field>
+  </mat-input-container>
+</div>
+<div>
+  <mat-table #table [dataSource]="personExpertiseDataSource">
+
+    <!--Position Column-->
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef>No.</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.position}}</mat-cell>
+    </ng-container>
+
+    <!--Name Column-->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>\
+      <mat-cell *matCellDef="let element">{{element.name_en}}</mat-cell>
+    </ng-container>
+
+    <!--Persian Name Column-->
+    <ng-container matColumnDef="name_fa">
+      <mat-header-cell *matHeaderCellDef>Persian Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.name_fa}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="remove">
+      <mat-header-cell *matHeaderCellDef>Remove</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="removePersonExpertise(element.expertise_id)">
+          <mat-icon aria-label="clear person expertise">clear</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </div>

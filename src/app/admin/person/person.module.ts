@@ -8,7 +8,7 @@ import {
   MatInputModule,
   MatNativeDateModule, MatPaginatorModule,
   MatSelectModule,
-  MatSnackBarModule, MatTabsModule
+  MatSnackBarModule, MatTableModule, MatTabsModule
 } from '@angular/material';
 import {PersonFormComponent} from './components/person-form/person-form.component';
 import {SharedModule} from '../../shared/shared.module';
@@ -38,6 +38,7 @@ import {PersonComponent} from './person.component';
     MatAutocompleteModule,
     MatTabsModule,
     MatPaginatorModule,
+    MatTableModule,
   ],
   declarations: [
     PersonComponent,

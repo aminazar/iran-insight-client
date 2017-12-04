@@ -29,11 +29,11 @@ export class RestService {
     return this.call(table + '?' + params.join('&')).map((data: Response) => data.json());
   }
 
-  delete(url, id): Observable<any> {
-    return this.http.delete('/api/' + url + '/' + id, {observe: 'response'});
+  delete(url): Observable<any> {
+    return this.http.delete('/api/' + url, {observe: 'response'});
   }
 
-  post(url, values): Observable<any>{
+  post(url, values): Observable<any> {
     return this.http.post('/api/' + url, values, {observe: 'response'}).map(data => data.body);
   }
 }

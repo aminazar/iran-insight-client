@@ -71,7 +71,6 @@ export class PersonComponent implements OnInit {
         });
 
         this.rows = Object.keys(this.aligningObj);
-        console.log(this.aligningObj);
       },
       (err) => {
         console.error('Cannot get data', err);
@@ -83,8 +82,6 @@ export class PersonComponent implements OnInit {
   }
 
   applyChanges(data){
-    console.log('In applyChanges: ', data);
-
     switch (data.action){
       case this.actionEnum.add: {
         this.people.unshift(data.value);

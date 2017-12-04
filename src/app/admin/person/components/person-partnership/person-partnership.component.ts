@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'ii-person-partnership',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./person-partnership.component.css']
 })
 export class PersonPartnershipComponent implements OnInit {
+  @Input() personId: number = null;
 
   constructor() { }
 
