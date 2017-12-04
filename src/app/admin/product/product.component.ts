@@ -24,14 +24,12 @@ export class ProductComponent implements OnInit {
   }
 
   openForm(id: number): void {
-    console.log('In product open form function!!!');
     this.productId = id;
     this.showInDeep = true;
   }
 
-  search(data) {
-    console.log('In product search function!!!');
-    this.searchService.search(data, this.offset).subscribe(
+  search(searchData) {
+    this.searchService.search(searchData, this.offset).subscribe(
       (data) => {
         this.products = data.product;
       },
@@ -42,11 +40,6 @@ export class ProductComponent implements OnInit {
         });
       }
     );
-  }
-
-  showDetails(product_id) {
-    this.productId = product_id;
-    this.showInDeep = true;
   }
 }
 

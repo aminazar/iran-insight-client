@@ -11,7 +11,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 // Admin
 import {LoginComponent} from '../admin/login/login.component';
-import {TypeFormComponent} from '../admin/type/type-form/type-form.component';
+
 import {TypeComponent} from '../admin/type/type.component';
 
 // Shared Services and components
@@ -25,7 +25,7 @@ import {SearchService} from '../shared/services/search.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeComponent} from '../site/home/home.component';
 import {ProfileComponent} from '../site/profile/profile.component';
-import {ActiveDirective} from '../admin/type/active/active.directive';
+import {ActiveDirective} from '../admin/type/directives/active/active.directive';
 import {AdminHomeComponent} from '../admin/home/home.component';
 
 

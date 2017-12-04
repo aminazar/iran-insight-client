@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 
 @Component({
@@ -14,9 +14,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     this._productId = id;
     this.initProduct();
   }
+
   get productId() {
     return this._productId;
   }
+
   productForm: FormGroup;
   _productId: number = null;
   anyChanges = false;
@@ -29,6 +31,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     this.initForm();
     // this.initProduct();
   }
+
   ngOnDestroy() {
     this.productForm = null;
   }
@@ -44,10 +47,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(500),
       ]],
       parent_product_id: [null],
+    }, {
+      validator: this.nameRequiring,
     });
   }
+
   initProduct() {
-    if (!this.productId){
+    if (!this.productId) {
       this.productForm = null;
       this.initForm();
       return;
@@ -92,5 +98,16 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         });
       }
     );
+  }
+
+  nameRequiring(Ac: AbstractControl) {
+    let name = Ac.get('name').value;
+    let name_fa = Ac.get('name_fa').value;
+    if ((!name || name === '') && (!name_fa || name_fa === ''))
+      Ac.get('name').setErrors({beingNull: 'Both Name and name_fa can not be null.'});
+    else {
+      Ac.get('name').setErrors(null);
+      return null;
+    }
   }
 }

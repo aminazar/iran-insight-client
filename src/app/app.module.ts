@@ -9,6 +9,7 @@ import {RestService} from './shared/services/rest.service';
 import {SearchService} from './shared/services/search.service';
 import {AuthService} from './shared/services/auth.service';
 import {BreadcrumbService} from './shared/services/breadcrumb.service';
+import {ProductService} from './shared/services/product.service';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {BreadcrumbService} from './shared/services/breadcrumb.service';
     AdminModule,
     RouterModule.forRoot([])
   ],
-  providers: [RestService, SearchService, AuthService, BreadcrumbService],
+  providers: [RestService, SearchService, AuthService, BreadcrumbService, ProductService],
 
   bootstrap: [AppComponent]
 })

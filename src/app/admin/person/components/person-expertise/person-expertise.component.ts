@@ -45,8 +45,8 @@ export class PersonExpertiseComponent implements OnInit {
     );
   }
 
-  getUserExpertise(){
-    if(!this.personId)
+  getUserExpertise() {
+    if (!this.personId)
       return;
 
     this.restService.get('user/' + this.personId + '/expertise').subscribe(

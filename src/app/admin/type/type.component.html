@@ -1,9 +1,7 @@
 <div fxLayout="row" class="row">
-
   <ii-search-fields fxFlex="100"  [target]="'type'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-
   <button mat-fab color="primary" (click)="openForm()">
     <mat-icon aria-label="add new type">add</mat-icon>
   </button>
@@ -11,7 +9,6 @@
 
 <div fxLayout="row" class="row">
   <div fxFlex="10" *ngFor="let type of types" class="type-card">
-
     <mat-card (click)="openForm(type.type_name, type.id)">
       <mat-card-header>
         <mat-card-title><b>{{type.type_name}}</b></mat-card-title>
@@ -22,7 +19,6 @@
         <p>{{type.name_fa}}</p>
         <p [type_active]="type.active ? 'green' : 'red'"> {{type.active ? 'active' : 'deactive'}}</p>
       </mat-card-content>
-
     </mat-card>
   </div>
 </div>
