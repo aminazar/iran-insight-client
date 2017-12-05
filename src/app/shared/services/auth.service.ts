@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   deletePerson(personId){
-    return this.restService.delete('user', personId);
+    return this.restService.delete('user/'+ personId);
   }
 
   resetPassword(person_mail){

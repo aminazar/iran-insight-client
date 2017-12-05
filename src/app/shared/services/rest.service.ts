@@ -20,8 +20,8 @@ export class RestService {
     return this.http.post('/api/' + url, values, {observe: 'response'}).map(data => data.body);
   }
 
-  delete(url, id): Observable<any> {
-    return this.http.delete('/api/' + url + '/' + id, {observe: 'response'}).map(data => data.body);
+  delete(url): Observable<any> {
+    return this.http.delete('/api/' + url, {observe: 'response'});
   }
 
 

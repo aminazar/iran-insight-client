@@ -9,8 +9,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 
-// Admin
-
 // Shared Services and components
 import {AuthService} from '../shared/services/auth.service';
 import {BreadcrumbService} from '../shared/services/breadcrumb.service';
