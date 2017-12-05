@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Router} from "@angular/router";
-import {ReplaySubject} from "rxjs";
+import {Router} from '@angular/router';
+import {ReplaySubject} from 'rxjs';
 
-import {RestService} from "./rest.service";
+import {RestService} from './rest.service';
 
 @Injectable()
 export class AuthService {
@@ -44,8 +44,22 @@ export class AuthService {
     return this.restService.get('user/profile/' + personId);
   }
 
+  setProductInfo(data){
+    return this.restService.put('product', data);
+  }
+
+  getProductInfo(productId){
+    return this.restService.get('/product/one/' + productId);
+  }
+
   deletePerson(personId){
     return this.restService.delete('user/'+ personId);
+  }
+
+  deleteProduct(productId) {
+    // return this.restService.delete('/business/product', productId);
+    console.log('Product deleted: ', productId);
+    return productId;
   }
 
   resetPassword(person_mail){
