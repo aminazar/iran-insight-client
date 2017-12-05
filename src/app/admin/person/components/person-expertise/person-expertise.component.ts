@@ -33,7 +33,6 @@ export class PersonExpertiseComponent implements OnInit {
     this.expertiseCtrl = new FormControl();
     this.filteredExpertise = this.expertiseCtrl.valueChanges
       .pipe(
-        startWith(''),
         map(exp => exp ? this.filterExpertise(exp) : this.expertiseNameList)
       );
   }

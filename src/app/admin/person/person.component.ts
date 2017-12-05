@@ -105,5 +105,7 @@ export class PersonComponent implements OnInit {
       };
       break;
     }
+
+    this.searching();
   }
 }
