@@ -6,7 +6,7 @@ import {BreadcrumbModule} from 'primeng/primeng';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatInputModule,
-  MatMenuModule, MatNativeDateModule, MatOptionModule, MatSnackBarModule,
+  MatMenuModule, MatNativeDateModule, MatOptionModule, MatProgressBarModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
@@ -46,6 +46,7 @@ import {RemovingConfirmComponent} from './components/removing-confirm/removing-c
     MatOptionModule,
     HttpClientModule,
     MatSnackBarModule,
+    MatProgressBarModule,
   ],
   entryComponents: [RemovingConfirmComponent],
   exports: [

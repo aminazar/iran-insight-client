@@ -10,17 +10,16 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="20" *ngFor="let p of aligningObj[rw]" class="person-card">
-      <mat-card (click)="openForm(p.pid)" class="card-view">
+      <mat-card (click)="openForm(p.pid)" class="card-view" [class.selected-user]="p.pid === personId">
         <mat-card-content>
-          <div *ngIf="p.diplay_name_en" class="card-header">{{p.display_name_en}}</div>
-          <div *ngIf="p.diplay_name_fa" class="card-header">{{p.display_name_en}}</div>
           <div *ngIf="p.username" class="card-header">{{p.username}}</div>
           <br/>
-          <div>
-            Email: {{p.username}}
+          <div *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
+            Name: <label *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</label> <label *ngIf="p.surname_en || p.surname_fa">{{p.surname_en || p.surname_fa}}</label>
           </div>
           <div>
-            Is User: {{p.is_user}}
+            <label *ngIf="p.is_user" class="user">This person is authenticated</label>
+            <label *ngIf="!p.is_user" class="not-user">This person is not user</label>
           </div>
         </mat-card-content>
       </mat-card>
@@ -43,9 +42,9 @@
         <mat-tab label="Expertise">
           <ii-person-expertise [personId]="personId"></ii-person-expertise>
         </mat-tab>
-        <mat-tab label="Partnership">
-          <ii-person-partnership [personId]="personId"></ii-person-partnership>
-        </mat-tab>
+        <!--<mat-tab label="Partnership">-->
+          <!--<ii-person-partnership [personId]="personId"></ii-person-partnership>-->
+        <!--</mat-tab>-->
       </mat-tab-group>
     </mat-card-content>
   </mat-card>

@@ -1,0 +1,36 @@
+<div>
+  <br/>
+  <mat-input-container style="width: 100%">
+    <input matInput type="text" placeholder="Partner name" [matAutocomplete]="auto" [formControl]="partnerCtrl"/>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let person of filteredPeople | async" [value]="person" (click)="addPartner(person)">
+        {{person}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-input-container>
+</div>
+<br/>
+<div class="rs-table">
+  <table class="table">
+    <thead>
+    <td>No.</td>
+    <td>Partner Name</td>
+    <td>Description</td>
+    <td>Persian Description</td>
+    <td>Remove</td>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of personPartnershipList; let i = index">
+      <td>{{i+1}}</td>
+      <td>{{item.partner_name}}</td>
+      <td>{{item.description_en}}</td>
+      <td>{{item.description_fa}}</td>
+      <td>
+        <button mat-icon-button (click)="removePersonPartnership(item.partnership_id)">
+          <mat-icon aria-label="clear person partnership">clear</mat-icon>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
