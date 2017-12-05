@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-
-import {ProgressService} from "../../services/progress.service";
+import {ProgressService} from '../../services/progress.service';
 
 @Component({
   selector: 'ii-header',
