@@ -48,3 +48,7 @@
 .card-content{
   font-weight: normal;
 }
+
+.ui-widget{
+  font-family: Franklin !important;
+}
