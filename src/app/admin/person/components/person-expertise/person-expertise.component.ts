@@ -38,18 +38,20 @@ export class PersonExpertiseComponent implements OnInit {
       );
   }
 
-  getAllExpertise(){
+  getAllExpertise() {
     this.restService.get('expertise').subscribe(
       (data) => {
         this.expertiseList = data;
         this.expertiseNameList = this.expertiseList.map(el => {
-          if(el.name_en && el.name_fa)
+          if (el.name_en && el.name_fa)
             return el.name_en + ' - ' + el.name_fa;
-          else if(el.name_en && !el.name_fa)
+          else if (el.name_en && !el.name_fa)
             return el.name_en;
-          else if(!el.name_en && el.name_fa)
+          else if (!el.name_en && el.name_fa)
             return el.name_fa;
         });
+
+        this.remainDiff();
       },
       (err) => {
         console.error(err);
@@ -58,8 +60,8 @@ export class PersonExpertiseComponent implements OnInit {
     );
   }
 
-  getUserExpertise(){
-    if(!this.personId)
+  getUserExpertise() {
+    if (!this.personId)
       return;
 
     this.restService.get('user/' + this.personId + '/expertise').subscribe(
@@ -74,6 +76,8 @@ export class PersonExpertiseComponent implements OnInit {
             expertise_id: el.expertise_id,
           });
         });
+
+        this.remainDiff();
       },
       (err) => {
         console.error(err);
@@ -82,11 +86,13 @@ export class PersonExpertiseComponent implements OnInit {
   }
 
   filterExpertise(name: string) {
-    let items = this.expertiseNameList.filter((p) => new RegExp(name, 'gi').test(p));
-    return items;
+    if(name.includes('\\'))
+      return;
+
+    return this.expertiseNameList.filter((p) => new RegExp(name, 'gi').test(p));
   }
 
-  removePersonExpertise(id){
+  removePersonExpertise(id) {
     let rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '230px'
@@ -101,7 +107,10 @@ export class PersonExpertiseComponent implements OnInit {
                 duration: 2000,
               });
 
+              let item = this.userExpertiseList.find(el => el.expertise_id === id);
+              this.expertiseNameList.push(item.name_en + ' - ' + item.name_fa);
               this.userExpertiseList = this.userExpertiseList.filter(el => el.expertise_id !== id);
+              this.expertiseCtrl.setValue('');
             },
             (error) => {
               this.snackBar.open("Cannot delete this person's expertise. Please try again", null, {
@@ -117,7 +126,7 @@ export class PersonExpertiseComponent implements OnInit {
     )
   }
 
-  addExpertise(expertise_name){
+  addExpertise(expertise_name) {
     let exp = this.expertiseList.find(el => (el.name_en + ' - ' + el.name_fa) === expertise_name);
 
     this.restService.post('user/expertise', {
@@ -137,6 +146,7 @@ export class PersonExpertiseComponent implements OnInit {
           duration: 2300,
         });
 
+        this.expertiseNameList = this.expertiseNameList.filter(el =>  el !== expertise_name);
         this.expertiseCtrl.setValue('');
       },
       (err) => {
@@ -146,5 +156,16 @@ export class PersonExpertiseComponent implements OnInit {
         });
       }
     )
+  }
+
+  remainDiff() {
+    if (!this.userExpertiseList.length || !this.expertiseNameList.length)
+      return;
+
+    this.expertiseNameList = this.expertiseNameList.filter(el => {
+      if(!this.userExpertiseList.map(i => i.name_en + ' - ' + i.name_fa).includes(el)){
+        return el;
+      }
+    });
   }
 }
