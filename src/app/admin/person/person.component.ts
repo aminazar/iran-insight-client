@@ -23,6 +23,7 @@ export class PersonComponent implements OnInit {
   totalPeople: number = null;
   aligningObj = {};
   rows = [];
+  selectedIndex: number = 0;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
@@ -37,6 +38,8 @@ export class PersonComponent implements OnInit {
      // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.personId = id;
     this.showInDeep = true;
+
+    this.selectedIndex = 0;
   }
 
   search(data) {
@@ -107,5 +110,9 @@ export class PersonComponent implements OnInit {
     }
 
     this.searching();
+  }
+
+  changeTab(value){
+    this.selectedIndex = value;
   }
 }

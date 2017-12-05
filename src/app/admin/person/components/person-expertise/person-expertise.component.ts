@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {startWith} from "rxjs/operators/startWith";
 import {Observable} from "rxjs/Observable";
@@ -13,14 +13,23 @@ import {RemovingConfirmComponent} from "../../../../shared/components/removing-c
   templateUrl: './person-expertise.component.html',
   styleUrls: ['./person-expertise.component.css']
 })
-export class PersonExpertiseComponent implements OnInit {
-  @Input() personId: number = null;
+export class PersonExpertiseComponent implements OnInit, OnDestroy {
+  @Input()
+  set personId(id){
+    this._personId = id;
+    this.getAllExpertise();
+    this.getUserExpertise();
+  }
+  get personId(){
+    return this._personId;
+  }
 
   expertiseCtrl: FormControl;
   filteredExpertise: Observable<any[]>;
   expertiseList = [];
   expertiseNameList = [];
   userExpertiseList: PersonExpertiseInterface[] = [];
+  _personId: number = null;
 
   constructor(private restService: RestService, public dialog: MatDialog,
               private snackBar: MatSnackBar) {
@@ -37,9 +46,15 @@ export class PersonExpertiseComponent implements OnInit {
       );
   }
 
+  ngOnDestroy(){
+    this.expertiseCtrl = null;
+  }
+
   getAllExpertise() {
     this.restService.get('expertise').subscribe(
       (data) => {
+        this.expertiseList = null;
+
         this.expertiseList = data;
         this.expertiseNameList = this.expertiseList.map(el => {
           if (el.name_en && el.name_fa)
@@ -66,6 +81,8 @@ export class PersonExpertiseComponent implements OnInit {
     this.restService.get('user/' + this.personId + '/expertise').subscribe(
       (data) => {
         let counter = 0;
+
+        this.userExpertiseList = [];
         data.forEach(el => {
           this.userExpertiseList.push({
             position: ++counter,
