@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {PersonFormComponent} from './components/person-form/person-form.component';
 import {SearchService} from '../../shared/services/search.service';
 import {ActionEnum} from '../../shared/enum/action.enum';
 

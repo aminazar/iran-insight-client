@@ -9,7 +9,7 @@ import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatGridListModule, MatIconModule,
   MatInputModule,
-  MatNativeDateModule,
+  MatNativeDateModule, MatPaginatorModule,
   MatSelectModule,
   MatSnackBarModule, MatTabsModule
 } from '@angular/material';
@@ -36,6 +36,7 @@ import { ProductFormComponent } from './components/product-form/product-form.com
     MatGridListModule,
     MatAutocompleteModule,
     MatTabsModule,
+    MatPaginatorModule,
   ],
   declarations: [ProductComponent, ProductFormComponent]
 })

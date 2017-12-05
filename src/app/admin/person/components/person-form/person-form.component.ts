@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
-import {ActionEnum} from "../../../../shared/enum/action.enum";
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ActionEnum} from '../../../../shared/enum/action.enum';
 
 @Component({
   selector: 'ii-person-form',

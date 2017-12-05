@@ -56,6 +56,12 @@ export class AuthService {
     return this.restService.delete('user', personId);
   }
 
+  deleteProduct(productId) {
+    // return this.restService.delete('/business/product', productId);
+    console.log('Product deleted: ', productId);
+    return productId;
+  }
+
   resetPassword(person_mail){
     return this.restService.post('user/auth/link', {email: person_mail, is_forgot_mail: true});
   }
