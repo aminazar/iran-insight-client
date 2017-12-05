@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {RestService} from '../../../../shared/services/rest.service';
-import {illegalTypeName, noType, typeInsertSuccessful, typeUpdateSuccessful} from '../../../../shared/utils/messages.list';
+import {typeInsertSuccessful, typeUpdateSuccessful} from '../../../../shared/utils/messages.list';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IType} from '../../interfaces/type.interface';
 
@@ -104,10 +104,8 @@ export class TypeFormComponent implements OnInit {
           active: this.form.value.active,
         });
 
-        this.showMessage(null, this.typeId ? typeUpdateSuccessful.message : typeInsertSuccessful.message);
+        this.snackBar.open(this.typeId ? typeUpdateSuccessful.message : typeInsertSuccessful.message);
 
-      }, err => {
-        this.showMessage(err);
       });
     }
   }
@@ -120,23 +118,6 @@ export class TypeFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
-  showMessage(err: any = null, message: string = null) {
-
-    if (err) {
-      if (err.error === illegalTypeName.error.message && err.status === illegalTypeName.code)
-        this.snackBar.open(illegalTypeName.friendlyMessage);
-      else if (err.error === noType.error.message && err.status === noType.code)
-        this.snackBar.open(noType.friendlyMessage);
-      else
-        this.snackBar.open('operation failed!');
-
-      return;
-    }
-
-    if (message)
-      this.snackBar.open(message);
-  }
 
   ngOnDestroy() {
     this.type_name = null;
