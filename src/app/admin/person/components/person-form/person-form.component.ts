@@ -46,7 +46,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   actionEnum = ActionEnum;
 
   upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = true;
+  deleteBtnShouldDisabled: boolean = false;
+  resetPasswordBtnShouldDisabled: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService) {
@@ -60,7 +61,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.fieldChanged();
       },
       (err) => {
-        console.log('Error: ', err);
+        console.error('Error: ', err);
       }
     );
   }
@@ -93,7 +94,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(500),
       ]],
       phone_no: [null, [
-        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/)
+        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,8}$/)
       ]],
       mobile_no: [null, [
         Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/)
@@ -117,6 +118,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
     }
 
     this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
     this.authService.getPersonInfo(this.personId).subscribe(
       (data) => {
         data = data[0];
@@ -138,6 +141,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.personForm.controls['notify_period'].setValue(data.notify_period);
 
         this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         console.error(err);
@@ -145,6 +150,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
           duration: 2500,
         });
         this.progressService.disable();
+        this.upsertBtnShouldDisabled = true;
+        this.deleteBtnShouldDisabled = true;
       }
     );
   }
@@ -174,6 +181,9 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       delete personData.pid;
     }
 
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
     this.authService.setUserProfile(personData).subscribe(
       (data) => {
         this.snackBar.open(this.personId ? 'Person is updated' : 'Person is added', null, {
@@ -183,11 +193,18 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.anyChanges = false;
         this.originalPerson = Object.assign({pid: data.pid}, personData);
         this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
+
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         this.snackBar.open('Cannot add this person. Try again', null, {
           duration: 3200,
         });
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       }
     );
   }
@@ -244,6 +261,10 @@ export class PersonFormComponent implements OnInit, OnDestroy {
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data) {
+          this.progressService.enable();
+          this.upsertBtnShouldDisabled = true;
+          this.deleteBtnShouldDisabled = true;
+
           this.authService.deletePerson(this.personId).subscribe(
             (data) => {
               this.snackBar.open('Person delete successfully', null, {
@@ -251,11 +272,19 @@ export class PersonFormComponent implements OnInit, OnDestroy {
               });
 
               this.changedPerson.emit({action: this.actionEnum.delete, value: this.personId});
+
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
             },
             (error) => {
               this.snackBar.open('Cannot delete this person. Please try again', null, {
                 duration: 2700
               });
+
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
             }
           )
         }
@@ -267,17 +296,26 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   resetPassword(){
+    this.progressService.enable();
+    this.resetPasswordBtnShouldDisabled = true;
+
     this.authService.resetPassword(this.personForm.controls['username'].value).subscribe(
       (data) => {
         this.snackBar.open('Resetting password mail sent to ' + this.personForm.controls['username'].value, null, {
           duration: 2700,
         });
+
+        this.progressService.disable();
+        this.resetPasswordBtnShouldDisabled = false;
       },
       (err) => {
         console.error('Cannot send change mail. ', err);
         this.snackBar.open('Cannot reset password. Please try again', null, {
           duration: 3000,
         });
+
+        this.progressService.disable();
+        this.resetPasswordBtnShouldDisabled = false;
       }
     );
   }
