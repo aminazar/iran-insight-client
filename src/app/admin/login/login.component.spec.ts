@@ -64,5 +64,6 @@ describe('LoginComponent', () => {
     submitEl.click();
     expect(spy.calls.count()).toBe(1);
     expect(authSpy).toHaveBeenCalledWith(user, pwd);
+    console.log(spy);
   }));
 });
