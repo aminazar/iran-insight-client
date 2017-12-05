@@ -4,6 +4,7 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
+import {ProgressService} from "../../../../shared/services/progress.service";
 
 @Component({
   selector: 'ii-person-form',
@@ -44,8 +45,11 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   anyChanges = false;
   actionEnum = ActionEnum;
 
+  upsertBtnShouldDisabled: boolean = false;
+  deleteBtnShouldDisabled: boolean = true;
+
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog) {
+              public dialog: MatDialog, private progressService: ProgressService) {
   }
 
   ngOnInit() {
@@ -112,6 +116,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.progressService.enable();
     this.authService.getPersonInfo(this.personId).subscribe(
       (data) => {
         data = data[0];
@@ -131,12 +136,15 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.personForm.controls['display_name_en'].setValue(data.display_name_en);
         this.personForm.controls['display_name_fa'].setValue(data.display_name_fa);
         this.personForm.controls['notify_period'].setValue(data.notify_period);
+
+        this.progressService.disable();
       },
       (err) => {
-        console.log(err);
+        console.error(err);
         this.snackBar.open('Cannot get user details. Please try again', null, {
           duration: 2500,
         });
+        this.progressService.disable();
       }
     );
   }

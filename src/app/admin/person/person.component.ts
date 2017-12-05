@@ -5,6 +5,7 @@ import {MatSnackBar} from '@angular/material';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
 import {ActionEnum} from "../../shared/enum/action.enum";
+import {ProgressService} from "../../shared/services/progress.service";
 
 @Component({
   selector: 'ii-person',
@@ -24,7 +25,8 @@ export class PersonComponent implements OnInit {
   rows = [];
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
-              private searchService: SearchService, private snackBar: MatSnackBar) {
+              private searchService: SearchService, private snackBar: MatSnackBar,
+              private progressService: ProgressService) {
   }
 
   ngOnInit() {
@@ -52,6 +54,7 @@ export class PersonComponent implements OnInit {
     this.showInDeep = false;
     this.personId = null;
 
+    this.progressService.enable();
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.people = data.person;
@@ -71,20 +74,19 @@ export class PersonComponent implements OnInit {
         });
 
         this.rows = Object.keys(this.aligningObj);
-        console.log(this.aligningObj);
+        this.progressService.disable();
       },
       (err) => {
         console.error('Cannot get data', err);
         this.snackBar.open('Cannot get data. Please check your connection', null, {
           duration: 3000,
         });
+        this.progressService.disable();
       }
     );
   }
 
   applyChanges(data){
-    console.log('In applyChanges: ', data);
-
     switch (data.action){
       case this.actionEnum.add: {
         this.people.unshift(data.value);
