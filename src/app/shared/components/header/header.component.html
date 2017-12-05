@@ -1,11 +1,15 @@
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <span>{{header_title}}</span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>{{header_title}}</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 <ii-breadcrumb></ii-breadcrumb>
-
-
-
-
-
+<section>
+  <mat-progress-bar
+    *ngIf="showProgressing"
+    [color]="color"
+    [mode]="mode"
+    [value]="value"
+    [bufferValue]="bufferValue">
+  </mat-progress-bar>
+</section>
