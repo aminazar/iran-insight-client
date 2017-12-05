@@ -16,7 +16,7 @@ export class ProgressService {
 
     //Set default values
     this.progressMode.next(this.progressModeEnum.indeterminate);
-    this.progressValue.next(null);
+    this.progressValue.next(50);
     this.progressBufferValue.next(null);
   }
 

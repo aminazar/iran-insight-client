@@ -1,6 +1,6 @@
 export enum ProgressModeEnum{
-  determinate,
-  indeterminate,
-  buffer,
-  query,
+  determinate = 'determinate',
+  indeterminate = 'indeterminate',
+  buffer = 'buffer',
+  query = 'query',
 }
