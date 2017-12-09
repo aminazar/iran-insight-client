@@ -1,26 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UndercontructionComponent } from './undercontruction.component';
-import {SiteTestRouting} from "../../../site/site.routing";
+import { UnderConstructionComponent } from './under-construction.component';
 import {TestModule} from "../../../test/test.module";
+import {SiteTestRouting} from "../../../site/site.routing";
 
-describe('UndercontructionComponent', () => {
-  let component: UndercontructionComponent;
-  let fixture: ComponentFixture<UndercontructionComponent>;
+describe('UnderConstructionComponent', () => {
+  let component: UnderConstructionComponent;
+  let fixture: ComponentFixture<UnderConstructionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UndercontructionComponent ],
+      declarations: [ ],
       imports: [
         TestModule,
         SiteTestRouting,
-      ],
+      ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UndercontructionComponent);
+    fixture = TestBed.createComponent(UnderConstructionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,6 +4,7 @@ import { ExpertiseComponent } from './expertise.component';
 import {TestModule} from '../../test/test.module';
 import {AdminTestRouting} from '../admin.routing';
 import {ExpertiseFormComponent} from './expertise-form/expertise-form.component';
+import {UnderConstructionComponent} from "../../shared/components/underConstruction/under-construction.component";
 
 describe('ExpertiseComponent', () => {
   let component: ExpertiseComponent;
@@ -13,7 +14,6 @@ describe('ExpertiseComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ExpertiseComponent,
-        ExpertiseFormComponent,
       ],
       imports: [
         TestModule,

@@ -8,7 +8,7 @@ import {MatDialogRef} from "@angular/material";
 })
 export class RemovingConfirmComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<RemovingConfirmComponent>,) { }
+  constructor(public dialogRef: MatDialogRef<RemovingConfirmComponent>) { }
 
   ngOnInit() {
   }

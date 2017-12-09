@@ -123,8 +123,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
     this.authService.getPersonInfo(this.personId).subscribe(
       (data) => {
         data = data[0];
-        this.originalPerson = data;
-
         this.personForm.controls['username'].setValue(data.username);
         this.personForm.controls['firstname_en'].setValue(data.firstname_en);
         this.personForm.controls['firstname_fa'].setValue(data.firstname_fa);
@@ -139,6 +137,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.personForm.controls['display_name_en'].setValue(data.display_name_en);
         this.personForm.controls['display_name_fa'].setValue(data.display_name_fa);
         this.personForm.controls['notify_period'].setValue(data.notify_period);
+
+        this.originalPerson = data;
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;

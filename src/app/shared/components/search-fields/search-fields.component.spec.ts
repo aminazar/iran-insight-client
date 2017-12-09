@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed, tick} from '@angular/core/testing';
 
 import { SearchFieldsComponent } from './search-fields.component';
 import {TestModule} from '../../../test/test.module';
@@ -8,9 +8,7 @@ import {By} from "@angular/platform-browser";
 describe('SearchFieldsComponent', () => {
   let component: SearchFieldsComponent;
   let fixture: ComponentFixture<SearchFieldsComponent>;
-  let addTrgBtn, trgBtn, rmTrgBtn, phraseField, amountField, ltCB, gtCB, eqCB, isEducationCB,
-    isMentorCB, isLeadCB, isActiveCB, startDateField, startDatePicker,
-    endDateField, endDatePicker: any;
+  let phraseField: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,21 +27,7 @@ describe('SearchFieldsComponent', () => {
     component = fixture.componentInstance;
     component.ngOnInit();
     fixture.detectChanges();
-    // addTrgBtn = fixture.debugElement.query(By.css('[role="add-target-button"]')).nativeNode;
-    // trgBtn = fixture.debugElement.query(By.css('[role="target-button"]')).nativeNode;
-    // rmTrgBtn = fixture.debugElement.query(By.css('[role="remove-target-button"]')).nativeNode;
     phraseField = fixture.debugElement.query(By.css('[role="phrase-field"]')).nativeNode;
-    // amountField = fixture.debugElement.query(By.css('[role="amount-field"]')).nativeNode;
-    // ltCB = fixture.debugElement.query(By.css('[role="less-than-button"]')).nativeNode;
-    // gtCB = fixture.debugElement.query(By.css('[role="greater-than-button"]')).nativeNode;
-    // eqCB = fixture.debugElement.query(By.css('[role="equal-to-button"]')).nativeNode;
-    // isEducationCB = fixture.debugElement.query(By.css('[role="is-education-button"]')).nativeNode;
-    // isLeadCB = fixture.debugElement.query(By.css('[role="is-lead-button"]')).nativeNode;
-    // isActiveCB = fixture.debugElement.query(By.css('[role="is-active-button"]')).nativeNode;
-    // startDateField = fixture.debugElement.query(By.css('[role="start-date-field"]')).nativeNode;
-    // startDatePicker = fixture.debugElement.query(By.css('[role="start-date-picker"]')).nativeNode;
-    // endDateField = fixture.debugElement.query(By.css('[role="end-date-field"]')).nativeNode;
-    // endDatePicker = fixture.debugElement.query(By.css('[role="end-date-picker"]')).nativeNode;
   });
 
   it('should create', () => {
@@ -56,7 +40,7 @@ describe('SearchFieldsComponent', () => {
     component.target = 'business';
     component.ngOnInit();
     fixture.detectChanges();
-    isMentorCB = fixture.debugElement.query(By.css('[role="is-mentor-button"]'));
+    let isMentorCB = fixture.debugElement.query(By.css('[role="is-mentor-button"]'));
     expect(isMentorCB).toBe(null);
     expect(phraseField).toBeTruthy();
   });
@@ -65,7 +49,7 @@ describe('SearchFieldsComponent', () => {
     component.target = 'consultancy';
     component.ngOnInit();
     fixture.detectChanges();
-    isMentorCB = fixture.debugElement.query(By.css('[role="is-mentor-button"]')).nativeNode;
+    let isMentorCB = fixture.debugElement.query(By.css('[role="is-mentor-button"]')).nativeNode;
     expect(isMentorCB).toBeTruthy();
   });
 
@@ -73,15 +57,16 @@ describe('SearchFieldsComponent', () => {
     component.target = 'expertise';
     component.ngOnInit();
     fixture.detectChanges();
-    isEducationCB = fixture.debugElement.query(By.css('[role="is-education-button"]')).nativeNode;
+    let isEducationCB = fixture.debugElement.query(By.css('[role="is-education-button"]')).nativeNode;
     expect(isEducationCB).toBeTruthy();
     expect(component.isEducation).toBe(null);
   });
 
-  xit('should show error when amount is not set and setting comparisons', () => {
+  it('should show error when amount is not set and setting comparisons', fakeAsync(() => {
     component.target = 'investment';
     component.ngOnInit();
     fixture.detectChanges();
+    tick(1000);
 
     let raisedCounter = 0;
     component.searching.subscribe(
@@ -93,17 +78,71 @@ describe('SearchFieldsComponent', () => {
       });
 
     const spy = spyOn(component, 'checkValidation').and.callThrough();
-    amountField = fixture.debugElement.query(By.css('[role="amount-field"]')).nativeNode;
-    ltCB = fixture.debugElement.query(By.css('[role="less-than-button"]')).nativeElement;
-    gtCB = fixture.debugElement.query(By.css('[role="greater-than-button"]')).nativeElement;
-    eqCB = fixture.debugElement.query(By.css('[role="equal-to-button"]')).nativeElement;
+    let amountField: HTMLElement = fixture.debugElement.query(By.css('[role="amount-field"]')).nativeNode;
+    let ltCB: HTMLInputElement = <HTMLInputElement>fixture.debugElement.query(By.css('[role="less-than-button"]')).nativeElement.querySelector('input');
+    let gtCB: HTMLInputElement = <HTMLInputElement>fixture.debugElement.query(By.css('[role="greater-than-button"]')).nativeElement.querySelector('input');
+    let eqCB: HTMLInputElement = <HTMLInputElement>fixture.debugElement.query(By.css('[role="equal-to-button"]')).nativeElement.querySelector('input');
     ltCB.click();
     fixture.detectChanges();
+    tick(1000);
+
     expect(component.comparison.lt).toBe(true);
     expect(component.comparison.eq).toBe(false);
     expect(component.amount).toBe(null);
     expect(spy.calls.count()).toBe(1);
-    // expect(snackSpy.calls.count()).toBe(1);
-    // expect(raisedCounter).toBe(0);
-  });
+    expect(raisedCounter).toBe(0);
+  }));
+
+  it('should add target', fakeAsync(() => {
+    expect(component.target).toBe(null);
+    expect(component.targetList).not.toBe(null);
+
+    let trgBtn: HTMLInputElement = <HTMLInputElement>fixture.debugElement.query(By.css('[role="add-target-button"]')).nativeElement.querySelector('button');
+    trgBtn.click();
+    fixture.detectChanges();
+    tick(3000);
+    let temp = fixture.debugElement.query(By.css('.mat-menu-content')).nativeElement;
+    let addTrgBtn: HTMLInputElement = <HTMLInputElement>temp.querySelector('button');
+    let addTargetSpy = spyOn(component, 'addTarget').and.callThrough();
+
+    addTrgBtn.click();
+    fixture.detectChanges();
+    tick(1000);
+
+    expect(trgBtn).toBeTruthy();
+    expect(addTargetSpy.calls.count()).toBe(1);
+    expect(component.targets).toContain('business');
+    expect(component.targetList).not.toContain('business');
+  }));
+
+  it('should trigger correct search data object', fakeAsync(() => {
+    component.targets.push('business', 'consultancy');
+    component.phrase = 'a';
+    component.isLead = false;
+    fixture.detectChanges();
+    tick(1000);
+
+    let rcvData = null;
+    component.searching.subscribe(
+      (data) => {
+        expect(data.phrase).toBe('a');
+        expect(data.options.target.business).toBeTruthy();
+        expect(data.options.target.consultancy).toBeTruthy();
+        expect(data.options.target.investment).not.toBeTruthy();
+        expect(data.options.is_lead).toBe(false);
+        expect(data.options.is_education).toBe(null);
+        expect(data.options.is_mentor).toBe(null);
+        expect(data.options.show_all).toBe(null);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+
+    component.searchOnData();
+    fixture.detectChanges();
+    tick(2000);
+
+    expect(component.target).toBe(null);
+  }));
 });

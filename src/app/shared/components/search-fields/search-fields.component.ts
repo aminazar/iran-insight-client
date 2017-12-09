@@ -45,11 +45,12 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.targetList = [];
     Object.keys(this.targetEnum).forEach(el => {
       if (el.charCodeAt(0) < 48 || el.charCodeAt(0) > 57)
         this.targetList.push(el);
-      this.targetList.sort();
     });
+    this.targetList.sort();
 
     if (this.target) {
       this.targetList = this.targetList.filter(el => el.toLowerCase() !== this.target.toLowerCase());
@@ -109,8 +110,8 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
     if (!phrase)
       phrase = this.phrase;
 
-    if ((phrase === null || phrase === undefined || phrase === '') && (this.target === null || this.target === undefined))
-      return;
+    // if ((phrase === null || phrase === undefined || phrase === '') && (this.target === null || this.target === undefined))
+    //   return;
 
     if (!this.checkValidation())
       return;
