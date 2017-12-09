@@ -1,6 +1,6 @@
-import {RouterModule, Routes} from "@angular/router";
-import {PersonComponent} from "./person.component";
-import {PersonFormComponent} from "./components/person-form/person-form.component";
+import {RouterModule, Routes} from '@angular/router';
+import {PersonComponent} from './person.component';
+import {PersonFormComponent} from './components/person-form/person-form.component';
 
 const Person_ROUTES: Routes = [
   {path: '', component: PersonComponent, pathMatch: 'full'},

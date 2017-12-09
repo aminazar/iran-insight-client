@@ -1,9 +1,7 @@
 <div fxLayout="row" class="row">
-
   <ii-search-fields fxFlex="100"  [target]="'type'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-
   <button mat-fab color="primary" (click)="openForm()">
     <mat-icon aria-label="add new type">add</mat-icon>
   </button>
@@ -22,7 +20,6 @@
         <p>{{type.name_fa}}</p>
         <p [type_active]="type.active ? 'green' : 'red'"> {{type.active ? 'active' : 'deactive'}}</p>
       </mat-card-content>
-
     </mat-card>
 
   </div>

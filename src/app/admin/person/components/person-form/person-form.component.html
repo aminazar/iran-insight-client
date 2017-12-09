@@ -40,7 +40,7 @@
       </div>
     </div>
     <div *ngIf="personId">
-      <button mat-raised-button type="button" (click)="resetPassword()">Reset Password</button>
+      <button mat-raised-button type="button" (click)="resetPassword()" [disabled]="resetPasswordBtnShouldDisabled">Reset Password</button>
     </div>
     <div>
       <mat-input-container class="field">
@@ -89,11 +89,11 @@
       </div>
     </div>
     <div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!personForm.valid || (personId && !anyChanges)">
+      <button mat-raised-button color="primary" type="submit" [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))">
         <span *ngIf="!personId">Add</span>
         <span *ngIf="personId">Update</span>
       </button>
-      <button mat-raised-button color="primary" type="button" *ngIf="personId" (click)="deletePerson()">Delete</button>
+      <button mat-raised-button color="primary" type="button" *ngIf="personId" (click)="deletePerson()" [disabled]="deleteBtnShouldDisabled">Delete</button>
     </div>
   </form>
 </div>
