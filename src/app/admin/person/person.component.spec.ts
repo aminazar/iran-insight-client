@@ -6,6 +6,7 @@ import {TestModule} from '../../test/test.module';
 import {PersonFormComponent} from './components/person-form/person-form.component';
 import {AdminTestRouting} from '../admin.routing';
 import {PersonExpertiseComponent} from './components/person-expertise/person-expertise.component';
+import {UndercontructionComponent} from '../../shared/components/undercontruction/undercontruction.component';
 
 describe('PersonComponent', () => {
   let component: PersonComponent;
@@ -22,6 +23,7 @@ describe('PersonComponent', () => {
       imports: [
         TestModule,
         AdminTestRouting,
+        UndercontructionComponent,
       ]
     })
     .compileComponents();

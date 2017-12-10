@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UndercontructionComponent } from './undercontruction.component';
-import {SiteTestRouting} from "../../../site/site.routing";
-import {TestModule} from "../../../test/test.module";
+import {SiteTestRouting} from '../../../site/site.routing';
+import {TestModule} from '../../../test/test.module';
 
 describe('UndercontructionComponent', () => {
   let component: UndercontructionComponent;
