@@ -19,7 +19,7 @@ var TypeFormComponent = (function () {
         this.restService = restService;
         this.suggested_by = 'Admin';
         this.is_killer = false;
-        this.has_killer = false;
+        this.is_killer = false;
         this.is_active = false;
         this.cats = [];
     }
@@ -38,7 +38,7 @@ var TypeFormComponent = (function () {
         });
     };
     TypeFormComponent.prototype.onChange = function (cat) {
-        this.has_killer = cat === 'lce';
+        this.is_killer = cat === 'lce';
     };
     TypeFormComponent.prototype.ngOnDestroy = function () {
     };

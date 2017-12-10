@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material";
 
 @Component({
@@ -9,7 +9,7 @@ import {MatDialogRef} from "@angular/material";
 export class RemovingConfirmComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<RemovingConfirmComponent>) { }
-
+  @Input() name = '';
   ngOnInit() {
   }
 

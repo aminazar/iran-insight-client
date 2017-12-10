@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Router} from '@angular/router';
-import {ReplaySubject} from 'rxjs';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {RestService} from './rest.service';
 

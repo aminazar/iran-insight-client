@@ -30,7 +30,7 @@ export class ProductComponent implements OnInit {
     this.breadCrumbService.pushChild('product', this.router.url, true);
   }
 
-  openForm(id: number): void {
+  openForm(id: number = NaN): void {
     this.productId = id;
     this.showInDeep = true;
   }

@@ -24,7 +24,7 @@ export class TypeComponent implements OnInit, OnDestroy {
     this.breadCrumbService.pushChild('Type', this.router.url, true);
   }
 
-  openForm(type_name: string, id: number): void {
+  openForm(type_name: string = '', id: number = NaN): void {
     const dialogRef = this.dialog.open(TypeFormComponent, {
       width: '600px',
       data: {type_name, id}

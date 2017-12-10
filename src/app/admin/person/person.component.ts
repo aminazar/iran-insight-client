@@ -34,7 +34,7 @@ export class PersonComponent implements OnInit {
     this.breadCrumbService.pushChild('person', this.router.url, true);
   }
 
-  openForm(id: number): void {
+  openForm(id: number = NaN): void {
      // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.personId = id;
     this.showInDeep = true;
