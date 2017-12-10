@@ -5,7 +5,8 @@
 
 @font-face {
   font-family: 'adarab';
-  src: url('./assets/fonts/Adobe-Arabic-Regular.otf');
+  src: url('assets/fonts/adobe-arabic/Adobe-Arabic-Regular.otf');
+  unicode-range: U+0600-06FF;
 }
 
 .page{
@@ -59,6 +60,7 @@
   font-family: Franklin !important;
 }
 
-.fa{
+.farsi{
   font-family: 'adarab' !important;
+  font-size: 130% !important;
 }
