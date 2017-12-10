@@ -44,8 +44,11 @@ export class AuthService {
     return this.restService.get('user/profile/' + personId);
   }
 
-  setProductInfo(data){
-    return this.restService.put('product', data);
+  setProductInfo(data, productId){
+    if(!productId)
+      return this.restService.put('product', data);
+    else
+      return this.restService.post('/update-product/'+ productId, data);
   }
 
   getProductInfo(productId){
@@ -57,9 +60,8 @@ export class AuthService {
   }
 
   deleteProduct(productId) {
-    // return this.restService.delete('/business/product', productId);
     console.log('Product deleted: ', productId);
-    return productId;
+    return this.restService.delete('delete-product/'+ productId);
   }
 
   resetPassword(person_mail){

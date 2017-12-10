@@ -4,6 +4,7 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ProgressService} from '../../../../shared/services/progress.service';
 
 
 @Component({
@@ -31,8 +32,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   anyChanges = false;
   originalProduct: any = null;
   actionEnum = ActionEnum;
+  upsertBtnShouldDisabled: boolean = false;
+  deleteBtnShouldDisabled: boolean = false;
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar, public dialog: MatDialog) {
+  constructor(private authService: AuthService, private snackBar: MatSnackBar,
+              public dialog: MatDialog, private progressService: ProgressService) {
   }
 
   ngOnInit() {
@@ -75,6 +79,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
     this.authService.getProductInfo(this.productId).subscribe(
       (data) => {
         data = data[0];
@@ -84,25 +91,37 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         this.productForm.controls['name_fa'].setValue(data.name_fa);
         this.productForm.controls['description'].setValue(data.description);
         this.productForm.controls['description_fa'].setValue(data.description_fa);
+
+
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         console.log(err);
         this.snackBar.open('Cannot get product details. Please try again', null, {
           duration: 2500,
         });
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       }
     );
   }
 
   modifyProduct() {
     const data = {
+      product_id: this.productId,
       name: this.productForm.controls['name'].value,
       name_fa: this.productForm.controls['name_fa'].value,
       description: this.productForm.controls['description'].value,
       description_fa: this.productForm.controls['description_fa'].value,
     };
 
-    this.authService.setProductInfo(data).subscribe(
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
+    this.authService.setProductInfo(data, this.productId).subscribe(
       (value) => {
         this.snackBar.open(this.productId ? 'Product is updated' : 'Product is added', null, {
           duration: 1800,
@@ -114,11 +133,60 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           action: this.productId ? this.actionEnum.modify : this.actionEnum.add,
           value: Object.assign({product_id: value.product_id}, data)
         });
+
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         this.snackBar.open('Cannot add this product. Try again', null, {
           duration: 2300,
         });
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
+      }
+    );
+  }
+
+  deleteProduct() {
+    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '230px'
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (status) => {
+        if (status) {
+
+          this.progressService.enable();
+          this.upsertBtnShouldDisabled = true;
+          this.deleteBtnShouldDisabled = true;
+
+          this.authService.deleteProduct(this.productId).subscribe(
+            (data) => {
+              this.snackBar.open('Product delete successfully', null, {
+                duration: 2000,
+              });
+
+              this.changedProduct.emit({action: this.actionEnum.delete, value: this.productId});
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
+            },
+            (error) => {
+              this.snackBar.open('Cannot delete this product. Please try again', null, {
+                duration: 2700
+              });
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
+            }
+          );
+        }
+      },
+      (err) => {
+        console.log('Error in dialog: ', err);
       }
     );
   }
@@ -139,45 +207,22 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       this.anyChanges = true;
   }
 
-  deleteProduct() {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '230px'
-    });
-
-    rmDialog.afterClosed().subscribe(
-      (status) => {
-        if (status) {
-          this.authService.deleteProduct(this.productId).subscribe(
-            (data) => {
-              this.snackBar.open('Product delete successfully', null, {
-                duration: 2000,
-              });
-
-              this.changedProduct.emit({action: this.actionEnum.delete, value: this.productId});
-            },
-            (error) => {
-              this.snackBar.open('Cannot delete this product. Please try again', null, {
-                duration: 2700
-              });
-            }
-          );
-        }
-      },
-      (err) => {
-        console.log('Error in dialog: ', err);
-      }
-    );
-  }
-
   nameRequiring(Ac: AbstractControl) {
     const name = Ac.get('name').value;
     const name_fa = Ac.get('name_fa').value;
-    if ((!name || name === '') && (!name_fa || name_fa === ''))
-      Ac.get('name').setErrors({beingNull: 'Both Name and name_fa can not be null.'});
+    if ((!name || name === '') || (!name_fa || name_fa === '')) {
+      if (!name || name === '') {
+        Ac.get('name').setErrors({beingNull: 'Name can not be null.'});
+
+      }
+      if (!name_fa || name_fa === '') {
+        Ac.get('name_fa').setErrors({beingNull: 'name_fa can not be null.'});
+      }
+    }
     else {
       Ac.get('name').setErrors(null);
       return null;
     }
   }
 }
+
