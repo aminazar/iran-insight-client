@@ -3,10 +3,10 @@
   <mat-card-content>
     <div class="flex-container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
          fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
-      <div *ngIf="!target" class="flex-item" fxFlex="30" fxFlex.sm="50" fxFlex.xs="50">
-        <button mat-raised-button [matMenuTriggerFor]="menu" role="add-target-button">Target</button>
+      <div *ngIf="!target" class="flex-item" fxFlex="30" fxFlex.sm="50" fxFlex.xs="50" role="add-target-button">
+        <button id="m" mat-raised-button [matMenuTriggerFor]="menu">Target</button>
         <mat-menu #menu="matMenu">
-          <button *ngFor="let trg of targetList; let i = index" mat-menu-item (click)="addTarget(i)" role="target-button">{{trg}}</button>
+          <button *ngFor="let trg of targetList; let i = index" mat-menu-item (click)="addTarget(i)" role="'target-button' + i">{{trg}}</button>
         </mat-menu>
         <div *ngIf="targets.length > 0">Search in:</div>
         <div>
