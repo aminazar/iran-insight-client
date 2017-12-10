@@ -15,7 +15,7 @@ export class TypeFormComponent implements OnInit {
 
   type_name: string;
   typeId: number;
-  is_killer = false;
+  has_killer = false;
   cats: string[] = [];
   form: FormGroup;
 
@@ -60,7 +60,7 @@ export class TypeFormComponent implements OnInit {
       this.restService.get(`type/${this.type_name}_type/${this.typeId}`).subscribe(res => {
 
         if (this.type_name === 'lce')
-          this.is_killer = true;
+          this.has_killer = true;
 
         const result = res[0];
         this.form.controls.name.setValue(result.name);
@@ -111,7 +111,7 @@ export class TypeFormComponent implements OnInit {
   }
 
   onChange(cat) {
-    this.is_killer = cat === 'lce';
+    this.has_killer = cat === 'lce';
   }
 
   onCancel() {
