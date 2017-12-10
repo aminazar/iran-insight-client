@@ -39,7 +39,6 @@
         <mat-checkbox fxFlex="50"
                       formControlName="is_killer"
                       role="is_killer"
-                      [(ngModel)]="is_killer"
                       [disabled]="!has_killer">
           Is Killer?
         </mat-checkbox>
@@ -48,7 +47,7 @@
                       name="active"
                       formControlName="active"
                       role="active"
-                      [(ngModel)]="active">
+                      >
           Is Active?
         </mat-checkbox>
       </div>
