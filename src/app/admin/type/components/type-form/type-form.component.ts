@@ -16,6 +16,7 @@ export class TypeFormComponent implements OnInit {
   type_name: string;
   typeId: number;
   has_killer = false;
+  is_killer = false;
   cats: string[] = [];
   form: FormGroup;
 
