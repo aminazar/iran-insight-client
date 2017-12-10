@@ -1,9 +1,9 @@
 <div>
   <br/>
-  <mat-input-container style="width: 100%">
+  <mat-input-container class="field farsi">
     <input matInput type="text" placeholder="Expertise name" [matAutocomplete]="auto" [formControl]="expertiseCtrl"/>
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let exp of filteredExpertise | async" [value]="exp" (click)="addExpertise(exp)">
+      <mat-option *ngFor="let exp of filteredExpertise | async" [value]="exp" (click)="addExpertise(exp)" class="farsi">
         {{exp}}
       </mat-option>
     </mat-autocomplete>
@@ -22,7 +22,7 @@
       <tr *ngFor="let item of userExpertiseList; let i = index">
         <td>{{i+1}}</td>
         <td>{{item.name_en}}</td>
-        <td>{{item.name_fa}}</td>
+        <td class="farsi">{{item.name_fa}}</td>
         <td>
           <button mat-icon-button (click)="removePersonExpertise(item.expertise_id)">
             <mat-icon aria-label="clear person expertise">clear</mat-icon>

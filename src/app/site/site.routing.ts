@@ -3,7 +3,7 @@ import {HomeComponent} from './home/home.component';
 import {RouterTestingModule} from '@angular/router/testing';
 
 const Site_ROUTES: Routes = [
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '', redirectTo: 'admin', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'profile', loadChildren: 'app/site/profile/profile.module#ProfileModule'},
 ];

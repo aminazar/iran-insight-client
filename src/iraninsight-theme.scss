@@ -1,8 +1,3 @@
-//comment out following line to use custom theme.
-// "@include angular-material-theme" must not be commented to use custom theme
-//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
-
 @import '../node_modules/@angular/material/theming';
 // Plus imports for other components in your app.
 
@@ -10,11 +5,31 @@
 // have to load a single css file for Angular Material in your app.
 // **Be sure that you only ever include this mixin once!**
 @include mat-core();
+$mat-grain: (
+  300: #fffffa,
+  500: #d7cec7,
+  700: #a69d96,
+  contrast: (
+    300: $black-87-opacity,
+    500: $black-87-opacity,
+    700: white,
+  )
+);
 
+$mat-oxblood: (
+  300: #a75e6a,
+  500: #76323f,
+  700: #470519,
+  contrast: (
+    300: $black-87-opacity,
+    500: white,
+    700: white,
+  )
+);
 // Define the default theme (same as the example above).
-$iraninsight-app-primary: mat-palette($mat-cyan, 500, 300, 700);
-$iraninsight-app-accent:  mat-palette($mat-deep-orange, 500, 300, 700);
-$iraninsight-app-warn: mat-palette($mat-orange, 500, 300, 700);
+$iraninsight-app-primary: mat-palette($mat-grain, 500, 300, 700);
+$iraninsight-app-accent:  mat-palette($mat-oxblood, 500, 300, 700);
+$iraninsight-app-warn: mat-palette($mat-red, 500, 300, 700);
 $iraninsight-app-theme:   mat-light-theme($iraninsight-app-primary, $iraninsight-app-accent, $iraninsight-app-warn);
 
 // Include the default theme styles.
