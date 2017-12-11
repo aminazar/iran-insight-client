@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.snackBar.open(e.friendlyMessage);
           });
 
-          console.error(`Backend returned code ${err.status}, body was: ${err.error}`);
+          console.error(`Backend returned code ${err.status}, body was: ` , err.error);
         }
         return Observable.throw(err);
       });

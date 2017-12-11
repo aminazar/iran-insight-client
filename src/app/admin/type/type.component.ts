@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {TypeFormComponent} from './components/type-form/type-form.component';
 import {SearchService} from '../../shared/services/search.service';
 import {IType} from './interfaces/type.interface';
+import {ProgressService} from '../../shared/services/progress.service';
 
 @Component({
   selector: 'ii-type',
@@ -16,7 +17,7 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   types: IType[] = [];
 
-  constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog, private searchService: SearchService) {
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog, private searchService: SearchService, private prgService: ProgressService) {
   }
 
 
@@ -50,8 +51,10 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   search(searchBundle: any = null) {
 
+    this.prgService.enable();
     this.searchService.search(searchBundle, 0).subscribe(res => {
 
+      this.prgService.disable();
       this.types = [];
       res.type.forEach(type => {
         this.types.push(<IType>{
@@ -64,6 +67,8 @@ export class TypeComponent implements OnInit, OnDestroy {
         });
       });
 
+    }, err =>{
+      this.prgService.disable();
     });
   }
 

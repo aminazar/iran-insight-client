@@ -1,4 +1,4 @@
-export  interface Breadcrumb{
+export  interface IBreadcrumb{
   label: String;
-  url: String;
+  routerLink: String;
 }
