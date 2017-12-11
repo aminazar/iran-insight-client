@@ -5,6 +5,7 @@ import {AuthService} from '../../../../shared/services/auth.service';
 import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 import {ProgressService} from '../../../../shared/services/progress.service';
+import {isUndefined} from 'util';
 
 
 @Component({
@@ -197,23 +198,49 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
     this.anyChanges = false;
 
-    if (this.productForm.controls['name'].value !== this.originalProduct.name && (this.productForm.controls['name'].value !== '' || this.originalProduct.name !== null))
+    let name = (this.productForm.controls['name'].value === null || isUndefined(this.productForm.controls['name'].value)) ? '' : this.productForm.controls['name'].value;
+    let name_fa = (this.productForm.controls['name_fa'].value === null || isUndefined(this.productForm.controls['name_fa'].value)) ? '' : this.productForm.controls['name_fa'].value;
+    let description = (this.productForm.controls['description'].value === null || isUndefined(this.productForm.controls['description'].value)) ? '' : this.productForm.controls['description'].value;
+    let description_fa = (this.productForm.controls['description_fa'].value === null || isUndefined(this.productForm.controls['description_fa'].value)) ? '' : this.productForm.controls['description_fa'].value;
+
+    let origName = (this.originalProduct.name === null || isUndefined(this.originalProduct.name)) ? '' : this.originalProduct.name;
+    let origName_fa = (this.originalProduct.name_fa === null || isUndefined(this.originalProduct.name_fa)) ? '' : this.originalProduct.name_fa;
+    let origDescription = (this.originalProduct.description === null || isUndefined(this.originalProduct.description)) ? '' : this.originalProduct.description;
+    let origDescription_fa = (this.originalProduct.description_fa === null || isUndefined(this.originalProduct.description_fa)) ? '' : this.originalProduct.description_fa;
+
+    name = name.trim();
+    name_fa = name_fa.trim();
+    description = description.trim();
+    description_fa = description_fa.trim();
+
+    origName = origName.trim();
+    origName_fa = origName_fa.trim();
+    origDescription = origDescription.trim();
+    origDescription_fa = origDescription_fa.trim();
+
+
+    if (name !== origName && (name !== '' || origName !== null))
       this.anyChanges = true;
-    if (this.productForm.controls['name_fa'].value !== this.originalProduct.name_fa && (this.productForm.controls['name_fa'].value !== '' || this.originalProduct.name_fa !== null))
+    if (name_fa !== origName_fa && (name_fa !== '' || origName_fa !== null))
       this.anyChanges = true;
-    if (this.productForm.controls['description'].value !== this.originalProduct.description && (this.productForm.controls['description'].value !== '' || this.originalProduct.description !== null))
+    if (description !== origDescription && (description !== '' || origDescription !== null))
       this.anyChanges = true;
-    if (this.productForm.controls['description_fa'].value !== this.originalProduct.description_fa && (this.productForm.controls['description_fa'].value !== '' || this.originalProduct.description_fa !== null))
+    if (description_fa !== origDescription_fa && (description_fa !== '' || origDescription_fa !== null))
       this.anyChanges = true;
   }
 
   nameRequiring(Ac: AbstractControl) {
-    const name = Ac.get('name').value;
-    const name_fa = Ac.get('name_fa').value;
+    let name = Ac.get('name').value;
+    let name_fa = Ac.get('name_fa').value;
+    if(name === null || isUndefined(name) )
+      name = '';
+    if(name_fa === null || isUndefined(name_fa) )
+      name_fa = '';
+    name = name.trim();
+    name_fa = name_fa.trim();
     if ((!name || name === '') || (!name_fa || name_fa === '')) {
       if (!name || name === '') {
         Ac.get('name').setErrors({beingNull: 'Name can not be null.'});
-
       }
       if (!name_fa || name_fa === '') {
         Ac.get('name_fa').setErrors({beingNull: 'name_fa can not be null.'});
