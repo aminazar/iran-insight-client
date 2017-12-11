@@ -190,6 +190,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         console.log('Error in dialog: ', err);
       }
     );
+
   }
 
   fieldChanged() {
@@ -217,7 +218,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     origName_fa = origName_fa.trim();
     origDescription = origDescription.trim();
     origDescription_fa = origDescription_fa.trim();
-
 
     if (name !== origName && (name !== '' || origName !== null))
       this.anyChanges = true;
