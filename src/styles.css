@@ -1,6 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
 
-/* Franklin */
+
 @import "assets/fonts/franklin/index.css";
 
 @font-face {
@@ -43,7 +42,7 @@
 }
 
 .card-view{
-  height: 150px;
+  min-height: 150px;
   min-width: 200px;
 }
 

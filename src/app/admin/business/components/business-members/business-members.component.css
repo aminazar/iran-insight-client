@@ -1,0 +1,10 @@
+.row{
+  margin: 20px 10px;
+}
+.member-card{
+  margin: 10px 5px;
+}
+
+.selected-member{
+  background-color: antiquewhite;
+}
