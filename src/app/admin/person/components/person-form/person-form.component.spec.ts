@@ -8,7 +8,7 @@ import {AuthService} from "../../../../shared/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 
-describe('PersonFormComponent', () => {
+fdescribe('PersonFormComponent', () => {
   let component: PersonFormComponent;
   let fixture: ComponentFixture<PersonFormComponent>;
 
@@ -89,7 +89,7 @@ describe('PersonFormComponent', () => {
     expect(component.personForm.valid).toBe(true);
   }));
 
-  xit('should update person', fakeAsync(() => {
+  it('should update person', fakeAsync(() => {
     let authService = TestBed.get(AuthService);
     let getSpy = spyOn(authService, 'getPersonInfo').and.callFake(() => {
       return PromiseObservable.create(Promise.resolve([{

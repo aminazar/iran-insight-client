@@ -62,3 +62,7 @@
 .fa{
   font-family: 'adarab' !important;
 }
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
