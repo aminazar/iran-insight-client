@@ -50,7 +50,7 @@ import { UnderConstructionComponent } from './components/underConstruction/under
     MatSnackBarModule,
     MatProgressBarModule,
   ],
-  entryComponents: [RemovingConfirmComponent, UndercontructionComponent],
+  entryComponents: [RemovingConfirmComponent, UnderConstructionComponent],
   exports: [
     HeaderComponent,
     SearchFieldsComponent,
