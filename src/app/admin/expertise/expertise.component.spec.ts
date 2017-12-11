@@ -4,9 +4,9 @@ import { ExpertiseComponent } from './expertise.component';
 import {TestModule} from '../../test/test.module';
 import {AdminTestRouting} from '../admin.routing';
 import {ExpertiseFormComponent} from './expertise-form/expertise-form.component';
-import {UndercontructionComponent} from '../../shared/components/undercontruction/undercontruction.component';
+import {UnderConstructionComponent} from "../../shared/components/underConstruction/under-construction.component";
 
-fdescribe('ExpertiseComponent', () => {
+describe('ExpertiseComponent', () => {
   let component: ExpertiseComponent;
   let fixture: ComponentFixture<ExpertiseComponent>;
 
@@ -14,8 +14,6 @@ fdescribe('ExpertiseComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ExpertiseComponent,
-        ExpertiseFormComponent,
-        UndercontructionComponent,
       ],
       imports: [
         TestModule,

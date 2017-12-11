@@ -16,13 +16,13 @@
       </div>
     </div>
     <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
-      <div fxFlex="50">
+      <div fxFlex="50" role="firstname-en">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" role="firstname-en" (ngModelChange)="fieldChanged($event)"/>
+          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" (ngModelChange)="fieldChanged($event)"/>
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
-        <mat-input-container class="field-90">
+        <mat-input-container class="field-90 farsi">
           <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
@@ -34,7 +34,7 @@
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
-        <mat-input-container class="field-90">
+        <mat-input-container class="field-90 farsi">
           <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
@@ -48,7 +48,7 @@
       </mat-input-container>
     </div>
     <div dir="rtl">
-      <mat-input-container class="field">
+      <mat-input-container class="field farsi">
         <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa" (ngModelChange)="fieldChanged()"></textarea>
       </mat-input-container>
     </div>
@@ -88,7 +88,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div>
+    <div role="submit-button">
       <button mat-raised-button color="primary" type="submit" [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))">
         <span *ngIf="!personId">Add</span>
         <span *ngIf="personId">Update</span>

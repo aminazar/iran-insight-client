@@ -1,7 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
 
-/* Franklin */
+
 @import "assets/fonts/franklin/index.css";
+
+@font-face {
+  font-family: 'adarab';
+  src: url('assets/fonts/adobe-arabic/Adobe-Arabic-Regular.otf');
+  unicode-range: U+0600-06FF;
+}
+
 .page{
   padding: 15px;
   margin: 10px;
@@ -36,7 +42,7 @@
 }
 
 .card-view{
-  height: 150px;
+  min-height: 150px;
   min-width: 200px;
 }
 
@@ -51,4 +57,9 @@
 
 .ui-widget{
   font-family: Franklin !important;
+}
+
+.farsi{
+  font-family: 'adarab' !important;
+  font-size: 130% !important;
 }

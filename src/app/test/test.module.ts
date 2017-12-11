@@ -17,7 +17,8 @@ import {SearchService} from '../shared/services/search.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomeComponent} from '../site/home/home.component';
 import {AdminHomeComponent} from '../admin/home/home.component';
-import {ProgressService} from '../shared/services/progress.service';
+import {ProgressService} from "../shared/services/progress.service";
+import {UnderConstructionComponent} from "../shared/components/underConstruction/under-construction.component";
 
 @NgModule({
   imports: [
@@ -40,6 +41,8 @@ import {ProgressService} from '../shared/services/progress.service';
     material.MatNativeDateModule,
     material.MatAutocompleteModule,
     material.MatProgressBarModule,
+    material.MatDialogModule,
+    material.MatPaginatorModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
@@ -52,6 +55,7 @@ import {ProgressService} from '../shared/services/progress.service';
   declarations: [
     HomeComponent,
     AdminHomeComponent,
+    UnderConstructionComponent,
   ],
   providers: [
     BreadcrumbService, AuthService, RestService, SearchService, ProgressService],
@@ -74,8 +78,9 @@ import {ProgressService} from '../shared/services/progress.service';
     material.MatTabsModule,
     material.MatNativeDateModule,
     material.MatAutocompleteModule,
-    material.MatPaginatorModule,
     material.MatProgressBarModule,
+    material.MatDialogModule,
+    material.MatPaginatorModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

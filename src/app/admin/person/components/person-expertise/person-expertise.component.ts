@@ -40,7 +40,7 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
     this.getUserExpertise();
 
     this.expertiseCtrl = new FormControl();
-    this.filteredExpertise = this.expertiseCtrl.valueChanges
+    this.filteredExpertise = this.expertiseCtrl.valueChanges.debounceTime(500)
       .pipe(
         map(exp => exp ? this.filterExpertise(exp) : this.expertiseNameList)
       );

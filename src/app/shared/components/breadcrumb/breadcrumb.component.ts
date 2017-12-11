@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../services/breadcrumb.service';
-import {Breadcrumb} from '../../interfaces/breadcrumb.interface';
+import {IBreadcrumb} from '../../interfaces/breadcrumb.interface';
 
 @Component({
   selector: 'ii-breadcrumb',
@@ -9,14 +9,14 @@ import {Breadcrumb} from '../../interfaces/breadcrumb.interface';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  items: Breadcrumb[] = [];
+  items: IBreadcrumb[] = [];
 
   constructor(private breadCrumbService: BreadcrumbService) {
   }
 
   ngOnInit() {
 
-    this.breadCrumbService.routes$.subscribe((res: Breadcrumb[]) => {
+    this.breadCrumbService.routes$.subscribe((res: IBreadcrumb[]) => {
       this.items = res;
     });
 

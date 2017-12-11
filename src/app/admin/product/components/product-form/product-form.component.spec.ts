@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductFormComponent } from './product-form.component';
-import {TestModule} from '../../../../test/test.module';
-import {AdminTestRouting} from '../../../admin.routing';
+import {TestModule} from "../../../../test/test.module";
+import {AdminTestRouting} from "../../../admin.routing";
 
 describe('ProductFormComponent', () => {
   let component: ProductFormComponent;
@@ -14,7 +14,7 @@ describe('ProductFormComponent', () => {
       imports: [
         TestModule,
         AdminTestRouting,
-      ],
+      ]
     })
     .compileComponents();
   }));

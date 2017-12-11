@@ -3,6 +3,7 @@ import { TypeFormComponent } from './type-form.component';
 import {TestModule} from "../../../../test/test.module";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {SearchFieldsComponent} from '../../../../shared/components/search-fields/search-fields.component';
+import {AdminTestRouting} from "../../../admin.routing";
 
 class MockDialogRef{
 
@@ -22,7 +23,7 @@ describe('TypeFormComponent', () => {
         SearchFieldsComponent,
         TypeFormComponent,
       ],
-      imports: [TestModule],
+      imports: [TestModule, AdminTestRouting],
       providers: [
         {
           provide: MatDialogRef,
