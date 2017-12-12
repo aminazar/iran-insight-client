@@ -26,11 +26,11 @@
       </mat-input-container>
     </div>
     <div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!productForm.valid">
+      <button mat-raised-button color="accent" type="submit" [disabled]="!productForm.valid">
         <span *ngIf="!productId">Add</span>
         <span *ngIf="productId">Update</span>
       </button>
-      <button mat-raised-button color="primary" type="button" *ngIf="productId" (click)="deleteProduct()">Delete</button>
+      <button mat-raised-button color="accent" type="button" *ngIf="productId" (click)="deleteProduct()">Delete</button>
     </div>
   </form>
 </div>

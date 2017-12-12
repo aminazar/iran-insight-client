@@ -46,14 +46,13 @@
         <mat-checkbox fxFlex="50"
                       name="active"
                       formControlName="active"
-                      role="active"
-                      >
+                      role="active">
           Is Active?
         </mat-checkbox>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button type="submit" role="submit" color="primary" [disabled]="!form.valid || !canSubmit">Save</button>
+      <button mat-raised-button type="submit" role="submit" color="accent" [disabled]="!form.valid">Save</button>
       <button mat-raised-button type="button" (click)="onCancel()" color="warn">Cancel</button>
     </mat-card-actions>
   </mat-card>
