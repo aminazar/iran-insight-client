@@ -15,12 +15,13 @@ import {RemovingConfirmComponent} from "../../../../shared/components/removing-c
 })
 export class PersonExpertiseComponent implements OnInit, OnDestroy {
   @Input()
-  set personId(id){
+  set personId(id) {
     this._personId = id;
     this.getAllExpertise();
     this.getUserExpertise();
   }
-  get personId(){
+
+  get personId() {
     return this._personId;
   }
 
@@ -46,7 +47,7 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.expertiseCtrl = null;
   }
 
@@ -102,7 +103,7 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
   }
 
   filterExpertise(name: string) {
-    if(name.includes('\\'))
+    if (name.includes('\\'))
       return;
 
     return this.expertiseNameList.filter((p) => new RegExp(name, 'gi').test(p));
@@ -142,34 +143,36 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
     )
   }
 
-  addExpertise(expertise_name) {
-    let exp = this.expertiseList.find(el => (el.name_en + ' - ' + el.name_fa) === expertise_name);
+  addExpertise(expObj) {
+    this.restService.get('expertise/' + expObj.expertise_id).subscribe(
+      (expData) => {
+        this.restService.post('user/expertise', {
+          pid: this.personId,
+          expertise: {expertise_id: expObj.expertise_id},
+        }).subscribe(
+          (data) => {
+            this.userExpertiseList.push({
+              position: this.userExpertiseList.length + 1,
+              name_en: expData[0].name_en,
+              name_fa: expData[0].name_fa,
+              expertise_id: expData[0].expertise_id,
+              peid: data.peid,
+            });
 
-    this.restService.post('user/expertise', {
-      pid: this.personId,
-      expertise: exp,
-    }).subscribe(
-      (data) => {
-        this.userExpertiseList.push({
-          position: this.userExpertiseList.length + 1,
-          name_en: exp.name_en,
-          name_fa: exp.name_fa,
-          expertise_id: exp.expertise_id,
-          peid: data.peid,
-        });
-
-        this.snackBar.open('Expertise was added to this person', null, {
-          duration: 2300,
-        });
-
-        this.expertiseNameList = this.expertiseNameList.filter(el =>  el !== expertise_name);
-        this.expertiseCtrl.setValue('');
+            this.snackBar.open('Expertise was added to this person', null, {
+              duration: 2300,
+            });
+          },
+          (err) => {
+            console.error('Cannot add expertise: ', err);
+            this.snackBar.open('Cannot add this expertise. Please try again', null, {
+              duration: 3000,
+            });
+          }
+        )
       },
       (err) => {
-        console.error('Cannot add expertise: ', err);
-        this.snackBar.open('Cannot add this expertise. Please try again', null, {
-          duration: 3000,
-        });
+        console.log('Cannot get expertise details. Error: ', err);
       }
     )
   }
@@ -179,7 +182,7 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
       return;
 
     this.expertiseNameList = this.expertiseNameList.filter(el => {
-      if(!this.userExpertiseList.map(i => i.name_en + ' - ' + i.name_fa).includes(el)){
+      if (!this.userExpertiseList.map(i => i.name_en + ' - ' + i.name_fa).includes(el)) {
         return el;
       }
     });

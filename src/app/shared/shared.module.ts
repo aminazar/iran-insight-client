@@ -17,6 +17,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {SearchFieldsComponent} from './components/search-fields/search-fields.component';
 import {RemovingConfirmComponent} from './components/removing-confirm/removing-confirm.component';
 import { UnderConstructionComponent } from './components/underConstruction/under-construction.component';
+import { SuggestionComponent } from './components/suggestion/suggestion.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { UnderConstructionComponent } from './components/underConstruction/under
     SearchFieldsComponent,
     RemovingConfirmComponent,
     UnderConstructionComponent,
+    SuggestionComponent,
   ],
   imports: [
     RouterModule,
@@ -56,6 +58,7 @@ import { UnderConstructionComponent } from './components/underConstruction/under
     SearchFieldsComponent,
     RemovingConfirmComponent,
     UnderConstructionComponent,
+    SuggestionComponent,
   ]
 })
 export class SharedModule {
