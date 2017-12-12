@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Breadcrumb} from '../interfaces/breadcrumb.interface';
+import {IBreadcrumb} from '../interfaces/breadcrumb.interface';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 
@@ -7,8 +7,8 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 export class BreadcrumbService {
 
 
-  private routes: Breadcrumb[] = [];
-  private routesRS = new ReplaySubject<Breadcrumb[]>(0);
+  private routes: IBreadcrumb[] = [];
+  private routesRS = new ReplaySubject<IBreadcrumb[]>(0);
   routes$ = this.routesRS.asObservable();
 
   constructor() {
@@ -21,9 +21,9 @@ export class BreadcrumbService {
       this.routes = [];
 
     if (this.routes.filter(e => e.label === label).length === 0) {
-      const child: Breadcrumb = {
+      const child: IBreadcrumb = {
         label,
-        url
+        routerLink: url
       };
       this.routes.push(child);
     } else {

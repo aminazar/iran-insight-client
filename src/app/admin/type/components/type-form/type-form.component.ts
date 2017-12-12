@@ -1,9 +1,11 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
 import {RestService} from '../../../../shared/services/rest.service';
 import {typeInsertSuccessful, typeUpdateSuccessful} from '../../../../shared/utils/messages.list';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IType} from '../../interfaces/type.interface';
+import {TargetEnum} from '../../../../shared/enum/target.enum';
+import {ProgressService} from '../../../../shared/services/progress.service';
 
 
 @Component({
@@ -11,7 +13,7 @@ import {IType} from '../../interfaces/type.interface';
   templateUrl: './type-form.component.html',
   styleUrls: ['./type-form.component.css']
 })
-export class TypeFormComponent implements OnInit {
+export class TypeFormComponent implements OnInit, OnDestroy {
 
   type_name: string;
   typeId: number;
@@ -19,13 +21,14 @@ export class TypeFormComponent implements OnInit {
   is_killer = false;
   cats: string[] = [];
   form: FormGroup;
-
+  canSubmit = true; // it is only false when submit button is pressed and waiting for response
 
   constructor(public dialogRef: MatDialogRef<TypeFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private  restService: RestService,
               private snackBar: MatSnackBar,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private prgService: ProgressService) {
 
   }
 
@@ -58,15 +61,18 @@ export class TypeFormComponent implements OnInit {
 
       this.form.controls.type_name.setValue(this.type_name);
 
+      this.prgService.enable();
       this.restService.get(`type/${this.type_name}_type/${this.typeId}`).subscribe(res => {
 
-        if (this.type_name === 'lce')
+        this.prgService.disable();
+
+        if (this.type_name === TargetEnum.lce)
           this.has_killer = true;
 
         const result = res[0];
         this.form.controls.name.setValue(result.name);
         this.form.controls.name_fa.setValue(result.name_fa);
-        this.form.controls.suggested_by.setValue(result.suggested_by);
+        this.form.controls.suggested_by.setValue(result.username);
         this.form.controls.is_killer.setValue(result.is_killer);
         this.form.controls.active.setValue(result.active);
 
@@ -78,6 +84,9 @@ export class TypeFormComponent implements OnInit {
   onSubmit() {
 
     if (this.form.valid) {
+
+      this.canSubmit = false;
+
       const body: any = {
         name: this.form.value.name,
         name_fa: this.form.value.name_fa,
@@ -88,14 +97,22 @@ export class TypeFormComponent implements OnInit {
       if (!this.type_name)
         this.type_name = this.form.value.type_name;
 
-      if (this.type_name === 'lce')
+      if (this.type_name === TargetEnum.lce)
         body.is_killer = !!this.form.value.is_killer;
 
       const rest = this.typeId ?
         this.restService.put(`type/${this.type_name}_type/${this.typeId}`, body) : // update
         this.restService.post(`type/${this.type_name}_type`, body); // insert
 
+      this.prgService.enable();
+
       rest.subscribe(res => {
+
+        this.canSubmit = true;
+
+        this.prgService.disable();
+
+        this.snackBar.open(this.typeId ? typeUpdateSuccessful.message : typeInsertSuccessful.message);
 
         this.dialogRef.close(<IType>{
           id: res.id,
@@ -105,14 +122,17 @@ export class TypeFormComponent implements OnInit {
           active: this.form.value.active,
         });
 
-        this.snackBar.open(this.typeId ? typeUpdateSuccessful.message : typeInsertSuccessful.message);
+
+      }, err => {
+        this.canSubmit = true;
+        this.prgService.disable();
 
       });
     }
   }
 
   onChange(cat) {
-    this.has_killer = cat === 'lce';
+    this.has_killer = cat === TargetEnum.lce;
   }
 
   onCancel() {
@@ -123,6 +143,9 @@ export class TypeFormComponent implements OnInit {
   ngOnDestroy() {
     this.type_name = null;
     this.typeId = null;
+    this.form = null;
+    this.has_killer = false;
+    this.cats = [];
   }
 
 }
