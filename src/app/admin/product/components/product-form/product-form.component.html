@@ -6,31 +6,31 @@
     <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="ProductName" formControlName="name" role="name"/>
+          <input matInput type="text" placeholder="ProductName" formControlName="name" role="name" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="نام" formControlName="name_fa" role="name_fa"/>
+          <input matInput type="text" placeholder="نام" formControlName="name_fa" role="name_fa" (ngModelChange)="fieldChanged()"/>
         </mat-input-container>
       </div>
     </div>
     <div>
       <mat-input-container class="field">
-        <textarea matInput placeholder="Description" formControlName="description" role="description"></textarea>
+        <textarea matInput placeholder="Description" formControlName="description" role="description" (ngModelChange)="fieldChanged()"></textarea>
       </mat-input-container>
     </div>
     <div dir="rtl">
       <mat-input-container class="field">
-        <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description_fa"></textarea>
+        <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description_fa" (ngModelChange)="fieldChanged()"></textarea>
       </mat-input-container>
     </div>
     <div>
-      <button mat-raised-button color="accent" type="submit" [disabled]="!productForm.valid">
+      <button mat-raised-button color="primary" type="submit" [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">
         <span *ngIf="!productId">Add</span>
         <span *ngIf="productId">Update</span>
       </button>
-      <button mat-raised-button color="accent" type="button" *ngIf="productId" (click)="deleteProduct()">Delete</button>
+      <button mat-raised-button color="primary" type="button" *ngIf="productId" [disabled]="deleteBtnShouldDisabled" (click)="deleteProduct()">Delete</button>
     </div>
   </form>
 </div>

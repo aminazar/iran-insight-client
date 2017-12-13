@@ -4,6 +4,7 @@ import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ActionEnum} from '../../shared/enum/action.enum';
+import {ProgressService} from '../../shared/services/progress.service';
 
 @Component({
   selector: 'ii-product',
@@ -23,14 +24,14 @@ export class ProductComponent implements OnInit {
   rows = [];
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
-              private searchService: SearchService, private snackBar: MatSnackBar) {
+              private searchService: SearchService, private snackBar: MatSnackBar,  private progressService: ProgressService) {
   }
 
   ngOnInit() {
     this.breadCrumbService.pushChild('product', this.router.url, true);
   }
 
-  openForm(id: number = null): void {
+  openForm(id: number): void {
     this.productId = id;
     this.showInDeep = true;
   }
@@ -50,6 +51,7 @@ export class ProductComponent implements OnInit {
     this.showInDeep = false;
     this.productId = null;
 
+    this.progressService.enable();
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.products = data.product;
@@ -69,12 +71,14 @@ export class ProductComponent implements OnInit {
 
         this.rows = Object.keys(this.aligningObj);
         console.log(this.aligningObj);
+        this.progressService.disable();
       },
       (err) => {
         console.error('Cannot get data', err);
         this.snackBar.open('Cannot get data. Please check your connection', null, {
           duration: 3000,
         });
+        this.progressService.disable();
       }
     );
   }
@@ -96,7 +100,6 @@ export class ProductComponent implements OnInit {
         this.products = this.products.filter(el => el.product_id !== data.value);
         this.showInDeep = false;
         this.productId = null;
-        this.searching();
       };
         break;
     }
