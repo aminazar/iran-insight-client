@@ -12,7 +12,6 @@ import {ProgressService} from "../../services/progress.service";
 })
 export class SuggestionComponent implements OnInit {
   @Input() name: string = '';
-  @Input() id: number = null;
   @Input() idColumn: string = '';
   @Input() fieldNameEn: string = '';
   @Input() fieldNameFa: string = '';
@@ -28,7 +27,7 @@ export class SuggestionComponent implements OnInit {
 
   ngOnInit() {
     this.suggestionCtrl = new FormControl();
-    this.suggestionCtrl.valueChanges.debounceTime(300).subscribe(
+    this.suggestionCtrl.valueChanges.debounceTime(150).subscribe(
       (data) => {
         this.filtering(data);
       },
@@ -44,7 +43,7 @@ export class SuggestionComponent implements OnInit {
   }
 
   filtering(phrase: string) {
-    if ((!phrase || phrase === '') || phrase.length < 3 || !this.id)
+    if ((!phrase || phrase === '') || phrase.length < 3)
       this.filteredItems = [];
     else{
       this.progressService.enable();
@@ -56,7 +55,6 @@ export class SuggestionComponent implements OnInit {
 
       this.restService.post('suggest', {
         table: this.name,
-        id: this.id,
         phrase: phrase,
         idColumn: this.idColumn,
         fieldName: this.fn,

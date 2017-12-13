@@ -60,8 +60,10 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
 
     this.searchCtrl.valueChanges.debounceTime(500).subscribe(
       (data) => {
-        this.phrase = data;
-        this.searchOnData();
+        if(data.trim().length > 0){
+          this.phrase = data;
+          this.searchOnData();
+        }
       },
       (err) => {
         console.log(err);

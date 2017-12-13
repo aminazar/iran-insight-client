@@ -1,0 +1,98 @@
+<div style="padding: 10px; margin: 5px">
+  <div *ngIf="!eventId">Add new Event</div>
+  <div *ngIf="eventId">Edit Event</div>
+  <br/>
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+       fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" *ngIf="!eventId">
+    <div fxFlex="20">
+      The organizer:
+      <mat-radio-group [(ngModel)]="organizer">
+        <mat-radio-button [value]="organizerType.person">Person</mat-radio-button>
+        <mat-radio-button [value]="organizerType.business">Business</mat-radio-button>
+        <mat-radio-button [value]="organizerType.organization">Organization</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div fxFlex="80">
+      <ii-suggestion *ngIf="organizerIsPerson()" [idColumn]="'pid'" [name]="'person'"
+                     [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
+                     [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+      <ii-suggestion *ngIf="organizerIsBiz()" [idColumn]="'bid'" [name]="'business'"
+                     [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'"
+                     [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+      <ii-suggestion *ngIf="organizerIsOrg()" [idColumn]="'oid'" [name]="'organization'"
+                     [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'"
+                     [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+      <label *ngIf="organizerName">The organizer is {{organizerName}}</label>
+    </div>
+  </div>
+  <form (ngSubmit)="modifyEvent()" [formGroup]="eventForm">
+    <div *ngIf="eventId" fxLayout="row" fxLayoutAlign="start start">
+      <a class="clickable-link" (click)="directToOrganizer()">
+        <span>Organizer is </span>
+        <span>"{{organizerName}}"</span>
+      </a>
+    </div>
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-input-container class="field-90">
+          <input matInput type="text" placeholder="Title" formControlName="title" role="title"/>
+        </mat-input-container>
+      </div>
+      <div fxFlex="50" dir="rtl">
+        <mat-input-container class="field-90 farsi">
+          <input matInput type="text" placeholder="عنوان" formControlName="title_fa" role="title-fa"/>
+        </mat-input-container>
+      </div>
+    </div>
+    <div>
+      <mat-input-container class="field">
+        <textarea matInput placeholder="Description" formControlName="description" role="description"></textarea>
+      </mat-input-container>
+    </div>
+    <div dir="rtl">
+      <mat-input-container class="field farsi">
+        <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description-fa"></textarea>
+      </mat-input-container>
+    </div>
+    <div>
+      <mat-input-container class="field">
+        <textarea matInput placeholder="Address" formControlName="address" role="address"></textarea>
+      </mat-input-container>
+    </div>
+    <div dir="rtl">
+      <mat-input-container class="field farsi">
+        <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"></textarea>
+      </mat-input-container>
+    </div>
+    <!--<div>-->
+    <!--This area for location in event-->
+    <!--</div>-->
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-form-field>
+          <input matInput [matDatepicker]="start_date" placeholder="Start Date" formControlName="start_date"
+                 role="start-date"/>
+          <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+          <mat-datepicker #start_date></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxFlex="50">
+        <mat-form-field>
+          <input matInput [matDatepicker]="end_date" placeholder="End Date" formControlName="end_date"
+                 role="end-date"/>
+          <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+          <mat-datepicker #end_date></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="upsertBtnShouldDisabled || !eventForm.valid || (eventId && !anyChanges)">
+        <span *ngIf="!eventId">Add</span>
+        <span *ngIf="eventId">Update</span>
+      </button>
+      <button mat-raised-button color="primary" type="button" *ngIf="eventId" (click)="deleteEvent()"
+              [disabled]="deleteBtnShouldDisabled">Delete</button>
+    </div>
+  </form>
+</div>
