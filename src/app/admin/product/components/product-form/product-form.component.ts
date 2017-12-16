@@ -4,6 +4,8 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ProgressService} from '../../../../shared/services/progress.service';
+import {isUndefined} from 'util';
 
 
 @Component({
@@ -31,8 +33,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   anyChanges = false;
   originalProduct: any = null;
   actionEnum = ActionEnum;
+  upsertBtnShouldDisabled: boolean = false;
+  deleteBtnShouldDisabled: boolean = false;
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar, public dialog: MatDialog) {
+  constructor(private authService: AuthService, private snackBar: MatSnackBar,
+              public dialog: MatDialog, private progressService: ProgressService) {
   }
 
   ngOnInit() {
@@ -75,6 +80,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
     this.authService.getProductInfo(this.productId).subscribe(
       (data) => {
         data = data[0];
@@ -84,25 +92,37 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         this.productForm.controls['name_fa'].setValue(data.name_fa);
         this.productForm.controls['description'].setValue(data.description);
         this.productForm.controls['description_fa'].setValue(data.description_fa);
+
+
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         console.log(err);
         this.snackBar.open('Cannot get product details. Please try again', null, {
           duration: 2500,
         });
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       }
     );
   }
 
   modifyProduct() {
     const data = {
+      product_id: this.productId,
       name: this.productForm.controls['name'].value,
       name_fa: this.productForm.controls['name_fa'].value,
       description: this.productForm.controls['description'].value,
       description_fa: this.productForm.controls['description_fa'].value,
     };
 
-    this.authService.setProductInfo(data).subscribe(
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
+    this.authService.setProductInfo(data, this.productId).subscribe(
       (value) => {
         this.snackBar.open(this.productId ? 'Product is updated' : 'Product is added', null, {
           duration: 1800,
@@ -114,29 +134,20 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           action: this.productId ? this.actionEnum.modify : this.actionEnum.add,
           value: Object.assign({product_id: value.product_id}, data)
         });
+
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         this.snackBar.open('Cannot add this product. Try again', null, {
           duration: 2300,
         });
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       }
     );
-  }
-
-  fieldChanged() {
-    if (!this.originalProduct)
-      return;
-
-    this.anyChanges = false;
-
-    if (this.productForm.controls['name'].value !== this.originalProduct.name && (this.productForm.controls['name'].value !== '' || this.originalProduct.name !== null))
-      this.anyChanges = true;
-    if (this.productForm.controls['name_fa'].value !== this.originalProduct.name_fa && (this.productForm.controls['name_fa'].value !== '' || this.originalProduct.name_fa !== null))
-      this.anyChanges = true;
-    if (this.productForm.controls['description'].value !== this.originalProduct.description && (this.productForm.controls['description'].value !== '' || this.originalProduct.description !== null))
-      this.anyChanges = true;
-    if (this.productForm.controls['description_fa'].value !== this.originalProduct.description_fa && (this.productForm.controls['description_fa'].value !== '' || this.originalProduct.description_fa !== null))
-      this.anyChanges = true;
   }
 
   deleteProduct() {
@@ -148,6 +159,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     rmDialog.afterClosed().subscribe(
       (status) => {
         if (status) {
+
+          this.progressService.enable();
+          this.upsertBtnShouldDisabled = true;
+          this.deleteBtnShouldDisabled = true;
+
           this.authService.deleteProduct(this.productId).subscribe(
             (data) => {
               this.snackBar.open('Product delete successfully', null, {
@@ -155,11 +171,17 @@ export class ProductFormComponent implements OnInit, OnDestroy {
               });
 
               this.changedProduct.emit({action: this.actionEnum.delete, value: this.productId});
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
             },
             (error) => {
               this.snackBar.open('Cannot delete this product. Please try again', null, {
                 duration: 2700
               });
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
             }
           );
         }
@@ -168,16 +190,66 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         console.log('Error in dialog: ', err);
       }
     );
+
+  }
+
+  fieldChanged() {
+    if (!this.originalProduct)
+      return;
+
+    this.anyChanges = false;
+
+    let name = (this.productForm.controls['name'].value === null || isUndefined(this.productForm.controls['name'].value)) ? '' : this.productForm.controls['name'].value;
+    let name_fa = (this.productForm.controls['name_fa'].value === null || isUndefined(this.productForm.controls['name_fa'].value)) ? '' : this.productForm.controls['name_fa'].value;
+    let description = (this.productForm.controls['description'].value === null || isUndefined(this.productForm.controls['description'].value)) ? '' : this.productForm.controls['description'].value;
+    let description_fa = (this.productForm.controls['description_fa'].value === null || isUndefined(this.productForm.controls['description_fa'].value)) ? '' : this.productForm.controls['description_fa'].value;
+
+    let origName = (this.originalProduct.name === null || isUndefined(this.originalProduct.name)) ? '' : this.originalProduct.name;
+    let origName_fa = (this.originalProduct.name_fa === null || isUndefined(this.originalProduct.name_fa)) ? '' : this.originalProduct.name_fa;
+    let origDescription = (this.originalProduct.description === null || isUndefined(this.originalProduct.description)) ? '' : this.originalProduct.description;
+    let origDescription_fa = (this.originalProduct.description_fa === null || isUndefined(this.originalProduct.description_fa)) ? '' : this.originalProduct.description_fa;
+
+    name = name.trim();
+    name_fa = name_fa.trim();
+    description = description.trim();
+    description_fa = description_fa.trim();
+
+    origName = origName.trim();
+    origName_fa = origName_fa.trim();
+    origDescription = origDescription.trim();
+    origDescription_fa = origDescription_fa.trim();
+
+    if (name !== origName && (name !== '' || origName !== null))
+      this.anyChanges = true;
+    if (name_fa !== origName_fa && (name_fa !== '' || origName_fa !== null))
+      this.anyChanges = true;
+    if (description !== origDescription && (description !== '' || origDescription !== null))
+      this.anyChanges = true;
+    if (description_fa !== origDescription_fa && (description_fa !== '' || origDescription_fa !== null))
+      this.anyChanges = true;
   }
 
   nameRequiring(Ac: AbstractControl) {
-    const name = Ac.get('name').value;
-    const name_fa = Ac.get('name_fa').value;
-    if ((!name || name === '') && (!name_fa || name_fa === ''))
-      Ac.get('name').setErrors({beingNull: 'Both Name and name_fa can not be null.'});
+    let name = Ac.get('name').value;
+    let name_fa = Ac.get('name_fa').value;
+    if(name === null || isUndefined(name) )
+      name = '';
+    if(name_fa === null || isUndefined(name_fa) )
+      name_fa = '';
+    name = name.trim();
+    name_fa = name_fa.trim();
+    if ((!name || name === '') || (!name_fa || name_fa === '')) {
+      if (!name || name === '') {
+        Ac.get('name').setErrors({beingNull: 'Name can not be null.'});
+      }
+      if (!name_fa || name_fa === '') {
+        Ac.get('name_fa').setErrors({beingNull: 'name_fa can not be null.'});
+      }
+    }
     else {
       Ac.get('name').setErrors(null);
       return null;
     }
   }
 }
+
