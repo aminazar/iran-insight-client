@@ -52,7 +52,7 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
     MatSnackBarModule,
     MatProgressBarModule,
   ],
-  entryComponents: [RemovingConfirmComponent],
+  entryComponents: [RemovingConfirmComponent, UndercontructionComponent],
   exports: [
     HeaderComponent,
     SearchFieldsComponent,
