@@ -29,7 +29,7 @@ $mat-oxblood: (
 // Define the default theme (same as the example above).
 $iraninsight-app-primary: mat-palette($mat-grain, 500, 300, 700);
 $iraninsight-app-accent:  mat-palette($mat-oxblood, 500, 300, 700);
-$iraninsight-app-warn: mat-palette($mat-purple, 500, 300, 700);
+$iraninsight-app-warn: mat-palette($mat-amber, 500, 300, 700);
 $iraninsight-app-theme:   mat-light-theme($iraninsight-app-primary, $iraninsight-app-accent, $iraninsight-app-warn);
 
 // Include the default theme styles.
