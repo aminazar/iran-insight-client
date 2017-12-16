@@ -56,7 +56,7 @@ export class EventComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.events = data.event;
-        this.totalEvents = this.events.length > 0 ? parseInt(this.events[0].total) : 0;
+        this.totalEvents = this.events && this.events.length > 0 ? parseInt(this.events[0].total) : 0;
 
         this.aligningItems();
         this.progressService.disable();
@@ -72,6 +72,12 @@ export class EventComponent implements OnInit {
   }
 
   aligningItems(){
+    if(this.totalEvents <= 0){
+      this.aligningObj = {};
+      this.rows = [];
+      return;
+    }
+
     let colCounter = 0;
     let rowCounter = 0;
     this.aligningObj = this.events.length > 0 ? {0: []} : {};
@@ -122,7 +128,7 @@ export class EventComponent implements OnInit {
     }
 
     if(this.searchData.options.start_date !== null){
-      
+
     }
 
     if(this.searchData.options.end_date !== null){

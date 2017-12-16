@@ -61,7 +61,7 @@ export class PersonComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.people = data.person;
-        this.totalPeople = this.people.length > 0 ? parseInt(this.people[0].total) : 0;
+        this.totalPeople = this.people && this.people.length > 0 ? parseInt(this.people[0].total) : 0;
         this.aligningItems();
         this.progressService.disable();
       },
@@ -76,6 +76,12 @@ export class PersonComponent implements OnInit {
   }
 
   aligningItems() {
+    if(this.totalPeople <= 0){
+      this.aligningObj = {};
+      this.rows = [];
+      return;
+    }
+
     let colCounter = 0;
     let rowCounter = 0;
     this.aligningObj = this.people.length > 0 ? {0: []} : {};

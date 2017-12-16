@@ -21,6 +21,9 @@ enum OrganizerType{
 export class EventFormComponent implements OnInit {
   @Input()
   set eventId(id) {
+    this.originalEvent = null;
+    this.organizerId = null;
+    this.organizerName = null;
     this._eventId = id;
     this.eventForm = null;
     this.initForm();
@@ -51,6 +54,9 @@ export class EventFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+
+    if(!this.eventId)
+      this.organizer = this.organizerType.person;
   }
 
   initForm() {
@@ -73,12 +79,12 @@ export class EventFormComponent implements OnInit {
       start_date: [new Date(), [
         Validators.required,
       ]],
-      organizer_name: [null, [
-        Validators.required,
-      ]],
-      organizer_name_fa: [null, [
-        Validators.required,
-      ]],
+      // organizer_name: [null, [
+      //   Validators.required,
+      // ]],
+      // organizer_name_fa: [null, [
+      //   Validators.required,
+      // ]],
       end_date: [null],
       description: [null],
       description_fa: [null],
@@ -219,6 +225,10 @@ export class EventFormComponent implements OnInit {
   }
 
   eventChanged() {
+    console.log(this.upsertBtnShouldDisabled);
+    console.log(this.eventForm.valid);
+    console.log(this.eventId);
+    console.log(this.anyChanges);
     if(!this.originalEvent)
       return;
 

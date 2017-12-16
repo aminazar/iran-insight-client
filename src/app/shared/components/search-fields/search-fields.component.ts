@@ -3,6 +3,7 @@ import {TargetEnum} from '../../enum/target.enum';
 import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import {MatSnackBar} from '@angular/material';
+import * as moment from 'moment';
 
 enum ElementEnum {
   isMentor,
@@ -127,8 +128,8 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
       phrase: phrase,
       options: {
         target: trg,
-        start_date: this.startDate,
-        end_date: this.endDate,
+        start_date: this.startDate ? moment(this.startDate).format('YYYY-MM-DD') : null,
+        end_date: this.endDate ? moment(this.endDate).format('YYYY-MM-DD') : null,
         is_mentor: this.isMentor,
         is_lead: this.isLead,
         is_education: this.isEducation,
@@ -146,7 +147,8 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
           && this.isLead === null
           && this.isActive === null
           && this.amount === null
-          && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq),
+          && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq
+          && !this.startDate && !this.endDate),
       }
     };
 
