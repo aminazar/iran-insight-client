@@ -9,17 +9,17 @@
 
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
-    <div fxFlex="20" *ngFor="let p of aligningObj[rw]" class="person-card">
-      <mat-card (click)="openForm(p.pid)" class="card-view" [class.selected-user]="p.pid === personId">
+    <div fxFlex="20" *ngFor="let p of aligningObj[rw]" class="outer-card">
+      <mat-card (click)="openForm(p.pid)" class="card-view" [class.selected-card]="p.pid === personId">
         <mat-card-content>
-          <div *ngIf="p.username" class="card-header">{{p.username}}</div>
+          <div *ngIf="p.username" class="card-header" [ngClass]="{'user': p.is_user, 'not-user': !p.is_user}">{{p.username}}</div>
           <br/>
-          <div *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
-            Name: <label *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</label> <label *ngIf="p.surname_en || p.surname_fa">{{p.surname_en || p.surname_fa}}</label>
-          </div>
           <div>
-            <label *ngIf="p.is_user" class="user">This person is authenticated</label>
-            <label *ngIf="!p.is_user" class="not-user">This person is not user</label>
+            Name:
+            <label *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
+              <span *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</span> <span *ngIf="p.surname_en || p.surname_fa">{{p.surname_en || p.surname_fa}}</span>
+            </label>
+            <label *ngIf="!p.firstname_en && !p.firstname_fa && !p.surname_en && !p.surname_fa">-</label>
           </div>
         </mat-card-content>
       </mat-card>

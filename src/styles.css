@@ -59,9 +59,47 @@
 .farsi{
 }
 
+
 .fill-remaining-space {
   flex: 1 1 auto;
+}
 
 .mat-toolbar-row{
   font-family: Merriweather;
+}
+
+.row{
+  margin: 20px 10px;
+}
+.outer-card{
+  margin: 10px 5px;
+}
+
+.selected-card{
+  background-color: antiquewhite;
+}
+
+.title-in-card{
+  font-weight: bold;
+}
+
+.content-in-card{
+  font-weight: normal;
+}
+
+.clickable-link{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.fixed-header{
+  position: fixed;
+  margin: auto;
+  z-index: 10000;
+  width: 100%;
+  top: 0px;
+}
+
+.main-content{
+  margin-top: 8%;
 }
