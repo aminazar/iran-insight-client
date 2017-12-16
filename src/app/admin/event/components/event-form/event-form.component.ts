@@ -7,6 +7,7 @@ import {RestService} from "../../../../shared/services/rest.service";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 
+
 enum OrganizerType{
   person,
   business,
@@ -47,6 +48,8 @@ export class EventFormComponent implements OnInit {
   organizer = this.organizerType.person;
   organizerId: number = null;
   organizerName: string = null;
+  lat: number = 51.678418;
+  lng: number = 7.809007;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService) {
@@ -225,10 +228,6 @@ export class EventFormComponent implements OnInit {
   }
 
   eventChanged() {
-    console.log(this.upsertBtnShouldDisabled);
-    console.log(this.eventForm.valid);
-    console.log(this.eventId);
-    console.log(this.anyChanges);
     if(!this.originalEvent)
       return;
 
@@ -338,5 +337,10 @@ export class EventFormComponent implements OnInit {
 
   directToOrganizer(){
     //ToDo: Should direct user to person, business or organization component based on organizerType
+  }
+
+  setMarker(data){
+    this.lat = data.coords.lat;
+    this.lng = data.coords.lng;
   }
 }

@@ -6,6 +6,7 @@ import {
   MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule
 } from "@angular/material";
+import { AgmCoreModule } from '@agm/core';
 
 import {SharedModule} from '../../shared/shared.module';
 import {EventComponent} from './event.component';
@@ -20,6 +21,9 @@ import {eventRouting} from "./event.routing";
     SharedModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
+    }),
     MatIconModule,
     MatButtonModule,
     MatInputModule,
