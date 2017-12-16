@@ -10,7 +10,7 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="20" *ngFor="let b of aligningObj[rw]" class="business-card">
-      <mat-card class="card-view" (click)="openForm(b.bid)"  [class.selected-biz]="b.bid === bizId">
+      <mat-card class="card-view" (click)="openForm(b.bid)"  [class.selected-biz]="b.bid === bizId" mat-ripple>
         <mat-card-content>
           <div>
             <b>name: </b><span>{{b.name}}</span>
@@ -21,6 +21,9 @@
 
           <div>
             <b><a [routerLink]="['./members/'+ b.bid]">members</a></b>
+          </div>
+          <div>
+            <b><a [routerLink]="['/admin/lce/business/'+ b.bid]" [queryParams]="{ name: b.name }">LCE</a></b>
           </div>
 
         </mat-card-content>

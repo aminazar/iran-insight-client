@@ -8,7 +8,7 @@
     <mat-card-content>
 
       <mat-form-field>
-        <mat-select formControlName="type_name" role="type_name" (change)="onChange($event.value)" [disabled]="typeId">
+        <mat-select formControlName="type_name" role="type_name" (change)="onChange($event.value)" >
           <mat-option *ngFor="let cat of cats" [value]="cat">{{cat}}</mat-option>
         </mat-select>
         <mat-placeholder>Select Type</mat-placeholder>
@@ -18,12 +18,12 @@
         <div fxFlex="50">
 
           <mat-form-field>
-            <input matInput formControlName="name" role="name" placeholder="name" required>
+            <input matInput formControlName="name" role="name" placeholder="name">
           </mat-form-field>
         </div>
         <div fxFlex="50" dir="rtl">
           <mat-form-field>
-            <input matInput formControlName="name_fa" role="name_fa" placeholder="نام فارسی" required>
+            <input matInput formControlName="name_fa" role="name_fa" Lang="fa-IR"  placeholder="نام فارسی">
           </mat-form-field>
         </div>
       </div>
