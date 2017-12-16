@@ -111,7 +111,7 @@ export class PersonComponent implements OnInit {
         ;
         break;
       case this.actionEnum.modify: {
-        if(this.checkWithSearch(data)){
+        if(this.checkWithSearch(data.value)){
           this.people[this.people.findIndex(el => el.pid === data.value.pid)] = data.value;
           this.aligningItems();
         }
@@ -137,7 +137,7 @@ export class PersonComponent implements OnInit {
     let isMatched = false;
 
     ['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa', 'display_name_en', 'display_name_fa'].forEach(el => {
-      if (new RegExp(this.searchData.phrase.toLowerCase()).test(data[el].toLowerCase()))
+      if (new RegExp(this.searchData.phrase.toLowerCase()).test(data[el] ? data[el].toLowerCase() : null))
         isMatched = true;
     });
 
