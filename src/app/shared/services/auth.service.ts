@@ -36,6 +36,18 @@ export class AuthService {
     )
   }
 
+  logout(){
+    this.restService.get('logout').subscribe(
+      (data) => {
+        this.router.navigate(['admin/login']);
+        this.isLoggedIn.next(false);
+      },
+      (err) => {
+        console.log('Cannot logout. err', err);
+      }
+    )
+  }
+
   setUserProfile(data){
     return this.restService.post('user/profile', data);
   }

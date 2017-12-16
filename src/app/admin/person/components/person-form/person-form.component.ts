@@ -80,12 +80,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern('[^ @]*@[^ @]*'),
       ]],
-      password: [null, [
-        Validators.minLength(8),
-      ]],
-      re_password: [null, [
-        Validators.minLength(8),
-      ]],
       image: [null],
       address_en: [null, [
         Validators.maxLength(500),
@@ -105,8 +99,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       ]],
       display_name_en: [null],
       display_name_fa: [null],
-    }, {
-      validator: this.matchingPassword
     });
   }
 
@@ -164,7 +156,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       firstname_fa: this.personForm.controls['firstname_fa'].value,
       surname_en: this.personForm.controls['surname_en'].value,
       surname_fa: this.personForm.controls['surname_fa'].value,
-      secret: this.personForm.controls['password'].value,
       image: this.personForm.controls['image'].value,
       address_en: this.personForm.controls['address_en'].value,
       address_fa: this.personForm.controls['address_fa'].value,
@@ -176,10 +167,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       diplay_name_fa: this.personForm.controls['display_name_fa'].value,
     };
 
-    if (!this.personId){
-      delete personData.secret;
+    if (!this.personId)
       delete personData.pid;
-    }
 
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
@@ -209,47 +198,46 @@ export class PersonFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  matchingPassword(AC: AbstractControl) {
-    const password = AC.get('password').value;
-    const confirmPassword = AC.get('re_password').value;
-    if (password !== confirmPassword)
-      AC.get('re_password').setErrors({MathPassword: true});
-    else
-      return null;
-  }
-
   fieldChanged() {
     if(!this.originalPerson)
       return;
 
     this.anyChanges = false;
 
-    if (this.personForm.controls['firstname_en'].value !== this.originalPerson.firstname_en && (this.personForm.controls['firstname_en'].value !== '' || this.originalPerson.firstname_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['firstname_fa'].value !== this.originalPerson.firstname_fa && (this.personForm.controls['firstname_fa'].value !== '' || this.originalPerson.firstname_fa !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['surname_en'].value !== this.originalPerson.surname_en && (this.personForm.controls['surname_en'].value !== '' || this.originalPerson.surname_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['surname_fa'].value !== this.originalPerson.surname_fa && (this.personForm.controls['surname_fa'].value !== '' || this.originalPerson.surname_fa !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['display_name_en'].value !== this.originalPerson.display_name_en && (this.personForm.controls['display_name_en'].value !== '' || this.originalPerson.display_name_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['display_name_fa'].value !== this.originalPerson.display_name_fa && (this.personForm.controls['display_name_fa'].value !== '' || this.originalPerson.display_name_fa !== null))
-      this.anyChanges = true;
-    // if(this.personForm.controls['image'].value !== this.originalPerson.image)
+    Object.keys(this.personForm.controls).filter(el => !['image', 'username'].includes(el)).forEach(el => {
+      if(el != 'image')
+        if (this.personForm.controls[el].value !== this.originalPerson[el] && (this.personForm.controls[el].value !== '' || this.originalPerson[el] !== null))
+          this.anyChanges = true;
+    });
+
+    console.log('anyChanges: ', this.anyChanges);
+
+    // if (this.personForm.controls['firstname_en'].value !== this.originalPerson.firstname_en && (this.personForm.controls['firstname_en'].value !== '' || this.originalPerson.firstname_en !== null))
     //   this.anyChanges = true;
-    if (this.personForm.controls['address_en'].value !== this.originalPerson.address_en && (this.personForm.controls['address_en'].value !== '' || this.originalPerson.address_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['address_fa'].value !== this.originalPerson.address_fa && (this.personForm.controls['address_fa'].value !== '' || this.originalPerson.address_fa !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['phone_no'].value !== this.originalPerson.phone_no && (this.personForm.controls['phone_no'].value !== '' || this.originalPerson.phone_no !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['mobile_no'].value !== this.originalPerson.mobile_no && (this.personForm.controls['mobile_no'].value !== '' || this.originalPerson.mobile_no !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['birth_date'].value !== this.originalPerson.birth_date && (this.personForm.controls['birth_date'].value !== '' || this.originalPerson.birth_date !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['notify_period'].value !== this.originalPerson.notify_period && (this.personForm.controls['notify_period'].value !== '' || this.originalPerson.notify_period !== null))
-      this.anyChanges = true;
+    // if (this.personForm.controls['firstname_fa'].value !== this.originalPerson.firstname_fa && (this.personForm.controls['firstname_fa'].value !== '' || this.originalPerson.firstname_fa !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['surname_en'].value !== this.originalPerson.surname_en && (this.personForm.controls['surname_en'].value !== '' || this.originalPerson.surname_en !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['surname_fa'].value !== this.originalPerson.surname_fa && (this.personForm.controls['surname_fa'].value !== '' || this.originalPerson.surname_fa !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['display_name_en'].value !== this.originalPerson.display_name_en && (this.personForm.controls['display_name_en'].value !== '' || this.originalPerson.display_name_en !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['display_name_fa'].value !== this.originalPerson.display_name_fa && (this.personForm.controls['display_name_fa'].value !== '' || this.originalPerson.display_name_fa !== null))
+    //   this.anyChanges = true;
+    // // if(this.personForm.controls['image'].value !== this.originalPerson.image)
+    // //   this.anyChanges = true;
+    // if (this.personForm.controls['address_en'].value !== this.originalPerson.address_en && (this.personForm.controls['address_en'].value !== '' || this.originalPerson.address_en !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['address_fa'].value !== this.originalPerson.address_fa && (this.personForm.controls['address_fa'].value !== '' || this.originalPerson.address_fa !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['phone_no'].value !== this.originalPerson.phone_no && (this.personForm.controls['phone_no'].value !== '' || this.originalPerson.phone_no !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['mobile_no'].value !== this.originalPerson.mobile_no && (this.personForm.controls['mobile_no'].value !== '' || this.originalPerson.mobile_no !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['birth_date'].value !== this.originalPerson.birth_date && (this.personForm.controls['birth_date'].value !== '' || this.originalPerson.birth_date !== null))
+    //   this.anyChanges = true;
+    // if (this.personForm.controls['notify_period'].value !== this.originalPerson.notify_period && (this.personForm.controls['notify_period'].value !== '' || this.originalPerson.notify_period !== null))
+    //   this.anyChanges = true;
   }
 
   deletePerson() {

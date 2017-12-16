@@ -60,6 +60,9 @@
   font-size: 130% !important;
 }
 
+.fill-remaining-space {
+  flex: 1 1 auto;
+
 .mat-toolbar-row{
   font-family: Merriweather;
 }
