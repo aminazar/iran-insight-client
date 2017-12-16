@@ -1,5 +1,7 @@
 @font-face {
   font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: normal;
   src: url('Adobe-Arabic-Regular.otf');
   unicode-range: U+0600-06FF;
 }
@@ -7,21 +9,23 @@
 @font-face {
   font-family: 'Merriweather';
   src: url('Adobe-Arabic-Bold.otf');
-  unicode-range: U+0600-06FF;
+  font-style: normal;
   font-weight: bold;
+  unicode-range: U+0600-06FF;
 }
 
 @font-face {
   font-family: 'Merriweather';
   src: url('Adobe-Arabic-Italic.otf');
-  unicode-range: U+0600-06FF;
   font-style: italic;
+  font-weight: normal;
+  unicode-range: U+0600-06FF;
 }
 
 @font-face {
   font-family: 'Merriweather';
   src: url('Adobe-Arabic-Bolditalic.otf');
-  unicode-range: U+0600-06FF;
   font-weight: bold;
   font-style: italic;
+  unicode-range: U+0600-06FF;
 }

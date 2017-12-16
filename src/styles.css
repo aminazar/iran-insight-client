@@ -2,8 +2,8 @@
 
 @import "assets/fonts/franklin/index.css";
 @import "assets/fonts/merriweather/index.css";
-@import "assets/fonts/adobe-arabic/index.css";
 @import "assets/fonts/iran-sans/css/fontiran.css";
+@import "assets/fonts/adobe-arabic/index.css";
 
 .page{
   padding: 15px;
