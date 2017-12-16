@@ -48,8 +48,8 @@ export class EventFormComponent implements OnInit {
   organizer = this.organizerType.person;
   organizerId: number = null;
   organizerName: string = null;
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  latitude: number = 51.678418;
+  longitude: number = 7.809007;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService) {
@@ -123,6 +123,8 @@ export class EventFormComponent implements OnInit {
         });
 
         this.organizerName = data.organizer_name || data.organizer_name_fa;
+        // this.latitude = data.latitude;
+        // this.long
         this.organizerId = data.organizer_pid || data.organizer_bid || data.organizer_oid;
         if(data.organizer_pid)
           this.organizer = this.organizerType.person;
@@ -340,7 +342,7 @@ export class EventFormComponent implements OnInit {
   }
 
   setMarker(data){
-    this.lat = data.coords.lat;
-    this.lng = data.coords.lng;
+    this.latitude = data.coords.lat;
+    this.longitude = data.coords.lng;
   }
 }
