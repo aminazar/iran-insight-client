@@ -86,13 +86,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     this.authService.getProductInfo(this.productId).subscribe(
       (data) => {
         data = data[0];
-        this.originalProduct = data;
 
         this.productForm.controls['name'].setValue(data.name);
         this.productForm.controls['name_fa'].setValue(data.name_fa);
         this.productForm.controls['description'].setValue(data.description);
         this.productForm.controls['description_fa'].setValue(data.description_fa);
-
+        this.originalProduct = data;
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
@@ -104,8 +103,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           duration: 2500,
         });
         this.progressService.disable();
-        this.upsertBtnShouldDisabled = false;
-        this.deleteBtnShouldDisabled = false;
+        this.upsertBtnShouldDisabled = true;
+        this.deleteBtnShouldDisabled = true;
       }
     );
   }
@@ -119,13 +118,16 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       description_fa: this.productForm.controls['description_fa'].value,
     };
 
+    if (!this.productId)
+      delete data.product_id;
+
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
     this.authService.setProductInfo(data, this.productId).subscribe(
       (value) => {
         this.snackBar.open(this.productId ? 'Product is updated' : 'Product is added', null, {
-          duration: 1800,
+          duration: 2300,
         });
 
         this.anyChanges = false;
@@ -140,8 +142,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot add this product. Try again', null, {
-          duration: 2300,
+        this.snackBar.open('Cannot' + this.productId ? 'add' : 'update' + 'this product. Try again' , null, {
+          duration: 3200,
         });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;

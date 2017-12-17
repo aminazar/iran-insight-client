@@ -140,7 +140,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       (err) => {
         console.error(err);
         this.snackBar.open('Cannot get user details. Please try again', null, {
-          duration: 3200,
+          duration: 2500,
         });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = true;

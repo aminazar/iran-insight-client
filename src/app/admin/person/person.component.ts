@@ -4,8 +4,8 @@ import {MatSnackBar} from '@angular/material';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
-import {ActionEnum} from "../../shared/enum/action.enum";
-import {ProgressService} from "../../shared/services/progress.service";
+import {ActionEnum} from '../../shared/enum/action.enum';
+import {ProgressService} from '../../shared/services/progress.service';
 
 @Component({
   selector: 'ii-person',
@@ -38,7 +38,6 @@ export class PersonComponent implements OnInit {
      // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.personId = id;
     this.showInDeep = true;
-
     this.selectedIndex = 0;
   }
 

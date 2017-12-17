@@ -2,7 +2,7 @@
     <ii-search-fields fxFlex="100" [target]="'product'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-    <button mat-fab color="primary" (click)="openForm()">
+    <button mat-fab color="accent" (click)="openForm()">
         <mat-icon aria-label="add new product">add</mat-icon>
     </button>
 </div>
@@ -10,7 +10,7 @@
 <div *ngFor="let rw of rows">
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
         <div fxFlex="20" *ngFor="let p of aligningObj[rw]" class="product-card">
-            <mat-card (click)="openForm(p.product_id)" class="card-view">
+            <mat-card (click)="openForm(p.product_id)" class="card-view" [class.selected-card]="p.product_id === productId">
                 <mat-card-content>
                     <br/>
                     <div>

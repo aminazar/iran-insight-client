@@ -22,6 +22,7 @@ export class ProductComponent implements OnInit {
   totalProducts: number = null;
   aligningObj = {};
   rows = [];
+  selectedIndex: number = 0;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,  private progressService: ProgressService) {
@@ -31,9 +32,10 @@ export class ProductComponent implements OnInit {
     this.breadCrumbService.pushChild('product', this.router.url, true);
   }
 
-  openForm(id: number): void {
+  openForm(id: number = null): void {
     this.productId = id;
     this.showInDeep = true;
+    this.selectedIndex = 0;
   }
 
   search(data) {
@@ -55,22 +57,8 @@ export class ProductComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.products = data.product;
-        this.totalProducts = this.products.length > 0 ? parseInt(this.products[0].total) : 0;
-
-        let colCounter = 0;
-        let rowCounter = 0;
-        this.aligningObj = this.products.length > 0 ? {0: []} : {};
-        this.products.forEach(el => {
-          if (colCounter > 4) {
-            this.aligningObj[++rowCounter] = [];
-            colCounter = 0;
-          }
-          this.aligningObj[rowCounter].push(el);
-          colCounter++;
-      });
-
-        this.rows = Object.keys(this.aligningObj);
-        console.log(this.aligningObj);
+        this.totalProducts = this.products && this.products.length > 0 ? parseInt(this.products[0].total) : 0;
+        this.aligningItems();
         this.progressService.disable();
       },
       (err) => {
@@ -83,27 +71,67 @@ export class ProductComponent implements OnInit {
     );
   }
 
+  aligningItems() {
+    if(this.totalProducts <= 0){
+      this.aligningObj = {};
+      this.rows = [];
+      return;
+    }
+    let colCounter = 0;
+    let rowCounter = 0;
+    this.aligningObj = this.products.length > 0 ? {0: []} : {};
+    this.products.forEach(el => {
+      if (colCounter > 4) {
+        this.aligningObj[++rowCounter] = [];
+        colCounter = 0;
+      }
+
+      this.aligningObj[rowCounter].push(el);
+      colCounter++;
+    });
+
+    this.rows = Object.keys(this.aligningObj);
+  }
+
   applyChanges(data) {
-    console.log('In applyChanges: ', data);
     switch (data.action) {
       case this.actionEnum.add: {
-        this.products.unshift(data.value);
-        this.products = this.products.slice(0, this.products.length - 1);
-      };
+        if (this.limit > this.products.length && this.checkWithSearch(data.value)) {
+          this.products.push(data.value);
+          this.aligningItems();
+        }
+        this.totalProducts++;
+      }
         break;
       case this.actionEnum.modify: {
-        this.products[this.products.findIndex(el => el.product_id === data.value.product_id)] = data.value;
-      };
+        if (this.checkWithSearch(data.value)) {
+          this.products[this.products.findIndex(el => el.product_id === data.value.product_id)] = data.value;
+          this.aligningItems();
+        } else
+          this.searching();
+      }
         break;
       case this.actionEnum.delete: {
-        this.products = this.products.filter(el => el.product_id !== data.value);
         this.showInDeep = false;
         this.productId = null;
         this.searching();
-        };
+      }
         break;
     }
-    this.searching();
+  }
+
+  checkWithSearch(data) {
+    if (!this.searchData.phrase || this.searchData.phrase.trim() === '')
+      return true;
+
+    let isMatched = false;
+
+    ['name', 'name_fa', 'description', 'description_fa'].forEach(el => {
+      if (new RegExp(this.searchData.phrase.toLowerCase()).test(data[el] ? data[el].toLowerCase() : null))
+        isMatched = true;
+    });
+
+    return isMatched;
   }
 }
 
