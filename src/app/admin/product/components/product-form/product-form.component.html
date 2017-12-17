@@ -1,37 +1,44 @@
-<div style="padding: 10px; margin: 5px">
-  <div *ngIf="!productId">Add new product</div>
-  <div *ngIf="productId">Edit product</div>
-  <br/>
-  <form (ngSubmit)="modifyProduct()" [formGroup]="productForm">
-    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
-      <div fxFlex="50">
-        <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="ProductName" formControlName="name" role="name" (ngModelChange)="fieldChanged()" tabindex="1"/>
-        </mat-input-container>
+<div>
+<mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+  <mat-tab-group>
+    <mat-tab label="Information">
+      <div style="padding: 10px; margin: 5px">
+        <div *ngIf="!productId">Add new product</div>
+        <div *ngIf="productId">Edit product</div>
+        <br/>
+        <form (ngSubmit)="modifyProduct()" [formGroup]="productForm">
+          <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+            <div fxFlex="50">
+              <mat-input-container class="field-90">
+                <input matInput type="text" placeholder="ProductName" formControlName="name" role="name" (ngModelChange)="fieldChanged()" tabindex="1"/>
+              </mat-input-container>
+            </div>
+            <div fxFlex="50" dir="rtl">
+              <mat-input-container class="field-90">
+                <input matInput type="text" placeholder="نام" formControlName="name_fa" role="name_fa" (ngModelChange)="fieldChanged()" tabindex="3"/>
+              </mat-input-container>
+            </div>
+          </div>
+          <div>
+            <mat-input-container class="field">
+              <textarea matInput placeholder="Description" formControlName="description" role="description" (ngModelChange)="fieldChanged()" tabindex="2"></textarea>
+            </mat-input-container>
+          </div>
+          <div dir="rtl">
+            <mat-input-container class="field">
+              <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description_fa" (ngModelChange)="fieldChanged()" tabindex="4"></textarea>
+            </mat-input-container>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" type="submit" [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))" tabindex="5">
+              <span *ngIf="!productId">Add</span>
+              <span *ngIf="productId">Update</span>
+            </button>
+            <button mat-raised-button color="primary" type="button" *ngIf="productId" (click)="deleteProduct()" [disabled]="deleteBtnShouldDisabled" tabindex="6">Delete</button>
+          </div>
+        </form>
       </div>
-      <div fxFlex="50" dir="rtl">
-        <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="نام" formControlName="name_fa" role="name_fa" (ngModelChange)="fieldChanged()" tabindex="3"/>
-        </mat-input-container>
-      </div>
-    </div>
-    <div>
-      <mat-input-container class="field">
-        <textarea matInput placeholder="Description" formControlName="description" role="description" (ngModelChange)="fieldChanged()" tabindex="2"></textarea>
-      </mat-input-container>
-    </div>
-    <div dir="rtl">
-      <mat-input-container class="field">
-        <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description_fa" (ngModelChange)="fieldChanged()" tabindex="4"></textarea>
-      </mat-input-container>
-    </div>
-    <div>
-      <button mat-raised-button color="primary" type="submit" [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))" tabindex="5">
-        <span *ngIf="!productId">Add</span>
-        <span *ngIf="productId">Update</span>
-      </button>
-      <button mat-raised-button color="primary" type="button" *ngIf="productId" (click)="deleteProduct()" [disabled]="deleteBtnShouldDisabled" tabindex="6">Delete</button>
-    </div>
-  </form>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
 </div>
-

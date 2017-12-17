@@ -19,6 +19,9 @@
                     <div>
                         {{p.name_fa}}
                     </div>
+                    <div>
+                        <b><a [routerLink]="['./product-form/'+ p.product_id]">edit-delete</a></b>
+                    </div>
                 </mat-card-content>
             </mat-card>
         </div>
