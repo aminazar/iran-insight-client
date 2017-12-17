@@ -1,16 +1,22 @@
+<div class="fixed-header">
   <mat-toolbar color="primary">
     <mat-toolbar-row>
       <span style="font-weight: 100;">Iran</span><span style="font-weight: 600">insight</span>
       <!--<span>{{header_title}}</span>-->
+      <span class="fill-remaining-space"></span>
+      <span *ngIf="isLoggedIn" style="font-size: 0.8em;">
+        <a style="text-decoration: none; cursor: pointer;" (click)="logout()">Logout</a>
+      </span>
     </mat-toolbar-row>
   </mat-toolbar>
-<ii-breadcrumb></ii-breadcrumb>
-<section>
-  <mat-progress-bar
-    *ngIf="showProgressing"
-    [color]="color"
-    [mode]="mode"
-    [value]="value"
-    [bufferValue]="bufferValue">
-  </mat-progress-bar>
-</section>
+  <ii-breadcrumb></ii-breadcrumb>
+  <section>
+    <mat-progress-bar
+      *ngIf="showProgressing"
+      [color]="color"
+      [mode]="mode"
+      [value]="value"
+      [bufferValue]="bufferValue">
+    </mat-progress-bar>
+  </section>
+</div>

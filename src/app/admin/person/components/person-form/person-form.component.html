@@ -3,10 +3,10 @@
   <div *ngIf="personId">Edit Person</div>
   <br/>
   <form (ngSubmit)="modifyUser()" [formGroup]="personForm">
-    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-input-container class="field-90">
-          <input matInput type="email" placeholder="Email" formControlName="username" rol="username">
+          <input matInput type="email" placeholder="Email" formControlName="username" role="username" tabindex="1">
         </mat-input-container>
       </div>
       <div fxFlex="50">
@@ -15,27 +15,39 @@
         <!--</mat-input-container>-->
       </div>
     </div>
-    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
       <div fxFlex="50" role="firstname-en">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" (ngModelChange)="fieldChanged()"/>
+          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" tabindex="2"/>
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
         <mat-input-container class="field-90 farsi">
-          <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa" (ngModelChange)="fieldChanged()"/>
+          <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa" tabindex="11"/>
         </mat-input-container>
       </div>
     </div>
-    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en" (ngModelChange)="fieldChanged()"/>
+          <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en" tabindex="3"/>
         </mat-input-container>
       </div>
       <div fxFlex="50" dir="rtl">
         <mat-input-container class="field-90 farsi">
-          <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa" (ngModelChange)="fieldChanged()"/>
+          <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa" tabindex="12"/>
+        </mat-input-container>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+      <div fxFlex="50">
+        <mat-input-container class="field-90">
+          <input matInput type="text" placeholder="Display Name" formControlName="display_name_en" role="display-name-en" tabindex="4"/>
+        </mat-input-container>
+      </div>
+      <div fxFlex="50" dir="rtl">
+        <mat-input-container class="field-90 farsi">
+          <input matInput type="text" placeholder="نام نمایشی" formControlName="display_name_fa" role="display-name-fa" tabindex="13"/>
         </mat-input-container>
       </div>
     </div>
@@ -44,12 +56,12 @@
     </div>
     <div>
       <mat-input-container class="field">
-        <textarea matInput placeholder="Address" formControlName="address_en" role="address-en" (ngModelChange)="fieldChanged()"></textarea>
+        <textarea matInput placeholder="Address" formControlName="address_en" role="address-en" tabindex="5"></textarea>
       </mat-input-container>
     </div>
     <div dir="rtl">
       <mat-input-container class="field farsi">
-        <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa" (ngModelChange)="fieldChanged()"></textarea>
+        <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa" tabindex="14"></textarea>
       </mat-input-container>
     </div>
     <div>
@@ -57,7 +69,7 @@
       <!--<mat-option></mat-option>-->
       <!--</mat-select>-->
       <mat-input-container class="field-90">
-        <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" (ngModelChange)="fieldChanged()"/>
+        <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" tabindex="6"/>
       </mat-input-container>
     </div>
     <div>
@@ -68,32 +80,32 @@
       <!--<mat-option></mat-option>-->
       <!--</mat-select>-->
       <mat-input-container class="field-90">
-        <input matInput type="text" placeholder="Phone number" formControlName="phone_no" (ngModelChange)="fieldChanged()"/>
+        <input matInput type="text" placeholder="Phone number" formControlName="phone_no" tabindex="7"/>
       </mat-input-container>
     </div>
-    <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
       <div fxFlex="50">
         <mat-form-field class="field-90">
           <input matInput [matDatepicker]="birth_picker" placeholder="Birth Date" formControlName="birth_date"
-                 role="birth-date" (ngModelChange)="fieldChanged()"/>
-          <mat-datepicker-toggle matSuffix [for]="birth_picker" role="birth-date-picker"></mat-datepicker-toggle>
+                 role="birth-date" tabindex="8"/>
+          <mat-datepicker-toggle matSuffix [for]="birth_picker" role="birth-date-picker" tabindex="9"></mat-datepicker-toggle>
           <mat-datepicker #birth_picker></mat-datepicker>
         </mat-form-field>
       </div>
       <div fxFlex="50" class="right-column">
         <mat-form-field class="left-text field-90">
-          <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period" (ngModelChange)="fieldChanged()">
+          <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period" tabindex="10">
             <mat-option *ngFor="let pt of periodTypes" [value]="pt.value">{{pt.title}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
-    <div role="submit-button">
-      <button mat-raised-button color="accent" type="submit" [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))">
+    <div role="submit-button" tabindex="20">
+      <button mat-raised-button color="primary" type="submit" [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))">
         <span *ngIf="!personId">Add</span>
         <span *ngIf="personId">Update</span>
       </button>
-      <button mat-raised-button color="accent" type="button" *ngIf="personId" (click)="deletePerson()" [disabled]="deleteBtnShouldDisabled">Delete</button>
+      <button mat-raised-button color="primary" type="button" *ngIf="personId" (click)="deletePerson()" [disabled]="deleteBtnShouldDisabled" tabindex="21">Delete</button>
     </div>
   </form>
 </div>
