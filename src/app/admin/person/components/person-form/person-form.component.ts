@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
@@ -15,9 +15,9 @@ import * as moment from 'moment';
 export class PersonFormComponent implements OnInit, OnDestroy {
   @Input()
   set personId(id) {
-    this._personId = id;
+    // this._personId = id;
     this.initPerson();
-    this.personForm = null;
+    // this.personForm = null;
     this.initForm();
   }
 
@@ -51,12 +51,14 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   resetPasswordBtnShouldDisabled: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService) {
+              public dialog: MatDialog, private progressService: ProgressService,
+              public dialogRef: MatDialogRef<PersonFormComponent>,  @Inject(MAT_DIALOG_DATA) public personEntryData: any) {
   }
 
   ngOnInit() {
+    this.personId = this.personEntryData.id;
     this.initForm();
-
+    this.initPerson();
     this.personForm.valueChanges.subscribe(
       (data) => {
         this.fieldChanged();
