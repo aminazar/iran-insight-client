@@ -1,1 +1,10 @@
+a {
+  white-space: nowrap;
+}
 
+i {
+  font-size: 150%;
+  width:24px;
+  margin-right:4px;
+  text-align: right;
+}

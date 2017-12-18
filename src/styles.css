@@ -92,13 +92,13 @@
   cursor: pointer;
 }
 
-.fixed-header{
-  position: fixed;
-  margin: auto;
-  z-index: 10000;
-  width: 100%;
-  top: 0px;
-}
+/*.fixed-header{*/
+  /*position: fixed;*/
+  /*margin: auto;*/
+  /*z-index: 10000;*/
+  /*width: 100%;*/
+  /*top: 0px;*/
+/*}*/
 
 .main-content{
   margin-top: 8%;
@@ -116,9 +116,12 @@
 .selected-card {
   background-color: #a69d96 !important;
   color: rgba(255,255,255,.87) !important;
-  transition: background-color .5s !important;
-  transition: color .7s ease-out !important;
 }
+
 a {
   color: #76323f;
+}
+
+a:hover {
+  text-decoration: none !important;
 }

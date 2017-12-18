@@ -36,9 +36,15 @@ export class BusinessComponent implements OnInit {
   }
 
   openForm(id: number = 0): void {
-    this.bizId = id;
     this.router.navigate(['admin', 'business', 'upsert', this.bizId])
       .then(() => console.log('done routing'));
+  }
+
+  select(id: number = 0): void {
+    if  (this.bizId === id)
+      this.bizId = null;
+    else
+      this.bizId = id;
   }
 
   search(data) {
