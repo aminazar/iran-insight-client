@@ -92,16 +92,12 @@
   cursor: pointer;
 }
 
-/*.fixed-header{*/
-  /*position: fixed;*/
-  /*margin: auto;*/
-  /*z-index: 10000;*/
-  /*width: 100%;*/
-  /*top: 0px;*/
-/*}*/
-
 .main-content{
   margin-top: 8%;
+}
+
+.mat-card {
+  margin: 6px;
 }
 
 .mat-card-title {
@@ -111,6 +107,10 @@
 .mat-card-subtitle {
   font-family: Merriweather;
   font-weight: normal !important;
+}
+
+.mat-card-content {
+  font-size: 85% !important;
 }
 
 .selected-card {
@@ -124,4 +124,8 @@ a {
 
 a:hover {
   text-decoration: none !important;
+}
+
+.ui-breadcrumb a  {
+  background: transparent !important;
 }
