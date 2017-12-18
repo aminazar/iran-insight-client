@@ -32,13 +32,19 @@ export class BusinessComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('business', this.router.url, true);
+    this.breadCrumbService.pushChild('Business', this.router.url, true);
   }
 
-  openForm(id: number): void {
-    this.bizId = id;
-    this.showInDeep = true;
-    this.selectedIndex = 0;
+  openForm(id: number = 0): void {
+    this.router.navigate(['admin', 'business', 'upsert', this.bizId])
+      .then(() => console.log('done routing'));
+  }
+
+  select(id: number = 0): void {
+    if  (this.bizId === id)
+      this.bizId = null;
+    else
+      this.bizId = id;
   }
 
   search(data) {

@@ -17,7 +17,7 @@ export class AdminHomeComponent implements OnInit {
     Object.keys(TargetEnum).forEach(el => {
       if (el.charCodeAt(0) < 48 || el.charCodeAt(0) > 57)
         this.navLinks.push({
-          label: el,
+          label: TargetEnum[el],
           path: '/admin/' + el,
         });
     });
