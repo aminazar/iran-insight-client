@@ -6,6 +6,8 @@ import * as moment from 'moment';
 import {RestService} from "../../../../shared/services/rest.service";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
 
 
 enum OrganizerType{
@@ -22,13 +24,14 @@ enum OrganizerType{
 export class EventFormComponent implements OnInit {
   @Input()
   set eventId(id) {
-    this.originalEvent = null;
-    this.organizerId = null;
-    this.organizerName = null;
+    // this.originalEvent = null;
+    // this.organizerId = null;
+    // this.organizerName = null;
     this._eventId = id;
-    this.eventForm = null;
-    this.initForm();
-    this.initEvent();
+    // this.eventForm = null;
+    // this.initForm();
+    // this.initEvent();
+    // this.initLocation();
   }
 
   get eventId() {
@@ -48,18 +51,32 @@ export class EventFormComponent implements OnInit {
   organizer = this.organizerType.person;
   organizerId: number = null;
   organizerName: string = null;
-  latitude: number = 51.678418;
-  longitude: number = 7.809007;
+  latitude: number = 35.696491;
+  longitude: number = 51.379926;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
-              private progressService: ProgressService, private restService: RestService) {
+              private progressService: ProgressService, private restService: RestService,
+              private router: Router, private route: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService) {
   }
 
   ngOnInit() {
     this.initForm();
 
-    if(!this.eventId)
-      this.organizer = this.organizerType.person;
+    this.route.params.subscribe(
+      (params) => {
+        this.eventId = +params['id'] ? +params['id'] : null;
+        if(this.eventId)
+          this.breadcrumbService.pushChild('Update Event', this.router.url, false);
+        else{
+          this.breadcrumbService.pushChild('Add Event', this.router.url, false);
+          this.organizer = this.organizerType.person;
+        }
+      }
+    );
+
+    this.initEvent();
+    this.initLocation();
   }
 
   initForm() {
@@ -104,7 +121,7 @@ export class EventFormComponent implements OnInit {
   }
 
   initEvent() {
-    if(!this.eventId){
+    if (!this.eventId) {
       this.eventForm = null;
       this.initForm();
       return;
@@ -116,19 +133,20 @@ export class EventFormComponent implements OnInit {
     this.restService.get('event/' + this.eventId).subscribe(
       (data) => {
         Object.keys(this.eventForm.controls).forEach(el => {
-          if(el === 'start_date' || el === 'end_date')
+          if (el === 'start_date' || el === 'end_date')
             this.eventForm.controls[el].setValue(data[el] ? moment(data[el]).format('YYYY-MM-DD') : null);
           else
             this.eventForm.controls[el].setValue(data[el]);
         });
 
+        this.latitude = data.latitude;
+        this.longitude = data.longitude;
         this.organizerName = data.organizer_name || data.organizer_name_fa;
-        // this.latitude = data.latitude;
-        // this.long
+
         this.organizerId = data.organizer_pid || data.organizer_bid || data.organizer_oid;
-        if(data.organizer_pid)
+        if (data.organizer_pid)
           this.organizer = this.organizerType.person;
-        else if(data.organizer_bid)
+        else if (data.organizer_bid)
           this.organizer = this.organizerType.business;
         else
           this.organizer = this.organizerType.organization;
@@ -177,14 +195,19 @@ export class EventFormComponent implements OnInit {
 
     let eventData = {};
     Object.keys(this.eventForm.controls).filter(el => !['organizer_name', 'organizer_name_fa'].includes(el)).forEach(el => {
-      eventData[el] = this.eventForm.controls[el].value;
+      if(el === 'start_date' || el === 'end_date')
+        eventData[el] = this.eventForm.controls[el].value ? moment(this.eventForm.controls[el].value).format('YYYY-MM-DD') : null;
+      else
+        eventData[el] = this.eventForm.controls[el].value;
     });
 
     eventData = Object.assign({
       eid: this.eventId,
-        organizer_pid: this.organizer === this.organizerType.person ? this.organizerId : null,
-        organizer_bid: this.organizer === this.organizerType.business ? this.organizerId : null,
-        organizer_oid: this.organizer === this.organizerType.organization ? this.organizerId : null,
+      organizer_pid: this.organizer === this.organizerType.person ? this.organizerId : null,
+      organizer_bid: this.organizer === this.organizerType.business ? this.organizerId : null,
+      organizer_oid: this.organizer === this.organizerType.organization ? this.organizerId : null,
+      latitude: this.latitude,
+      longitude: this.longitude,
     }, eventData);
 
 
@@ -200,37 +223,40 @@ export class EventFormComponent implements OnInit {
       this.restService.post('event/' + this.eventId, eventData)
       :
       this.restService.put('event', eventData))
-        .subscribe(
-          (data) => {
-            this.snackBar.open(this.eventId ? 'Event is updated' : 'Event is added', null, {
-              duration: 2300,
-            });
+      .subscribe(
+        (data) => {
+          this.snackBar.open(this.eventId ? 'Event is updated' : 'Event is added', null, {
+            duration: 2300,
+          });
 
-            this.anyChanges = false;
-            this.eventId = data;
-            this.originalEvent = Object.assign({eid: data}, eventData);
-            this.changedEvent.emit({
-              action: this.eventId ? this.actionEnum.modify : this.actionEnum.add,
-              value: Object.assign({eid: data}, eventData)
-            });
+          this.anyChanges = false;
+          this.changedEvent.emit({
+            action: this.eventId ? this.actionEnum.modify : this.actionEnum.add,
+            value: Object.assign({
+              eid: data,
+              organizerName: this.organizerName,
+            }, eventData)
+          });
+          this.originalEvent = Object.assign({eid: data}, eventData);
+          this.eventId = data;
 
-            this.progressService.disable();
-            this.upsertBtnShouldDisabled = false;
-            this.deleteBtnShouldDisabled = false;
-          },
-          (err) => {
-            this.snackBar.open('Cannot ' + this.eventId ? 'add' : 'update' + ' this event. Try again', null, {
-              duration: 3200,
-            });
-            this.progressService.disable();
-            this.upsertBtnShouldDisabled = false;
-            this.deleteBtnShouldDisabled = false;
-          }
-        );
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+        },
+        (err) => {
+          this.snackBar.open('Cannot ' + (this.eventId ? 'update' : 'add') + ' this event. Try again', null, {
+            duration: 3200,
+          });
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+        }
+      );
   }
 
   eventChanged() {
-    if(!this.originalEvent)
+    if (!this.originalEvent)
       return;
 
     this.anyChanges = false;
@@ -239,27 +265,30 @@ export class EventFormComponent implements OnInit {
       let formValue = this.eventForm.controls[el].value;
       let originalValue = this.originalEvent[el];
 
-      if(el === 'start_date' || el === 'end_date'){
-        if((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+      if (el === 'start_date' || el === 'end_date') {
+        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       }
-      else{
-        if(['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa', 'organizer_name', 'organizer_name_fa'].includes(el)){
-          if(formValue && formValue.trim().length <= 0)
+      else {
+        if (['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa', 'organizer_name', 'organizer_name_fa'].includes(el)) {
+          if (formValue && formValue.trim().length <= 0)
             formValue = null;
-          else if(formValue)
+          else if (formValue)
             formValue = formValue.trim();
 
-          if(originalValue && originalValue.trim().length <= 0)
+          if (originalValue && originalValue.trim().length <= 0)
             originalValue = null;
-          else if(originalValue)
+          else if (originalValue)
             originalValue = originalValue.trim();
         }
 
-        if(formValue !== originalValue && (formValue !== '' || originalValue !== null))
+        if (formValue !== originalValue && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       }
     });
+
+    if(this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
+      this.anyChanges = true;
   }
 
   deleteEvent() {
@@ -270,7 +299,7 @@ export class EventFormComponent implements OnInit {
 
     rmDialog.afterClosed().subscribe(
       (data) => {
-        if(data){
+        if (data) {
           this.progressService.enable();
           this.upsertBtnShouldDisabled = true;
           this.deleteBtnShouldDisabled = true;
@@ -337,12 +366,39 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  directToOrganizer(){
-    //ToDo: Should direct user to person, business or organization component based on organizerType
+  directToOrganizer() {
+    if(this.organizerId){
+      let url = 'admin/';
+      switch (this.organizer){
+        case this.organizerType.person: url += 'person';
+        break;
+        case this.organizerType.business: url += 'business';
+        break;
+        case this.organizerType.organization: url += 'organization';
+        break;
+      }
+
+      url += this.organizerId;
+
+      this.router.navigate([url]);
+    }
   }
 
-  setMarker(data){
+  setMarker(data) {
     this.latitude = data.coords.lat;
     this.longitude = data.coords.lng;
+
+    this.eventChanged();
+  }
+
+  initLocation() {
+    if (navigator.geolocation && !this.eventId) {
+      navigator.geolocation.getCurrentPosition(el => {
+        this.latitude = el.coords.latitude;
+        this.longitude = el.coords.longitude;
+      }, err => {
+        console.log('ERROR: ', err);
+      })
+    }
   }
 }

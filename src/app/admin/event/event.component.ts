@@ -5,6 +5,7 @@ import {SearchService} from "../../shared/services/search.service";
 import {MatSnackBar} from "@angular/material";
 import {ProgressService} from "../../shared/services/progress.service";
 import {Router} from "@angular/router";
+import * as moment from 'moment';
 
 @Component({
   selector: 'ii-event',
@@ -13,7 +14,7 @@ import {Router} from "@angular/router";
 })
 export class EventComponent implements OnInit {
   offset = 0;
-  limit = 0;
+  limit = 10;
   events = [];
   eventId: number = null;
   showInDeep: boolean = false;
@@ -33,8 +34,9 @@ export class EventComponent implements OnInit {
   }
 
   openForm(id: number): void {
-    this.eventId = id;
-    this.showInDeep = true;
+    // this.eventId = id;
+    // this.showInDeep = true;
+    this.router.navigate(['admin/event/' + id]);
   }
 
   search(data) {
@@ -71,8 +73,8 @@ export class EventComponent implements OnInit {
     )
   }
 
-  aligningItems(){
-    if(this.totalEvents <= 0){
+  aligningItems() {
+    if (this.totalEvents <= 0) {
       this.aligningObj = {};
       this.rows = [];
       return;
@@ -95,44 +97,55 @@ export class EventComponent implements OnInit {
   }
 
   applyChanges(data) {
-    switch (data.action){
+    switch (data.action) {
       case this.actionEnum.add: {
-        this.events.unshift(data.value);
-        this.events = this.events.slice(0, this.events.length - 1);
-        this.aligningItems();
+        if (this.limit > this.events.length && this.checkWithSearch(data.value)) {
+          this.events.push(data.value);
+          this.aligningItems();
+        }
+
+        this.totalEvents++;
       }
-      break;
+        break;
       case this.actionEnum.modify: {
-        this.events[this.events.findIndex(el => el.eid === data.value.eid)] = data.value;
-        this.aligningItems();
+        if (this.checkWithSearch(data.value)) {
+          this.events[this.events.findIndex(el => el.eid === data.value.eid)] = data.value;
+          this.aligningItems();
+        }
+        else
+          this.searching();
       }
-      break;
+        break;
       case this.actionEnum.delete: {
-        this.events = this.events.filter(el => el.eid !== data.value);
         this.showInDeep = false;
         this.eventId = null;
         this.searching();
       }
-      break;
+        break;
     }
   }
 
-  checkWithSearch(data){
+  checkWithSearch(data) {
     let isMatched = false;
 
-    if(this.searchData.phrase && this.searchData.phrase.trime() !== ''){
+    if (this.searchData.phrase && this.searchData.phrase.trime() !== '') {
       ['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa'].forEach(el => {
-        if(new RegExp(this.searchData.phrase.toLowerCase()).test(data[el].toLowerCase()))
+        if (new RegExp(this.searchData.phrase.toLowerCase()).test(data[el] ? data[el].toLowerCase() : null))
           isMatched = true;
       });
     }
 
-    if(this.searchData.options.start_date !== null){
-
+    if (this.searchData.options.start_date && this.searchData.options.end_date &&
+      moment(data.start_date).isAfter(moment(this.searchData.options.start_date).subtract(1, 'days')) && moment(data.end_date).isBefore(moment(this.searchData.options.end_date).add(1, 'days'))) {
+      isMatched = true;
     }
-
-    if(this.searchData.options.end_date !== null){
-
+    else if (this.searchData.options.start_date && !this.searchData.options.end_date &&
+      moment(data.start_date).isAfter(moment(this.searchData.options.start_date).subtract(1, 'days'))) {
+      isMatched = true;
+    }
+    else if (!this.searchData.options.start_date && this.searchData.options.end_date &&
+      moment(data.end_date).isBefore(moment(this.searchData.options.end_date).add(1, 'days'))) {
+      isMatched = true;
     }
 
     return isMatched;

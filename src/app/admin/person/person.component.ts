@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
 import {ActionEnum} from "../../shared/enum/action.enum";
 import {ProgressService} from "../../shared/services/progress.service";
+import {PersonDetailsComponent} from "./components/person-details/person-details.component";
 
 @Component({
   selector: 'ii-person',
@@ -27,7 +28,7 @@ export class PersonComponent implements OnInit {
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
-              private progressService: ProgressService) {
+              private progressService: ProgressService, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -35,11 +36,14 @@ export class PersonComponent implements OnInit {
   }
 
   openForm(id: number = null): void {
-     // Navigate to new page (3 tabs: Information, Expertise and Partnership)
+    // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.personId = id;
     this.showInDeep = true;
 
     this.selectedIndex = 0;
+
+    this.dialog.open(PersonDetailsComponent)
+    // this.router.navigate(['admin/person/' + id]);
   }
 
   search(data) {
@@ -76,7 +80,7 @@ export class PersonComponent implements OnInit {
   }
 
   aligningItems() {
-    if(this.totalPeople <= 0){
+    if (this.totalPeople <= 0) {
       this.aligningObj = {};
       this.rows = [];
       return;
@@ -101,31 +105,28 @@ export class PersonComponent implements OnInit {
   applyChanges(data) {
     switch (data.action) {
       case this.actionEnum.add: {
-        if(this.limit > this.people.length && this.checkWithSearch(data)){
+        if (this.limit > this.people.length && this.checkWithSearch(data.value)) {
           this.people.push(data.value);
           this.aligningItems();
         }
 
         this.totalPeople++;
       }
-        ;
         break;
       case this.actionEnum.modify: {
-        if(this.checkWithSearch(data.value)){
+        if (this.checkWithSearch(data.value)) {
           this.people[this.people.findIndex(el => el.pid === data.value.pid)] = data.value;
           this.aligningItems();
         }
         else
           this.searching();
       }
-        ;
         break;
       case this.actionEnum.delete: {
         this.showInDeep = false;
         this.personId = null;
         this.searching();
       }
-        ;
         break;
     }
   }

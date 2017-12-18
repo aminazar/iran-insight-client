@@ -92,13 +92,13 @@
   cursor: pointer;
 }
 
-.fixed-header{
-  position: fixed;
-  margin: auto;
-  z-index: 10000;
-  width: 100%;
-  top: 0px;
-}
+/*.fixed-header{*/
+  /*position: fixed;*/
+  /*margin: auto;*/
+  /*z-index: 10000;*/
+  /*width: 100%;*/
+  /*top: 0px;*/
+/*}*/
 
 .main-content{
   margin-top: 8%;
