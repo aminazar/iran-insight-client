@@ -146,3 +146,17 @@ a:hover {
 .ui-breadcrumb a  {
   background: transparent !important;
 }
+
+.view-title{
+  font-weight: bold;
+}
+
+.view-content{
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.farsi .view-content{
+  margin-left: unset;
+  margin-right: 8px;
+}

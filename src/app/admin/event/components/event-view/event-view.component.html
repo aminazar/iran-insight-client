@@ -1,43 +1,43 @@
-<mat-dialog-content>
-  <mat-card *ngIf="event">
+<div fxLayout="row" fxLayoutAlign="center center">
+  <mat-card fxFlex="60" fxFlex.sm="0" fxFlex.xs="0" fxFlex.offset="20" fxFlex.offset.sm="0" fxFlex.offset.xs="0" *ngIf="event">
     <mat-card-title>{{event.title}}</mat-card-title>
     <mat-card-content>
       <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
            fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
         <div fxFlex="50">
-          <div>Title</div>
-          <div>{{event.title}}</div>
+          <div class="view-title">Title</div>
+          <div class="view-content">{{event.title}}</div>
         </div>
-        <div fxFlex="50" dir="rtl">
-          <div>عنوان</div>
-          <div *ngIf="event.title_fa">{{event.title_fa}}</div>
-          <div *ngIf="!event.title_fa">-</div>
-        </div>
-      </div>
-      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
-           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
-        <div fxFlex="50">
-          <div>Description</div>
-          <div *ngIf="event.description">{{event.description}}</div>
-          <div *ngIf="!event.description">-</div>
-        </div>
-        <div fxFlex="50" dir="rtl">
-          <div>توضیحات</div>
-          <div *ngIf="event.description_fa">{{event.description_fa}}</div>
-          <div *ngIf="!event.description_fa">-</div>
+        <div fxFlex="50" dir="rtl" class="farsi">
+          <div class="view-title">عنوان</div>
+          <div class="view-content" *ngIf="event.title_fa">{{event.title_fa}}</div>
+          <div class="view-content" *ngIf="!event.title_fa">-</div>
         </div>
       </div>
       <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
            fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
         <div fxFlex="50">
-          <div>Address</div>
-          <div *ngIf="event.address">{{event.address}}</div>
-          <div *ngIf="!event.address">{{event.address}}</div>
+          <div class="view-title">Description</div>
+          <div class="view-content" *ngIf="event.description">{{event.description}}</div>
+          <div class="view-content" *ngIf="!event.description">-</div>
         </div>
-        <div fxFlex="50" dir="rtl">
-          <div>آدرس</div>
-          <div *ngIf="event.address_fa">{{event.address_fa}}</div>
-          <div *ngIf="!event.address_fa">-</div>
+        <div fxFlex="50" dir="rtl" class="farsi">
+          <div class="view-title">توضیحات</div>
+          <div class="view-content" *ngIf="event.description_fa">{{event.description_fa}}</div>
+          <div class="view-content" *ngIf="!event.description_fa">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div class="view-title">Address</div>
+          <div class="view-content" *ngIf="event.address">{{event.address}}</div>
+          <div class="view-content" *ngIf="!event.address">{{event.address}}</div>
+        </div>
+        <div fxFlex="50" dir="rtl" class="farsi">
+          <div class="view-title">آدرس</div>
+          <div class="view-content" *ngIf="event.address_fa">{{event.address_fa}}</div>
+          <div class="view-content" *ngIf="!event.address_fa">-</div>
         </div>
       </div>
       <div>
@@ -49,17 +49,14 @@
           </agm-marker>
         </agm-map>
       </div>
-      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
-           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
-        <div fxFlex="50">
-          <div>Start Date:</div>
-          <div>{{event.start_date}}</div>
-        </div>
-        <div fxFlex="50">
-          <div>End Date:</div>
-          <div *ngIf="event.end_date">{{event.end_date}}</div>
-          <div *ngIf="!event.end_date">-</div>
-        </div>
+      <div>
+        <div class="view-title">Start Date:</div>
+        <div class="view-content">{{event.start_date}}</div>
+      </div>
+      <div>
+        <div class="view-title">End Date:</div>
+        <div class="view-content" *ngIf="event.end_date">{{event.end_date}}</div>
+        <div class="view-content" *ngIf="!event.end_date">-</div>
       </div>
     </mat-card-content>
     <mat-card-actions>
@@ -74,4 +71,4 @@
       </button>
     </mat-card-actions>
   </mat-card>
-</mat-dialog-content>
+</div>
