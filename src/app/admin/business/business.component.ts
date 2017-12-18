@@ -36,7 +36,7 @@ export class BusinessComponent implements OnInit {
   }
 
   openForm(id: number = 0): void {
-    this.router.navigate(['admin', 'business', 'upsert', this.bizId])
+    this.router.navigate(['admin', 'business', 'upsert', id])
       .then(() => console.log('done routing'));
   }
 
