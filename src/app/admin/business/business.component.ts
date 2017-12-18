@@ -12,8 +12,6 @@ import {ProgressService} from '../../shared/services/progress.service';
   styleUrls: ['./business.component.css']
 })
 export class BusinessComponent implements OnInit {
-
-
   offset = 0;
   limit = 10;
   biz = [];

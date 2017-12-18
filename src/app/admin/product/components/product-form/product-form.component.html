@@ -1,7 +1,9 @@
 <div>
     <div style="padding: 10px; margin: 5px">
-        <div *ngIf="!productId">Add new product</div>
-        <div *ngIf="productId">Edit product</div>
+        <div *ngIf="!productId && !deleting && !updating && !viewInfo && adding">Add new product</div>
+        <div *ngIf="productId && !deleting && !updating && viewInfo && !adding">View product info</div>
+        <div *ngIf="productId && !deleting && updating && !viewInfo && !adding">Edit product</div>
+        <div *ngIf="productId && deleting && !updating && !viewInfo && !adding">Delete product</div>
         <br/>
         <form (ngSubmit)="modifyProduct()" [formGroup]="productForm">
             <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start"
@@ -33,13 +35,24 @@
             </div>
             <div>
                 <button mat-raised-button color="primary" type="submit"
-                        [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))"
-                        tabindex="5">
-                    <span *ngIf="!productId">Add</span>
-                    <span *ngIf="productId">Update</span>
+                        *ngIf="!productId && !deleting && !updating && !viewInfo && adding"
+                        [disabled]="!productForm.valid">Add
                 </button>
-                <button mat-raised-button color="primary" type="button" *ngIf="productId" (click)="deleteProduct()"
-                        [disabled]="deleteBtnShouldDisabled" tabindex="6">Delete
+
+                <button mat-raised-button color="primary" type="submit"
+                        *ngIf="productId && !deleting && updating && !viewInfo && !adding"
+                        [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">
+                    Update
+                </button>
+
+                <button mat-raised-button color="primary" type="submit"
+                        *ngIf="productId && !deleting && !updating && viewInfo && !adding"
+                        [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">Ok
+                </button>
+
+                <button mat-raised-button color="primary" type="button"
+                        *ngIf="deleting && !updating && !viewInfo && !adding" (click)="deleteProduct()" tabindex="6">
+                    Delete
                 </button>
             </div>
         </form>

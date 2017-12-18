@@ -22,12 +22,12 @@
                 </mat-card-header>
                 <mat-card-actions>
                     <button mat-icon-button color="primary">
-                        <mat-icon aria-label="view" (click)="openReadOnlyForm(p.product_id)" >visibility</mat-icon>
+                        <mat-icon aria-label="view" (click)="openViewForm(p.product_id)" >visibility</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="openForm(p.product_id)" color="accent">
+                    <button mat-icon-button (click)="openUpdateForm(p.product_id)" color="accent">
                         <mat-icon aria-label="edit">edit</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="openForm(p.product_id)" color="warn">
+                    <button mat-icon-button (click)="openDeleteForm(p.product_id)" color="warn">
                         <mat-icon aria-label="delete">delete</mat-icon>
                     </button>
                 </mat-card-actions>
@@ -44,10 +44,12 @@
         <mat-card-content>
             <mat-tab-group>
                 <mat-tab label="Information">
-                    <ii-product-form [productId]="productId" (changedProduct)="applyChanges($event)"></ii-product-form>
+                    <ii-product-form [productId]="productId" [deleting]="deleting" [updating]="updating" [viewInfo]="viewInfo" [adding]="adding" (changedProduct)="applyChanges($event)"></ii-product-form>
                 </mat-tab>
             </mat-tab-group>
         </mat-card-content>
     </mat-card>
 </div>
+
+
 

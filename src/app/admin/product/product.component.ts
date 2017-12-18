@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
@@ -23,6 +23,13 @@ export class ProductComponent implements OnInit {
   aligningObj = {};
   rows = [];
   selectedIndex = 0;
+  showReadOnlyCard = false;
+
+  @Output() deleting = false;
+  @Output() updating = false;
+  @Output() viewInfo = false;
+  @Output() adding = false;
+  @Input() testData;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,  private progressService: ProgressService) {
@@ -34,17 +41,49 @@ export class ProductComponent implements OnInit {
 
 
   openForm(id: number = null): void {
-    this.productId = id;
+    this.deleting = false;
+    this.updating = false;
+    this.viewInfo = false;
+    this.adding = true;
     this.showInDeep = true;
     this.selectedIndex = 0;
+    this.productId = id;
+    this.showReadOnlyCard = false;
   }
 
-  openReadOnlyForm(id): void {
+  openViewForm(id: number = null): void {
+    this.deleting = false;
+    this.updating = false;
+    this.viewInfo = true;
+    this.adding = false;
+    this.showReadOnlyCard = true;
+    this.showInDeep = true;
+    this.selectedIndex = 0;
+    this.productId = id;
+  }
+
+  openUpdateForm (id: number = null): void {
+    this.deleting = false;
+    this.updating = true;
+    this.viewInfo = false;
+    this.adding = false;
     this.productId = id;
     this.showInDeep = true;
     this.selectedIndex = 0;
+    this.showReadOnlyCard = false;
     this.router.navigate(['admin', 'product', 'upsert', this.productId])
       .then(() => console.log('done routing'));
+  }
+
+  openDeleteForm(id: number = null): void {
+    this.deleting = true;
+    this.updating = false;
+    this.viewInfo = false;
+    this.adding = false;
+    this.productId = id;
+    this.showInDeep = true;
+    this.selectedIndex = 0;
+    this.showReadOnlyCard = false;
   }
 
   search(data) {
@@ -60,6 +99,7 @@ export class ProductComponent implements OnInit {
 
   searching() {
     this.showInDeep = false;
+    this.showReadOnlyCard = false;
     this.productId = null;
 
     this.progressService.enable();

@@ -28,8 +28,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   get productId() {
     return this._productId;
   }
+  @Input() deleting;
+  @Input() updating;
+  @Input() viewInfo;
+  @Input() adding;
 
   @Output() changedProduct = new EventEmitter();
+  @Output() testData: any = {};
 
   productForm: FormGroup;
   _productId: number = null;
@@ -37,8 +42,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   originalProduct: any = null;
   actionEnum = ActionEnum;
   upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
-  deleting =false;
 
 
   constructor( private router: Router, private authService: AuthService, private snackBar: MatSnackBar,
@@ -87,7 +90,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
-    this.deleteBtnShouldDisabled = true;
     this.authService.getProductInfo(this.productId).subscribe(
       (data) => {
         data = data[0];
@@ -100,7 +102,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
-        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         console.log(err);
@@ -109,13 +110,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = true;
-        this.deleteBtnShouldDisabled = true;
       }
     );
   }
 
   modifyProduct() {
-    this.deleting = false;
     const data = {
       product_id: this.productId,
       name: this.productForm.controls['name'].value,
@@ -129,7 +128,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
-    this.deleteBtnShouldDisabled = true;
     this.authService.setProductInfo(data, this.productId).subscribe(
       (value) => {
         this.snackBar.open(this.productId ? 'Product is updated' : 'Product is added', null, {
@@ -145,7 +143,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
-        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         this.snackBar.open('Cannot' + this.productId ? 'add' : 'update' + 'this product. Try again', null, {
@@ -153,7 +150,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
-        this.deleteBtnShouldDisabled = false;
       }
     );
   }
@@ -170,7 +166,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
           this.progressService.enable();
           this.upsertBtnShouldDisabled = true;
-          this.deleteBtnShouldDisabled = true;
 
           this.authService.deleteProduct(this.productId).subscribe(
             (data) => {
@@ -181,7 +176,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
               this.changedProduct.emit({action: this.actionEnum.delete, value: this.productId});
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
-              this.deleteBtnShouldDisabled = false;
             },
             (error) => {
               this.snackBar.open('Cannot delete this product. Please try again', null, {
@@ -189,7 +183,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
               });
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
-              this.deleteBtnShouldDisabled = false;
             }
           );
         }
