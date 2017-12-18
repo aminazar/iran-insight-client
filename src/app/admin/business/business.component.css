@@ -1,10 +1,10 @@
-.row{
-  margin: 20px 10px;
-}
-.business-card{
-  margin: 10px 5px;
+a {
+  white-space: nowrap;
 }
 
-.selected-biz{
-  background-color: antiquewhite;
+i {
+  font-size: 150%;
+  width:24px;
+  margin-right:4px;
+  text-align: right;
 }

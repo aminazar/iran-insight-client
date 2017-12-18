@@ -28,7 +28,7 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('product', this.router.url, true);
+    this.breadCrumbService.pushChild('Product', this.router.url, true);
   }
 
   openForm(id: number): void {

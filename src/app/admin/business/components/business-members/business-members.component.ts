@@ -27,7 +27,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('members', this.router.url, false);
+    this.breadCrumbService.pushChild('Members', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = params['bid'];
       this.progressService.enable();

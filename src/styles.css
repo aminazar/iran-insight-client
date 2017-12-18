@@ -76,7 +76,7 @@
 }
 
 .selected-card{
-  background-color: antiquewhite;
+  background-color: #a69d96;
 }
 
 .title-in-card{
@@ -102,4 +102,26 @@
 
 .main-content{
   margin-top: 8%;
+}
+
+.mat-card-title {
+  font-family: Merriweather;
+  font-weight: normal !important;
+}
+.mat-card-subtitle {
+  font-family: Merriweather;
+  font-weight: normal !important;
+}
+
+.selected-card {
+  background-color: #a69d96 !important;
+  color: rgba(255,255,255,.87) !important;
+}
+
+a {
+  color: #76323f;
+}
+
+a:hover {
+  text-decoration: none !important;
 }
