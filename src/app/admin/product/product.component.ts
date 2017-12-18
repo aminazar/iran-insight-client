@@ -22,7 +22,7 @@ export class ProductComponent implements OnInit {
   totalProducts: number = null;
   aligningObj = {};
   rows = [];
-  selectedIndex: number = 0;
+  selectedIndex = 0;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,  private progressService: ProgressService) {
@@ -32,10 +32,14 @@ export class ProductComponent implements OnInit {
     this.breadCrumbService.pushChild('Product', this.router.url, true);
   }
 
+
   openForm(id: number = null): void {
     this.productId = id;
+    console.log('***', this.productId);
     this.showInDeep = true;
     this.selectedIndex = 0;
+    this.router.navigate(['admin', 'product', 'upsert', this.productId])
+      .then(() => console.log('done routing'));
   }
 
   search(data) {

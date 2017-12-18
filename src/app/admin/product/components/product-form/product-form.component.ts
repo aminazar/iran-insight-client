@@ -6,6 +6,9 @@ import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {isUndefined} from 'util';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {RestService} from '../../../../shared/services/rest.service';
 
 
 @Component({
@@ -36,13 +39,27 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService) {
+  constructor( private router: Router, private authService: AuthService, private snackBar: MatSnackBar,
+              public dialog: MatDialog, private progressService: ProgressService, private breadCrumbService: BreadcrumbService,
+              private activatedRoute: ActivatedRoute, private restService: RestService ) {
   }
-
   ngOnInit() {
-    this.initForm();
+    console.log('----', this.productId);
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.productId = +params['product_id'];
+      this.breadCrumbService.pushChild(this.productId ? 'Update' : 'Add', this.router.url, false);
+      this.progressService.enable();
+      this.restService.get(`product/test/${this.productId}`).subscribe(res => {
 
+        this.progressService.disable();
+      }, err => {
+        this.progressService.disable();
+
+      });
+
+    });
+    // this.breadCrumbService.pushChild('Update', this.router.url, false);
+    this.initForm();
     this.productForm.valueChanges.subscribe(
       (data) => {
         this.fieldChanged();
@@ -142,7 +159,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot' + this.productId ? 'add' : 'update' + 'this product. Try again' , null, {
+        this.snackBar.open('Cannot' + this.productId ? 'add' : 'update' + 'this product. Try again', null, {
           duration: 3200,
         });
         this.progressService.disable();
@@ -234,9 +251,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   nameRequiring(Ac: AbstractControl) {
     let name = Ac.get('name').value;
     let name_fa = Ac.get('name_fa').value;
-    if(name === null || isUndefined(name) )
+    if (name === null || isUndefined(name))
       name = '';
-    if(name_fa === null || isUndefined(name_fa) )
+    if (name_fa === null || isUndefined(name_fa))
       name_fa = '';
     name = name.trim();
     name_fa = name_fa.trim();
