@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('login', this.router.url);
+    this.breadCrumbService.pushChild('Login', this.router.url);
     this.form = this.fb.group({
       username: [null, [
         Validators.required,

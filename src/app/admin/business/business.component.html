@@ -10,19 +10,18 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="20" *ngFor="let b of aligningObj[rw]" class="business-card">
-      <mat-card class="card-view" (click)="openForm(b.bid)"  [class.selected-biz]="b.bid === bizId">
+      <mat-card class="card-view" (click)="openForm(b.bid)" [ngClass]="{'selected-card mat-elevation-z24': b.bid === bizId}">
+        <mat-card-header>
+          <!--<div mat-card-avatar><img src="../../../assets/logo4.jpg" style="width:40px;height: 40px;"/></div>-->
+          <mat-card-title>
+           {{b.name}}
+          </mat-card-title>
+        <mat-card-subtitle>
+          {{b.name_fa}}
+        </mat-card-subtitle>
+        </mat-card-header>
         <mat-card-content>
-          <div>
-            <b>name: </b><span>{{b.name}}</span>
-          </div>
-          <div>
-            <b>name_fa: </b><span>{{b.name_fa}}</span>
-          </div>
-
-          <div>
-            <b><a [routerLink]="['./members/'+ b.bid]">members</a></b>
-          </div>
-
+          <a [routerLink]="['./members/'+ b.bid]">members</a>
         </mat-card-content>
       </mat-card>
     </div>

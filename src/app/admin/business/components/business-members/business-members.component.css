@@ -4,7 +4,7 @@
 .member-card{
   margin: 10px 5px;
 }
-
 .selected-member{
-  background-color: antiquewhite;
+  background-color: #a69d96;
+  color: white !important;
 }
