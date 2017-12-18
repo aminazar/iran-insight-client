@@ -38,26 +38,14 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   actionEnum = ActionEnum;
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
+  deleting =false;
+
 
   constructor( private router: Router, private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService, private breadCrumbService: BreadcrumbService,
               private activatedRoute: ActivatedRoute, private restService: RestService ) {
   }
   ngOnInit() {
-    console.log('----', this.productId);
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.productId = +params['product_id'];
-      this.breadCrumbService.pushChild(this.productId ? 'Update' : 'Add', this.router.url, false);
-      this.progressService.enable();
-      this.restService.get(`product/test/${this.productId}`).subscribe(res => {
-
-        this.progressService.disable();
-      }, err => {
-        this.progressService.disable();
-
-      });
-
-    });
     // this.breadCrumbService.pushChild('Update', this.router.url, false);
     this.initForm();
     this.productForm.valueChanges.subscribe(
@@ -127,6 +115,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   }
 
   modifyProduct() {
+    this.deleting = false;
     const data = {
       product_id: this.productId,
       name: this.productForm.controls['name'].value,

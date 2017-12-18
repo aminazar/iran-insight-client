@@ -35,7 +35,12 @@ export class ProductComponent implements OnInit {
 
   openForm(id: number = null): void {
     this.productId = id;
-    console.log('***', this.productId);
+    this.showInDeep = true;
+    this.selectedIndex = 0;
+  }
+
+  openReadOnlyForm(id): void {
+    this.productId = id;
     this.showInDeep = true;
     this.selectedIndex = 0;
     this.router.navigate(['admin', 'product', 'upsert', this.productId])
