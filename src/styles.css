@@ -104,6 +104,10 @@
   margin-top: 100px;
 }
 
+.mat-card {
+  margin: 6px;
+}
+
 .mat-card-title {
   font-family: Merriweather;
   font-weight: normal !important;
@@ -111,6 +115,10 @@
 .mat-card-subtitle {
   font-family: Merriweather;
   font-weight: normal !important;
+}
+
+.mat-card-content {
+  font-size: 85% !important;
 }
 
 .selected-card {
@@ -133,4 +141,8 @@ a:hover {
 
 .mat-input-placeholder{
   line-height: 20px !important;
+}
+
+.ui-breadcrumb a  {
+  background: transparent !important;
 }
