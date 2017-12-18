@@ -92,16 +92,16 @@
   cursor: pointer;
 }
 
-/*.fixed-header{*/
-  /*position: fixed;*/
-  /*margin: auto;*/
-  /*z-index: 10000;*/
-  /*width: 100%;*/
-  /*top: 0px;*/
-/*}*/
+.fixed-header{
+  position: fixed;
+  margin: auto;
+  z-index: 10000;
+  width: 100%;
+  top: 0px;
+}
 
 .main-content{
-  margin-top: 8%;
+  margin-top: 100px;
 }
 
 .mat-card-title {
@@ -124,4 +124,13 @@ a {
 
 a:hover {
   text-decoration: none !important;
+}
+
+.field-container{
+  width: 100%;
+  margin: 5px;
+}
+
+.mat-input-placeholder{
+  line-height: 20px !important;
 }

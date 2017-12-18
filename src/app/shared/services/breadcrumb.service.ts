@@ -33,4 +33,8 @@ export class BreadcrumbService {
 
   }
 
+  popChild(){
+    this.routes.length--;
+    this.routesRS.next(this.routes);
+  }
 }

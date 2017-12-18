@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA} from '@angular/material';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
 import {ProgressService} from "../../../../shared/services/progress.service";
 import * as moment from 'moment';
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
 
 @Component({
   selector: 'ii-person-form',
@@ -15,10 +17,7 @@ import * as moment from 'moment';
 export class PersonFormComponent implements OnInit, OnDestroy {
   @Input()
   set personId(id) {
-    // this._personId = id;
-    this.initPerson();
-    // this.personForm = null;
-    this.initForm();
+    this._personId = id;
   }
 
   get personId() {
@@ -52,13 +51,25 @@ export class PersonFormComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
-              public dialogRef: MatDialogRef<PersonFormComponent>,  @Inject(MAT_DIALOG_DATA) public personEntryData: any) {
+              private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.personId = this.personEntryData.id;
     this.initForm();
-    this.initPerson();
+
+    this.route.params.subscribe(
+      (params) => {
+        this.personId = +params['id'] ? +params['id'] : null;
+        this.initPerson();
+
+        if(this.personId)
+          this.breadcrumbService.pushChild('Update Person', this.router.url, false);
+        else
+          this.breadcrumbService.pushChild('Add Person', this.router.url, false);
+      }
+    );
+
     this.personForm.valueChanges.subscribe(
       (data) => {
         this.fieldChanged();
@@ -81,7 +92,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       surname_fa: [null],
       username: [{value: null, disabled: this.personId ? true : false}, [
         Validators.required,
-        Validators.pattern('[^ @]*@[^ @]*'),
+        Validators.email,
       ]],
       image: [null],
       address_en: [null, [

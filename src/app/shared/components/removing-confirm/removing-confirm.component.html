@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="center">
   <mat-card-header>
     Removing Confirmation
   </mat-card-header>
@@ -6,10 +6,14 @@
     Are you sure to remove {{name}}
     <div fxLayout="row" rxLayout.xs="column" fxLayoutAlign="center center">
       <div fxFlex="50" role="yes-btn">
-        <button mat-raised-button (click)="remove(true)">YES</button>
+        <button mat-icon-button (click)="remove(true)">
+          <mat-icon aria-label="yes">done</mat-icon>
+        </button>
       </div>
       <div fxFlex="50" role="no-btn">
-        <button mat-raised-button (click)="remove(false)">NO</button>
+        <button mat-icon-button (click)="remove(false)">
+          <mat-icon aria-label="no">clear</mat-icon>
+        </button>
       </div>
     </div>
   </mat-card-content>

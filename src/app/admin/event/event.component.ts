@@ -2,10 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {ActionEnum} from "../../shared/enum/action.enum";
 import {BreadcrumbService} from "../../shared/services/breadcrumb.service";
 import {SearchService} from "../../shared/services/search.service";
-import {MatSnackBar} from "@angular/material";
+import {MatDialog, MatSnackBar} from "@angular/material";
 import {ProgressService} from "../../shared/services/progress.service";
 import {Router} from "@angular/router";
 import * as moment from 'moment';
+import {EventFormComponent} from "./components/event-form/event-form.component";
+import {EventViewComponent} from "./components/event-view/event-view.component";
+import {RemovingConfirmComponent} from "../../shared/components/removing-confirm/removing-confirm.component";
+import {RestService} from "../../shared/services/rest.service";
 
 @Component({
   selector: 'ii-event',
@@ -26,7 +30,8 @@ export class EventComponent implements OnInit {
 
   constructor(private breadCrumService: BreadcrumbService, private searchService: SearchService,
               private snackBar: MatSnackBar, private progressService: ProgressService,
-              private router: Router) {
+              private router: Router, public dialog: MatDialog,
+              private restService: RestService) {
   }
 
   ngOnInit() {
@@ -34,9 +39,42 @@ export class EventComponent implements OnInit {
   }
 
   openForm(id: number): void {
-    // this.eventId = id;
-    // this.showInDeep = true;
-    this.router.navigate(['admin/event/' + id]);
+    this.eventId = id;
+    this.router.navigate(['/admin/event/form/' + this.eventId]);
+  }
+
+  openView(id: number = null): void{
+    this.eventId = id;
+    this.router.navigate(['/admin/event/' + this.eventId]);
+  }
+
+  deleteEvent(id: number = null): void{
+    this.eventId = id;
+    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (res) => {
+        if(res)
+          this.restService.delete('event/' + id).subscribe(
+            (data) => {
+              this.eventId = null;
+              this.snackBar.open('Event is deleted successfully', null, {
+                duration: 2300,
+              });
+              this.searching();
+            },
+            (err) => {
+              console.error('Cannot delete this event. Error: ', err);
+              this.snackBar.open('Cannot delete this event. Please try again.', null, {
+                duration: 3200,
+              });
+            }
+          );
+      },
+      (err) => console.error('Error in closing component. Error: ', err)
+    );
   }
 
   search(data) {
@@ -84,7 +122,7 @@ export class EventComponent implements OnInit {
     let rowCounter = 0;
     this.aligningObj = this.events.length > 0 ? {0: []} : {};
     this.events.forEach(el => {
-      if (colCounter > 4) {
+      if (colCounter > 3) {
         this.aligningObj[++rowCounter] = [];
         colCounter = 0;
       }
@@ -149,5 +187,12 @@ export class EventComponent implements OnInit {
     }
 
     return isMatched;
+  }
+
+  select(id: number = null){
+    if(this.eventId === id)
+      this.eventId = null;
+    else
+      this.eventId = id;
   }
 }

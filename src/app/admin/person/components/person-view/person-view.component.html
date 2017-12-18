@@ -1,3 +1,81 @@
-<p>
-  person-view works!
-</p>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlex.offset="20" fxFlex.offset.sm="0" fxFlex.offset.xs="0" *ngIf="person">
+    <mat-card-header>
+      <mat-card-title>{{person.username}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Name</div>
+          <div *ngIf="person.firstname_en || person.surname_en">{{person.firstname_en}} {{person.surname_en}}</div>
+          <div *ngIf="!person.firstname_en && !person.surname_en">-</div>
+        </div>
+        <div dir="rtl" fxFlex="50">
+          <div>نام</div>
+          <div *ngIf="person.firstname_fa || person.surname_fa">{{person.firstname_fa}} {{person.surname_fa}}</div>
+          <div *ngIf="!person.firstname_fa && !person.surname_fa">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Display Name</div>
+          <div *ngIf="person.display_name_en">{{person.display_name_en}}</div>
+          <div *ngIf="!person.display_name_fa">-</div>
+        </div>
+        <div dir="rtl" fxFlex="50">
+          <div>نام نمایشی</div>
+          <div *ngIf="person.display_name_fa">{{person.display_name_fa}}</div>
+          <div *ngIf="!person.display_name_fa">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Address</div>
+          <div *ngIf="person.address_en">{{person.address_en}}</div>
+          <div *ngIf="!person.address_en">-</div>
+        </div>
+        <div dir="rtl" fxFlex="50">
+          <div>آدرس</div>
+          <div *ngIf="person.address_fa">{{person.address_fa}}</div>
+          <div *ngIf="!person.address_fa">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Mobile No.</div>
+          <div *ngIf="person.mobile_no">{{person.mobile_no}}</div>
+          <div *ngIf="!person.mobile_no">-</div>
+        </div>
+        <div fxFlex="50">
+          <div>Phone No.</div>
+          <div *ngIf="person.phone_no">{{person.phone_no}}</div>
+          <div *ngIf="!person.phone_no">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Birth Date</div>
+          <div *ngIf="person.birth_date">{{person.birthd_date}}</div>
+          <div *ngIf="!person.birth_date">-</div>
+        </div>
+        <div fxFlex="50">
+          <div>Notification Type</div>
+          <div>{{person.notify_period}}</div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button (click)="editPerson()" color="accent">
+        <mat-icon aria-label="edit">edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deletePerson()">
+        <mat-icon aria-label="delete">delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

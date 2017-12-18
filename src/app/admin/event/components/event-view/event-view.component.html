@@ -1,3 +1,77 @@
-<p>
-  event-view works!
-</p>
+<mat-dialog-content>
+  <mat-card *ngIf="event">
+    <mat-card-title>{{event.title}}</mat-card-title>
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Title</div>
+          <div>{{event.title}}</div>
+        </div>
+        <div fxFlex="50" dir="rtl">
+          <div>عنوان</div>
+          <div *ngIf="event.title_fa">{{event.title_fa}}</div>
+          <div *ngIf="!event.title_fa">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Description</div>
+          <div *ngIf="event.description">{{event.description}}</div>
+          <div *ngIf="!event.description">-</div>
+        </div>
+        <div fxFlex="50" dir="rtl">
+          <div>توضیحات</div>
+          <div *ngIf="event.description_fa">{{event.description_fa}}</div>
+          <div *ngIf="!event.description_fa">-</div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Address</div>
+          <div *ngIf="event.address">{{event.address}}</div>
+          <div *ngIf="!event.address">{{event.address}}</div>
+        </div>
+        <div fxFlex="50" dir="rtl">
+          <div>آدرس</div>
+          <div *ngIf="event.address_fa">{{event.address_fa}}</div>
+          <div *ngIf="!event.address_fa">-</div>
+        </div>
+      </div>
+      <div>
+        <agm-map [latitude]="event.latitude" [longitude]="event.longitude">
+          <agm-marker [latitude]="event.latitude"
+                      [longitude]="event.longitude"
+                      [markerClickable]="false"
+                      [markerDraggable]="false">
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div>Start Date:</div>
+          <div>{{event.start_date}}</div>
+        </div>
+        <div fxFlex="50">
+          <div>End Date:</div>
+          <div *ngIf="event.end_date">{{event.end_date}}</div>
+          <div *ngIf="!event.end_date">-</div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button (click)="editEvent()" color="accent">
+        <mat-icon aria-label="edit">edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteEvent()">
+        <mat-icon aria-label="delete">delete</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" type="button" (click)="closeForm()">
+        <mat-icon aria-label="no">clear</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</mat-dialog-content>

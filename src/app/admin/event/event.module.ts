@@ -12,6 +12,7 @@ import {SharedModule} from '../../shared/shared.module';
 import {EventComponent} from './event.component';
 import {EventFormComponent} from "./components/event-form/event-form.component";
 import {eventRouting} from "./event.routing";
+import { EventViewComponent } from './components/event-view/event-view.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import {eventRouting} from "./event.routing";
   declarations: [
     EventComponent,
     EventFormComponent,
-  ],
+    EventViewComponent,
+  ]
 })
 export class EventModule {
 

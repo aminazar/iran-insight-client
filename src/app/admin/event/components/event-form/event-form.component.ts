@@ -53,6 +53,7 @@ export class EventFormComponent implements OnInit {
   organizerName: string = null;
   latitude: number = 35.696491;
   longitude: number = 51.379926;
+  organizerHasError: boolean = false;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService,
@@ -289,6 +290,11 @@ export class EventFormComponent implements OnInit {
 
     if(this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
       this.anyChanges = true;
+
+    if(!this.organizerId)
+      this.organizerHasError = true;
+    else
+      this.organizerHasError = false;
   }
 
   deleteEvent() {
@@ -364,11 +370,13 @@ export class EventFormComponent implements OnInit {
       }
         break;
     }
+
+    this.eventChanged();
   }
 
   directToOrganizer() {
     if(this.organizerId){
-      let url = 'admin/';
+      let url = '/admin/';
       switch (this.organizer){
         case this.organizerType.person: url += 'person';
         break;
@@ -378,7 +386,7 @@ export class EventFormComponent implements OnInit {
         break;
       }
 
-      url += this.organizerId;
+      url += ('/' + this.organizerId);
 
       this.router.navigate([url]);
     }

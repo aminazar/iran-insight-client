@@ -1,125 +1,138 @@
-<div style="padding: 10px; margin: 5px">
-  <div *ngIf="!personId">Add new person</div>
-  <div *ngIf="personId">Edit Person</div>
-  <br/>
-  <form (ngSubmit)="modifyUser()" [formGroup]="personForm">
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-      <div fxFlex="50">
-        <mat-input-container class="field-90">
-          <input matInput type="email" placeholder="Email" formControlName="username" role="username" tabindex="1">
-        </mat-input-container>
-      </div>
-      <div fxFlex="50">
-        <!--<mat-input-container>-->
-        <!--<input type="file" placeholder="Image" formControlName="image" role="image"/>-->
-        <!--</mat-input-container>-->
-      </div>
-    </div>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-      <div fxFlex="50" role="firstname-en">
-        <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" tabindex="2"/>
-        </mat-input-container>
-      </div>
-      <div fxFlex="50" dir="rtl">
-        <mat-input-container class="field-90 farsi">
-          <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa"
-                 tabindex="11"/>
-        </mat-input-container>
-      </div>
-    </div>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-      <div fxFlex="50">
-        <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en"
-                 tabindex="3"/>
-        </mat-input-container>
-      </div>
-      <div fxFlex="50" dir="rtl">
-        <mat-input-container class="field-90 farsi">
-          <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa"
-                 tabindex="12"/>
-        </mat-input-container>
-      </div>
-    </div>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-      <div fxFlex="50">
-        <mat-input-container class="field-90">
-          <input matInput type="text" placeholder="Display Name" formControlName="display_name_en"
-                 role="display-name-en" tabindex="4"/>
-        </mat-input-container>
-      </div>
-      <div fxFlex="50" dir="rtl">
-        <mat-input-container class="field-90 farsi">
-          <input matInput type="text" placeholder="نام نمایشی" formControlName="display_name_fa"
-                 role="display-name-fa" tabindex="13"/>
-        </mat-input-container>
-      </div>
-    </div>
-    <div *ngIf="personId">
-      <button mat-raised-button type="button" (click)="resetPassword()" [disabled]="resetPasswordBtnShouldDisabled">
-        Reset Password
-      </button>
-    </div>
-    <div>
-      <mat-input-container class="field">
+<div fxLayout="row" fxLayoutAlign="center center">
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlex.offset="20" fxFlex.offset.sm="0" fxFlex.xs="0">
+    <mat-card-header>
+      <mat-card-title>
+        <div *ngIf="!personId">Add new person</div>
+        <div *ngIf="personId">Edit Person</div>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="modifyUser()" [formGroup]="personForm">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-input-container class="field">
+              <input matInput type="email" placeholder="Email" formControlName="username" role="username" tabindex="1">
+              <mat-hint>Enter user's email</mat-hint>
+              <mat-error
+                *ngIf="personForm.controls['username'].hasError('required') && !personForm.controls['username'].hasError('email')">
+                Please enter user's email
+              </mat-error>
+              <mat-error
+                *ngIf="!personForm.controls['username'].hasError('required') && personForm.controls['username'].hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-input-container>
+          </div>
+          <div fxFlex="50">
+            <!--<mat-input-container>-->
+            <!--<input type="file" placeholder="Image" formControlName="image" role="image"/>-->
+            <!--</mat-input-container>-->
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" role="firstname-en" class="field-container">
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="Firstname" formControlName="firstname_en" tabindex="2"/>
+            </mat-input-container>
+          </div>
+          <div fxFlex="50" dir="rtl" class="field-container">
+            <mat-input-container class="field farsi">
+              <input matInput type="text" placeholder="نام" formControlName="firstname_fa" role="firstname-fa"
+                     tabindex="11"/>
+            </mat-input-container>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="Surname" formControlName="surname_en" role="surname-en"
+                     tabindex="3"/>
+            </mat-input-container>
+          </div>
+          <div fxFlex="50" dir="rtl" class="field-container">
+            <mat-input-container class="field farsi">
+              <input matInput type="text" placeholder="نام خانوادگی" formControlName="surname_fa" role="surname-fa"
+                     tabindex="12"/>
+            </mat-input-container>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="Display Name" formControlName="display_name_en"
+                     role="display-name-en" tabindex="4"/>
+            </mat-input-container>
+          </div>
+          <div fxFlex="50" dir="rtl" class="field-container">
+            <mat-input-container class="field farsi">
+              <input matInput type="text" placeholder="نام نمایشی" formControlName="display_name_fa"
+                     role="display-name-fa" tabindex="13"/>
+            </mat-input-container>
+          </div>
+        </div>
+        <div *ngIf="personId">
+          <button mat-raised-button type="button" (click)="resetPassword()" [disabled]="resetPasswordBtnShouldDisabled">
+            Reset Password
+          </button>
+        </div>
+        <div class="field-container">
+          <mat-input-container class="field">
             <textarea matInput placeholder="Address" formControlName="address_en" role="address-en"
                       tabindex="5"></textarea>
-      </mat-input-container>
-    </div>
-    <div dir="rtl">
-      <mat-input-container class="field farsi">
+            <mat-hint>Enter maximum 500 characters</mat-hint>
+            <mat-error *ngIf="personForm.controls['address_en'].hasError('maxLength')">Please enter less than 500
+              characters
+            </mat-error>
+          </mat-input-container>
+        </div>
+        <div dir="rtl" class="field-container">
+          <mat-input-container class="field farsi">
             <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"
                       tabindex="14"></textarea>
-      </mat-input-container>
-    </div>
-    <div>
-      <!--<mat-select placeholder="Country">-->
-      <!--<mat-option></mat-option>-->
-      <!--</mat-select>-->
-      <mat-input-container class="field-90">
-        <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" tabindex="6"/>
-      </mat-input-container>
-    </div>
-    <div>
-      <!--<mat-select placeholder="Counter">-->
-      <!--<mat-option></mat-option>-->
-      <!--</mat-select>-->
-      <!--<mat-select placeholder="City">-->
-      <!--<mat-option></mat-option>-->
-      <!--</mat-select>-->
-      <mat-input-container class="field-90">
-        <input matInput type="text" placeholder="Phone number" formControlName="phone_no" tabindex="7"/>
-      </mat-input-container>
-    </div>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-      <div fxFlex="50">
-        <mat-form-field class="field-90">
-          <input matInput [matDatepicker]="birth_picker" placeholder="Birth Date" formControlName="birth_date"
-                 role="birth-date" tabindex="8"/>
-          <mat-datepicker-toggle matSuffix [for]="birth_picker" role="birth-date-picker"
-                                 tabindex="9"></mat-datepicker-toggle>
-          <mat-datepicker #birth_picker></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div fxFlex="50" class="right-column">
-        <mat-form-field class="left-text field-90">
-          <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period"
-                      tabindex="10">
-            <mat-option *ngFor="let pt of periodTypes" [value]="pt.value">{{pt.title}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-    <div role="submit-button" tabindex="20">
-      <button mat-raised-button color="primary" type="submit"
-              [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))">
-        <span *ngIf="!personId">Add</span>
-        <span *ngIf="personId">Update</span>
-      </button>
-      <button mat-raised-button color="primary" type="button" *ngIf="personId" (click)="deletePerson()"
-              [disabled]="deleteBtnShouldDisabled" tabindex="21">Delete
-      </button>
-    </div>
-  </form>
+            <mat-hint style="margin-bottom: 4px;">حداکثر از 500 حرف استفاده شود</mat-hint>
+            <mat-error style="margin-bottom: 4px;" *ngIf="personForm.controls['address_fa'].hasError('maxLength')">لطفا حداکثر از 500 حرف استفاده کنید</mat-error>
+          </mat-input-container>
+        </div>
+        <div class="field-container">
+          <mat-input-container class="field">
+            <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" tabindex="6"/>
+          </mat-input-container>
+        </div>
+        <div class="field-container">
+          <mat-input-container class="field">
+            <input matInput type="text" placeholder="Phone number" formControlName="phone_no" tabindex="7"/>
+          </mat-input-container>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-form-field class="field">
+              <input matInput [matDatepicker]="birth_picker" placeholder="Birth Date" formControlName="birth_date"
+                     role="birth-date" tabindex="8"/>
+              <mat-datepicker-toggle matSuffix [for]="birth_picker" role="birth-date-picker"
+                                     tabindex="9"></mat-datepicker-toggle>
+              <mat-datepicker #birth_picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="right-column field-container">
+            <mat-form-field class="left-text field">
+              <mat-select formControlName="notify_period" placeholder="Get notification" role="notify-period"
+                          tabindex="10">
+                <mat-option *ngFor="let pt of periodTypes" [value]="pt.value">{{pt.title}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div role="submit-button">
+          <button mat-icon-button color="accent" type="submit"
+                  [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))" tabindex="20">
+            <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" *ngIf="personId" (click)="deletePerson()"
+                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -17,6 +17,7 @@ import { PersonPartnershipComponent } from './components/person-partnership/pers
 import {personRouting} from './person.routing';
 import {PersonComponent} from './person.component';
 import { PersonDetailsComponent } from './components/person-details/person-details.component';
+import { PersonViewComponent } from './components/person-view/person-view.component';
 
 @NgModule({
   imports: [
@@ -46,8 +47,9 @@ import { PersonDetailsComponent } from './components/person-details/person-detai
     PersonExpertiseComponent,
     PersonPartnershipComponent,
     PersonDetailsComponent,
+    PersonViewComponent,
   ],
-  entryComponents: [PersonDetailsComponent]
+  entryComponents: [PersonDetailsComponent, PersonViewComponent, PersonFormComponent]
 })
 export class PersonModule {
 }
