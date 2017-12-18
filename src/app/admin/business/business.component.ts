@@ -73,7 +73,7 @@ export class BusinessComponent implements OnInit {
         this.aligningObj = this.biz && this.biz.length > 0 ? {0: []} : {};
         if (this.biz) {
           this.biz.forEach(el => {
-            if (colCounter > 4) {
+            if (colCounter > 3) {
               this.aligningObj[++rowCounter] = [];
               colCounter = 0;
             }
