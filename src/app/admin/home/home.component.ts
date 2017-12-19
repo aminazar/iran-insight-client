@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TargetEnum} from '../../shared/enum/target.enum';
 import {WindowService} from "../../shared/services/window.service";
 
@@ -8,6 +8,7 @@ import {WindowService} from "../../shared/services/window.service";
   styleUrls: ['./home.component.css']
 })
 export class AdminHomeComponent implements OnInit {
+  @ViewChild('drawer') drawer;
   navLinks = [
     {label: 'Person', path: '/admin/person'},
     {label: 'Business', path: '/admin/business'},
@@ -18,6 +19,7 @@ export class AdminHomeComponent implements OnInit {
   ];
   showBurgerMenu: boolean = false;
   height: number = 300;
+  selectedLink = 'Person';
 
   constructor(private windowService: WindowService) {
 
@@ -55,5 +57,10 @@ export class AdminHomeComponent implements OnInit {
     }
 
     return true;
+  }
+
+  selectOnLink(link){
+    this.selectedLink = link;
+    this.drawer.close();
   }
 }

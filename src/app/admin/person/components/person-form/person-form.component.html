@@ -122,6 +122,16 @@
             </mat-form-field>
           </div>
         </div>
+        <div *ngIf="personId">
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + personId]"><i class="fa fa-certificate">Expertise</i></a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/membership/' + personId]"><i class="fa fa-handshake-o">Membership</i></a>
+          </div>
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/business/' + personId]"><i class="fa fa-university">Businesses</i></a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/organization/' + personId]"><i class="fa fa-industry">Organizations</i></a>
+          </div>
+        </div>
         <div role="submit-button">
           <button mat-icon-button color="accent" type="submit"
                   [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))" tabindex="20">

@@ -190,3 +190,7 @@ a:hover {
 .menu-button{
   margin-top: 10px !important;
 }
+
+.ev-loc{
+  height: 250px;
+}

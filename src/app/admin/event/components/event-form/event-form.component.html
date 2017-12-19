@@ -117,6 +117,11 @@
             </mat-form-field>
           </div>
         </div>
+        <div *ngIf="eventId">
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+            <a fxFlex="50" class="clickable-link" [routerLink]="['./attendee/' + eventId]"><i class="fa fa-bullhorn"></i>Attendee</a>
+          </div>
+        </div>
         <div role="submit-button">
           <button mat-icon-button color="accent" type="submit"
                   [disabled]="upsertBtnShouldDisabled || !eventForm.valid || (eventId && !anyChanges)" tabindex="20">

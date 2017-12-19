@@ -197,8 +197,14 @@ export class PersonFormComponent implements OnInit, OnDestroy {
 
         this.anyChanges = false;
         this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
-        this.originalPerson = Object.assign({pid: data.pid}, personData);
-        this.personId = data.pid;
+
+        if(!this.personId){
+          this.personForm.reset();
+        }
+        else{
+          this.originalPerson = Object.assign({pid: data.pid}, personData);
+          this.personId = data.pid;
+        }
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
@@ -272,6 +278,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this person. Please try again', null, {

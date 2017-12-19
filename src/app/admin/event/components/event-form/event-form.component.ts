@@ -326,6 +326,8 @@ export class EventFormComponent implements OnInit {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this event. Please try again', null, {

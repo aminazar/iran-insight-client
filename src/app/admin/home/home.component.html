@@ -2,9 +2,9 @@
   <mat-drawer-container>
     <mat-drawer #drawer mode="side" [style.height]="height + 'px'" (openedChange)="menuIsOpen($event)">
       <div class="menu-container" [style.height]="height + 'px'">
-        <div *ngFor="let link of navLinks" class="menu-item">
+        <div *ngFor="let link of navLinks" class="menu-item" [ngClass]="{'selected-link': selectedLink === link.label}">
           <a class="clickable-link" [routerLink]="link.path" routerLinkActive #rla="routerLinkActive"
-             (click)="drawer.close()">{{link.label}}</a>
+             (click)="selectOnLink(link.label)">{{link.label}}</a>
         </div>
       </div>
     </mat-drawer>
