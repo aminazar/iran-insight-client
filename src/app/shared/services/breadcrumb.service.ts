@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {IBreadcrumb} from '../interfaces/breadcrumb.interface';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Location} from "@angular/common";
 
 
 @Injectable()
@@ -11,7 +12,7 @@ export class BreadcrumbService {
   private routesRS = new ReplaySubject<IBreadcrumb[]>(0);
   routes$ = this.routesRS.asObservable();
 
-  constructor() {
+  constructor(private location: Location) {
 
   }
 
@@ -34,7 +35,8 @@ export class BreadcrumbService {
   }
 
   popChild(){
-    this.routes.length--;
+    this.routes.pop();
+    this.location.back();
     this.routesRS.next(this.routes);
   }
 }

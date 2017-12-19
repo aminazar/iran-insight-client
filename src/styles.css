@@ -160,3 +160,37 @@ a:hover {
   margin-left: unset;
   margin-right: 8px;
 }
+
+.menu-item{
+  padding: 20px;
+  font-size: 1.2em;
+}
+
+.menu-container{
+  background-color: rgba(241,232,225,0.81);
+}
+
+.mat-drawer-container{
+  overflow: visible !important;
+}
+
+.fixed-navbar{
+  position: fixed;
+  top: 100px;
+  z-index: 200;
+  margin-top: -13px;
+  width: 100%;
+  background-color: white;
+}
+
+.admin-content{
+  margin-top: 150px;
+}
+
+.menu-button{
+  margin-top: 10px !important;
+}
+
+.ev-loc{
+  height: 250px;
+}

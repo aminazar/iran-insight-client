@@ -8,6 +8,7 @@ import {ProgressService} from "../../../../shared/services/progress.service";
 import * as moment from 'moment';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
 
 @Component({
   selector: 'ii-person-form',
@@ -44,6 +45,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   originalPerson: any = null;
   anyChanges = false;
   actionEnum = ActionEnum;
+  checkOnLeave: boolean = true;
 
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
@@ -195,8 +197,14 @@ export class PersonFormComponent implements OnInit, OnDestroy {
 
         this.anyChanges = false;
         this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
-        this.originalPerson = Object.assign({pid: data.pid}, personData);
-        this.personId = data.pid;
+
+        if(!this.personId){
+          this.personForm.reset();
+        }
+        else{
+          this.originalPerson = Object.assign({pid: data.pid}, personData);
+          this.personId = data.pid;
+        }
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
@@ -270,6 +278,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this person. Please try again', null, {
@@ -312,5 +322,25 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.resetPasswordBtnShouldDisabled = false;
       }
     );
+  }
+
+  canDeactivate(){
+    return new Promise((resolve, reject) => {
+      if(this.anyChanges){
+        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if(data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    })
   }
 }

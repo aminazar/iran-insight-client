@@ -8,6 +8,7 @@ import {ActionEnum} from "../../../../shared/enum/action.enum";
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
 
 
 enum OrganizerType{
@@ -54,6 +55,7 @@ export class EventFormComponent implements OnInit {
   latitude: number = 35.696491;
   longitude: number = 51.379926;
   organizerHasError: boolean = false;
+  checkOnLeave: boolean = true;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService,
@@ -291,6 +293,9 @@ export class EventFormComponent implements OnInit {
     if(this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
       this.anyChanges = true;
 
+    if(this.organizerId !== (this.originalEvent.organizer_pid || this.originalEvent.organizer_bid || this.originalEvent.organizer_oid))
+      this.anyChanges = true;
+
     if(!this.organizerId)
       this.organizerHasError = true;
     else
@@ -321,6 +326,8 @@ export class EventFormComponent implements OnInit {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this event. Please try again', null, {
@@ -408,5 +415,25 @@ export class EventFormComponent implements OnInit {
         console.log('ERROR: ', err);
       })
     }
+  }
+
+  canDeactivate(){
+    return new Promise((resolve, reject) => {
+      if(this.anyChanges){
+        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if(data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    })
   }
 }
