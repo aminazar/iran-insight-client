@@ -1,3 +1,42 @@
-<p>
-  business-info {{bid}} works!
-</p>
+<form (ngSubmit)="upsertBusiness()" [formGroup]="form">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+    <div fxFlex="50">
+      <mat-input-container class="field-90">
+        <input matInput type="text" placeholder="Business Name" formControlName="name_en" role="name-en" tabindex="1"/>
+      </mat-input-container>
+    </div>
+    <div fxFlex="50" dir="rtl">
+      <mat-input-container class="field-90 farsi" role="name-fa">
+        <input matInput type="text" placeholder="نام کسب و کار" formControlName="name_fa" role="name-fa" tabindex="6"/>
+      </mat-input-container>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+    <div fxFlex="20">Chief Executive Officer</div>
+    <div fxFlex="80">
+      <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
+                     [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
+                     (add)="setCEO($event)"></ii-suggestion>
+    </div>
+  </div>
+  <div>
+    <mat-input-container class="field">
+      <textarea matInput placeholder="Address" formControlName="address_en" role="address-en" tabindex="3"></textarea>
+    </mat-input-container>
+  </div>
+  <div dir="rtl">
+    <mat-input-container class="field farsi">
+      <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa" tabindex="7"></textarea>
+    </mat-input-container>
+  </div>
+  <div>
+    <mat-input-container class="field-90">
+      <input matInput type="text" placeholder="Telephone" formControlName="tel" role="tel" tabindex="4"/>
+    </mat-input-container>
+  </div>
+  <div>
+    <mat-input-container class="field-90">
+      <input matInput type="text" placeholder="URL" formControlName="url" role="url" tabindex="5"/>
+    </mat-input-container>
+  </div>
+</form>
