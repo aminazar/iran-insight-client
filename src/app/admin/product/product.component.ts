@@ -90,20 +90,33 @@ export class ProductComponent implements OnInit {
       case this.actionEnum.add: {
         this.products.unshift(data.value);
         this.products = this.products.slice(0, this.products.length - 1);
-      };
+        console.log('ADD ==> ', this.aligningObj);
+      }
         break;
       case this.actionEnum.modify: {
         this.products[this.products.findIndex(el => el.product_id === data.value.product_id)] = data.value;
-      };
+        console.log('UPDATE ==> ', this.aligningObj);
+      }
         break;
       case this.actionEnum.delete: {
         this.products = this.products.filter(el => el.product_id !== data.value);
         this.showInDeep = false;
         this.productId = null;
-      };
+        console.log('DELETE ==> ', this.aligningObj);
+        let keys = Object.keys(this.aligningObj);
+        console.log('===>', keys);
+        console.log('===>', this.aligningObj[keys[0]]);
+        for (let i = 0; i < keys.length; i++) {
+          let ind = this.aligningObj[i].findIndex(el => el.product_id === data.value);
+          if (ind !== -1) {
+            this.aligningObj[i].splice(ind, 1);
+          }
+          }
+        }
         break;
-    }
-    this.searching();
+    }}
+
+  findingChangedElement(productId){
   }
 }
 
