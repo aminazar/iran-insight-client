@@ -5,7 +5,8 @@ import {BidiModule} from '@angular/cdk/bidi';
 import {BreadcrumbModule} from 'primeng/primeng';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatInputModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatIconModule,
+  MatInputModule,
   MatMenuModule, MatNativeDateModule, MatOptionModule, MatProgressBarModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
@@ -51,6 +52,7 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
     HttpClientModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    MatIconModule,
   ],
   entryComponents: [RemovingConfirmComponent, UnderConstructionComponent],
   exports: [
