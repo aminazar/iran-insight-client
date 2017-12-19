@@ -58,10 +58,10 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initForm();
-
     this.route.params.subscribe(
       (params) => {
+        this.initForm();
+
         this.personId = +params['id'] ? +params['id'] : null;
         this.initPerson();
 
