@@ -14,6 +14,10 @@
           <div class="view-content" *ngIf="!event.title_fa">-</div>
         </div>
       </div>
+      <div>
+        <div class="view-title">The Organizer</div>
+        <div class="view-content">{{event.organizer_name}}</div>
+      </div>
       <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
            fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
         <div fxFlex="50">
@@ -65,9 +69,6 @@
       </button>
       <button mat-icon-button color="warn" (click)="deleteEvent()">
         <mat-icon aria-label="delete">delete</mat-icon>
-      </button>
-      <button mat-icon-button color="primary" type="button" (click)="closeForm()">
-        <mat-icon aria-label="no">clear</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>

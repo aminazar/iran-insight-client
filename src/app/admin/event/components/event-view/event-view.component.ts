@@ -23,8 +23,9 @@ export class EventViewComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.eventId = +params['id'] ? +params['id'] : null;
-        this.progressService.enable();
+        this.breadcrumbService.pushChild('Event Details', this.router.url, false);
 
+        this.progressService.enable();
         this.restService.get('event/' + this.eventId).subscribe(
           (data) => {
             this.event = data;
