@@ -1,5 +1,3 @@
-
-
 @import "assets/fonts/franklin/index.css";
 @import "assets/fonts/merriweather/index.css";
 @import "assets/fonts/iran-sans/css/fontiran.css";
@@ -69,7 +67,7 @@
 }
 
 .row{
-  margin: 20px 10px;
+  margin: 0px 10px;
 }
 .outer-card{
   margin: 10px 5px;
@@ -92,16 +90,12 @@
   cursor: pointer;
 }
 
-/*.fixed-header{*/
-  /*position: fixed;*/
-  /*margin: auto;*/
-  /*z-index: 10000;*/
-  /*width: 100%;*/
-  /*top: 0px;*/
-/*}*/
-
 .main-content{
   margin-top: 8%;
+}
+
+.mat-card {
+  margin: 6px;
 }
 
 .mat-card-title {
@@ -114,8 +108,28 @@
 }
 
 .selected-card {
-  background-color: #a69d96 !important;
-  color: rgba(255,255,255,.87) !important;
+  /*background-color: #a69d96 !important;*/
+  /*color: rgba(255,255,255,.87) !important;*/
+}
+
+.selected-card .mat-card-subtitle {
+  /*color: rgba(255,255,255,.87) !important;*/
+}
+.selected-card .mat-card-content {
+  margin-bottom: 0px !important;
+  font-size: 85% !important;
+}
+.selected-card a{
+  white-space: nowrap;
+  margin-bottom: 6px;
+  font-width: 300;
+}
+
+.selected-card i {
+  font-size: 150%;
+  width:24px;
+  margin-right:4px;
+  text-align: right;
 }
 
 a {
@@ -124,4 +138,8 @@ a {
 
 a:hover {
   text-decoration: none !important;
+}
+
+.ui-breadcrumb a  {
+  background: transparent !important;
 }

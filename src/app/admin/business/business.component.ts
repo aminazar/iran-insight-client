@@ -34,7 +34,7 @@ export class BusinessComponent implements OnInit {
   }
 
   openForm(id: number = 0): void {
-    this.router.navigate(['admin', 'business', 'upsert', this.bizId])
+    this.router.navigate(['admin', 'business', 'upsert', id])
       .then(() => console.log('done routing'));
   }
 
@@ -71,7 +71,7 @@ export class BusinessComponent implements OnInit {
         this.aligningObj = this.biz && this.biz.length > 0 ? {0: []} : {};
         if (this.biz) {
           this.biz.forEach(el => {
-            if (colCounter > 4) {
+            if (colCounter > 3) {
               this.aligningObj[++rowCounter] = [];
               colCounter = 0;
             }
