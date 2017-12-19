@@ -9,7 +9,7 @@
       </div>
     </mat-drawer>
     <div>
-      <button type="button" mat-button (click)="drawer.toggle()" color="accent">
+      <button class="menu-button" type="button" mat-icon-button (click)="drawer.toggle()" color="accent">
         <mat-icon *ngIf="!drawer.opened" aria-label="open menu">menu</mat-icon>
         <mat-icon *ngIf="drawer.opened" aria-label="close menu">clear</mat-icon>
       </button>

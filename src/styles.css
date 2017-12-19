@@ -178,11 +178,15 @@ a:hover {
   position: fixed;
   top: 100px;
   z-index: 200;
-  margin-top: -5px;
+  margin-top: -13px;
   width: 100%;
   background-color: white;
 }
 
 .admin-content{
   margin-top: 150px;
+}
+
+.menu-button{
+  margin-top: 10px !important;
 }

@@ -8,6 +8,7 @@ import {ProgressService} from "../../../../shared/services/progress.service";
 import * as moment from 'moment';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
 
 @Component({
   selector: 'ii-person-form',
@@ -44,6 +45,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   originalPerson: any = null;
   anyChanges = false;
   actionEnum = ActionEnum;
+  checkOnLeave: boolean = true;
 
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
@@ -312,5 +314,25 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.resetPasswordBtnShouldDisabled = false;
       }
     );
+  }
+
+  canDeactivate(){
+    return new Promise((resolve, reject) => {
+      if(this.anyChanges){
+        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if(data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    })
   }
 }
