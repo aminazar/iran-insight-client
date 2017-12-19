@@ -1,11 +1,13 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
 import {ProgressService} from "../../../../shared/services/progress.service";
 import * as moment from 'moment';
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
 
 @Component({
   selector: 'ii-person-form',
@@ -16,9 +18,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   @Input()
   set personId(id) {
     this._personId = id;
-    this.initPerson();
-    this.personForm = null;
-    this.initForm();
   }
 
   get personId() {
@@ -51,11 +50,25 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   resetPasswordBtnShouldDisabled: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService) {
+              public dialog: MatDialog, private progressService: ProgressService,
+              private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
+              private router: Router) {
   }
 
   ngOnInit() {
     this.initForm();
+
+    this.route.params.subscribe(
+      (params) => {
+        this.personId = +params['id'] ? +params['id'] : null;
+        this.initPerson();
+
+        if(this.personId)
+          this.breadcrumbService.pushChild('Update Person', this.router.url, false);
+        else
+          this.breadcrumbService.pushChild('Add Person', this.router.url, false);
+      }
+    );
 
     this.personForm.valueChanges.subscribe(
       (data) => {
@@ -79,7 +92,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       surname_fa: [null],
       username: [{value: null, disabled: this.personId ? true : false}, [
         Validators.required,
-        Validators.pattern('[^ @]*@[^ @]*'),
+        Validators.email,
       ]],
       image: [null],
       address_en: [null, [
@@ -181,8 +194,9 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         });
 
         this.anyChanges = false;
-        this.originalPerson = Object.assign({pid: data.pid}, personData);
         this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
+        this.originalPerson = Object.assign({pid: data.pid}, personData);
+        this.personId = data.pid;
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;

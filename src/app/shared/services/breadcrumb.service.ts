@@ -27,10 +27,14 @@ export class BreadcrumbService {
       };
       this.routes.push(child);
     } else {
-      this.routes.length = this.routes.findIndex(e => e.label === label);
+      this.routes.length = this.routes.findIndex(e => e.label === label) + 1;
     }
     this.routesRS.next(this.routes);
 
   }
 
+  popChild(){
+    this.routes.length--;
+    this.routesRS.next(this.routes);
+  }
 }

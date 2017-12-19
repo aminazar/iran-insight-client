@@ -90,8 +90,16 @@
   cursor: pointer;
 }
 
+.fixed-header{
+  position: fixed;
+  margin: auto;
+  z-index: 10000;
+  width: 100%;
+  top: 0px;
+}
+
 .main-content{
-  margin-top: 8%;
+  margin-top: 100px;
 }
 
 .mat-card {
@@ -140,6 +148,29 @@ a:hover {
   text-decoration: none !important;
 }
 
+.field-container{
+  width: 100%;
+  margin: 5px;
+}
+
+.mat-input-placeholder{
+  line-height: 20px !important;
+}
+
 .ui-breadcrumb a  {
   background: transparent !important;
+}
+
+.view-title{
+  font-weight: bold;
+}
+
+.view-content{
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.farsi .view-content{
+  margin-left: unset;
+  margin-right: 8px;
 }

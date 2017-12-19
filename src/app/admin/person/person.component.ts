@@ -1,11 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
 import {ActionEnum} from '../../shared/enum/action.enum';
 import {ProgressService} from '../../shared/services/progress.service';
+import {AuthService} from '../../shared/services/auth.service';
+import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
+import {PersonFormComponent} from './components/person-form/person-form.component';
+import {PersonViewComponent} from './components/person-view/person-view.component';
 
 @Component({
   selector: 'ii-person',
@@ -27,7 +31,8 @@ export class PersonComponent implements OnInit {
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
-              private progressService: ProgressService) {
+              private progressService: ProgressService, public dialog: MatDialog,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -37,8 +42,41 @@ export class PersonComponent implements OnInit {
   openForm(id: number = null): void {
      // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.personId = id;
-    this.showInDeep = true;
-    this.selectedIndex = 0;
+    this.router.navigate(['/admin/person/form/' + id]);
+  }
+
+  openView(id: number = null): void {
+    this.personId = id;
+    this.router.navigate(['/admin/person/' + id]);
+  }
+
+  deletePerson(id: number = null): void {
+    this.personId = id;
+    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (res) => {
+        if (res)
+          this.authService.deletePerson(id).subscribe(
+            (data) => {
+              this.personId = null;
+              this.snackBar.open('Person is deleted successfully', null, {
+                duration: 2300
+              });
+              this.searching();
+            },
+            (err) => {
+              console.error('Cannot delete this person. Error: ', err);
+              this.snackBar.open('Cannot delete this person. Please try again.', null, {
+                duration: 3200
+              });
+            }
+          );
+      },
+      (err) => console.error('Error in closing component. Error: ', err)
+    );
   }
 
   search(data) {
@@ -75,7 +113,7 @@ export class PersonComponent implements OnInit {
   }
 
   aligningItems() {
-    if(this.totalPeople <= 0){
+    if (this.totalPeople <= 0) {
       this.aligningObj = {};
       this.rows = [];
       return;
@@ -85,7 +123,7 @@ export class PersonComponent implements OnInit {
     let rowCounter = 0;
     this.aligningObj = this.people.length > 0 ? {0: []} : {};
     this.people.forEach(el => {
-      if (colCounter > 4) {
+      if (colCounter > 3) {
         this.aligningObj[++rowCounter] = [];
         colCounter = 0;
       }
@@ -100,31 +138,28 @@ export class PersonComponent implements OnInit {
   applyChanges(data) {
     switch (data.action) {
       case this.actionEnum.add: {
-        if(this.limit > this.people.length && this.checkWithSearch(data)){
+        if (this.limit > this.people.length && this.checkWithSearch(data.value)) {
           this.people.push(data.value);
           this.aligningItems();
         }
 
         this.totalPeople++;
       }
-        ;
         break;
       case this.actionEnum.modify: {
-        if(this.checkWithSearch(data.value)){
+        if (this.checkWithSearch(data.value)) {
           this.people[this.people.findIndex(el => el.pid === data.value.pid)] = data.value;
           this.aligningItems();
         }
         else
           this.searching();
       }
-        ;
         break;
       case this.actionEnum.delete: {
         this.showInDeep = false;
         this.personId = null;
         this.searching();
       }
-        ;
         break;
     }
   }
@@ -141,5 +176,12 @@ export class PersonComponent implements OnInit {
     });
 
     return isMatched;
+  }
+
+  select(id: number = null) {
+    if (this.personId === id)
+      this.personId = null;
+    else
+      this.personId = id;
   }
 }

@@ -37,7 +37,8 @@ export class SuggestionComponent implements OnInit {
     );
   }
 
-  addItem(item) {
+  addItem(data) {
+    let item = this.filteredItems.filter(el => el[this.fn].toLowerCase() === data.option.value.toLowerCase())[0];
     this.add.emit(item);
     this.suggestionCtrl.setValue('');
   }
@@ -62,6 +63,10 @@ export class SuggestionComponent implements OnInit {
       }).subscribe(
         (data) => {
           this.filteredItems = data;
+
+          // if(data && data.length === 1 && data[0][this.fn].toLowerCase() === phrase.toLowerCase())
+          //   this.addItem(data[0]);
+
           this.progressService.disable();
         },
         (err) => {
