@@ -10,7 +10,7 @@
       <div>
         The Organizer:
         <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
-             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" *ngIf="!eventId">
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
           <div fxFlex="40" class="organizer-field">
             <mat-radio-group [(ngModel)]="organizer" tabindex="1">
               <div fxLayout="column" fxLayout.sm="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center">
@@ -36,18 +36,17 @@
             <ii-suggestion *ngIf="organizerIsOrg()" [idColumn]="'oid'" [name]="'organization'"
                            [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'"
                            [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
-            <label *ngIf="organizerName">The organizer is {{organizerName}}</label>
+            <div *ngIf="organizerName">
+              <a class="clickable-link" (click)="directToOrganizer()">
+                <span>Organizer is </span>
+                <span>"{{organizerName}}"</span>
+              </a>
+            </div>
             <mat-error *ngIf="organizerHasError">Please enter the organizer of event</mat-error>
           </div>
         </div>
       </div>
       <form (ngSubmit)="modifyEvent()" [formGroup]="eventForm">
-        <div *ngIf="eventId" fxLayout="row" fxLayoutAlign="start start">
-          <a class="clickable-link" (click)="directToOrganizer()">
-            <span>Organizer is </span>
-            <span>"{{organizerName}}"</span>
-          </a>
-        </div>
         <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
              fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
           <div fxFlex="50" class="field-container">

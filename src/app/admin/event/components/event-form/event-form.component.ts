@@ -291,6 +291,9 @@ export class EventFormComponent implements OnInit {
     if(this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
       this.anyChanges = true;
 
+    if(this.organizerId !== this.originalEvent.organizerId)
+      this.anyChanges = true;
+
     if(!this.organizerId)
       this.organizerHasError = true;
     else
