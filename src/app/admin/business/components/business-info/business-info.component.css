@@ -1,0 +1,12 @@
+.CEOStatic {
+  color:#76323f;
+  font-weight: 200;
+  font-size: 85%
+}
+
+.CEOBox {
+  border: 1px solid #76323f;
+  border-radius: 5px;
+  margin: 10px 0px;
+  padding: 10px;
+}
