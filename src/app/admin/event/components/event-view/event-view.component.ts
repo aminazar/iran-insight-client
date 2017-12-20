@@ -17,14 +17,16 @@ export class EventViewComponent implements OnInit {
 
   constructor(private restService: RestService, private router: Router,
               private progressService: ProgressService, private route: ActivatedRoute,
-              private breadcrumbService: BreadcrumbService) { }
+              private breadcrumbService: BreadcrumbService) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(
       (params) => {
         this.eventId = +params['id'] ? +params['id'] : null;
-        this.progressService.enable();
+        this.breadcrumbService.pushChild('Event Details', this.router.url, false);
 
+        this.progressService.enable();
         this.restService.get('event/' + this.eventId).subscribe(
           (data) => {
             this.event = data;
@@ -44,13 +46,15 @@ export class EventViewComponent implements OnInit {
     );
   }
 
-  editEvent(){
+  editEvent() {
     this.router.navigate(['/admin/event/form/' + this.eventId]);
   }
 
-  deleteEvent(){
+  deleteEvent() {
     this.restService.delete('event/' + this.eventId).subscribe(
-      (data) => this.breadcrumbService.popChild(),
+      (data) => {
+        this.breadcrumbService.popChild()
+      },
       (err) => console.error('Cannot delete this event')
     )
   }
