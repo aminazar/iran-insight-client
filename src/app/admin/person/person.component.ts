@@ -40,7 +40,7 @@ export class PersonComponent implements OnInit {
   }
 
   openForm(id: number = null): void {
-     // Navigate to new page (3 tabs: Information, Expertise and Partnership)
+    // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.personId = id;
     this.router.navigate(['/admin/person/form/' + id]);
   }

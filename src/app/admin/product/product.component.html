@@ -1,3 +1,45 @@
-<p>
-  product works!
-</p>
+<div fxLayout="row" class="row">
+  <ii-search-fields fxFlex="100" [target]="'product'" (searching)="search($event)"></ii-search-fields>
+</div>
+<div fxLayout="row" class="row">
+  <button mat-fab color="accent" (click)="openForm()">
+    <mat-icon aria-label="Add new product ">add</mat-icon>
+  </button>
+</div>
+
+<div *ngFor="let rw of rows">
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
+    <div fxFlex="25" *ngFor="let p of aligningObj[rw]" class="outer-card">
+      <mat-card class="card-view" (click)="select(p.product_id)"
+                [ngClass]="{'mat-elevation-z24': p.product_id === productId}">
+        <mat-card-header>
+          <mat-card-title>
+            <label class="name">{{p.name}}</label>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <label class="name">{{p.name_fa}}</label>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div></div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button (click)="openView(p.product_id)" color="primary">
+            <mat-icon aria-label="view">visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openForm(p.product_id)" color="accent">
+            <mat-icon aria-label="edit">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteProduct(p.product_id)" color="warn">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div>
+  <mat-paginator [length]="totalProducts" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20]"
+                 (page)="changeOffset($event)"></mat-paginator>
+</div>

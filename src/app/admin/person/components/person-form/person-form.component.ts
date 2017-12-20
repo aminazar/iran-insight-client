@@ -2,13 +2,13 @@ import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
-import {ActionEnum} from "../../../../shared/enum/action.enum";
-import {ProgressService} from "../../../../shared/services/progress.service";
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ActionEnum} from '../../../../shared/enum/action.enum';
+import {ProgressService} from '../../../../shared/services/progress.service';
 import * as moment from 'moment';
-import {ActivatedRoute, Router} from "@angular/router";
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
-import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
 
 @Component({
   selector: 'ii-person-form',
@@ -65,7 +65,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.personId = +params['id'] ? +params['id'] : null;
         this.initPerson();
 
-        if(this.personId)
+        if (this.personId)
           this.breadcrumbService.pushChild('Update Person', this.router.url, false);
         else
           this.breadcrumbService.pushChild('Add Person', this.router.url, false);
