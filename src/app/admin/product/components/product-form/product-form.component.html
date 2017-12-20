@@ -1,60 +1,74 @@
-<div>
-    <div style="padding: 10px; margin: 5px">
+<div fxLayout="row" fxLayoutAlign="center center">
+<mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlex.offset="20" fxFlex.offset.sm="0" fxFlex.xs="0">
+    <mat-card-header>
+    <mat-card-title>
         <div *ngIf="!productId && !deleting && !updating && !viewInfo && adding">Add new product</div>
         <div *ngIf="productId && !deleting && !updating && viewInfo && !adding">View product info</div>
         <div *ngIf="productId && !deleting && updating && !viewInfo && !adding">Edit product</div>
         <div *ngIf="productId && deleting && !updating && !viewInfo && !adding">Delete product</div>
-        <br/>
-        <form (ngSubmit)="modifyProduct()" [formGroup]="productForm">
-            <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start"
-                 flexLayoutAlign.xs="center center">
-                <div fxFlex="50">
-                    <mat-input-container class="field-90">
-                        <input matInput type="text" placeholder="ProductName" formControlName="name" role="name"
-                               (ngModelChange)="fieldChanged()" tabindex="1"/>
-                    </mat-input-container>
+    </mat-card-title>
+    </mat-card-header>
+        <mat-card-content>
+            <form (ngSubmit)="modifyProduct()" [formGroup]="productForm">
+                <div flexLayout="row" flexLayout.xs="column" flexLayoutAlign="start start" flexLayoutAlign.xs="center center">
+                    <div fxFlex="50" class="field-container">
+                        <mat-input-container class="field">
+                            <input matInput type="text" placeholder="ProductName" formControlName="name" role="name" (ngModelChange)="fieldChanged()" tabindex="1"/>
+                            <mat-hint>Enter product's name</mat-hint>
+                            <mat-error
+                                    *ngIf="productForm.controls['name'].hasError('required')">
+                                Please enter product's name.
+                            </mat-error>
+                        </mat-input-container>
+                    </div>
+                    <div fxFlex="50" dir="rtl" class="field-container">
+                        <mat-input-container class="field farsi">
+                            <input matInput type="text" placeholder="نام" formControlName="name_fa" role="name_fa" (ngModelChange)="fieldChanged()" tabindex="3"/>
+                            <mat-hint>Enter product's name_fa</mat-hint>
+                            <mat-error
+                                    *ngIf="productForm.controls['name_fa'].hasError('required')">
+                                Please enter product's name_fa.
+                            </mat-error>
+                        </mat-input-container>
+                    </div>
                 </div>
-                <div fxFlex="50" dir="rtl">
-                    <mat-input-container class="field-90">
-                        <input matInput type="text" placeholder="نام" formControlName="name_fa" role="name_fa"
-                               (ngModelChange)="fieldChanged()" tabindex="3"/>
-                    </mat-input-container>
-                </div>
-            </div>
-            <div>
-                <mat-input-container class="field">
+                <div>
+                    <mat-input-container class="field">
                     <textarea matInput placeholder="Description" formControlName="description" role="description"
                               (ngModelChange)="fieldChanged()" tabindex="2"></textarea>
-                </mat-input-container>
-            </div>
-            <div dir="rtl">
-                <mat-input-container class="field">
+                    </mat-input-container>
+                </div>
+                <div dir="rtl">
+                    <mat-input-container class="field">
                     <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description_fa"
                               (ngModelChange)="fieldChanged()" tabindex="4"></textarea>
-                </mat-input-container>
-            </div>
-            <div>
-                <button mat-raised-button color="primary" type="submit"
-                        *ngIf="!productId && !deleting && !updating && !viewInfo && adding"
-                        [disabled]="!productForm.valid">Add
-                </button>
+                    </mat-input-container>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" type="submit"
+                            *ngIf="!productId && !deleting && !updating && !viewInfo && adding"
+                            [disabled]="!productForm.valid">Add
+                    </button>
 
-                <button mat-raised-button color="primary" type="submit"
-                        *ngIf="productId && !deleting && updating && !viewInfo && !adding"
-                        [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">
-                    Update
-                </button>
+                    <button mat-raised-button color="primary" type="submit"
+                            *ngIf="productId && !deleting && updating && !viewInfo && !adding"
+                            [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">
+                        Update
+                    </button>
 
-                <button mat-raised-button color="primary" type="submit"
-                        *ngIf="productId && !deleting && !updating && viewInfo && !adding"
-                        [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">Ok
-                </button>
+                    <button mat-raised-button color="primary" type="submit"
+                            *ngIf="productId && !deleting && !updating && viewInfo && !adding"
+                            [disabled]="upsertBtnShouldDisabled || (!productForm.valid || (productId && !anyChanges))">
+                        Ok
+                    </button>
 
-                <button mat-raised-button color="primary" type="button"
-                        *ngIf="deleting && !updating && !viewInfo && !adding" (click)="deleteProduct()" tabindex="6">
-                    Delete
-                </button>
-            </div>
-        </form>
-    </div>
+                    <button mat-raised-button color="primary" type="button"
+                            *ngIf="deleting && !updating && !viewInfo && !adding" (click)="deleteProduct()"
+                            tabindex="6">
+                        Delete
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+</mat-card>
 </div>

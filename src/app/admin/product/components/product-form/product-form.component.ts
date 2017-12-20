@@ -28,13 +28,13 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   get productId() {
     return this._productId;
   }
+
   @Input() deleting;
   @Input() updating;
   @Input() viewInfo;
   @Input() adding;
 
   @Output() changedProduct = new EventEmitter();
-  @Output() testData: any = {};
 
   productForm: FormGroup;
   _productId: number = null;
@@ -45,12 +45,24 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
 
   constructor( private router: Router, private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService, private breadCrumbService: BreadcrumbService,
-              private activatedRoute: ActivatedRoute, private restService: RestService ) {
+              public dialog: MatDialog, private progressService: ProgressService, private breadcrumbService: BreadcrumbService,
+              private activatedRoute: ActivatedRoute, private restService: RestService, private route: ActivatedRoute ) {
   }
   ngOnInit() {
     // this.breadCrumbService.pushChild('Update', this.router.url, false);
     this.initForm();
+
+    this.route.params.subscribe(
+      (params) => {
+        this.productId = +params['id'] ? +params['id'] : null;
+        this.initProduct();
+
+        if (this.productId)
+          this.breadcrumbService.pushChild('Update Product', this.router.url, false);
+        else
+          this.breadcrumbService.pushChild('Add Product', this.router.url, false);
+      }
+    );
     this.productForm.valueChanges.subscribe(
       (data) => {
         this.fieldChanged();
@@ -67,8 +79,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.productForm = new FormBuilder().group({
-      name: [null],
-      name_fa: [null],
+      name: [null, [
+        Validators.required,
+      ]],
+      name_fa:  [null, [
+        Validators.required,
+      ]],
       description: [null, [
         Validators.maxLength(500),
       ]],

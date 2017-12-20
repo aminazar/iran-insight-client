@@ -14,6 +14,7 @@ import {
   MatSnackBarModule, MatTabsModule
 } from '@angular/material';
 import { ProductFormComponent } from './components/product-form/product-form.component';
+import { ProductInfoCardComponent } from './components/product-info-card/product-info-card.component';
 
 
 @NgModule({
@@ -38,6 +39,6 @@ import { ProductFormComponent } from './components/product-form/product-form.com
     MatTabsModule,
     MatPaginatorModule,
   ],
-  declarations: [ProductComponent, ProductFormComponent]
+  declarations: [ProductComponent, ProductFormComponent, ProductInfoCardComponent]
 })
 export class ProductModule { }

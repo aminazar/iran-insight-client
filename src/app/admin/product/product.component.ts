@@ -49,6 +49,7 @@ export class ProductComponent implements OnInit {
     this.selectedIndex = 0;
     this.productId = id;
     this.showReadOnlyCard = false;
+    this.router.navigate(['/admin/product/add/']);
   }
 
   openViewForm(id: number = null): void {
@@ -60,6 +61,7 @@ export class ProductComponent implements OnInit {
     this.showInDeep = true;
     this.selectedIndex = 0;
     this.productId = id;
+    this.router.navigate(['/admin/product/view' + this.productId]);
   }
 
   openUpdateForm (id: number = null): void {
@@ -71,8 +73,7 @@ export class ProductComponent implements OnInit {
     this.showInDeep = true;
     this.selectedIndex = 0;
     this.showReadOnlyCard = false;
-    this.router.navigate(['admin', 'product', 'upsert', this.productId])
-      .then(() => console.log('done routing'));
+    this.router.navigate(['/admin/product/update/', this.productId]);
   }
 
   openDeleteForm(id: number = null): void {
@@ -121,7 +122,7 @@ export class ProductComponent implements OnInit {
   }
 
   aligningItems() {
-    if(this.totalProducts <= 0){
+    if (this.totalProducts <= 0){
       this.aligningObj = {};
       this.rows = [];
       return;
