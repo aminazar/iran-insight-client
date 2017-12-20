@@ -1,5 +1,5 @@
 <div fxLayout="row" class="row">
-  <ii-search-fields fxFlex="100" [target]="'event'" (searching)="search($event)"></ii-search-fields>
+  <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'event'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
   <button mat-fab color="accent" (click)="openForm()">

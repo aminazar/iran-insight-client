@@ -19,6 +19,16 @@ enum ElementEnum {
 })
 export class SearchFieldsComponent implements OnInit, OnDestroy {
   @Input() target = null;
+  @Input() searchInFirst: boolean = true;
+  @Input()
+  set initItems(value){
+    this._initItems = value;
+    this.setInitSearchData();
+  }
+  get initItems(){
+    return this._initItems;
+  }
+
   @Output() searching = new EventEmitter<any>();
   targets = [];
   targetList = [];
@@ -26,6 +36,7 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
   elementEnum = ElementEnum;
   searchCtrl = new FormControl();
   amountCtrl = new FormControl();
+  _initItems: any = null;
 
   //View variables
   phrase = null;
@@ -56,8 +67,11 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
     if (this.target) {
       this.targetList = this.targetList.filter(el => el.toLowerCase() !== this.target.toLowerCase());
       this.targets.push(this.target);
-      this.searchOnData(null);
+      // this.searchOnData(null);
     }
+
+    if(this.searchInFirst && this.target)
+      this.searchOnData(null);
 
     this.searchCtrl.valueChanges.debounceTime(500).subscribe(
       (data) => {
@@ -95,6 +109,22 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
     this.endDate = null;
   }
 
+  setInitSearchData(){
+    if(this.initItems){
+      this.searchCtrl.setValue(this.initItems.phrase ? this.initItems.phrase : null);
+      this.phrase = this.initItems.phrase ? this.initItems.phrase : null;
+      this.amountCtrl.setValue(this.initItems.options.amount ? this.initItems.options.amount : null);
+      this.amount = this.initItems.options.amount ? this.initItems.options.amount : null;
+      this.isEducation = this.initItems.options.is_education ? this.initItems.options.is_education : null;
+      this.isLead = this.initItems.options.is_lead ? this.initItems.options.is_lead : null;
+      this.isMentor = this.initItems.options.is_mentor ? this.initItems.options.is_mentor : null;
+      this.isActive = this.initItems.options.is_active ? this.initItems.options.is_active : null;
+      this.comparison = this.initItems.options.comparison_type ? this.initItems.options.comparison_type : null;
+      this.startDate = this.initItems.options.start_date ? this.initItems.options.start_date : null;
+      this.endDate = this.initItems.options.end_date ? this.initItems.options.end_date : null;
+    }
+  }
+
   addTarget(target_index) {
     let target_title = this.targetList[target_index];
     this.targets.push(target_title);
@@ -110,9 +140,6 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
   searchOnData(phrase?) {
     if (!phrase)
       phrase = this.phrase;
-
-    // if ((phrase === null || phrase === undefined || phrase === '') && (this.target === null || this.target === undefined))
-    //   return;
 
     if (!this.checkValidation())
       return;

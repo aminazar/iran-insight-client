@@ -65,10 +65,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.personId = +params['id'] ? +params['id'] : null;
         this.initPerson();
 
-        if(this.personId)
-          this.breadcrumbService.pushChild('Update Person', this.router.url, false);
-        else
-          this.breadcrumbService.pushChild('Add Person', this.router.url, false);
+        this.breadcrumbService.pushChild((this.personId ? 'Update' : 'Add') + ' Person', this.router.url, false);
       }
     );
 
