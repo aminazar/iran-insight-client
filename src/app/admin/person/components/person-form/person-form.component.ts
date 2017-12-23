@@ -10,7 +10,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
 import {CanComponentDeactivate} from '../../../leavingGuard';
-import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
 
 @Component({
   selector: 'ii-person-form',
@@ -34,7 +33,6 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
   }];
   actionEnum = ActionEnum;
   resetPasswordBtnShouldDisabled = false;
-
 
   ngOnInit() {
     this.viewName = 'Person';
@@ -179,6 +177,15 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
           this.formId = data.pid;
         }
 
+        if(!this.personId){
+          this.personForm.reset();
+          this.personForm.controls['notify_period'].setValue('d');
+        }
+        else{
+          this.originalPerson = Object.assign({pid: data.pid}, personData);
+          this.personId = data.pid;
+        }
+
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
         this.deleteBtnShouldDisabled = false;
@@ -290,6 +297,4 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
       }
     );
   }
-
-
 }

@@ -4,13 +4,6 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
-import {ActionEnum} from '../../shared/enum/action.enum';
-import {ProgressService} from '../../shared/services/progress.service';
-import {PersonViewComponent} from './components/person-view/person-view.component';
-import {AuthService} from '../../shared/services/auth.service';
-import {PersonFormComponent} from './components/person-form/person-form.component';
-import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
-import {StorageService} from '../../shared/services/storage.service';
 import {AbstractSearchComponent} from '../../shared/components/abstract-search/abstract-search.component';
 
 @Component({
@@ -50,7 +43,5 @@ export class PersonComponent extends AbstractSearchComponent implements OnInit {
       },
       (err) => console.error('Error in closing component. Error: ', err)
     );
-
   }
-
 }
