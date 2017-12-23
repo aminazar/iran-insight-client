@@ -86,7 +86,7 @@ export class AttendanceListComponent implements OnInit {
             (attObj.name || attObj.name_fa),
           attendance_type_id: 1,
           attendee_id: attObj[(this.name.toLowerCase() === 'person' ? 'pid' : (this.name.toLowerCase() === 'business' ? 'bid' : 'oid'))],
-          attendance_id: data.id
+          attendance_id: data
         });
 
         this.currentAttendanceIds.push(attObj[(this.name.toLowerCase() === 'person' ?
