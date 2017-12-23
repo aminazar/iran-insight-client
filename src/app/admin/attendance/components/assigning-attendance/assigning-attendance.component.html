@@ -1,0 +1,30 @@
+<div fxLayout="row">
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+    <div>
+
+    </div>
+    <br/>
+    <div class="rs-table">
+      <table class="table">
+        <thead>
+          <td>No.</td>
+          <td>Name</td>
+          <td>Remove</td>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of userAttendanceList; let i = index">
+            <td>{{i+1}}</td>
+            <td>
+              <a [routerLink]="['/admin/person/' + item.id]">{{item.name}}</a>
+            </td>
+            <td>
+              <button mat-icon-button (click)="removePersonAttendance(item.aid)" color="warn">
+                <mat-icon aria-label="clear person attendace">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

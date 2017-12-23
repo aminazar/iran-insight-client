@@ -1,5 +1,5 @@
 <div fxLayout="row" class="row">
-  <ii-search-fields fxFlex="100" [target]="'event'" (searching)="search($event)"></ii-search-fields>
+  <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'event'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
   <button mat-fab color="accent" (click)="openForm()">
@@ -55,7 +55,7 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalEvents" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20]"
+  <mat-paginator [length]="totalEvents" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
 

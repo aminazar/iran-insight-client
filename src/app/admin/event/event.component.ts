@@ -10,6 +10,7 @@ import {EventFormComponent} from "./components/event-form/event-form.component";
 import {EventViewComponent} from "./components/event-view/event-view.component";
 import {RemovingConfirmComponent} from "../../shared/components/removing-confirm/removing-confirm.component";
 import {RestService} from "../../shared/services/rest.service";
+import {StorageService} from "../../shared/services/storage.service";
 
 @Component({
   selector: 'ii-event',
@@ -18,7 +19,7 @@ import {RestService} from "../../shared/services/rest.service";
 })
 export class EventComponent implements OnInit {
   offset = 0;
-  limit = 10;
+  limit = 8;
   events = [];
   eventId: number = null;
   showInDeep: boolean = false;
@@ -27,24 +28,50 @@ export class EventComponent implements OnInit {
   totalEvents: number = null;
   aligningObj = {};
   rows = [];
+  searchInFirst: boolean = true;
+  initSearchData: any = null;
 
   constructor(private breadCrumService: BreadcrumbService, private searchService: SearchService,
               private snackBar: MatSnackBar, private progressService: ProgressService,
               private router: Router, public dialog: MatDialog,
-              private restService: RestService) {
+              private restService: RestService, private storageService: StorageService) {
   }
 
   ngOnInit() {
     this.breadCrumService.pushChild('Event', this.router.url, true);
+
+    let preData = this.storageService.getData('event');
+    if(preData){
+      this.searchData = preData.searchData;
+      this.eventId = preData.eventId;
+      this.offset = preData.offset;
+      this.limit = preData.limit;
+      this.searchInFirst = false;
+
+      this.initSearchData = this.searchData;
+      this.searching();
+    }
   }
 
   openForm(id: number): void {
     this.eventId = id;
+    this.storageService.saveData('event', {
+      searchData: this.searchData,
+      eventId: this.eventId,
+      offset: this.offset,
+      limit: this.limit,
+    });
     this.router.navigate(['/admin/event/form/' + this.eventId]);
   }
 
   openView(id: number = null): void{
     this.eventId = id;
+    this.storageService.saveData('event', {
+      searchData: this.searchData,
+      eventId: this.eventId,
+      offset: this.offset,
+      limit: this.limit,
+    });
     this.router.navigate(['/admin/event/' + this.eventId]);
   }
 

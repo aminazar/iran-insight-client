@@ -9,13 +9,14 @@ import * as moment from 'moment';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
 import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
+import {CanComponentDeactivate} from "../../../leavingGuard";
 
 @Component({
   selector: 'ii-person-form',
   templateUrl: './person-form.component.html',
   styleUrls: ['./person-form.component.css']
 })
-export class PersonFormComponent implements OnInit, OnDestroy {
+export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   @Input()
   set personId(id) {
     this._personId = id;
@@ -45,7 +46,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   originalPerson: any = null;
   anyChanges = false;
   actionEnum = ActionEnum;
-  checkOnLeave: boolean = true;
 
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
@@ -58,17 +58,13 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initForm();
-
     this.route.params.subscribe(
       (params) => {
         this.personId = +params['id'] ? +params['id'] : null;
+        this.initForm();
         this.initPerson();
 
-        if(this.personId)
-          this.breadcrumbService.pushChild('Update Person', this.router.url, false);
-        else
-          this.breadcrumbService.pushChild('Add Person', this.router.url, false);
+        this.breadcrumbService.pushChild((this.personId ? 'Update' : 'Add') + ' Person', this.router.url, false);
       }
     );
 
@@ -200,6 +196,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
 
         if(!this.personId){
           this.personForm.reset();
+          this.personForm.controls['notify_period'].setValue('d');
         }
         else{
           this.originalPerson = Object.assign({pid: data.pid}, personData);
@@ -324,7 +321,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  canDeactivate(){
+  canDeactivate(): Promise<boolean>{
     return new Promise((resolve, reject) => {
       if(this.anyChanges){
         let lvDialog = this.dialog.open(LeavingConfirmComponent);

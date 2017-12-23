@@ -1,5 +1,5 @@
 <div fxLayout="row" class="row">
-  <ii-search-fields fxFlex="100" [target]="'person'" (searching)="search($event)"></ii-search-fields>
+  <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'person'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
   <button mat-fab color="accent" (click)="openForm()">
@@ -11,18 +11,20 @@
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" *ngFor="let p of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(p.pid)"
-                [ngClass]="{'mat-elevation-z24': p.pid === personId}">
+                [ngClass]="{'selected-card mat-elevation-z24': p.pid === personId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
-            <label *ngIf="p.is_user" class="user">{{p.username}}</label>
-            <label *ngIf="!p.is_user" class="not-user">{{p.username}}</label>
-          </mat-card-title>
-          <mat-card-subtitle>
+            <!--<label *ngIf="p.is_user" class="user">{{p.username}}</label>-->
+            <!--<label *ngIf="!p.is_user" class="not-user">{{p.username}}</label>-->
             <div>{{p.display_name_en}}</div>
             <div>{{p.display_name_fa}}</div>
-          </mat-card-subtitle>
+          </mat-card-title>
+          <!--<mat-card-subtitle>-->
+            <!--<div>{{p.display_name_en}}</div>-->
+            <!--<div>{{p.display_name_fa}}</div>-->
+          <!--</mat-card-subtitle>-->
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content style="min-height: 100px">
           <div>
             <label *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
               <span *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</span> <span
@@ -58,7 +60,7 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalPeople" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20]"
+  <mat-paginator [length]="totalPeople" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
 

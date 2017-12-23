@@ -10,6 +10,7 @@ import {PersonViewComponent} from "./components/person-view/person-view.componen
 import {AuthService} from "../../shared/services/auth.service";
 import {PersonFormComponent} from "./components/person-form/person-form.component";
 import {RemovingConfirmComponent} from "../../shared/components/removing-confirm/removing-confirm.component";
+import {StorageService} from "../../shared/services/storage.service";
 
 @Component({
   selector: 'ii-person',
@@ -18,7 +19,7 @@ import {RemovingConfirmComponent} from "../../shared/components/removing-confirm
 })
 export class PersonComponent implements OnInit {
   offset = 0;
-  limit = 10;
+  limit = 8;
   people = [];
   personId: number = null;
   showInDeep = false;
@@ -28,24 +29,50 @@ export class PersonComponent implements OnInit {
   aligningObj = {};
   rows = [];
   selectedIndex: number = 0;
+  searchInFirst: boolean = true;
+  initSearchData: any = null;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
               private progressService: ProgressService, public dialog: MatDialog,
-              private authService: AuthService) {
+              private authService: AuthService, private storageService: StorageService) {
   }
 
   ngOnInit() {
     this.breadCrumbService.pushChild('Person', this.router.url, true);
+
+    let preData = this.storageService.getData('person');
+    if(preData){
+      this.searchData = preData.searchData;
+      this.personId = preData.personId;
+      this.offset = preData.offset;
+      this.limit = preData.limit;
+      this.searchInFirst = false;
+
+      this.initSearchData = this.searchData;
+      this.searching();
+    }
   }
 
   openForm(id: number = null): void {
     this.personId = id;
+    this.storageService.saveData('person', {
+      searchData: this.searchData,
+      personId: this.personId,
+      offset: this.offset,
+      limit: this.limit,
+    });
     this.router.navigate(['/admin/person/form/' + id]);
   }
 
   openView(id: number = null): void {
     this.personId = id;
+    this.storageService.saveData('person', {
+      searchData: this.searchData,
+      personId: this.personId,
+      offset: this.offset,
+      limit: this.limit,
+    });
     this.router.navigate(['/admin/person/' + id]);
   }
 
@@ -80,6 +107,7 @@ export class PersonComponent implements OnInit {
 
   search(data) {
     this.searchData = data;
+    this.personId = null;
     this.searching();
   }
 
@@ -91,7 +119,6 @@ export class PersonComponent implements OnInit {
 
   searching() {
     this.showInDeep = false;
-    this.personId = null;
 
     this.progressService.enable();
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(

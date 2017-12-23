@@ -96,11 +96,13 @@
         <div class="field-container">
           <mat-input-container class="field">
             <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" tabindex="6"/>
+            <mat-error style="margin-bottom: 4px;" *ngIf="personForm.controls['mobile_no'].hasError('pattern')">Please enter valid mobile number</mat-error>
           </mat-input-container>
         </div>
         <div class="field-container">
           <mat-input-container class="field">
             <input matInput type="text" placeholder="Phone number" formControlName="phone_no" tabindex="7"/>
+            <mat-error style="margin-bottom: 4px;" *ngIf="personForm.controls['phone_no'].hasError('pattern')">Please enter valid phone number</mat-error>
           </mat-input-container>
         </div>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
