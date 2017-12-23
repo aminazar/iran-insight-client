@@ -12,6 +12,7 @@ import {businessRouting} from './business.routing';
 import { BusinessMembersComponent } from './components/business-members/business-members.component';
 import { BusinessInfoComponent } from './components/business-info/business-info.component';
 import {ActiveDirective} from './directives/active/active.directive';
+import { BusinessViewComponent } from './components/business-view/business-view.component';
 
 @NgModule({
   imports: [
@@ -36,6 +37,6 @@ import {ActiveDirective} from './directives/active/active.directive';
     MatTabsModule,
     MatPaginatorModule,
   ],
-  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective]
+  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessViewComponent]
 })
 export class BusinessModule { }

@@ -18,10 +18,11 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
 
   bid: number;
   add = false;
+
   form: FormGroup = new FormBuilder().group({
     name: [null],
     name_fa: [null],
-    address_en: [null],
+    address: [null],
     address_fa: [null],
     tel: [null],
     url: [null],
@@ -50,11 +51,11 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.progressService.disable();
 
         });
+        this.progressService.enable();
       } else {
         this.initForm();
       }
       this.breadCrumbService.pushChild(this.add ? 'Add' : 'Update', this.router.url, false);
-      this.progressService.enable();
     });
 
   }
@@ -73,7 +74,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       bid: [this.bid],
       name: [this.loadedValue.name, [Validators.required]],
       name_fa: [this.loadedValue.name_fa],
-      address_en: [this.loadedValue.address, [
+      address: [this.loadedValue.address, [
         Validators.maxLength(500),
         Validators.required,
       ]],
@@ -118,6 +119,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.loadedValue = bizData;
           if (this.add)
             this.loadedValue.bid = data;
+          this.initForm();
           this.upsertDisabled = false;
           this.deleteDisabled = false;
         },
@@ -125,6 +127,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.snackBar.open('Cannot ' + (this.add ? 'add' : 'update') + ' this business: ' + err.message, null, {
             duration: 3200,
           });
+          this.initForm();
           this.progressService.disable();
           this.upsertDisabled = false;
           this.deleteDisabled = false;
@@ -144,12 +147,14 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.upsertDisabled = true;
           this.deleteDisabled = true;
 
-          this.restService.delete('business/' + this.loadedValue.bid).subscribe(
+          this.restService.delete('business/one/' + this.loadedValue.bid).subscribe(
             () => {
-              this.snackBar.open('Business is deleted successfully', null, {
-                duration: 2000,
-              });
-
+              this.router.navigate(['admin', 'business'])
+                .then(() => {
+                  this.snackBar.open('Business is deleted successfully', null, {
+                    duration: 2000,
+                  });
+                });
               this.progressService.disable();
               this.upsertDisabled = false;
               this.deleteDisabled = false;
@@ -163,12 +168,12 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
               this.upsertDisabled = false;
               this.deleteDisabled = false;
             }
-          )
+          );
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    )
+    );
   }
 }

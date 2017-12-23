@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ActionEnum} from '../../shared/enum/action.enum';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {SearchService} from '../../shared/services/search.service';
 import {ProgressService} from '../../shared/services/progress.service';
+import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
+import {RestService} from '../../shared/services/rest.service';
 
 @Component({
   selector: 'ii-business',
@@ -28,7 +30,8 @@ export class BusinessComponent implements OnInit {
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
-              private progressService: ProgressService) {
+              private progressService: ProgressService, private dialog: MatDialog,
+              private restService: RestService) {
   }
 
   ngOnInit() {
@@ -41,7 +44,7 @@ export class BusinessComponent implements OnInit {
   }
 
   select(id: number = 0): void {
-    if  (this.bizId === id)
+    if (this.bizId === id)
       this.bizId = null;
     else
       this.bizId = id;
@@ -114,4 +117,36 @@ export class BusinessComponent implements OnInit {
     this.searching();
   }
 
+  deleteBusiness(bid) {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '250px'
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          this.progressService.enable();
+          this.restService.delete('business/one/' + bid).subscribe(
+            () => {
+              this.snackBar.open('Business is deleted successfully', null, {
+                duration: 2000,
+              });
+              this.searching();
+            },
+            (error) => {
+              this.snackBar.open('Cannot delete this Business.', null, {
+                duration: 3200,
+              });
+
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.error('Error in dialog: ', err);
+      }
+    );
+  }
 }

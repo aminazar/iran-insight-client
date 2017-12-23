@@ -44,6 +44,7 @@ import {UnderConstructionComponent} from "../shared/components/underConstruction
     material.MatProgressBarModule,
     material.MatDialogModule,
     material.MatPaginatorModule,
+    material.MatSidenavModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
