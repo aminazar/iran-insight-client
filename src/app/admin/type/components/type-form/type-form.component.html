@@ -2,44 +2,44 @@
 
   <mat-card>
     <mat-card-header>
-      <mat-card-title><h3>{{typeId ? 'Edit type' : 'Add new type'}}</h3></mat-card-title>
+      <mat-card-title>{{typeId ? 'Edit type' : 'Add new type'}}</mat-card-title>
       <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
 
       <mat-form-field>
-        <mat-select formControlName="type_name" role="type_name" (change)="onChange($event.value)" >
+        <mat-select formControlName="type_name" role="type_name" (change)="onChange($event.value)" [disabled]="typeId">
           <mat-option *ngFor="let cat of cats" [value]="cat">{{cat}}</mat-option>
         </mat-select>
         <mat-placeholder>Select Type</mat-placeholder>
       </mat-form-field>
 
-      <div fxLayout="row">
+      <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="50">
 
           <mat-form-field>
-            <input matInput formControlName="name" role="name" placeholder="name">
+            <input matInput formControlName="name" role="name" placeholder="name" required>
           </mat-form-field>
         </div>
         <div fxFlex="50" dir="rtl">
           <mat-form-field>
-            <input matInput formControlName="name_fa" role="name_fa" Lang="fa-IR"  placeholder="نام فارسی">
+            <input matInput formControlName="name_fa" role="name_fa" placeholder="نام فارسی" required>
           </mat-form-field>
         </div>
       </div>
 
-      <div style="margin: 10px 0">
+      <div *ngIf="form.value.suggested_by" style="margin: 10px 0">
         <b>Suggested by:</b>
         <span>
         <input type="text" formControlName="suggested_by" role="suggested_by" readonly style="border:0">
       </span>
       </div>
-      <div fxLayout="row">
+      <div fxLayout="row" fxLayout.xs="column">
 
-        <mat-checkbox fxFlex="50"
+        <mat-checkbox *ngIf="has_killer"
+                      fxFlex="50"
                       formControlName="is_killer"
-                      role="is_killer"
-                      [disabled]="!has_killer">
+                      role="is_killer">
           Is Killer?
         </mat-checkbox>
 
