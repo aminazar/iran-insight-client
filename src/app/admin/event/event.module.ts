@@ -1,17 +1,18 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FlexLayoutModule} from "@angular/flex-layout";
 import {
   MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatIconModule,
   MatInputModule, MatNativeDateModule, MatPaginatorModule, MatRadioModule
-} from '@angular/material';
+} from "@angular/material";
 import { AgmCoreModule } from '@agm/core';
 
 import {SharedModule} from '../../shared/shared.module';
 import {EventComponent} from './event.component';
-import {EventFormComponent} from './components/event-form/event-form.component';
-import {eventRouting} from './event.routing';
+import {EventFormComponent} from "./components/event-form/event-form.component";
+import {eventRouting} from "./event.routing";
+import { EventViewComponent } from './components/event-view/event-view.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import {eventRouting} from './event.routing';
   declarations: [
     EventComponent,
     EventFormComponent,
-  ],
+    EventViewComponent,
+  ]
 })
 export class EventModule {
 

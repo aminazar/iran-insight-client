@@ -2,9 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {ActionEnum} from "../../shared/enum/action.enum";
 import {BreadcrumbService} from "../../shared/services/breadcrumb.service";
 import {SearchService} from "../../shared/services/search.service";
-import {MatSnackBar} from "@angular/material";
+import {MatDialog, MatSnackBar} from "@angular/material";
 import {ProgressService} from "../../shared/services/progress.service";
 import {Router} from "@angular/router";
+import * as moment from 'moment';
+import {EventFormComponent} from "./components/event-form/event-form.component";
+import {EventViewComponent} from "./components/event-view/event-view.component";
+import {RemovingConfirmComponent} from "../../shared/components/removing-confirm/removing-confirm.component";
+import {RestService} from "../../shared/services/rest.service";
+import {StorageService} from "../../shared/services/storage.service";
 
 @Component({
   selector: 'ii-event',
@@ -13,7 +19,7 @@ import {Router} from "@angular/router";
 })
 export class EventComponent implements OnInit {
   offset = 0;
-  limit = 0;
+  limit = 8;
   events = [];
   eventId: number = null;
   showInDeep: boolean = false;
@@ -22,19 +28,80 @@ export class EventComponent implements OnInit {
   totalEvents: number = null;
   aligningObj = {};
   rows = [];
+  searchInFirst: boolean = true;
+  initSearchData: any = null;
 
   constructor(private breadCrumService: BreadcrumbService, private searchService: SearchService,
               private snackBar: MatSnackBar, private progressService: ProgressService,
-              private router: Router) {
+              private router: Router, public dialog: MatDialog,
+              private restService: RestService, private storageService: StorageService) {
   }
 
   ngOnInit() {
     this.breadCrumService.pushChild('Event', this.router.url, true);
+
+    let preData = this.storageService.getData('event');
+    if(preData){
+      this.searchData = preData.searchData;
+      this.eventId = preData.eventId;
+      this.offset = preData.offset;
+      this.limit = preData.limit;
+      this.searchInFirst = false;
+
+      this.initSearchData = this.searchData;
+      this.searching();
+    }
   }
 
   openForm(id: number): void {
     this.eventId = id;
-    this.showInDeep = true;
+    this.storageService.saveData('event', {
+      searchData: this.searchData,
+      eventId: this.eventId,
+      offset: this.offset,
+      limit: this.limit,
+    });
+    this.router.navigate(['/admin/event/form/' + this.eventId]);
+  }
+
+  openView(id: number = null): void{
+    this.eventId = id;
+    this.storageService.saveData('event', {
+      searchData: this.searchData,
+      eventId: this.eventId,
+      offset: this.offset,
+      limit: this.limit,
+    });
+    this.router.navigate(['/admin/event/' + this.eventId]);
+  }
+
+  deleteEvent(id: number = null): void{
+    this.eventId = id;
+    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (res) => {
+        if(res)
+          this.restService.delete('event/' + id).subscribe(
+            (data) => {
+              this.eventId = null;
+              this.snackBar.open('Event is deleted successfully', null, {
+                duration: 2300,
+              });
+              this.searching();
+            },
+            (err) => {
+              console.error('Cannot delete this event. Error: ', err);
+              this.snackBar.open('Cannot delete this event. Please try again.', null, {
+                duration: 3200,
+              });
+            }
+          );
+      },
+      (err) => console.error('Error in closing component. Error: ', err)
+    );
   }
 
   search(data) {
@@ -71,8 +138,8 @@ export class EventComponent implements OnInit {
     )
   }
 
-  aligningItems(){
-    if(this.totalEvents <= 0){
+  aligningItems() {
+    if (this.totalEvents <= 0) {
       this.aligningObj = {};
       this.rows = [];
       return;
@@ -82,7 +149,7 @@ export class EventComponent implements OnInit {
     let rowCounter = 0;
     this.aligningObj = this.events.length > 0 ? {0: []} : {};
     this.events.forEach(el => {
-      if (colCounter > 4) {
+      if (colCounter > 3) {
         this.aligningObj[++rowCounter] = [];
         colCounter = 0;
       }
@@ -95,46 +162,64 @@ export class EventComponent implements OnInit {
   }
 
   applyChanges(data) {
-    switch (data.action){
+    switch (data.action) {
       case this.actionEnum.add: {
-        this.events.unshift(data.value);
-        this.events = this.events.slice(0, this.events.length - 1);
-        this.aligningItems();
+        if (this.limit > this.events.length && this.checkWithSearch(data.value)) {
+          this.events.push(data.value);
+          this.aligningItems();
+        }
+
+        this.totalEvents++;
       }
-      break;
+        break;
       case this.actionEnum.modify: {
-        this.events[this.events.findIndex(el => el.eid === data.value.eid)] = data.value;
-        this.aligningItems();
+        if (this.checkWithSearch(data.value)) {
+          this.events[this.events.findIndex(el => el.eid === data.value.eid)] = data.value;
+          this.aligningItems();
+        }
+        else
+          this.searching();
       }
-      break;
+        break;
       case this.actionEnum.delete: {
-        this.events = this.events.filter(el => el.eid !== data.value);
         this.showInDeep = false;
         this.eventId = null;
         this.searching();
       }
-      break;
+        break;
     }
   }
 
-  checkWithSearch(data){
+  checkWithSearch(data) {
     let isMatched = false;
 
-    if(this.searchData.phrase && this.searchData.phrase.trime() !== ''){
+    if (this.searchData.phrase && this.searchData.phrase.trime() !== '') {
       ['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa'].forEach(el => {
-        if(new RegExp(this.searchData.phrase.toLowerCase()).test(data[el].toLowerCase()))
+        if (new RegExp(this.searchData.phrase.toLowerCase()).test(data[el] ? data[el].toLowerCase() : null))
           isMatched = true;
       });
     }
 
-    if(this.searchData.options.start_date !== null){
-
+    if (this.searchData.options.start_date && this.searchData.options.end_date &&
+      moment(data.start_date).isAfter(moment(this.searchData.options.start_date).subtract(1, 'days')) && moment(data.end_date).isBefore(moment(this.searchData.options.end_date).add(1, 'days'))) {
+      isMatched = true;
     }
-
-    if(this.searchData.options.end_date !== null){
-
+    else if (this.searchData.options.start_date && !this.searchData.options.end_date &&
+      moment(data.start_date).isAfter(moment(this.searchData.options.start_date).subtract(1, 'days'))) {
+      isMatched = true;
+    }
+    else if (!this.searchData.options.start_date && this.searchData.options.end_date &&
+      moment(data.end_date).isBefore(moment(this.searchData.options.end_date).add(1, 'days'))) {
+      isMatched = true;
     }
 
     return isMatched;
+  }
+
+  select(id: number = null){
+    if(this.eventId === id)
+      this.eventId = null;
+    else
+      this.eventId = id;
   }
 }

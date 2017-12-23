@@ -1,7 +1,7 @@
 .user{
-  color: #a69d96;
+  font-style:italic;
 }
 
 .not-user{
-  color: #a75e6a;
+  font-style: normal;
 }
