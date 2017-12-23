@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LCEComponent } from './lce.component';
+import { AbstractFormComponent } from './abstract-form.component';
 
-describe('LCEComponent', () => {
-  let component: LCEComponent;
-  let fixture: ComponentFixture<LCEComponent>;
+describe('AbstractFormComponent', () => {
+  let component: AbstractFormComponent;
+  let fixture: ComponentFixture<AbstractFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LCEComponent ]
+      declarations: [ AbstractFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LCEComponent);
+    fixture = TestBed.createComponent(AbstractFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,7 +4,7 @@
       <mat-card-content>
         <mat-tab-group>
           <mat-tab label="Information">
-            <ii-person-form [personId]="personId" (changedPerson)="applyChanges($event)"></ii-person-form>
+            <ii-person-form [formId]="personId" (changedPerson)="applyChanges($event)"></ii-person-form>
           </mat-tab>
           <mat-tab label="Expertise">
             <ii-person-expertise [personId]="personId"></ii-person-expertise>

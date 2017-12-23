@@ -20,6 +20,7 @@ import {RemovingConfirmComponent} from './components/removing-confirm/removing-c
 import { UnderConstructionComponent } from './components/underConstruction/under-construction.component';
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { LeavingConfirmComponent } from './components/leaving-confirm/leaving-confirm.component';
+import { AbstractFormComponent } from './components/abstract-form/abstract-form.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { LeavingConfirmComponent } from './components/leaving-confirm/leaving-co
     UnderConstructionComponent,
     SuggestionComponent,
     LeavingConfirmComponent,
+    AbstractFormComponent,
   ],
   imports: [
     RouterModule,

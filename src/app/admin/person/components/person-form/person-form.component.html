@@ -2,23 +2,23 @@
   <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
     <mat-card-header>
       <mat-card-title>
-        <div *ngIf="!personId">Add new person</div>
-        <div *ngIf="personId">Edit Person</div>
+        <div *ngIf="!formId">Add new person</div>
+        <div *ngIf="formId">Edit Person</div>
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form (ngSubmit)="modifyUser()" [formGroup]="personForm">
+      <form (ngSubmit)="modifyUser()" [formGroup]="form">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
           <div fxFlex="50" class="field-container">
             <mat-input-container class="field">
               <input matInput type="email" placeholder="Email" formControlName="username" role="username" tabindex="1">
               <mat-hint>Enter user's email</mat-hint>
               <mat-error
-                *ngIf="personForm.controls['username'].hasError('required') && !personForm.controls['username'].hasError('email')">
+                *ngIf="form.controls['username'].hasError('required') && !form.controls['username'].hasError('email')">
                 Please enter user's email
               </mat-error>
               <mat-error
-                *ngIf="!personForm.controls['username'].hasError('required') && personForm.controls['username'].hasError('email')">
+                *ngIf="!form.controls['username'].hasError('required') && form.controls['username'].hasError('email')">
                 Please enter a valid email address
               </mat-error>
             </mat-input-container>
@@ -70,7 +70,7 @@
             </mat-input-container>
           </div>
         </div>
-        <div *ngIf="personId">
+        <div *ngIf="formId">
           <button mat-raised-button type="button" (click)="resetPassword()" [disabled]="resetPasswordBtnShouldDisabled">
             Reset Password
           </button>
@@ -80,7 +80,7 @@
             <textarea matInput placeholder="Address" formControlName="address_en" role="address-en"
                       tabindex="5"></textarea>
             <mat-hint>Enter maximum 500 characters</mat-hint>
-            <mat-error *ngIf="personForm.controls['address_en'].hasError('maxLength')">Please enter less than 500
+            <mat-error *ngIf="form.controls['address_en'].hasError('maxLength')">Please enter less than 500
               characters
             </mat-error>
           </mat-input-container>
@@ -90,19 +90,19 @@
             <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"
                       tabindex="14"></textarea>
             <mat-hint style="margin-bottom: 4px;">حداکثر از 500 حرف استفاده شود</mat-hint>
-            <mat-error style="margin-bottom: 4px;" *ngIf="personForm.controls['address_fa'].hasError('maxLength')">لطفا حداکثر از 500 حرف استفاده کنید</mat-error>
+            <mat-error style="margin-bottom: 4px;" *ngIf="form.controls['address_fa'].hasError('maxLength')">لطفا حداکثر از 500 حرف استفاده کنید</mat-error>
           </mat-input-container>
         </div>
         <div class="field-container">
           <mat-input-container class="field">
             <input matInput type="text" placeholder="Mobile number" formControlName="mobile_no" tabindex="6"/>
-            <mat-error style="margin-bottom: 4px;" *ngIf="personForm.controls['mobile_no'].hasError('pattern')">Please enter valid mobile number</mat-error>
+            <mat-error style="margin-bottom: 4px;" *ngIf="form.controls['mobile_no'].hasError('pattern')">Please enter valid mobile number</mat-error>
           </mat-input-container>
         </div>
         <div class="field-container">
           <mat-input-container class="field">
             <input matInput type="text" placeholder="Phone number" formControlName="phone_no" tabindex="7"/>
-            <mat-error style="margin-bottom: 4px;" *ngIf="personForm.controls['phone_no'].hasError('pattern')">Please enter valid phone number</mat-error>
+            <mat-error style="margin-bottom: 4px;" *ngIf="form.controls['phone_no'].hasError('pattern')">Please enter valid phone number</mat-error>
           </mat-input-container>
         </div>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
@@ -124,22 +124,22 @@
             </mat-form-field>
           </div>
         </div>
-        <div *ngIf="personId">
+        <div *ngIf="formId">
           <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + personId]"><i class="fa fa-certificate">Expertise</i></a>
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/membership/' + personId]"><i class="fa fa-handshake-o">Membership</i></a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + formId]"><i class="fa fa-certificate">Expertise</i></a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/membership/' + formId]"><i class="fa fa-handshake-o">Membership</i></a>
           </div>
           <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/business/' + personId]"><i class="fa fa-university">Businesses</i></a>
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/organization/' + personId]"><i class="fa fa-industry">Organizations</i></a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/business/' + formId]"><i class="fa fa-university">Businesses</i></a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/organization/' + formId]"><i class="fa fa-industry">Organizations</i></a>
           </div>
         </div>
         <div role="submit-button">
           <button mat-icon-button color="accent" type="submit"
-                  [disabled]="upsertBtnShouldDisabled || (!personForm.valid || (personId && !anyChanges))" tabindex="20">
+                  [disabled]="upsertBtnShouldDisabled || (!form.valid || (formId && !anyChanges))" tabindex="20">
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
-          <button mat-icon-button color="warn" type="button" *ngIf="personId" (click)="deletePerson()"
+          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deletePerson()"
                   [disabled]="deleteBtnShouldDisabled" tabindex="21">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>

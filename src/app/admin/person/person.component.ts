@@ -11,7 +11,7 @@ import {AuthService} from '../../shared/services/auth.service';
 import {PersonFormComponent} from './components/person-form/person-form.component';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 import {StorageService} from '../../shared/services/storage.service';
-import {AbstractSearchComponent} from '../../shared/components/abstract-search.component';
+import {AbstractSearchComponent} from '../../shared/components/abstract-search/abstract-search.component';
 
 @Component({
   selector: 'ii-person',

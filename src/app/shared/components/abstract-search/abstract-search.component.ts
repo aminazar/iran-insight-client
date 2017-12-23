@@ -1,19 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {ActionEnum} from '../enum/action.enum';
+import {ActionEnum} from '../../enum/action.enum';
 import {Router} from '@angular/router';
-import {BreadcrumbService} from '../services/breadcrumb.service';
-import {SearchService} from '../services/search.service';
+import {BreadcrumbService} from '../../services/breadcrumb.service';
+import {SearchService} from '../../services/search.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {ProgressService} from '../services/progress.service';
-import {AuthService} from '../services/auth.service';
-import {StorageService} from '../services/storage.service';
-import {RemovingConfirmComponent} from './removing-confirm/removing-confirm.component';
+import {ProgressService} from '../../services/progress.service';
+import {AuthService} from '../../services/auth.service';
+import {StorageService} from '../../services/storage.service';
+import {RemovingConfirmComponent} from '../removing-confirm/removing-confirm.component';
 import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'ii-abstract-search',
-  template: `
-  `,
+  template: ``,
   styles: []
 })
 export class AbstractSearchComponent implements OnInit {
@@ -24,7 +23,6 @@ export class AbstractSearchComponent implements OnInit {
   totalCards: number = null;
   cardId: number = null;
   searchData: any = null;
-  actionEnum = ActionEnum;
   aligningObj = {};
   rows = [];
   searchInFirst = true;
