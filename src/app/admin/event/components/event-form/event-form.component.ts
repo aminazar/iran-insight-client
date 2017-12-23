@@ -1,14 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {ProgressService} from '../../../../shared/services/progress.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialog, MatSnackBar} from "@angular/material";
+import {ProgressService} from "../../../../shared/services/progress.service";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import * as moment from 'moment';
-import {RestService} from '../../../../shared/services/rest.service';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
-import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {RestService} from "../../../../shared/services/rest.service";
+import {ActionEnum} from "../../../../shared/enum/action.enum";
+import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
+import {CanComponentDeactivate} from "../../../leavingGuard";
 
 
-enum OrganizerType {
+enum OrganizerType{
   person,
   business,
   organization,
@@ -19,16 +23,17 @@ enum OrganizerType {
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.css']
 })
-export class EventFormComponent implements OnInit {
+export class EventFormComponent implements OnInit, CanComponentDeactivate {
   @Input()
   set eventId(id) {
-    this.originalEvent = null;
-    this.organizerId = null;
-    this.organizerName = null;
+    // this.originalEvent = null;
+    // this.organizerId = null;
+    // this.organizerName = null;
     this._eventId = id;
-    this.eventForm = null;
-    this.initForm();
-    this.initEvent();
+    // this.eventForm = null;
+    // this.initForm();
+    // this.initEvent();
+    // this.initLocation();
   }
 
   get eventId() {
@@ -48,18 +53,33 @@ export class EventFormComponent implements OnInit {
   organizer = this.organizerType.person;
   organizerId: number = null;
   organizerName: string = null;
-  latitude: number = 51.678418;
-  longitude: number = 7.809007;
+  latitude: number = 35.696491;
+  longitude: number = 51.379926;
+  organizerHasError: boolean = false;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
-              private progressService: ProgressService, private restService: RestService) {
+              private progressService: ProgressService, private restService: RestService,
+              private router: Router, private route: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService) {
   }
 
   ngOnInit() {
     this.initForm();
 
-    if (!this.eventId)
-      this.organizer = this.organizerType.person;
+    this.route.params.subscribe(
+      (params) => {
+        this.eventId = +params['id'] ? +params['id'] : null;
+        if(this.eventId)
+          this.breadcrumbService.pushChild('Update Event', this.router.url, false);
+        else{
+          this.breadcrumbService.pushChild('Add Event', this.router.url, false);
+          this.organizer = this.organizerType.person;
+        }
+      }
+    );
+
+    this.initEvent();
+    this.initLocation();
   }
 
   initForm() {
@@ -67,13 +87,13 @@ export class EventFormComponent implements OnInit {
       title: [null, [
         Validators.required,
         (c: FormControl) => {
-          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'Title cannot be empty'};
+          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'Title cannot be empty'}
         },
       ]],
       title_fa: [null, [
         Validators.required,
         (c: FormControl) => {
-          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'عنوان نمی تواند خالی باشد'};
+          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'عنوان نمی تواند خالی باشد'}
         },
       ]],
       location: [null],
@@ -122,9 +142,10 @@ export class EventFormComponent implements OnInit {
             this.eventForm.controls[el].setValue(data[el]);
         });
 
+        this.latitude = data.latitude;
+        this.longitude = data.longitude;
         this.organizerName = data.organizer_name || data.organizer_name_fa;
-        // this.latitude = data.latitude;
-        // this.long
+
         this.organizerId = data.organizer_pid || data.organizer_bid || data.organizer_oid;
         if (data.organizer_pid)
           this.organizer = this.organizerType.person;
@@ -150,7 +171,7 @@ export class EventFormComponent implements OnInit {
         this.upsertBtnShouldDisabled = true;
         this.deleteBtnShouldDisabled = true;
       }
-    );
+    )
   }
 
   dateChecker(AC: AbstractControl) {
@@ -177,7 +198,10 @@ export class EventFormComponent implements OnInit {
 
     let eventData = {};
     Object.keys(this.eventForm.controls).filter(el => !['organizer_name', 'organizer_name_fa'].includes(el)).forEach(el => {
-      eventData[el] = this.eventForm.controls[el].value;
+      if(el === 'start_date' || el === 'end_date')
+        eventData[el] = this.eventForm.controls[el].value ? moment(this.eventForm.controls[el].value).format('YYYY-MM-DD') : null;
+      else
+        eventData[el] = this.eventForm.controls[el].value;
     });
 
     eventData = Object.assign({
@@ -185,6 +209,8 @@ export class EventFormComponent implements OnInit {
       organizer_pid: this.organizer === this.organizerType.person ? this.organizerId : null,
       organizer_bid: this.organizer === this.organizerType.business ? this.organizerId : null,
       organizer_oid: this.organizer === this.organizerType.organization ? this.organizerId : null,
+      latitude: this.latitude,
+      longitude: this.longitude,
     }, eventData);
 
 
@@ -207,19 +233,31 @@ export class EventFormComponent implements OnInit {
           });
 
           this.anyChanges = false;
-          this.eventId = data;
-          this.originalEvent = Object.assign({eid: data}, eventData);
           this.changedEvent.emit({
             action: this.eventId ? this.actionEnum.modify : this.actionEnum.add,
-            value: Object.assign({eid: data}, eventData)
+            value: Object.assign({
+              eid: data,
+              organizerName: this.organizerName,
+            }, eventData)
           });
+
+          if(!this.eventId){
+            this.organizerId = null;
+            this.organizerName = null;
+            this.eventForm.reset();
+            this.eventForm.controls['start_date'].setValue(new Date());
+          }
+          else{
+            this.originalEvent = Object.assign({eid: data}, eventData);
+            this.eventId = data;
+          }
 
           this.progressService.disable();
           this.upsertBtnShouldDisabled = false;
           this.deleteBtnShouldDisabled = false;
         },
         (err) => {
-          this.snackBar.open('Cannot ' + this.eventId ? 'add' : 'update' + ' this event. Try again', null, {
+          this.snackBar.open('Cannot ' + (this.eventId ? 'update' : 'add') + ' this event. Try again', null, {
             duration: 3200,
           });
           this.progressService.disable();
@@ -260,6 +298,17 @@ export class EventFormComponent implements OnInit {
           this.anyChanges = true;
       }
     });
+
+    if(this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
+      this.anyChanges = true;
+
+    if(this.organizerId !== (this.originalEvent.organizer_pid || this.originalEvent.organizer_bid || this.originalEvent.organizer_oid))
+      this.anyChanges = true;
+
+    if(!this.organizerId)
+      this.organizerHasError = true;
+    else
+      this.organizerHasError = false;
   }
 
   deleteEvent() {
@@ -286,6 +335,8 @@ export class EventFormComponent implements OnInit {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this event. Please try again', null, {
@@ -296,13 +347,13 @@ export class EventFormComponent implements OnInit {
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
             }
-          );
+          )
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    );
+    )
   }
 
   organizerIsPerson() {
@@ -335,14 +386,63 @@ export class EventFormComponent implements OnInit {
       }
         break;
     }
+
+    this.eventChanged();
   }
 
   directToOrganizer() {
-    //ToDo: Should direct user to person, business or organization component based on organizerType
+    if(this.organizerId){
+      let url = '/admin/';
+      switch (this.organizer){
+        case this.organizerType.person: url += 'person';
+        break;
+        case this.organizerType.business: url += 'business';
+        break;
+        case this.organizerType.organization: url += 'organization';
+        break;
+      }
+
+      url += ('/' + this.organizerId);
+
+      this.router.navigate([url]);
+    }
   }
 
   setMarker(data) {
     this.latitude = data.coords.lat;
     this.longitude = data.coords.lng;
+
+    this.eventChanged();
+  }
+
+  initLocation() {
+    if (navigator.geolocation && !this.eventId) {
+      navigator.geolocation.getCurrentPosition(el => {
+        this.latitude = el.coords.latitude;
+        this.longitude = el.coords.longitude;
+      }, err => {
+        console.log('ERROR: ', err);
+      })
+    }
+  }
+
+  canDeactivate(): Promise<boolean>{
+    return new Promise((resolve, reject) => {
+      if(this.anyChanges){
+        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if(data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    })
   }
 }

@@ -2,12 +2,16 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatTabsModule} from '@angular/material';
+import {
+  MatButtonModule, MatCardModule, MatIconModule, MatInputModule, MatSidenavModule,
+  MatTabsModule
+} from '@angular/material';
 
 import {AdminRouting} from './admin.routing';
 import {SharedModule} from '../shared/shared.module';
 import {AuthGuard} from './auth.guard';
 import {AdminHomeComponent} from './home/home.component';
+import {LeavingGuard} from "./leavingGuard";
 
 @NgModule({
   declarations: [
@@ -24,8 +28,9 @@ import {AdminHomeComponent} from './home/home.component';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
+    MatSidenavModule,
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, LeavingGuard],
   exports: []
 })
 export class AdminModule {

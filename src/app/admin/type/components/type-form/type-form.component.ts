@@ -47,7 +47,7 @@ export class TypeFormComponent implements OnInit, OnDestroy {
     });
 
     this.restService.get('type/getCats').subscribe(res => {
-      this.cats = res;
+      this.cats = res.map(r => TargetEnum[r] ? TargetEnum[r] : r.charAt(0).toUpperCase() + r.slice(1));
     });
 
     if (this.typeId) {
@@ -88,7 +88,7 @@ export class TypeFormComponent implements OnInit, OnDestroy {
 
 
       if (!this.type_name)
-        this.type_name = this.form.value.type_name;
+        this.type_name = this.form.value.type_name.toLowerCase();
 
       if (this.type_name === 'lce')
         body.is_killer = !!this.form.value.is_killer;

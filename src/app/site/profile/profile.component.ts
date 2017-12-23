@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
 
-    this.breadCrumbService.pushChild('profile' , this.router.url);
+    this.breadCrumbService.pushChild('Profile' , this.router.url);
   }
 
 
