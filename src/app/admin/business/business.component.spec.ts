@@ -6,8 +6,13 @@ import {AdminTestRouting} from '../admin.routing';
 import {SuggestionComponent} from '../../shared/components/suggestion/suggestion.component';
 import {SearchFieldsComponent} from '../../shared/components/search-fields/search-fields.component';
 import {BusinessInfoComponent} from './components/business-info/business-info.component';
+import {BusinessViewComponent} from './components/business-view/business-view.component';
 
-describe('BusinessComponent', () => {
+class StubClass {
+  innerWidth = 100;
+}
+
+fdescribe('BusinessComponent', () => {
   let component: BusinessComponent;
   let fixture: ComponentFixture<BusinessComponent>;
 
@@ -18,10 +23,14 @@ describe('BusinessComponent', () => {
         SearchFieldsComponent,
         BusinessInfoComponent,
         SuggestionComponent,
+        BusinessViewComponent,
       ],
       imports: [
         TestModule,
         AdminTestRouting,
+      ],
+      providers: [
+        {provide: 'Window', useClass: StubClass}
       ]
     })
       .compileComponents();

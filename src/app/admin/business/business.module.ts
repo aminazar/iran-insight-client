@@ -37,6 +37,7 @@ import { BusinessViewComponent } from './components/business-view/business-view.
     MatTabsModule,
     MatPaginatorModule,
   ],
-  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessViewComponent]
+  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessViewComponent],
+  providers: [{ provide: 'Window', useValue: window }]
 })
 export class BusinessModule { }

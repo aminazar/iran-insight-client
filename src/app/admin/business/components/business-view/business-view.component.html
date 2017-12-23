@@ -1,3 +1,14 @@
-<p>
-  business-view works!
-</p>
+<mat-card style="min-width:550px">
+  <mat-card-header>
+    <mat-card-title>
+      {{data.name}}
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{data.name_fa}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content><pre>
+    {{parsed}}
+  </pre>
+  </mat-card-content>
+</mat-card>

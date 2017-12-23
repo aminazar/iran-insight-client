@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ActionEnum} from '../../shared/enum/action.enum';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
@@ -7,6 +7,7 @@ import {SearchService} from '../../shared/services/search.service';
 import {ProgressService} from '../../shared/services/progress.service';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 import {RestService} from '../../shared/services/rest.service';
+import {BusinessViewComponent} from './components/business-view/business-view.component';
 
 @Component({
   selector: 'ii-business',
@@ -31,7 +32,7 @@ export class BusinessComponent implements OnInit {
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private dialog: MatDialog,
-              private restService: RestService) {
+              private restService: RestService, @Inject('Window') private window: Window) {
   }
 
   ngOnInit() {
@@ -41,6 +42,15 @@ export class BusinessComponent implements OnInit {
   openForm(id: number = 0): void {
     this.router.navigate(['admin', 'business', 'upsert', id])
       .then(() => console.log('done routing'));
+  }
+
+  openView(bid: number = 0): void {
+    if (this.window.innerWidth >= 600) {
+      const dialog = this.dialog.open(BusinessViewComponent, {data: {bid}});
+    } else {
+      this.router.navigate(['admin', 'business', 'view', bid])
+        .then(() => console.log('done routing'));
+    }
   }
 
   select(id: number = 0): void {
