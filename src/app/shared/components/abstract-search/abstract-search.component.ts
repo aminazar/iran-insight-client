@@ -16,7 +16,6 @@ import {Observable} from 'rxjs/Observable';
   styles: []
 })
 export class AbstractSearchComponent implements OnInit {
-
   offset = 0;
   limit = 8;
   cards = [];
@@ -101,7 +100,7 @@ export class AbstractSearchComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.cards = data[this.key];
-        this.totalCards = this.cards && this.cards.length > 0 ? parseInt(this.cards[0].total) : 0;
+        this.totalCards = this.cards && this.cards.length > 0 ? parseInt(this.cards[0].total, 10) : 0;
         this.aligningItems();
         this.progressService.disable();
       },
