@@ -19,7 +19,7 @@ import {StorageService} from "../../shared/services/storage.service";
 })
 export class EventComponent implements OnInit {
   offset = 0;
-  limit = 10;
+  limit = 8;
   events = [];
   eventId: number = null;
   showInDeep: boolean = false;

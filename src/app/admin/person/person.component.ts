@@ -19,7 +19,7 @@ import {StorageService} from "../../shared/services/storage.service";
 })
 export class PersonComponent implements OnInit {
   offset = 0;
-  limit = 10;
+  limit = 8;
   people = [];
   personId: number = null;
   showInDeep = false;

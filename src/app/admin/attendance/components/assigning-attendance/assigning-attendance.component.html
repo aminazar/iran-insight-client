@@ -18,8 +18,8 @@
               <a [routerLink]="['/admin/person/' + item.id]">{{item.name}}</a>
             </td>
             <td>
-              <button mat-icon-button (click)="removePersonAttendance(item.aid)">
-                <mat-icon aria-label="clear person attendace">clear</mat-icon>
+              <button mat-icon-button (click)="removePersonAttendance(item.aid)" color="warn">
+                <mat-icon aria-label="clear person attendace">delete</mat-icon>
               </button>
             </td>
           </tr>

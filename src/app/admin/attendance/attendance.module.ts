@@ -3,7 +3,7 @@ import {attendanceRouting} from "./attendance.routing";
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {MatIconModule} from "@angular/material";
+import {MatDialogModule, MatIconModule, MatSnackBarModule} from "@angular/material";
 
 import {AssigningAttendanceComponent} from "./components/assigning-attendance/assigning-attendance.component";
 
@@ -15,6 +15,8 @@ import {AssigningAttendanceComponent} from "./components/assigning-attendance/as
     ReactiveFormsModule,
     FlexLayoutModule,
     MatIconModule,
+    MatSnackBarModule,
+    MatDialogModule,
   ],
   declarations: [
     AssigningAttendanceComponent,
