@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from "@angular/forms";
-import {Observable} from "rxjs/Observable";
-import {RestService} from "../../services/rest.service";
-import {map} from "rxjs/operator/map";
-import {ProgressService} from "../../services/progress.service";
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
+import {RestService} from '../../services/rest.service';
+import {map} from 'rxjs/operator/map';
+import {ProgressService} from '../../services/progress.service';
 
 @Component({
   selector: 'ii-suggestion',
@@ -11,6 +11,7 @@ import {ProgressService} from "../../services/progress.service";
   styleUrls: ['./suggestion.component.css']
 })
 export class SuggestionComponent implements OnInit {
+  @Input() placeHolder: string = '';
   @Input() name: string = '';
   @Input() idColumn: string = '';
   @Input() fieldNameEn: string = '';
@@ -26,6 +27,10 @@ export class SuggestionComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (!this.placeHolder) {
+      this.placeHolder = this.name;
+    }
     this.suggestionCtrl = new FormControl();
     this.suggestionCtrl.valueChanges.debounceTime(150).subscribe(
       (data) => {
@@ -45,7 +50,7 @@ export class SuggestionComponent implements OnInit {
   filtering(phrase: string) {
     if ((!phrase || phrase === '') || phrase.length < 3)
       this.filteredItems = [];
-    else{
+    else {
       this.progressService.enable();
 
       if (phrase.charCodeAt(0) >= 48 && phrase.charCodeAt(0) <= 122)

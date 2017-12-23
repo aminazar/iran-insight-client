@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog, MatSnackBar} from "@angular/material";
-import {ProgressService} from "../../../../shared/services/progress.service";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {ProgressService} from '../../../../shared/services/progress.service';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import {RestService} from "../../../../shared/services/rest.service";
-import {ActionEnum} from "../../../../shared/enum/action.enum";
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
+import {RestService} from '../../../../shared/services/rest.service';
+import {ActionEnum} from '../../../../shared/enum/action.enum';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 
-enum OrganizerType{
+enum OrganizerType {
   person,
   business,
   organization,
@@ -58,7 +58,7 @@ export class EventFormComponent implements OnInit {
   ngOnInit() {
     this.initForm();
 
-    if(!this.eventId)
+    if (!this.eventId)
       this.organizer = this.organizerType.person;
   }
 
@@ -67,13 +67,13 @@ export class EventFormComponent implements OnInit {
       title: [null, [
         Validators.required,
         (c: FormControl) => {
-          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'Title cannot be empty'}
+          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'Title cannot be empty'};
         },
       ]],
       title_fa: [null, [
         Validators.required,
         (c: FormControl) => {
-          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'عنوان نمی تواند خالی باشد'}
+          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'عنوان نمی تواند خالی باشد'};
         },
       ]],
       location: [null],
@@ -104,7 +104,7 @@ export class EventFormComponent implements OnInit {
   }
 
   initEvent() {
-    if(!this.eventId){
+    if (!this.eventId) {
       this.eventForm = null;
       this.initForm();
       return;
@@ -116,7 +116,7 @@ export class EventFormComponent implements OnInit {
     this.restService.get('event/' + this.eventId).subscribe(
       (data) => {
         Object.keys(this.eventForm.controls).forEach(el => {
-          if(el === 'start_date' || el === 'end_date')
+          if (el === 'start_date' || el === 'end_date')
             this.eventForm.controls[el].setValue(data[el] ? moment(data[el]).format('YYYY-MM-DD') : null);
           else
             this.eventForm.controls[el].setValue(data[el]);
@@ -126,9 +126,9 @@ export class EventFormComponent implements OnInit {
         // this.latitude = data.latitude;
         // this.long
         this.organizerId = data.organizer_pid || data.organizer_bid || data.organizer_oid;
-        if(data.organizer_pid)
+        if (data.organizer_pid)
           this.organizer = this.organizerType.person;
-        else if(data.organizer_bid)
+        else if (data.organizer_bid)
           this.organizer = this.organizerType.business;
         else
           this.organizer = this.organizerType.organization;
@@ -150,7 +150,7 @@ export class EventFormComponent implements OnInit {
         this.upsertBtnShouldDisabled = true;
         this.deleteBtnShouldDisabled = true;
       }
-    )
+    );
   }
 
   dateChecker(AC: AbstractControl) {
@@ -182,9 +182,9 @@ export class EventFormComponent implements OnInit {
 
     eventData = Object.assign({
       eid: this.eventId,
-        organizer_pid: this.organizer === this.organizerType.person ? this.organizerId : null,
-        organizer_bid: this.organizer === this.organizerType.business ? this.organizerId : null,
-        organizer_oid: this.organizer === this.organizerType.organization ? this.organizerId : null,
+      organizer_pid: this.organizer === this.organizerType.person ? this.organizerId : null,
+      organizer_bid: this.organizer === this.organizerType.business ? this.organizerId : null,
+      organizer_oid: this.organizer === this.organizerType.organization ? this.organizerId : null,
     }, eventData);
 
 
@@ -200,37 +200,37 @@ export class EventFormComponent implements OnInit {
       this.restService.post('event/' + this.eventId, eventData)
       :
       this.restService.put('event', eventData))
-        .subscribe(
-          (data) => {
-            this.snackBar.open(this.eventId ? 'Event is updated' : 'Event is added', null, {
-              duration: 2300,
-            });
+      .subscribe(
+        (data) => {
+          this.snackBar.open(this.eventId ? 'Event is updated' : 'Event is added', null, {
+            duration: 2300,
+          });
 
-            this.anyChanges = false;
-            this.eventId = data;
-            this.originalEvent = Object.assign({eid: data}, eventData);
-            this.changedEvent.emit({
-              action: this.eventId ? this.actionEnum.modify : this.actionEnum.add,
-              value: Object.assign({eid: data}, eventData)
-            });
+          this.anyChanges = false;
+          this.eventId = data;
+          this.originalEvent = Object.assign({eid: data}, eventData);
+          this.changedEvent.emit({
+            action: this.eventId ? this.actionEnum.modify : this.actionEnum.add,
+            value: Object.assign({eid: data}, eventData)
+          });
 
-            this.progressService.disable();
-            this.upsertBtnShouldDisabled = false;
-            this.deleteBtnShouldDisabled = false;
-          },
-          (err) => {
-            this.snackBar.open('Cannot ' + this.eventId ? 'add' : 'update' + ' this event. Try again', null, {
-              duration: 3200,
-            });
-            this.progressService.disable();
-            this.upsertBtnShouldDisabled = false;
-            this.deleteBtnShouldDisabled = false;
-          }
-        );
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+        },
+        (err) => {
+          this.snackBar.open('Cannot ' + this.eventId ? 'add' : 'update' + ' this event. Try again', null, {
+            duration: 3200,
+          });
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+        }
+      );
   }
 
   eventChanged() {
-    if(!this.originalEvent)
+    if (!this.originalEvent)
       return;
 
     this.anyChanges = false;
@@ -239,24 +239,24 @@ export class EventFormComponent implements OnInit {
       let formValue = this.eventForm.controls[el].value;
       let originalValue = this.originalEvent[el];
 
-      if(el === 'start_date' || el === 'end_date'){
-        if((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+      if (el === 'start_date' || el === 'end_date') {
+        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       }
-      else{
-        if(['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa', 'organizer_name', 'organizer_name_fa'].includes(el)){
-          if(formValue && formValue.trim().length <= 0)
+      else {
+        if (['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa', 'organizer_name', 'organizer_name_fa'].includes(el)) {
+          if (formValue && formValue.trim().length <= 0)
             formValue = null;
-          else if(formValue)
+          else if (formValue)
             formValue = formValue.trim();
 
-          if(originalValue && originalValue.trim().length <= 0)
+          if (originalValue && originalValue.trim().length <= 0)
             originalValue = null;
-          else if(originalValue)
+          else if (originalValue)
             originalValue = originalValue.trim();
         }
 
-        if(formValue !== originalValue && (formValue !== '' || originalValue !== null))
+        if (formValue !== originalValue && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       }
     });
@@ -270,7 +270,7 @@ export class EventFormComponent implements OnInit {
 
     rmDialog.afterClosed().subscribe(
       (data) => {
-        if(data){
+        if (data) {
           this.progressService.enable();
           this.upsertBtnShouldDisabled = true;
           this.deleteBtnShouldDisabled = true;
@@ -296,13 +296,13 @@ export class EventFormComponent implements OnInit {
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
             }
-          )
+          );
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    )
+    );
   }
 
   organizerIsPerson() {
@@ -337,11 +337,11 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  directToOrganizer(){
+  directToOrganizer() {
     //ToDo: Should direct user to person, business or organization component based on organizerType
   }
 
-  setMarker(data){
+  setMarker(data) {
     this.latitude = data.coords.lat;
     this.longitude = data.coords.lng;
   }

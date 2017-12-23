@@ -1,6 +1,6 @@
 <div class="farsi">
   <mat-input-container class="field">
-    <input matInput type="text" placeholder="{{name}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl"/>
+    <input matInput type="text" placeholder="{{placeHolder}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl"/>
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let item of filteredItems" [value]="item[fn]" (click)="addItem(item)" class="farsi">
         {{item[fn]}}
