@@ -22,6 +22,7 @@ export class TypeFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   canSubmit = true; // it is only false when submit button is pressed and waiting for response
 
+
   constructor(public dialogRef: MatDialogRef<TypeFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private  restService: RestService,
@@ -32,17 +33,13 @@ export class TypeFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.typeId = this.data.id;
+    this.type_name = this.data.type_name;
 
     this.form = this.fb.group({
-      name: ['', [
-        Validators.required
-      ]],
-      name_fa: ['', [
-        Validators.required,
-      ]],
-      type_name: ['', [
-        Validators.required,
-      ]],
+      name: ['', Validators.required],
+      name_fa: ['', Validators.required],
+      type_name: [{value: '', disabled: !!this.typeId}, Validators.required],
       suggested_by: [''],
       active: [false],
       is_killer: [false]
@@ -53,9 +50,6 @@ export class TypeFormComponent implements OnInit, OnDestroy {
       this.cats = res.map(r => TargetEnum[r] ? TargetEnum[r] : r.charAt(0).toUpperCase() + r.slice(1));
     });
 
-    this.typeId = this.data.id;
-    this.type_name = this.data.type_name;
-
     if (this.typeId) {
 
       this.form.controls.type_name.setValue(this.type_name);
@@ -65,7 +59,7 @@ export class TypeFormComponent implements OnInit, OnDestroy {
 
         this.prgService.disable();
 
-        if (this.type_name === TargetEnum.lce)
+        if (this.type_name === 'lce')
           this.has_killer = true;
 
         const result = res[0];
@@ -96,7 +90,7 @@ export class TypeFormComponent implements OnInit, OnDestroy {
       if (!this.type_name)
         this.type_name = this.form.value.type_name.toLowerCase();
 
-      if (this.type_name === TargetEnum.lce)
+      if (this.type_name === 'lce')
         body.is_killer = !!this.form.value.is_killer;
 
       const rest = this.typeId ?
@@ -131,7 +125,7 @@ export class TypeFormComponent implements OnInit, OnDestroy {
   }
 
   onChange(cat) {
-    this.has_killer = cat === TargetEnum.lce;
+    this.has_killer = cat === 'lce';
   }
 
   onCancel() {

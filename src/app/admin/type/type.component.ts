@@ -17,7 +17,11 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   types: IType[] = [];
 
-  constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog, private searchService: SearchService, private prgService: ProgressService) {
+  constructor(private router: Router,
+              private breadCrumbService: BreadcrumbService,
+              private dialog: MatDialog,
+              private searchService: SearchService,
+              private prgService: ProgressService) {
   }
 
 
