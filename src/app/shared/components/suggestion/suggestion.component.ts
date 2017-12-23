@@ -11,26 +11,25 @@ import {ProgressService} from '../../services/progress.service';
   styleUrls: ['./suggestion.component.css']
 })
 export class SuggestionComponent implements OnInit {
-  @Input() placeHolder: string = '';
-  @Input() name: string = '';
-  @Input() idColumn: string = '';
-  @Input() fieldNameEn: string = '';
-  @Input() fieldNameFa: string = '';
+  @Input() name = '';
+  @Input() placeholder: string = null;
+  @Input() idColumn = '';
+  @Input() fieldNameEn = '';
+  @Input() fieldNameFa = '';
   @Input() currentIds: number[] = [];
   @Output() add = new EventEmitter<any>();
 
   suggestionCtrl: FormControl;
   filteredItems: any[] = [];
-  fn: string = '';
+  fn = '';
 
   constructor(private restService: RestService, private progressService: ProgressService) {
   }
 
   ngOnInit() {
+    if (!this.placeholder)
+      this.placeholder = this.name;
 
-    if (!this.placeHolder) {
-      this.placeHolder = this.name;
-    }
     this.suggestionCtrl = new FormControl();
     this.suggestionCtrl.valueChanges.debounceTime(150).subscribe(
       (data) => {
@@ -43,7 +42,7 @@ export class SuggestionComponent implements OnInit {
   }
 
   addItem(data) {
-    let item = this.filteredItems.filter(el => el[this.fn].toLowerCase() === data.option.value.toLowerCase())[0];
+    const item = this.filteredItems.filter(el => el[this.fn].toLowerCase() === data.option.value.toLowerCase())[0];
     this.add.emit(item);
     this.suggestionCtrl.setValue('');
   }

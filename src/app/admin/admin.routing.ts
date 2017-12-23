@@ -15,6 +15,7 @@ const Admin_ROUTES: Routes = [
       {path: 'event', loadChildren: 'app/admin/event/event.module#EventModule', canActivate: [AuthGuard]},
       {path: 'business', loadChildren: 'app/admin/business/business.module#BusinessModule', canActivate: [AuthGuard]},
       {path: 'expertise', loadChildren: 'app/admin/expertise/expertise.module#ExpertiseModule', canActivate: [AuthGuard]},
+      {path: 'attendance', loadChildren: 'app/admin/attendance/attendance.module#AttendanceModule', canActivate: [AuthGuard]},
       {path: 'lce/:type/:id', loadChildren: 'app/admin/LCE/lce.module#LCEModule', canActivate: [AuthGuard]},
     ],
   },

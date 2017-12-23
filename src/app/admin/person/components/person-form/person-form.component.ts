@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
 import {CanComponentDeactivate} from '../../../leavingGuard';
+import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
 
 @Component({
   selector: 'ii-person-form',
@@ -171,19 +172,9 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
         if (!this.formId) {
           this.form.reset();
           this.form.controls['notify_period'].setValue('d');
-        }
-        else {
+        } else {
           this.originalForm = Object.assign({pid: data.pid}, personData);
-          this.formId = data.pid;
-        }
-
-        if(!this.personId){
-          this.personForm.reset();
-          this.personForm.controls['notify_period'].setValue('d');
-        }
-        else{
-          this.originalPerson = Object.assign({pid: data.pid}, personData);
-          this.personId = data.pid;
+          this.formId = data;
         }
 
         this.progressService.disable();
@@ -212,10 +203,12 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
       let originalValue = this.originalForm[el];
 
       if (el === 'birth_date') {
-        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD'))
+            && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       } else {
-        if (['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa', 'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)) {
+        if (['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa',
+            'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)) {
           if (formValue && formValue.trim().length <= 0)
             formValue = null;
           else if (formValue)

@@ -14,15 +14,9 @@
                 [ngClass]="{'selected-card mat-elevation-z12': p.pid === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
-            <!--<label *ngIf="p.is_user" class="user">{{p.username}}</label>-->
-            <!--<label *ngIf="!p.is_user" class="not-user">{{p.username}}</label>-->
             <div>{{p.display_name_en}}</div>
             <div>{{p.display_name_fa}}</div>
           </mat-card-title>
-          <!--<mat-card-subtitle>-->
-            <!--<div>{{p.display_name_en}}</div>-->
-            <!--<div>{{p.display_name_fa}}</div>-->
-          <!--</mat-card-subtitle>-->
         </mat-card-header>
         <mat-card-content style="min-height: 100px">
           <div>
@@ -32,19 +26,19 @@
             </label>
             <label *ngIf="!p.firstname_en && !p.firstname_fa && !p.surname_en && !p.surname_fa">-</label>
           </div>
-          <div *ngIf="p.pid === personId">
+          <div *ngIf="p.pid === cardId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate">Expertise</i></a>
-              <a fxFlex="50" class="clickable-link" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o">Membership</i></a>
+              <a fxFlex="50" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate"> Expertise</i></a>
+              <a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"> Membership</i></a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" class="clickable-link" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university">Businesses</i></a>
-              <a fxFlex="50" class="clickable-link" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry">Organizations</i></a>
+              <a fxFlex="50" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university"> Businesses</i></a>
+              <a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"> Organizations</i></a>
             </div>
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="openView(p.pid ,'/admin/person/form/' )" color="primary">
+          <button mat-icon-button (click)="openView(p.pid ,'/admin/person/' )" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
           <button mat-icon-button (click)="openForm(p.pid , '/admin/person/form/' )" color="accent">
