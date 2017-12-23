@@ -11,7 +11,7 @@ import {AuthService} from './shared/services/auth.service';
 import {BreadcrumbService} from './shared/services/breadcrumb.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ErrorInterceptor} from './shared/services/error.interceptor';
-import {ProgressService} from "./shared/services/progress.service";
+import {ProgressService} from './shared/services/progress.service';
 
 
 @NgModule({

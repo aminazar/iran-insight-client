@@ -16,6 +16,7 @@ import {ExpertiseFormComponent} from './expertise-form/expertise-form.component'
     SharedModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+
   ],
   declarations: [
     ExpertiseComponent,

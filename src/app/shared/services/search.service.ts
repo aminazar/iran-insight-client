@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {RestService} from "./rest.service";
-import {ProgressService} from "./progress.service";
+import {RestService} from './rest.service';
+import {ProgressService} from './progress.service';
 
 @Injectable()
 export class SearchService {
