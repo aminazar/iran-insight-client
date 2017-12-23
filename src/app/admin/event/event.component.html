@@ -34,7 +34,7 @@
           </div>
           <div *ngIf="e.eid === eventId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" class="clickable-link" [routerLink]="['./attendee/' + e.eid]"><i class="fa fa-bullhorn"></i>Attendee</a>
+              <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/attendance/attendee/' + e.eid]"><i class="fa fa-bullhorn"></i>Attendee</a>
             </div>
           </div>
         </mat-card-content>

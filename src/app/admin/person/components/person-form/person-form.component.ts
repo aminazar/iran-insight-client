@@ -2,14 +2,14 @@ import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
-import {ActionEnum} from "../../../../shared/enum/action.enum";
-import {ProgressService} from "../../../../shared/services/progress.service";
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ActionEnum} from '../../../../shared/enum/action.enum';
+import {ProgressService} from '../../../../shared/services/progress.service';
 import * as moment from 'moment';
-import {ActivatedRoute, Router} from "@angular/router";
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
-import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
-import {CanComponentDeactivate} from "../../../leavingGuard";
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
+import {CanComponentDeactivate} from '../../../leavingGuard';
 
 @Component({
   selector: 'ii-person-form',
@@ -47,9 +47,9 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
   anyChanges = false;
   actionEnum = ActionEnum;
 
-  upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
-  resetPasswordBtnShouldDisabled: boolean = false;
+  upsertBtnShouldDisabled = false;
+  deleteBtnShouldDisabled = false;
+  resetPasswordBtnShouldDisabled = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
@@ -116,8 +116,8 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
 
   initPerson() {
     if (!this.personId) {
-      this.personForm = null;
-      this.initForm();
+      // this.personForm = null;
+      // this.initForm();
       return;
     }
 
@@ -192,13 +192,15 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
         });
 
         this.anyChanges = false;
-        this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
+        this.changedPerson.emit({
+          action: this.personId ? this.actionEnum.modify : this.actionEnum.add,
+          value: Object.assign({pid: data.pid}, personData)
+        });
 
-        if(!this.personId){
+        if (!this.personId) {
           this.personForm.reset();
           this.personForm.controls['notify_period'].setValue('d');
-        }
-        else{
+        } else {
           this.originalPerson = Object.assign({pid: data.pid}, personData);
           this.personId = data.pid;
         }
@@ -219,7 +221,7 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
   }
 
   fieldChanged() {
-    if(!this.originalPerson)
+    if (!this.originalPerson)
       return;
 
     this.anyChanges = false;
@@ -228,31 +230,32 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
       let formValue = this.personForm.controls[el].value;
       let originalValue = this.originalPerson[el];
 
-      if(el === 'birth_date'){
-        if((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+      if (el === 'birth_date') {
+        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) &&
+          (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
-      }
-      else{
-        if(['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa', 'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)){
-          if(formValue && formValue.trim().length <= 0)
+      } else {
+        if (['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa',
+            'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)) {
+          if (formValue && formValue.trim().length <= 0)
             formValue = null;
-          else if(formValue)
+          else if (formValue)
             formValue = formValue.trim();
 
-          if(originalValue && originalValue.trim().length <= 0)
+          if (originalValue && originalValue.trim().length <= 0)
             originalValue = null;
-          else if(originalValue)
+          else if (originalValue)
             originalValue = originalValue.trim();
         }
 
-        if(formValue !== originalValue && (formValue !== '' || originalValue !== null))
+        if (formValue !== originalValue && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       }
     });
   }
 
   deletePerson() {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '250px'
     });
@@ -287,16 +290,16 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
             }
-          )
+          );
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    )
+    );
   }
 
-  resetPassword(){
+  resetPassword() {
     this.progressService.enable();
     this.resetPasswordBtnShouldDisabled = true;
 
@@ -321,23 +324,23 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
     );
   }
 
-  canDeactivate(): Promise<boolean>{
+  canDeactivate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      if(this.anyChanges){
-        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+      if (this.anyChanges) {
+        const lvDialog = this.dialog.open(LeavingConfirmComponent);
 
         lvDialog.afterClosed().subscribe(
           (data) => {
-            if(data)
+            if (data)
               resolve(true);
             else
               resolve(false);
           },
           (err) => reject(false)
         );
-      }
-      else
+      } else {
         resolve(true);
-    })
+      }
+    });
   }
 }
