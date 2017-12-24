@@ -24,7 +24,7 @@ export class ProductViewComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router,public dialog: MatDialog,
               private progressService: ProgressService, private route: ActivatedRoute,
-              private breadcrumbService: BreadcrumbService, private snackBar: MatSnackBar,) { }
+              private breadcrumbService: BreadcrumbService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(

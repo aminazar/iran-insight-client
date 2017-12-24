@@ -43,11 +43,11 @@ export class PersonViewComponent implements OnInit {
     );
   }
 
-  editPerson(){
+  editPerson() {
     this.router.navigate(['/admin/person/form/' + this.personId]);
   }
 
-  deletePerson(){
+  deletePerson() {
     this.authService.deletePerson(this.personId).subscribe(
       (data) => this.breadcrumbService.popChild(),
       (err) => console.error('Cannot delete this person')

@@ -7,8 +7,8 @@ export interface CanComponentDeactivate {
 }
 
 @Injectable()
-export class LeavingGuard implements CanDeactivate<CanComponentDeactivate>{
-  constructor(){}
+export class LeavingGuard implements CanDeactivate<CanComponentDeactivate> {
+  constructor() {}
 
   canDeactivate(component: CanComponentDeactivate): Observable<boolean> | Promise<boolean> | boolean{
     return component.canDeactivate();

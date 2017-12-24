@@ -136,6 +136,7 @@ export class ProductComponent implements OnInit {
       this.productId  = null;
     else
       this.productId  = id;
+    this.router.navigate(['/admin/product/' + id]);
   }
 
 }

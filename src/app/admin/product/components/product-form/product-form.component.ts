@@ -10,13 +10,14 @@ import {isUndefined} from 'util';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
+import {CanComponentDeactivate} from '../../../leavingGuard';
 
 @Component({
   selector: 'ii-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent implements OnInit, OnDestroy {
+export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   @Input()
   set productId(id) {
     this._productId = id;
@@ -268,6 +269,26 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       Ac.get('name').setErrors(null);
       return null;
     }
+  }
+
+  canDeactivate(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (this.anyChanges) {
+        const lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if (data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    });
   }
 
 }
