@@ -19,6 +19,7 @@
 <div *ngIf="!showBurgerMenu" class="fixed-navbar">
   <nav mat-tab-nav-bar>
     <a mat-tab-link
+       class="clickable-link"
        *ngFor="let link of navLinks"
        [routerLink]="link.path"
        routerLinkActive #rla="routerLinkActive"

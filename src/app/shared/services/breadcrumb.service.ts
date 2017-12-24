@@ -17,7 +17,6 @@ export class BreadcrumbService {
   }
 
   pushChild(label: String, url: String, reset: boolean = false) {
-
     if (reset)
       this.routes = [];
 
@@ -31,7 +30,6 @@ export class BreadcrumbService {
       this.routes.length = this.routes.findIndex(e => e.label === label) + 1;
     }
     this.routesRS.next(this.routes);
-
   }
 
   popChild(){

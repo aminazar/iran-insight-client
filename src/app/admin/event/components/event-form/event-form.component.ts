@@ -9,6 +9,7 @@ import {RemovingConfirmComponent} from "../../../../shared/components/removing-c
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
 import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
+import {CanComponentDeactivate} from "../../../leavingGuard";
 
 
 enum OrganizerType{
@@ -22,7 +23,7 @@ enum OrganizerType{
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.css']
 })
-export class EventFormComponent implements OnInit {
+export class EventFormComponent implements OnInit, CanComponentDeactivate {
   @Input()
   set eventId(id) {
     // this.originalEvent = null;
@@ -55,7 +56,6 @@ export class EventFormComponent implements OnInit {
   latitude: number = 35.696491;
   longitude: number = 51.379926;
   organizerHasError: boolean = false;
-  checkOnLeave: boolean = true;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService,
@@ -240,8 +240,17 @@ export class EventFormComponent implements OnInit {
               organizerName: this.organizerName,
             }, eventData)
           });
-          this.originalEvent = Object.assign({eid: data}, eventData);
-          this.eventId = data;
+
+          if(!this.eventId){
+            this.organizerId = null;
+            this.organizerName = null;
+            this.eventForm.reset();
+            this.eventForm.controls['start_date'].setValue(new Date());
+          }
+          else{
+            this.originalEvent = Object.assign({eid: data}, eventData);
+            this.eventId = data;
+          }
 
           this.progressService.disable();
           this.upsertBtnShouldDisabled = false;
@@ -417,7 +426,7 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  canDeactivate(){
+  canDeactivate(): Promise<boolean>{
     return new Promise((resolve, reject) => {
       if(this.anyChanges){
         let lvDialog = this.dialog.open(LeavingConfirmComponent);
