@@ -198,10 +198,10 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.anyChanges = false;
         this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
 
-        if(!this.personId){
+        if (!this.personId) {
           this.personForm.reset();
         }
-        else{
+        else {
           this.originalPerson = Object.assign({pid: data.pid}, personData);
           this.personId = data.pid;
         }

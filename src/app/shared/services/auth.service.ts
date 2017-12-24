@@ -23,7 +23,7 @@ export class AuthService {
     );
   }
 
-  login(username, password){
+  login(username, password) {
     this.restService.post('login', {username: username, password: password}).subscribe(
       (data) => {
         this.isLoggedIn.next(true);
@@ -33,10 +33,10 @@ export class AuthService {
         this.isLoggedIn.next(false);
         console.log('Error: ', err);
       }
-    )
+    );
   }
 
-  logout(){
+  logout() {
     this.restService.get('logout').subscribe(
       (data) => {
         this.router.navigate(['admin/login']);
@@ -48,35 +48,35 @@ export class AuthService {
     )
   }
 
-  setUserProfile(data){
+  setUserProfile(data) {
     return this.restService.post('user/profile', data);
   }
 
-  getPersonInfo(personId){
+  getPersonInfo(personId) {
     return this.restService.get('user/profile/' + personId);
   }
 
-  setProductInfo(data, productId){
+  setProductInfo(data, productId) {
     if(!productId)
       return this.restService.put('product', data);
     else
-      return this.restService.post('/update-product/'+ productId, data);
+      return this.restService.post('/update-product/' + productId, data);
   }
 
-  getProductInfo(productId){
+  getProductInfo(productId) {
     return this.restService.get('/product/one/' + productId);
   }
 
-  deletePerson(personId){
-    return this.restService.delete('user/'+ personId);
+  deletePerson(personId) {
+    return this.restService.delete('user/' + personId);
   }
 
   deleteProduct(productId) {
     console.log('Product deleted: ', productId);
-    return this.restService.delete('delete-product/'+ productId);
+    return this.restService.delete('delete-product/' + productId);
   }
 
-  resetPassword(person_mail){
+  resetPassword(person_mail) {
     return this.restService.post('user/auth/link', {email: person_mail, is_forgot_mail: true});
   }
 }
