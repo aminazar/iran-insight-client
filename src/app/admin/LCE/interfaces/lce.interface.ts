@@ -12,6 +12,8 @@ export interface ILCE {
   joiner_name_fa: string;
   start_date: string;
   end_date: string;
+  description: string;
+  description_fa: string;
   is_confirmed: boolean;
   active: boolean;
 }

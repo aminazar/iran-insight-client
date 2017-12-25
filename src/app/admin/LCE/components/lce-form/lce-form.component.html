@@ -13,23 +13,22 @@
                      [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="'life cycle event type name'"
                      [currentIds]="getCurrentTypeId()" (add)="changeLCEType($event);"></ii-suggestion>
 
-      <div class="rs-table" *ngIf="lce_type_id">
+      <div class="rs-table" *ngIf="lceTypeId">
         <table class="table">
           <thead>
-          <td>life cycle event name</td>
-          <td>life cycle event (fa)</td>
+          <td><b>life cycle event name</b></td>
+          <td><b>life cycle event (fa)</b></td>
           </thead>
           <tbody>
           <tr>
-            <td>{{lce_type_name}}</td>
-            <td class="farsi">{{lce_type_name_fa}}</td>
+            <td>{{lceTypeName}}</td>
+            <td class="farsi">{{lceTypeNameFa}}</td>
           </tr>
           </tbody>
         </table>
       </div>
 
-      <mat-expansion-panel style="margin-bottom: 10px;" (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+      <mat-expansion-panel style="margin-bottom: 10px;" >
         <mat-expansion-panel-header>
           <mat-panel-title>
             join with other {{possessorType}}?
@@ -41,9 +40,9 @@
         <div class="rs-table" *ngIf="joinerId">
           <table class="table">
             <thead>
-            <td>joiner name</td>
-            <td>joiner name (fa)</td>
-            <td>remove</td>
+            <td><b>joiner name</b></td>
+            <td><b>joiner name (fa)</b></td>
+            <td><b>remove</b></td>
             </thead>
             <tbody>
             <tr>
@@ -96,23 +95,23 @@
             </mat-form-field>
           </div>
         </div>
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+        <div *ngIf="joinerId" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
           <div fxFlex="50" style="width: 100%; margin: 5px">
             <mat-checkbox fxFlex="50"
                           name="is_confirmed"
                           formControlName="is_confirmed"
                           role="is_confirmed">
-              Is Active?
+              Is confirmed?
             </mat-checkbox>
           </div>
         </div>
 
         <div role="submit-button">
           <button mat-icon-button color="accent" type="submit"
-                  [disabled]="upsertBtnShouldDisabled || (!form.valid || (formId && !anyChanges))" tabindex="20">
+                  [disabled]="upsertBtnShouldDisabled || !form.valid || (formId && !anyChanges)" tabindex="20">
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
-          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deletePerson()"
+          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deleteLCE()"
                   [disabled]="deleteBtnShouldDisabled" tabindex="21">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>

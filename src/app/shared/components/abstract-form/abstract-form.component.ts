@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CanComponentDeactivate} from '../../../admin/leavingGuard';
 import {FormGroup} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
@@ -43,7 +43,7 @@ export class AbstractFormComponent implements OnInit, OnDestroy, CanComponentDea
               protected route: ActivatedRoute,
               protected authService: AuthService,
               protected snackBar: MatSnackBar,
-              protected progressService: ProgressService) {
+              protected progressService: ProgressService ) {
   }
 
   ngOnInit() {

@@ -1,14 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
-import {ProgressService} from '../../../../shared/services/progress.service';
+import {FormBuilder, Validators, AbstractControl} from '@angular/forms';
 import * as moment from 'moment';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
-import {RestService} from '../../../../shared/services/rest.service';
+import {Params} from '@angular/router';
 import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
-import {ILCE} from '../../interfaces/lce.interface';
-
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 enum LCEType {
   ORG = 'organization',
@@ -32,12 +27,9 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
   joinerName: string;
   joinerNameFa: string;
 
-  lce_type_id: number;
-  lce_type_name: string;
-  lce_type_name_fa: string;
-
-  lce: ILCE;
-
+  lceTypeId: number;
+  lceTypeName: string;
+  lceTypeNameFa: string;
 
   ngOnInit() {
 
@@ -49,15 +41,14 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
       this.possessorType = this.router.url.split('/')[2];
       this.possessorId = params['id'];
+      this.possessorName = decodeURIComponent(params['possessorName']);
+
     });
     this.route.params.subscribe(
       (params) => {
         this.initLCE();
       }
     );
-    this.route.queryParams.subscribe(params => {
-      this.possessorName = params['possessorName'] || '';
-    });
 
     this.possessorKey = this.possessorType === LCEType.BIZ ? 'bid' : 'oid';
 
@@ -91,29 +82,23 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
     this.restService.get(`lce/${this.possessorType}/${this.possessorId}/${this.formId}`).subscribe(
       (res) => {
 
+        this.originalForm = res[0];
 
-        console.log('-> ', res);
-
-        // this.form.controls['username'].setValue(data.username);
-        // this.form.controls['firstname_en'].setValue(data.firstname_en);
-        // this.form.controls['firstname_fa'].setValue(data.firstname_fa);
-        // this.form.controls['surname_en'].setValue(data.surname_en);
-        // this.form.controls['surname_fa'].setValue(data.surname_fa);
-        // this.form.controls['image'].setValue(data.image);
-        // this.form.controls['address_en'].setValue(data.address_en);
-        // this.form.controls['address_fa'].setValue(data.address_fa);
-        // this.form.controls['phone_no'].setValue(data.phone_no);
-        // this.form.controls['mobile_no'].setValue(data.mobile_no);
-        // this.form.controls['birth_date'].setValue(data.birth_date);
-        // this.form.controls['display_name_en'].setValue(data.display_name_en);
-        // this.form.controls['display_name_fa'].setValue(data.display_name_fa);
-        // this.form.controls['notify_period'].setValue(data.notify_period);
-        //
-        // this.originalForm = data;
+        this.lceTypeId = res[0].lce_type_id;
+        this.lceTypeName = res[0].lce_type_name;
+        this.lceTypeNameFa = res[0].lce_type_name_fa;
+        this.joinerId = res[0].joiner_id;
+        this.joinerName = res[0].joiner_name;
+        this.joinerNameFa = res[0].joiner_name_fa;
+        this.form.controls['start_date'].setValue(res[0].start_date);
+        this.form.controls['end_date'].setValue(res[0].end_date);
+        this.form.controls['description'].setValue(res[0].description);
+        this.form.controls['description_fa'].setValue(res[0].description_fa);
+        this.form.controls['is_confirmed'].setValue(res[0].is_confirmed);
 
         this.progressService.disable();
-        // this.upsertBtnShouldDisabled = false;
-        // this.deleteBtnShouldDisabled = false;
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         console.error(err);
@@ -129,9 +114,10 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
   changeLCEType(event) {
 
-    this.lce_type_id = event.id;
-    this.lce_type_name = event.name;
-    this.lce_type_name_fa = event.name_fa;
+    this.lceTypeId = event.id;
+    this.lceTypeName = event.name;
+    this.lceTypeNameFa = event.name_fa;
+    this.fieldChanged();
 
   }
 
@@ -140,13 +126,21 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
     this.joinerId = event.bid;
     this.joinerName = event.name;
     this.joinerNameFa = event.name_fa;
-
+    this.fieldChanged();
   }
 
   removeJoiner() {
     this.joinerId = null;
     this.joinerName = null;
     this.joinerNameFa = null;
+    this.fieldChanged();
+
+  }
+  removeLCEType() {
+    this.lceTypeId = null;
+    this.lceTypeName = null;
+    this.lceTypeNameFa = null;
+    this.fieldChanged();
 
   }
 
@@ -155,8 +149,8 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
     if (this.possessorId)
       currentIds.push(this.possessorId);
-    if (this.lce && this.lce.joiner_id)
-      currentIds.push(this.lce.joiner_id);
+    if (this.joinerId)
+      currentIds.push(this.joinerId);
 
     return currentIds;
   }
@@ -164,8 +158,8 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
   getCurrentTypeId(): number[] {
     const currentIds: number[] = [];
 
-    if (this.lce_type_id)
-      currentIds.push(this.lce_type_id);
+    if (this.lceTypeId)
+      currentIds.push(this.lceTypeId);
     return currentIds;
   }
 
@@ -175,12 +169,13 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
     const lceData = {
       id: this.formId,
       id1: this.possessorId,
-      id2: this.lce.joiner_id,
+      id2: this.joinerId,
       start_date: this.form.controls['start_date'].value,
       end_date: this.form.controls['end_date'].value,
       description: this.form.controls['description'].value,
       description_fa: this.form.controls['description_fa'].value,
-      lce_type_id: this.lce.lce_type_id
+      is_confirmed: this.form.controls['is_confirmed'].value,
+      lce_type_id: this.lceTypeId
     };
 
     if (!this.formId)
@@ -199,6 +194,8 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
         if (!this.formId) {
           this.form.reset();
+          this.removeJoiner();
+          this.removeLCEType();
         } else {
           this.originalForm = Object.assign({pid: data.pid}, lceData);
           this.formId = data.pid;
@@ -232,8 +229,90 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
   }
 
   fieldChanged() {
-    if (!this.originalForm)
+    if (!this.originalForm || !this.lceTypeId)
       return;
+
+    this.anyChanges = false;
+
+    if (this.lceTypeId !== this.originalForm.lce_type_id) {
+      this.anyChanges = true;
+      return;
+    }
+    if (this.joinerId !== this.originalForm.joiner_id) {
+      this.anyChanges = true;
+      return;
+    }
+    Object.keys(this.form.controls).forEach(el => {
+        let formValue = this.form.controls[el].value;
+        let originalValue = this.originalForm[el];
+
+        if (el === 'start_date' || el === 'end_date') {
+          if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD'))
+            && (formValue !== '' || originalValue !== null))
+            this.anyChanges = true;
+        } else {
+          if (typeof formValue === 'boolean') {
+            if (formValue !== originalValue)
+              this.anyChanges = true;
+          } else {
+            if (formValue && formValue.trim().length <= 0)
+              formValue = null;
+            else if (formValue)
+              formValue = formValue.trim();
+
+            if (originalValue && originalValue.trim().length <= 0)
+              originalValue = null;
+            else if (originalValue)
+              originalValue = originalValue.trim();
+
+            if (formValue !== originalValue && (formValue || originalValue))
+              this.anyChanges = true;
+          }
+        }
+      }
+    );
+  }
+
+  deleteLCE() {
+
+    if (!this.formId)
+      return;
+
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(res => {
+
+      if(res) {
+
+        this.progressService.enable();
+        this.restService.delete(`lce/${this.possessorType}/${this.formId}`).subscribe(data => {
+
+          this.progressService.disable();
+          this.snackBar.open('life cycle event has been deleted', null, {
+            duration: 3200,
+          });
+
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+          this.breadcrumbService.popChild();
+
+        }, err => {
+
+          this.progressService.disable();
+          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
+            duration: 3200,
+          });
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+
+        });
+      }
+    }, err => {
+
+    });
   }
 
 }

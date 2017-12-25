@@ -11,7 +11,7 @@ import {ILCE} from './interfaces/lce.interface';
 @Component({
   selector: 'ii-lce',
   templateUrl: './lce.component.html',
-  styleUrls: ['./lce.component.css']
+  styleUrls: ['./lce.component.scss']
 })
 export class LCEComponent implements OnInit {
 
@@ -39,16 +39,11 @@ export class LCEComponent implements OnInit {
   ngOnInit() {
 
     this.activatedRoute.params.subscribe((params: Params) => {
-
       this.possessorType = this.router.url.split('/')[2];
       this.possessorId = params['id'];
+      this.possessorName = decodeURIComponent(params['possessorName']);
 
-      this.progressService.enable();
-
-    });
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.possessorName = params['possessorName'] || '';
-      this.breadCrumbService.pushChild(this.possessorName !== '' ? `lce for ${this.possessorName} ` : 'lce', this.router.url, false);
+      this.breadCrumbService.pushChild(`life cycle events of ${this.possessorName}`, this.router.url, false);
 
     });
 
@@ -58,17 +53,41 @@ export class LCEComponent implements OnInit {
 
   open(state: string, id: number = null) {
     this.cardId = id;
-    this.router.navigate(id ? [state, id] : [state, ''], {relativeTo: this.activatedRoute , queryParams: {possessorName: this.possessorName}});
+    this.router.navigate(id ? [state, id] : [state, ''], {relativeTo: this.activatedRoute});
   }
 
   deleteLCE(id: number = null) {
-    this.cardId = id;
+     if (!id)
+      return;
+
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
     });
 
     rmDialog.afterClosed().subscribe(res => {
 
+      if (res) {
+
+        this.progressService.enable();
+        this.restService.delete(`lce/${this.possessorType}/${id}`).subscribe(data => {
+
+          this.progressService.disable();
+          this.cardId = null;
+
+          this.snackBar.open('life cycle event has been deleted', null, {
+            duration: 3200,
+          });
+
+          this.searching();
+        }, err => {
+
+          this.progressService.disable();
+          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
+            duration: 3200,
+          });
+
+        });
+      }
     }, err => {
 
     });
