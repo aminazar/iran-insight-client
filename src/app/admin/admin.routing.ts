@@ -22,7 +22,6 @@ const Admin_ROUTES: Routes = [
   {path: 'admin/organization', component: UnderConstructionComponent},
   {path: 'admin/investment', component: UnderConstructionComponent},
   {path: 'admin/consultancy', component: UnderConstructionComponent},
-  {path: 'admin/lce', component: UnderConstructionComponent},
   {path: 'admin/login', loadChildren: 'app/admin/login/login.module#LoginModule'},
 ];
 
