@@ -87,6 +87,8 @@ export class ExpertiseFormComponent implements OnInit {
   }
 
   addExpertise(expObj) {
+    console.log('=====>expOBj: ', expObj);
+
     this.restService.get('expertise/' + expObj.expertise_id).subscribe(
       (expData) => {
         this.restService.post('user/expertise', {
