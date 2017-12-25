@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {AuthService} from '../../shared/services/auth.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'ii-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
-              private authService: AuthService, private fb: FormBuilder) {
+              private authService: AuthService, private fb: FormBuilder,
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -33,7 +35,15 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.form.valid || (this.form.value.username === 'admin' && this.form.value.password === 'admin' )) {
       console.log('form data: ', this.form.value);
-      this.authService.login(this.form.value.username, this.form.value.password);
+      this.authService.login(this.form.value.username, this.form.value.password)
+        .then(() => {
+          this.router.navigate(['admin/person']);
+        })
+        .catch(() => {
+          this.snackBar.open('Cannot login. Please try again', null, {
+            duration: 3200,
+          });
+        });
     }
   }
 }

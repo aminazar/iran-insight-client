@@ -82,7 +82,7 @@ export class AbstractSearchComponent implements OnInit {
     return rmDialog.afterClosed();
   }
 
-  search(data, key: string) {
+  search(data) {
     this.searchData = data;
     this.cardId = null;
     this.searching();

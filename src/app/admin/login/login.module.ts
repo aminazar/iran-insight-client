@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {MatCardModule, MatButtonModule, MatInputModule, MatIconModule} from '@angular/material';
+import {MatCardModule, MatButtonModule, MatInputModule, MatIconModule, MatSnackBarModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {loginRouting} from './login.routing';
 import {LoginComponent} from './login.component';
@@ -14,6 +14,7 @@ import {LoginComponent} from './login.component';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
   exports: []
 })
