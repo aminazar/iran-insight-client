@@ -14,27 +14,27 @@ export class AuthService {
       (data) => {
         this.isLoggedIn.next(true);
 
-        let rt = 'home';
-        if (this.router.url.includes('admin'))
-          rt = 'admin/person';
+        // let rt = 'home';
+        // if (this.router.url.includes('admin'))
+        //   rt = 'admin/person';
 
         if (data.userType === 'admin')
           this.isAdmin.next(true);
         else
           this.isAdmin.next(false);
 
-        this.router.navigate([rt]);
+        // this.router.navigate([rt]);
       },
       (err) => {
         console.log('Not logged in: ', err);
         this.isLoggedIn.next(false);
         this.isAdmin.next(false);
 
-        let rt = 'admin/login';
-        if (this.router.url.includes('admin'))
-          rt = 'admin/' + rt;
+        // let rt = 'admin/login';
+        // if (this.router.url.includes('admin'))
+        //   rt = 'admin/' + rt;
 
-        this.router.navigate([rt]);
+        // this.router.navigate([rt]);
       }
     );
   }
