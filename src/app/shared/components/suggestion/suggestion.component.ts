@@ -11,8 +11,8 @@ import {ProgressService} from '../../services/progress.service';
   styleUrls: ['./suggestion.component.css']
 })
 export class SuggestionComponent implements OnInit {
-  @Input() placeHolder = '';
   @Input() name = '';
+  @Input() placeholder: string = null;
   @Input() idColumn = '';
   @Input() fieldNameEn = '';
   @Input() fieldNameFa = '';
@@ -27,10 +27,9 @@ export class SuggestionComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.placeholder)
+      this.placeholder = this.name;
 
-    if (!this.placeHolder) {
-      this.placeHolder = this.name;
-    }
     this.suggestionCtrl = new FormControl();
     this.suggestionCtrl.valueChanges.debounceTime(150).subscribe(
       (data) => {
@@ -64,6 +63,7 @@ export class SuggestionComponent implements OnInit {
         phrase: phrase,
         idColumn: this.idColumn,
         fieldName: this.fn,
+        otherFieldName: (this.fn === this.fieldNameEn) ? this.fieldNameFa : this.fieldNameEn,
         currentIds: this.currentIds,
       }).subscribe(
         (data) => {

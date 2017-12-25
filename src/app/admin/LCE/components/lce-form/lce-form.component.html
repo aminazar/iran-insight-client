@@ -1,0 +1,126 @@
+<div fxLayout="row" class="row">
+
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+
+    <mat-card-header>
+      <mat-card-title><b>{{formId ? 'Edit life cycle event' : 'Add new life cycle event'}} for: </b> {{possessorName}}
+      </mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <ii-suggestion [idColumn]="'id'" [name]="'lce_type'"
+                     [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="'life cycle event type name'"
+                     [currentIds]="getCurrentTypeId()" (add)="changeLCEType($event);"></ii-suggestion>
+
+      <div class="rs-table" *ngIf="lce_type_id">
+        <table class="table">
+          <thead>
+          <td>life cycle event name</td>
+          <td>life cycle event (fa)</td>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{lce_type_name}}</td>
+            <td class="farsi">{{lce_type_name_fa}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-expansion-panel style="margin-bottom: 10px;" (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            join with other {{possessorType}}?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ii-suggestion [idColumn]="possessorKey" [name]="possessorType"
+                       [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="possessorType"
+                       [currentIds]="getCurrentJoinerIds()" (add)="changeJoiner($event);"></ii-suggestion>
+        <div class="rs-table" *ngIf="joinerId">
+          <table class="table">
+            <thead>
+            <td>joiner name</td>
+            <td>joiner name (fa)</td>
+            <td>remove</td>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{joinerName}}</td>
+              <td class="farsi">{{joinerNameFa}}</td>
+              <td class="farsi">
+                <button mat-icon-button (click)="removeJoiner()" color="warn">
+                  <mat-icon aria-label="clear person expertise">delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+      </mat-expansion-panel>
+
+      <form (ngSubmit)="modifyLCE()" [formGroup]="form">
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="Description" formControlName="description" role="description"
+                     tabindex="3"/>
+            </mat-input-container>
+          </div>
+          <div fxFlex="50" dir="rtl" style="width: 100%; margin: 5px">
+            <mat-input-container class="field farsi">
+              <input matInput type="text" placeholder="توضیح" formControlName="description_fa" role="description_fa"
+                     tabindex="10"/>
+            </mat-input-container>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <mat-form-field class="field">
+              <input matInput [matDatepicker]="start_date" placeholder="Start Date" formControlName="start_date"
+                     role="start-date" tabindex="6"/>
+              <mat-datepicker-toggle matSuffix [for]="start_date" tabindex="7"></mat-datepicker-toggle>
+              <mat-datepicker #start_date></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <mat-form-field class="field">
+              <input matInput [matDatepicker]="end_date" placeholder="End Date" formControlName="end_date"
+                     role="end-date" tabindex="8"/>
+              <mat-datepicker-toggle matSuffix [for]="end_date" tabindex="9"></mat-datepicker-toggle>
+              <mat-datepicker #end_date></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <mat-checkbox fxFlex="50"
+                          name="is_confirmed"
+                          formControlName="is_confirmed"
+                          role="is_confirmed">
+              Is Active?
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <div role="submit-button">
+          <button mat-icon-button color="accent" type="submit"
+                  [disabled]="upsertBtnShouldDisabled || (!form.valid || (formId && !anyChanges))" tabindex="20">
+            <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deletePerson()"
+                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </div>
+
+
+      </form>
+
+    </mat-card-content>
+  </mat-card>
+</div>
