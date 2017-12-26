@@ -12,11 +12,10 @@
     </mat-card-header>
 
     <mat-card-content>
-      <ii-suggestion [idColumn]="'id'" [name]="'lce_type'"
+      <ii-suggestion [idColumn]="'id'" [name]="'lce_type'" tabindex="1"
                      [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="'life cycle event type name'"
                      [currentIds]="getCurrentTypeId()" (add)="changeLCEType($event);"></ii-suggestion>
-
-      <div class="rs-table" *ngIf="lceTypeId">
+      <div class="rs-table" *ngIf="lceTypeId" >
         <table class="table">
           <thead>
           <td><b>life cycle event name</b></td>
@@ -31,13 +30,13 @@
         </table>
       </div>
 
-      <mat-expansion-panel style="margin-bottom: 10px;" >
+      <mat-expansion-panel style="margin-bottom: 10px;" [expanded]="joinerId" >
         <mat-expansion-panel-header>
           <mat-panel-title>
             join with other {{companyType}}?
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ii-suggestion [idColumn]="companyKey" [name]="companyType"
+        <ii-suggestion [idColumn]="companyKey" [name]="companyType" tabindex="2"
                        [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="companyType"
                        [currentIds]="getCurrentJoinerIds()" (add)="changeJoiner($event);"></ii-suggestion>
         <div class="rs-table" *ngIf="joinerId">
@@ -76,7 +75,7 @@
           <div fxFlex="50" dir="rtl" style="width: 100%; margin: 5px">
             <mat-input-container class="field farsi">
               <input matInput type="text" placeholder="توضیح" formControlName="description_fa" role="description_fa"
-                     tabindex="10"/>
+                     tabindex="6"/>
             </mat-input-container>
           </div>
         </div>
@@ -84,16 +83,16 @@
           <div fxFlex="50" style="width: 100%; margin: 5px">
             <mat-form-field class="field">
               <input matInput [matDatepicker]="start_date" placeholder="Start Date" formControlName="start_date"
-                     role="start-date" tabindex="6"/>
-              <mat-datepicker-toggle matSuffix [for]="start_date" tabindex="7"></mat-datepicker-toggle>
+                     role="start-date" tabindex="4"/>
+              <mat-datepicker-toggle matSuffix [for]="start_date" tabindex="5"></mat-datepicker-toggle>
               <mat-datepicker #start_date></mat-datepicker>
             </mat-form-field>
           </div>
           <div fxFlex="50" style="width: 100%; margin: 5px">
             <mat-form-field class="field">
               <input matInput [matDatepicker]="end_date" placeholder="End Date" formControlName="end_date"
-                     role="end-date" tabindex="8"/>
-              <mat-datepicker-toggle matSuffix [for]="end_date" tabindex="9"></mat-datepicker-toggle>
+                     role="end-date" tabindex="7"/>
+              <mat-datepicker-toggle matSuffix [for]="end_date" tabindex="8"></mat-datepicker-toggle>
               <mat-datepicker #end_date></mat-datepicker>
             </mat-form-field>
           </div>
@@ -103,7 +102,7 @@
             <mat-checkbox fxFlex="50"
                           name="is_confirmed"
                           formControlName="is_confirmed"
-                          role="is_confirmed">
+                          role="is_confirmed" tabIndex="9">
               Is confirmed?
             </mat-checkbox>
           </div>
@@ -111,11 +110,11 @@
 
         <div role="submit-button">
           <button mat-icon-button color="accent" type="submit"
-                  [disabled]="upsertBtnShouldDisabled || !form.valid || (formId && !anyChanges)" tabindex="20">
+                  [disabled]="upsertBtnShouldDisabled || !form.valid || (formId && !anyChanges)" tabindex="10">
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
-          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deleteLCE()"
-                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deleteLCE()" tabindex="11"
+                  [disabled]="deleteBtnShouldDisabled">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </div>

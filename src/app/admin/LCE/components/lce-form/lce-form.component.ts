@@ -138,6 +138,7 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
     this.joinerId = null;
     this.joinerName = null;
     this.joinerNameFa = null;
+    this.form.controls['is_confirmed'].setValue(false);
     this.fieldChanged();
 
   }
@@ -172,7 +173,7 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
   modifyLCE() {
 
-    const lceData = {
+    const lceData: any = {
       id: this.formId,
       id1: this.possessorId,
       id2: this.joinerId,
@@ -180,9 +181,12 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
       end_date: this.form.controls['end_date'].value,
       description: this.form.controls['description'].value,
       description_fa: this.form.controls['description_fa'].value,
-      is_confirmed: this.form.controls['is_confirmed'].value,
       lce_type_id: this.lceTypeId
     };
+
+    if (this.joinerId)
+      lceData.is_confirmed = this.form.controls['is_confirmed'].value;
+
 
     if (!this.formId)
       delete lceData.id;
@@ -211,7 +215,7 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot ' + this.formId ? 'add' : 'update' + ' this life cycle event. Try again', null, {
+        this.snackBar.open('Cannot ' + !this.formId ? 'add' : 'update' + ' this life cycle event. Try again', null, {
           duration: 3200,
         });
         this.progressService.disable();

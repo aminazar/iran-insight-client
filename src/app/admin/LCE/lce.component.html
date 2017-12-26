@@ -38,7 +38,7 @@
           <div>
             <b>Joiner (fa): </b><span>{{lce.joiner_name_fa? lce.joiner_name_fa : '-'}}</span>
           </div>
-          <div>
+          <div *ngIf="lce.joiner_name || lce.joiner_name_fa">
             <b [ngClass]="{'warn' :!lce.is_confirmed, 'success' : lce.is_confirmed  } ">{{lce.is_confirmed ? 'Confirmed' : 'Waiting for confirmation'}}</b>
 
           </div>
