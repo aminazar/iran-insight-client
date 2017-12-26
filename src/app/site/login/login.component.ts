@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 import {AuthService} from '../../shared/services/auth.service';
-import {OAuthTypes} from '../../shared/enum/oauth.type.enum';
 import {Router} from '@angular/router';
+import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 
 @Component({
   selector: 'ii-login',
@@ -12,13 +12,13 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  oAuthTypes = OAuthTypes;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router, private breadcrumbService: BreadcrumbService) {
   }
 
   ngOnInit() {
+    this.breadcrumbService.pushChild('Login/Register', this.router.url, true);
     this.initForm();
   }
 
@@ -35,12 +35,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login(type = null) {
-    ((!type)
-      ?
-      this.authService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
-      :
-      this.authService.registerWithOAuth(type))
+  login() {
+    this.authService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
       .then(() => {
         this.router.navigate(['home']);
       })
@@ -49,8 +45,5 @@ export class LoginComponent implements OnInit {
           duration: 3200,
         });
       });
-  }
-
-  forgotPassword() {
   }
 }

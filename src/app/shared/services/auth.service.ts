@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ReplaySubject} from 'rxjs';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {RestService} from './rest.service';
 
@@ -13,17 +13,10 @@ export class AuthService {
     this.restService.get('validUser').subscribe(
       (data) => {
         this.isLoggedIn.next(true);
-
-        // let rt = 'home';
-        // if (this.router.url.includes('admin'))
-        //   rt = 'admin/person';
-
         if (data.userType === 'admin')
           this.isAdmin.next(true);
         else
           this.isAdmin.next(false);
-
-        // this.router.navigate([rt]);
       },
       (err) => {
         console.log('Not logged in: ', err);
@@ -33,7 +26,7 @@ export class AuthService {
         // let rt = 'admin/login';
         // if (this.router.url.includes('admin'))
         //   rt = 'admin/' + rt;
-
+        //
         // this.router.navigate([rt]);
       }
     );
@@ -51,12 +44,6 @@ export class AuthService {
             this.isAdmin.next(false);
 
           resolve();
-          // let rt = 'home';
-          //
-          // if (this.router.url.includes('admin'))
-          //   rt = 'admin/person';
-          //
-          // this.router.navigate([rt]);
         },
         (err) => {
           this.isLoggedIn.next(false);
@@ -115,23 +102,18 @@ export class AuthService {
     return this.restService.post('user/auth/link', {email: person_mail, is_forgot_mail: true});
   }
 
-  registerWithOAuth(type) {
-    return new Promise((resolve, reject) => {
-      this.restService.get('login/' + type).subscribe(
-        (data) => {
-          if (data.userType === 'admin')
-            this.isAdmin.next(true);
-          else
-            this.isAdmin.next(false);
-          resolve();
-        },
-        (err) => {
-          this.isLoggedIn.next(false);
-          console.log('Error: ', err);
-          reject();
-        }
-      );
-    });
+  sendActivationMail(email, isForgotPassword = true) {
+    return this.restService.post('user/auth/link', {email: email, is_forgot_password: isForgotPassword});
   }
 
+  checkActivationLink(link) {
+    return this.restService.get('user/activate/link/' + link);
+  }
+
+  setPassword(password, username, link) {
+    return this.restService.post('user/auth/change/password/' + link, {
+      username: username,
+      password: password,
+    });
+  }
 }

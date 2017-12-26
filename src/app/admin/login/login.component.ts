@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.form.valid || (this.form.value.username === 'admin' && this.form.value.password === 'admin' )) {
-      console.log('form data: ', this.form.value);
       this.authService.login(this.form.value.username, this.form.value.password)
         .then(() => {
           this.router.navigate(['admin/person']);
