@@ -23,7 +23,7 @@ export class ChoosePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadcrumbService.pushChild('Changing Password', this.router.url, true);
+    this.breadcrumbService.pushChild('Changing Password', this.router.url, false);
 
     this.initForm();
     this.progressService.enable();

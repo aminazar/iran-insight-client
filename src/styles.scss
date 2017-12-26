@@ -1,0 +1,221 @@
+@import './iraninsight-theme';
+@import "assets/fonts/franklin/index.css";
+@import "assets/fonts/merriweather/index.css";
+@import "assets/fonts/iran-sans/css/fontiran.css";
+@import "assets/fonts/adobe-arabic/index.css";
+
+.page{
+  padding: 15px;
+  margin: 10px;
+}
+
+.field{
+  width: 100%;
+}
+
+.field-90{
+  width: 90%;
+}
+
+.maximum-width{
+  width: 100%;
+}
+
+.farsi-direction{
+  direction: rtl;
+}
+
+.right-column{
+  text-align: right;
+}
+
+.left-text{
+  text-align: left;
+}
+
+.center{
+  text-align: center;
+}
+
+.card-view{
+  min-height: 150px;
+  min-width: 200px;
+}
+
+.card-header{
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-content{
+  font-weight: normal;
+}
+
+.ui-widget{
+  font-family: Franklin !important;
+}
+
+.farsi{
+}
+
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.mat-toolbar-row{
+  font-family: Merriweather;
+}
+
+.row{
+  margin: 0px 10px;
+}
+.outer-card{
+  margin: 10px 5px;
+}
+
+.selected-card{
+  background-color: #a69d96;
+}
+
+.title-in-card{
+  font-weight: bold;
+}
+
+.content-in-card{
+  font-weight: normal;
+}
+
+.clickable-link{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.fixed-header{
+  position: fixed;
+  margin: auto;
+  z-index: 10000;
+  width: 100%;
+  top: 0px;
+}
+
+.main-content{
+  margin-top: 100px;
+}
+
+.mat-card {
+  margin: 6px;
+}
+
+.mat-card-title {
+  font-family: Merriweather;
+  font-weight: normal !important;
+}
+.mat-card-subtitle {
+  font-family: Merriweather;
+  font-weight: normal !important;
+}
+
+.selected-card {
+  /*background-color: #a69d96 !important;*/
+  /*color: rgba(255,255,255,.87) !important;*/
+}
+
+.selected-card .mat-card-subtitle {
+  /*color: rgba(255,255,255,.87) !important;*/
+}
+.selected-card .mat-card-content {
+  margin-bottom: 0px !important;
+  font-size: 85% !important;
+}
+.selected-card a{
+  white-space: nowrap;
+  margin-bottom: 6px;
+  font-width: 300;
+}
+
+.selected-card i {
+  font-size: 150%;
+  width:24px;
+  margin-right:4px;
+  text-align: right;
+}
+
+a {
+  color: #76323f;
+}
+
+a:hover {
+  text-decoration: none !important;
+}
+
+.field-container{
+  width: 100%;
+  margin: 5px;
+}
+
+.mat-input-placeholder{
+  /*line-height: 20px !important;*/
+  line-height: normal !important;
+}
+
+.ui-breadcrumb a  {
+  background: transparent !important;
+}
+
+.view-title{
+  font-weight: bold;
+}
+
+.view-content{
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.farsi .view-content{
+  margin-left: unset;
+  margin-right: 8px;
+}
+
+.menu-item{
+  padding: 20px;
+  font-size: 1.2em;
+}
+
+.menu-container{
+  background-color: rgba(241,232,225,0.81);
+}
+
+.mat-drawer-container{
+  overflow: visible !important;
+}
+
+.fixed-navbar{
+  position: fixed;
+  top: 100px;
+  z-index: 200;
+  margin-top: -13px;
+  width: 100%;
+  background-color: white;
+}
+
+.admin-content{
+  margin-top: 150px;
+}
+
+.menu-button{
+  margin-top: 10px !important;
+}
+
+.ev-loc{
+  height: 250px;
+}
+
+.rs-table{
+  margin: 10px;
+}
+
+.success{
+  color: white !important;
+  background-color: mat-color($iraninsight-app-success) !important;
+}
