@@ -18,10 +18,14 @@ enum LCEType {
 })
 export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
-  possessorType: string;
-  possessorKey: string;
+  companyType: string; // company is org or biz
+  companyId: number;
+  companyName: string;
+  companyKey: string;
+
   possessorId: number;
-  possessorName: string;
+  possessorName: number;
+  possessorNameFa: number;
 
   joinerId: number;
   joinerName: string;
@@ -39,18 +43,15 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
     this.route.params.subscribe((params: Params) => {
 
-      this.possessorType = this.router.url.split('/')[2];
-      this.possessorId = params['id'];
-      this.possessorName = decodeURIComponent(params['possessorName']);
+      this.companyType = this.router.url.split('/')[2];
+
+      this.companyId = params['id'];
+      this.companyName = decodeURIComponent(params['companyName']);
+      this.initLCE();
 
     });
-    this.route.params.subscribe(
-      (params) => {
-        this.initLCE();
-      }
-    );
 
-    this.possessorKey = this.possessorType === LCEType.BIZ ? 'bid' : 'oid';
+    this.companyKey = this.companyType === LCEType.BIZ ? 'bid' : 'oid';
 
   }
 
@@ -72,14 +73,15 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
   initLCE() {
 
-    if (!this.formId)
+    if (!this.formId) {
+      this.possessorId = this.companyId;
       return;
-
+    }
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
 
-    this.restService.get(`lce/${this.possessorType}/${this.possessorId}/${this.formId}`).subscribe(
+    this.restService.get(`lce/${this.companyType}/${this.companyId}/${this.formId}`).subscribe(
       (res) => {
 
         this.originalForm = res[0];
@@ -87,6 +89,9 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
         this.lceTypeId = res[0].lce_type_id;
         this.lceTypeName = res[0].lce_type_name;
         this.lceTypeNameFa = res[0].lce_type_name_fa;
+        this.possessorId = res[0].possessor_id;
+        this.possessorName = res[0].possessor_name;
+        this.possessorNameFa = res[0].possessor_name_fa;
         this.joinerId = res[0].joiner_id;
         this.joinerName = res[0].joiner_name;
         this.joinerNameFa = res[0].joiner_name_fa;
@@ -136,6 +141,7 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
     this.fieldChanged();
 
   }
+
   removeLCEType() {
     this.lceTypeId = null;
     this.lceTypeName = null;
@@ -184,7 +190,7 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
-    this.restService.put(`lce/${this.possessorType}`, lceData).subscribe(
+    this.restService.put(`lce/${this.companyType}`, lceData).subscribe(
       (data) => {
         this.snackBar.open(this.formId ? 'Life cycle event is updated' : 'Life cycle event is added', null, {
           duration: 2300,
@@ -284,10 +290,10 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
 
     rmDialog.afterClosed().subscribe(res => {
 
-      if(res) {
+      if (res) {
 
         this.progressService.enable();
-        this.restService.delete(`lce/${this.possessorType}/${this.formId}`).subscribe(data => {
+        this.restService.delete(`lce/${this.companyType}/${this.formId}`).subscribe(data => {
 
           this.progressService.disable();
           this.snackBar.open('life cycle event has been deleted', null, {

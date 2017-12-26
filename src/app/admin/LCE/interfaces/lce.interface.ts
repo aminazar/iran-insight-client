@@ -8,7 +8,7 @@ export interface ILCE {
   possessor_name: string;
   possessor_name_fa: string;
   joiner_id: number;
-  joiner__name: string;
+  joiner_name: string;
   joiner_name_fa: string;
   start_date: string;
   end_date: string;

@@ -3,9 +3,12 @@
   <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
 
     <mat-card-header>
-      <mat-card-title><b>{{formId ? 'Edit life cycle event' : 'Add new life cycle event'}} for: </b> {{possessorName}}
+      <mat-card-title><b>{{formId ? 'Edit life cycle event' : 'Add new life cycle event'}} for: </b> {{companyName}}
       </mat-card-title>
-      <mat-card-subtitle></mat-card-subtitle>
+      <mat-card-subtitle *ngIf="possessorId !== companyId">
+        life cycle event possessor: {{ possessorName +' - '+ possessorNameFa }}
+
+      </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -31,11 +34,11 @@
       <mat-expansion-panel style="margin-bottom: 10px;" >
         <mat-expansion-panel-header>
           <mat-panel-title>
-            join with other {{possessorType}}?
+            join with other {{companyType}}?
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ii-suggestion [idColumn]="possessorKey" [name]="possessorType"
-                       [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="possessorType"
+        <ii-suggestion [idColumn]="companyKey" [name]="companyType"
+                       [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'" [placeholder]="companyType"
                        [currentIds]="getCurrentJoinerIds()" (add)="changeJoiner($event);"></ii-suggestion>
         <div class="rs-table" *ngIf="joinerId">
           <table class="table">

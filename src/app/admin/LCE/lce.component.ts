@@ -16,9 +16,10 @@ import {ILCE} from './interfaces/lce.interface';
 export class LCEComponent implements OnInit {
 
 
-  possessorType: string;
-  possessorId: number = null;
-  possessorName: string = null;
+  companyType: string;
+  companyId: number = null;
+  companyName: string = null;
+
   cards: ILCE[] = [];
 
   offset = 0;
@@ -39,11 +40,11 @@ export class LCEComponent implements OnInit {
   ngOnInit() {
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.possessorType = this.router.url.split('/')[2];
-      this.possessorId = params['id'];
-      this.possessorName = decodeURIComponent(params['possessorName']);
+      this.companyType = this.router.url.split('/')[2];
+      this.companyId = params['id'];
+      this.companyName = decodeURIComponent(params['companyName']);
 
-      this.breadCrumbService.pushChild(`life cycle events of ${this.possessorName}`, this.router.url, false);
+      this.breadCrumbService.pushChild(`life cycle events of ${this.companyName}`, this.router.url, false);
 
     });
 
@@ -69,7 +70,7 @@ export class LCEComponent implements OnInit {
       if (res) {
 
         this.progressService.enable();
-        this.restService.delete(`lce/${this.possessorType}/${id}`).subscribe(data => {
+        this.restService.delete(`lce/${this.companyType}/${id}`).subscribe(data => {
 
           this.progressService.disable();
           this.cardId = null;
@@ -103,7 +104,7 @@ export class LCEComponent implements OnInit {
 
     this.cards = [];
     this.progressService.enable();
-    this.restService.get(`lce/${this.possessorType}/${this.possessorId}/${this.offset}/${this.limit}`).subscribe(res => {
+    this.restService.get(`lce/${this.companyType}/${this.companyId}/${this.offset}/${this.limit}`).subscribe(res => {
 
       res.forEach((lce: ILCE) => {
         this.cards.push(lce);

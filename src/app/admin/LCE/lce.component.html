@@ -1,4 +1,4 @@
-<h4 class="row">Life Cycle Events of: <b>{{possessorName}}</b></h4>
+<h4 class="row">Life Cycle Events of: <b>{{companyName}}</b></h4>
 
 <div fxLayout="row" class="row">
   <button mat-fab color="accent" (click)="open('form')">
@@ -33,10 +33,10 @@
           </div>
 
           <div>
-            <b>Joiner: </b><span>{{lce.joinerName? lce.joinerName : '-'}}</span>
+            <b>Joiner: </b><span>{{lce.joiner_name? lce.joiner_name : '-'}}</span>
           </div>
           <div>
-            <b>Joiner (fa): </b><span>{{lce.joinerNameFa? lce.joinerNameFa : '-'}}</span>
+            <b>Joiner (fa): </b><span>{{lce.joiner_name_fa? lce.joiner_name_fa : '-'}}</span>
           </div>
           <div>
             <b [ngClass]="{'warn' :!lce.is_confirmed, 'success' : lce.is_confirmed  } ">{{lce.is_confirmed ? 'Confirmed' : 'Waiting for confirmation'}}</b>

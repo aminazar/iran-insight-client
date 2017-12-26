@@ -14,6 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {SharedModule} from '../../shared/shared.module';
 import { LceFormComponent } from './components/lce-form/lce-form.component';
+import { LceViewComponent } from './components/lce-view/lce-view.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,7 @@ import { LceFormComponent } from './components/lce-form/lce-form.component';
     MatDatepickerModule,
     MatPaginatorModule
   ],
-  declarations: [LCEComponent, LceFormComponent],
+  declarations: [LCEComponent, LceFormComponent, LceViewComponent],
   entryComponents: [LceFormComponent]
 })
 export class LCEModule { }
