@@ -21,6 +21,9 @@ export class PersonComponent extends AbstractSearchComponent implements OnInit {
 
   }
 
+
+
+
   deletePerson(id: number = null): void {
 
     super.deleteCard(id).subscribe((res) => {
@@ -43,5 +46,16 @@ export class PersonComponent extends AbstractSearchComponent implements OnInit {
       },
       (err) => console.error('Error in closing component. Error: ', err)
     );
+  }
+
+  getBestName(person) {
+
+    if (person.display_name_en)
+      return person.display_name_en;
+
+    if (person.display_name_fa)
+      return person.display_name_fa;
+
+    return '';
   }
 }

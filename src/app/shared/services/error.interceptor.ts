@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 import {errors} from '../utils/messages.list';
 import {MatSnackBar} from '@angular/material';
 import 'rxjs/add/operator/catch';
@@ -18,13 +18,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.error instanceof Error) {
           console.error('An error occurred:', err.error.message);
         } else {
+          let found = false;
           errors.forEach(e => {
-
-            if (err.error === e.error.message && err.status === e.code)
+            if (err.error === e.error.message && err.status === e.code) {
               this.snackBar.open(e.friendlyMessage);
+              found = true;
+            }
           });
-
-          console.error(`Backend returned code ${err.status}, body was: ` , err.error);
+          if (!found) {
+            this.snackBar.open(err.error.error || err.error);
+          }
+          console.error(`Backend returned code ${err.status}, body was: `, err.error);
         }
         return Observable.throw(err);
       });
