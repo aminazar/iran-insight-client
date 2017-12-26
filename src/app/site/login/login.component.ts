@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {AuthService} from '../../shared/services/auth.service';
-import {OAuthTypes} from '../../shared/enum/oauth.type.enum';
 import {Router} from '@angular/router';
+import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 
 @Component({
   selector: 'ii-login',
@@ -15,10 +14,11 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router, private breadcrumbService: BreadcrumbService) {
   }
 
   ngOnInit() {
+    this.breadcrumbService.pushChild('Login/Register', this.router.url, true);
     this.initForm();
   }
 

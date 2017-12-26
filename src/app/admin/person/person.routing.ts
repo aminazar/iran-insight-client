@@ -6,8 +6,8 @@ import {LeavingGuard} from "../leavingGuard";
 
 const Person_ROUTES: Routes = [
   {path: '', component: PersonComponent, pathMatch: 'full'},
-  {path: ':id', component: PersonViewComponent},
-  {path: 'form/:id', component: PersonFormComponent, canDeactivate: [LeavingGuard]},
+  {path: 'view/:id', component: PersonViewComponent},
+  {path: 'form/:formId', component: PersonFormComponent, canDeactivate: [LeavingGuard]},
 ];
 
 export const personRouting = RouterModule.forChild(Person_ROUTES);

@@ -1,15 +1,6 @@
-import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {AuthService} from '../../../../shared/services/auth.service';
-import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
-import {ProgressService} from '../../../../shared/services/progress.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
-import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
-import {CanComponentDeactivate} from '../../../leavingGuard';
 import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
 
 @Component({
@@ -17,7 +8,7 @@ import {AbstractFormComponent} from '../../../../shared/components/abstract-form
   templateUrl: './person-form.component.html',
   styleUrls: ['./person-form.component.css']
 })
-export class PersonFormComponent extends AbstractFormComponent implements OnInit, OnDestroy, CanComponentDeactivate {
+export class PersonFormComponent extends AbstractFormComponent implements OnInit {
 
   periodTypes = [{
     title: 'Daily',
@@ -32,7 +23,6 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
     title: 'Never',
     value: 'n',
   }];
-  actionEnum = ActionEnum;
   resetPasswordBtnShouldDisabled = false;
 
   ngOnInit() {
@@ -78,14 +68,7 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
       display_name_fa: [null],
     });
 
-    this.form.valueChanges.subscribe(
-      (data) => {
-        this.fieldChanged();
-      },
-      (err) => {
-        console.error('Error: ', err);
-      }
-    );
+    super.initForm();
   }
 
   initPerson() {
@@ -164,10 +147,6 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
         });
 
         this.anyChanges = false;
-        this.changedForm.emit({
-          action: this.formId ? this.actionEnum.modify : this.actionEnum.add,
-          value: Object.assign({pid: data.pid}, personData)
-        });
 
         if (!this.formId) {
           this.form.reset();
@@ -239,8 +218,6 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
               this.snackBar.open('Person is deleted successfully', null, {
                 duration: 2000,
               });
-
-              this.changedForm.emit({action: this.actionEnum.delete, value: this.formId});
 
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;

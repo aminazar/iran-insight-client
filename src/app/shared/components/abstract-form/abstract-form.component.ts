@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CanComponentDeactivate} from '../../../admin/leavingGuard';
-import { FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../services/breadcrumb.service';
@@ -9,6 +9,7 @@ import {LeavingConfirmComponent} from '../leaving-confirm/leaving-confirm.compon
 import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../../services/auth.service';
 import {ProgressService} from '../../services/progress.service';
+import {RestService} from '../../services/rest.service';
 
 @Component({
   selector: 'ii-abstract-form',
@@ -26,7 +27,6 @@ export class AbstractFormComponent implements OnInit, OnDestroy, CanComponentDea
     return this._formId;
   }
 
-  @Output() changedForm = new EventEmitter();
 
   form: FormGroup;
   _formId: number = null;
@@ -36,19 +36,20 @@ export class AbstractFormComponent implements OnInit, OnDestroy, CanComponentDea
   deleteBtnShouldDisabled = false;
   viewName: string;
 
-  constructor(private router: Router,
+  constructor(protected router: Router,
+              protected restService: RestService,
               protected dialog: MatDialog,
               protected breadcrumbService: BreadcrumbService,
               protected route: ActivatedRoute,
               protected authService: AuthService,
               protected snackBar: MatSnackBar,
-              protected progressService: ProgressService) {
+              protected progressService: ProgressService ) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(
       (params) => {
-        this.formId = +params['id'] ? +params['id'] : null;
+        this.formId = +params['formId'] ? +params['formId'] : null;
         this.breadcrumbService.pushChild((this.formId ? 'Update' : 'Add') + ' ' + this.viewName, this.router.url, false);
       }
     );
@@ -58,13 +59,19 @@ export class AbstractFormComponent implements OnInit, OnDestroy, CanComponentDea
     this.form = null;
   }
 
+  initForm() {
+    this.form.valueChanges.subscribe(
+      (data) => {
+        this.fieldChanged();
+      },
+      (err) => {
+        console.error('Error: ', err);
+      }
+    );
+  }
+
   fieldChanged() {
-    if (!this.originalForm)
-      return;
 
-    this.anyChanges = false;
-
-    // change logic must be implemented in children class
   }
 
   delete(): Observable<any> {

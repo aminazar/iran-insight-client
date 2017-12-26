@@ -1,0 +1,93 @@
+<div fxLayout="row" class="row" *ngIf="lce">
+
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+
+    <mat-card-header>
+      <mat-card-title><b>life cycle event for: </b> {{companyName}}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="lce.possessor_id !== companyId">
+        life cycle event possessor: {{ lce.possessor_name +' - '+ lce.possessor_name_fa }}
+
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="rs-table">
+        <table class="table">
+          <thead>
+          <td><b>life cycle event name</b></td>
+          <td><b>life cycle event (fa)</b></td>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{lce.lce_type_name}}</td>
+            <td class="farsi">{{lce.lce_type_name_fa}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-expansion-panel style="margin-bottom: 10px;" >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            join with other {{companyType}}?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="rs-table" *ngIf="lce.joiner_id">
+          <table class="table">
+            <thead>
+            <td><b>joiner name</b></td>
+            <td><b>joiner name (fa)</b></td>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{lce.joiner_name}}</td>
+              <td class="farsi">{{lce.joiner_name_fa}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+      </mat-expansion-panel>
+
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+
+            <b>description: </b><span>{{lce.decription}}</span>
+          </div>
+          <div fxFlex="50" dir="rtl" style="width: 100%; margin: 5px">
+            <b>توضیحات: </b><span>{{lce.decription_fa}}</span>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <b>start date: </b><span>{{lce.start_date | date}}"</span>
+          </div>
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <b>end date: </b><span>{{lce.end_date | date}}</span>
+          </div>
+        </div>
+        <div *ngIf="joinerId" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" style="width: 100%; margin: 5px">
+            <mat-checkbox fxFlex="50"
+                          role="is_confirmed" [checked]="lce.is_confirmed"  disabled>
+              Is confirmed?
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <div role="submit-button">
+            <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deleteLCE()"
+                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </div>
+
+
+
+    </mat-card-content>
+  </mat-card>
+</div>

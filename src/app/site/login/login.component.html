@@ -15,8 +15,12 @@
               </mat-input-container>
             </div>
             <div>
-              <button mat-raised-button type="submit" color="accent" [disabled]="!loginForm.valid">Sign In</button>
-              <button mat-raised-button type="button" color="primary" [routerLink]="['/login/signup']">Sign Up</button>
+              <button mat-raised-button type="submit" class="success" [disabled]="!loginForm.valid">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;&nbsp;Sign In
+              </button>
+              <button mat-raised-button type="button" color="accent">
+                <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>&nbsp;&nbsp;Sign Up
+              </button>
             </div>
             <div style="margin: 30px;">
               <a class="clickable-link" [routerLink]="['/login/forgot']">Forgot your password!!!</a>
