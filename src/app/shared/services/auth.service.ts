@@ -116,4 +116,12 @@ export class AuthService {
       password: password,
     });
   }
+
+  signup(username, displayName) {
+    return this.restService.put('user/register', {username: username, display_name: displayName});
+  }
+
+  emailExists(email) {
+    return this.restService.post('user/email/isExist', {username: email});
+  }
 }

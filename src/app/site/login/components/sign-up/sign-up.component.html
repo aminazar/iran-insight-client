@@ -1,3 +1,38 @@
-<p>
-  sign-up works!
-</p>
+<div fxLayout="row">
+  <div fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+    <mat-card>
+      <mat-card-content>
+        <form (ngSubmit)="signup()" [formGroup]="signupForm">
+          <div class="center">
+            <div>
+              <mat-input-container class="field-container">
+                <input matInput type="email" placeholder="Enter your email" formControlName="email" role="email" tabindex="1"/>
+                <mat-error *ngIf="signupForm.controls['email'].hasError('exists')">This email is exist</mat-error>
+              </mat-input-container>
+            </div>
+            <div>
+              <mat-input-container class="field-container">
+                <input matInput type="text" placeholder="Display Name" formControlName="displayName" role="display-name" tabindex="2"/>
+              </mat-input-container>
+            </div>
+            <!--<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center center">-->
+              <!--<div fxFlex="50" class="field-container">-->
+                <!--<mat-input-container class="field">-->
+                  <!--<input matInput type="text" placeholder="Display Name" formControlName="displayName" role="display-name-en" tabindex="2"/>-->
+                <!--</mat-input-container>-->
+              <!--</div>-->
+              <!--<div fxFlex="50" dir="rtl" class="field-container">-->
+                <!--<mat-input-container class="field farsi">-->
+                  <!--<input matInput type="text" placeholder="نام نمایشی" formControlName="displayNameFa" role="display-name-fa" tabindex="3"/>-->
+                <!--</mat-input-container>-->
+              <!--</div>-->
+            <!--</div>-->
+          </div>
+          <div>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!signupForm.valid" tabindex="3">Sign Up</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

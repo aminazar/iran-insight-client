@@ -75,10 +75,8 @@ export class ChoosePasswordComponent implements OnInit {
     const rePassword = AC.get('rePassword').value;
 
     if (password !== rePassword) {
-      console.log('Has error');
-      AC.get('rePassword').setErrors({matchPassword: false});
+      AC.get('rePassword').setErrors({'matchPassword': 'Passwords are not matched'});
     } else {
-      console.log('No error in matched');
       return null;
     }
   }
@@ -89,7 +87,7 @@ export class ChoosePasswordComponent implements OnInit {
         this.snackBar.open('Your password changed successfully.', null, {
           duration: 2300,
         });
-        this.router.navigate(['login']);
+        setTimeout(() => this.router.navigate(['login']), 2000);
       },
       (err) => {
         this.snackBar.open('Cannot change your password. Maybe link is expired', null, {

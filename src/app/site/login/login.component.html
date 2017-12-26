@@ -16,7 +16,7 @@
             </div>
             <div>
               <button mat-raised-button type="submit" color="accent" [disabled]="!loginForm.valid">Sign In</button>
-              <button mat-raised-button type="button" color="primary">Sign Up</button>
+              <button mat-raised-button type="button" color="primary" [routerLink]="['/login/signup']">Sign Up</button>
             </div>
             <div style="margin: 30px;">
               <a class="clickable-link" [routerLink]="['/login/forgot']">Forgot your password!!!</a>
