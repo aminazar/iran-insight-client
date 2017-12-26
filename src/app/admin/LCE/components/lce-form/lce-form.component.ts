@@ -203,8 +203,7 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
           this.removeJoiner();
           this.removeLCEType();
         } else {
-          this.originalForm = Object.assign({pid: data.pid}, lceData);
-          this.formId = data.pid;
+          this.formId = data[0].id;
         }
 
         this.progressService.disable();
