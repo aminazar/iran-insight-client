@@ -6,7 +6,8 @@ import {SharedModule} from '../../shared/shared.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
   MatDialogModule, MatIconModule, MatSnackBarModule, MatSelectModule, MatNativeDateModule, MatDatepickerModule,
-  MatAutocompleteModule, MatGridListModule, MatPaginatorModule, MatTabsModule, MatCardModule, MatInputModule, MatButtonModule
+  MatAutocompleteModule, MatGridListModule, MatPaginatorModule, MatTabsModule, MatCardModule, MatInputModule,
+  MatButtonModule, MatStepperModule, MatExpansionModule, MatAccordion
 } from '@angular/material';
 import {businessRouting} from './business.routing';
 import { BusinessMembersComponent } from './components/business-members/business-members.component';
@@ -36,6 +37,8 @@ import { BusinessViewComponent } from './components/business-view/business-view.
     MatAutocompleteModule,
     MatTabsModule,
     MatPaginatorModule,
+    MatStepperModule,
+    MatExpansionModule,
   ],
   declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessViewComponent],
   providers: [{ provide: 'Window', useValue: window }]

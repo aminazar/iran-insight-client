@@ -2,9 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RestService} from '../../../../shared/services/rest.service';
-import {IMember} from '../../interfaces/member';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
@@ -19,18 +17,28 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   bid: number;
   add = false;
 
-  form: FormGroup = new FormBuilder().group({
-    name: [null],
-    name_fa: [null],
-    address: [null],
-    address_fa: [null],
-    tel: [null],
-    url: [null],
-  });
+  farsiForm;
+  basicForm;
+  productForm;
+  generalForm;
+  financialForm: FormGroup;
   loadedValue: any = {};
   upsertDisabled = false;
   deleteDisabled = false;
   ceoName = '';
+  step = 0;
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private activatedRoute: ActivatedRoute,
@@ -38,6 +46,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initForm();
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = +params['bid'];
       this.add = !this.bid;
@@ -61,25 +70,28 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   setCEOName(lang = 'en') {
-    this.ceoName =  this.loadedValue[`surname_${lang}`] + (lang === 'en' ? ', ' : ' ،') + this.loadedValue[`firstname_${lang}`]
+    this.ceoName = this.loadedValue[`surname_${lang}`] + (lang === 'en' ? ', ' : ' ،') + this.loadedValue[`firstname_${lang}`]
       + ` (${this.loadedValue[`display_name_${lang}`]})`;
   }
 
   ngOnDestroy() {
-    this.form = null;
+    ['farsiForm', 'basicForm', 'productForm', 'generalForm', 'financialForm'].forEach(form => this[form] = null);
   }
 
   initForm() {
-    this.form = new FormBuilder().group({
+    this.farsiForm = new FormBuilder().group({
+      name_fa: [this.loadedValue.name_fa],
+      address_fa: [this.loadedValue.address_fa, [
+        Validators.maxLength(500),
+      ]],
+    });
+
+    this.basicForm = new FormBuilder().group({
       bid: [this.bid],
       name: [this.loadedValue.name, [Validators.required]],
-      name_fa: [this.loadedValue.name_fa],
       address: [this.loadedValue.address, [
         Validators.maxLength(500),
         Validators.required,
-      ]],
-      address_fa: [this.loadedValue.address_fa, [
-        Validators.maxLength(500),
       ]],
       tel: [this.loadedValue.tel, [
         Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,8}$/),
@@ -91,18 +103,25 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       ]],
       ceo_pid: [this.loadedValue.ceo_pid],
     });
+
+    this.generalForm = new FormBuilder().group({});
+
+    this.financialForm = new FormBuilder().group({});
   }
 
   setCEO(value) {
-    this.form.controls['ceo_pid'].setValue(value.pid);
+    this.basicForm.controls['ceo_pid'].setValue(value.pid);
     this.ceoName = value.display_name_en;
   }
 
   upsertBusiness() {
-    let bizData: any = {};
-    for (let key in this.form.controls) {
-      bizData[key] = this.form.controls[key].value;
-    }
+    const bizData: any = {};
+    ['farsiForm', 'basicForm'].forEach(form => {
+      for (const key in this[form].controls)
+        if (this[form].controls.hasOwnProperty(key)) {
+          bizData[key] = this[form].controls[key].value;
+        }
+    });
 
     if (this.add)
       delete bizData.bid;
@@ -135,7 +154,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   }
 
   deleteBusiness() {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '250px'
     });

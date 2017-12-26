@@ -55,6 +55,7 @@
 }
 
 .farsi{
+  direction:rtl;
 }
 
 
@@ -181,11 +182,55 @@ a:hover {
 }
 
 .menu-container{
-  background-color: rgba(241,232,225,0.81);
+  background-color: #d7cec7ef;
+}
+.menu-container .selected-link {
+  background-color: #a69d96 !important;
+}
+.menu-container .selected-link a{
+  color: white !important;
 }
 
 .mat-drawer-container{
   overflow: visible !important;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.mat-drawer {
+  background: unset !important;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.mat-stepper-horizontal {
+  display: unset !important;
+}
+
+@media screen and (max-width: 600px) {
+  .mat-horizontal-stepper-header {
+    padding: 3px !important;
+  }
+  .mat-horizontal-content-container {
+    padding: 0px !important;
+  }
+
+  .mat-stepper-horizontal-line {
+    margin: 6px !important;
+  }
+
+  .mat-expansion-panel-header {
+    padding: 5px !important;
+    margin-right: 0px !important;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 5px !important;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .business-card {
+    width: 100%;
+  }
 }
 
 .fixed-navbar{
@@ -201,14 +246,14 @@ a:hover {
   margin-top: 150px;
 }
 
-.menu-button{
-  margin-top: 10px !important;
-}
-
 .ev-loc{
   height: 250px;
 }
 
 .rs-table{
   margin: 10px;
+}
+.mobile-accordion-container {
+  margin: 0px 5px;
+  width: 100%
 }

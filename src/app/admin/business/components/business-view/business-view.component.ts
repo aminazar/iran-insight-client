@@ -25,12 +25,12 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = +params['bid'];
       if (this.bid) {
-        this.breadCrumbService.pushChild(? 'View', this.router.url, false);
+        this.breadCrumbService.pushChild('View', this.router.url, false);
       } else { // Opens as dialog
         this.bid = this.dialogData.bid;
       }
       this.progressService.enable();
-      this.restService.get(`business/one/${this.bid}`).subscribe(res => {
+      this.restService.get(`business/oneAll/${this.bid}`).subscribe(res => {
         this.data = res;
         this.parsed = JSON.stringify(res, null, 2);
         this.progressService.disable();
