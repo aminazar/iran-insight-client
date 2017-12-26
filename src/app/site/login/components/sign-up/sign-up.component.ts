@@ -4,6 +4,7 @@ import {AuthService} from '../../../../shared/services/auth.service';
 import {MatSnackBar} from '@angular/material';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {Router} from '@angular/router';
+import {ProgressService} from '../../../../shared/services/progress.service';
 
 @Component({
   selector: 'ii-sign-up',
@@ -12,9 +13,11 @@ import {Router} from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
   signupForm: FormGroup;
+  shouldDisabledButton = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              private breadcrumbService: BreadcrumbService, private router: Router) {
+              private breadcrumbService: BreadcrumbService, private router: Router,
+              private progressService: ProgressService) {
   }
 
   ngOnInit() {
@@ -41,7 +44,7 @@ export class SignUpComponent implements OnInit {
               if (rs)
                 this.signupForm.controls['email'].setErrors({'exists': true});
               else
-                this.signupForm.controls['email'].setErrors({'exists': null});
+                this.signupForm.controls['email'].setErrors(null);
             }
           );
       },
@@ -52,13 +55,19 @@ export class SignUpComponent implements OnInit {
   }
 
   signup() {
-    this.authService.signup(this.signupForm.controls['username'].value, this.signupForm.controls['displayName'].value).subscribe(
+    this.progressService.enable();
+    this.shouldDisabledButton = true;
+    this.authService.signup(this.signupForm.controls['email'].value, this.signupForm.controls['displayName'].value).subscribe(
       (data) => {
-        this.snackBar.open('An activation mail sent to ' + this.signupForm.controls['username'].value, null, {
+        this.progressService.disable();
+        this.shouldDisabledButton = false;
+        this.snackBar.open('An activation mail sent to ' + this.signupForm.controls['email'].value, null, {
           duration: 2300,
         });
       },
       (err) => {
+        this.progressService.disable();
+        this.shouldDisabledButton = false;
         this.snackBar.open('Cannot send you an activation mail. Please check your email address', null, {
           duration: 3200,
         });

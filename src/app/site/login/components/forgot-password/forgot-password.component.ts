@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
@@ -13,9 +13,12 @@ import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service'
 })
 export class ForgotPasswordComponent implements OnInit {
   forgotForm: FormGroup;
+  shouldDisabledButton = false;
+
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private router: Router,
-              private breadcrumbService: BreadcrumbService) { }
+              private breadcrumbService: BreadcrumbService) {
+  }
 
   ngOnInit() {
     this.breadcrumbService.pushChild('Changing Password', this.router.url, false);
@@ -30,19 +33,22 @@ export class ForgotPasswordComponent implements OnInit {
 
   sendActivationMail() {
     this.progressService.enable();
+    this.shouldDisabledButton = true;
     this.authService.sendActivationMail(this.forgotForm.controls['email'].value, true).subscribe(
       (data) => {
         this.snackBar.open('An email send to ' + this.forgotForm.controls['email'].value, null, {
           duration: 2300
         });
+        this.shouldDisabledButton = false;
         this.progressService.disable();
       },
       (err) => {
         this.snackBar.open('Cannot send an email to ' +
-                            this.forgotForm.controls['email'].value +
-                            '. If you are not register, please register first.', null, {
+          this.forgotForm.controls['email'].value +
+          '. If you are not register, please register first.', null, {
           duration: 3200
         });
+        this.shouldDisabledButton = false;
         this.progressService.disable();
       }
     );

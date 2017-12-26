@@ -15,21 +15,11 @@
                 <input matInput type="text" placeholder="Display Name" formControlName="displayName" role="display-name" tabindex="2"/>
               </mat-input-container>
             </div>
-            <!--<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center center">-->
-              <!--<div fxFlex="50" class="field-container">-->
-                <!--<mat-input-container class="field">-->
-                  <!--<input matInput type="text" placeholder="Display Name" formControlName="displayName" role="display-name-en" tabindex="2"/>-->
-                <!--</mat-input-container>-->
-              <!--</div>-->
-              <!--<div fxFlex="50" dir="rtl" class="field-container">-->
-                <!--<mat-input-container class="field farsi">-->
-                  <!--<input matInput type="text" placeholder="نام نمایشی" formControlName="displayNameFa" role="display-name-fa" tabindex="3"/>-->
-                <!--</mat-input-container>-->
-              <!--</div>-->
-            <!--</div>-->
           </div>
           <div>
-            <button mat-raised-button type="submit" color="primary" [disabled]="!signupForm.valid" tabindex="3">Sign Up</button>
+            <button mat-raised-button type="submit" color="accent" [disabled]="!signupForm.valid || shouldDisabledButton" tabindex="3">
+              <i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;Get activation code
+            </button>
           </div>
         </form>
       </mat-card-content>

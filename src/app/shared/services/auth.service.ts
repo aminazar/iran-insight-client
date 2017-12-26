@@ -103,7 +103,7 @@ export class AuthService {
   }
 
   sendActivationMail(email, isForgotPassword = true) {
-    return this.restService.post('user/auth/link', {email: email, is_forgot_password: isForgotPassword});
+    return this.restService.post('user/auth/link', {email: email, is_forgot_mail: isForgotPassword});
   }
 
   checkActivationLink(link) {
@@ -111,14 +111,14 @@ export class AuthService {
   }
 
   setPassword(password, username, link) {
-    return this.restService.post('user/auth/change/password/' + link, {
+    return this.restService.post('user/auth/local/' + link, {
       username: username,
       password: password,
     });
   }
 
   signup(username, displayName) {
-    return this.restService.put('user/register', {username: username, display_name: displayName});
+    return this.restService.put('user/register', {email: username, display_name: displayName});
   }
 
   emailExists(email) {
