@@ -61,7 +61,7 @@ export class LceViewComponent implements OnInit {
       (res) => {
 
 
-        console.log('-> ',res[0]);
+        console.log('-> ', res[0]);
         this.lce = res[0];
 
         this.progressService.disable();
