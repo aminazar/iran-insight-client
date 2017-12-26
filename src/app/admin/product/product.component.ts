@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
@@ -24,14 +24,14 @@ export class ProductComponent implements OnInit {
   rows = [];
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
-              private searchService: SearchService, private snackBar: MatSnackBar,  private progressService: ProgressService) {
+              private searchService: SearchService, private snackBar: MatSnackBar, private progressService: ProgressService) {
   }
 
   ngOnInit() {
     this.breadCrumbService.pushChild('Product', this.router.url, true);
   }
 
-  openForm(id: number): void {
+  openForm(id?: number): void {
     this.productId = id;
     this.showInDeep = true;
   }
@@ -55,7 +55,7 @@ export class ProductComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.products = data.product;
-        this.totalProducts = this.products.length > 0 ? parseInt(this.products[0].total) : 0;
+        this.totalProducts = this.products.length > 0 ? parseInt(this.products[0].total, 10) : 0;
 
         let colCounter = 0;
         let rowCounter = 0;
@@ -67,7 +67,7 @@ export class ProductComponent implements OnInit {
           }
           this.aligningObj[rowCounter].push(el);
           colCounter++;
-      });
+        });
 
         this.rows = Object.keys(this.aligningObj);
         console.log(this.aligningObj);
@@ -90,12 +90,12 @@ export class ProductComponent implements OnInit {
         this.products.unshift(data.value);
         this.products = this.products.slice(0, this.products.length - 1);
         console.log('ADD ==> ', this.aligningObj);
-      };
+      }
         break;
       case this.actionEnum.modify: {
         this.products[this.products.findIndex(el => el.product_id === data.value.product_id)] = data.value;
         console.log('UPDATE ==> ', this.aligningObj);
-      };
+      }
         break;
       case this.actionEnum.delete: {
         this.products = this.products.filter(el => el.product_id !== data.value);
@@ -105,17 +105,18 @@ export class ProductComponent implements OnInit {
         let keys = Object.keys(this.aligningObj);
         console.log('===>', keys);
         console.log('===>', this.aligningObj[keys[0]]);
-        for(let i=0; i<keys.length; i++){
+        for (let i = 0; i < keys.length; i++) {
           let ind = this.aligningObj[i].findIndex(el => el.product_id === data.value);
-          if(ind !== -1) {
+          if (ind !== -1) {
             this.aligningObj[i].splice(ind, 1);
           }
-          }
-        };
+        }
+      }
         break;
-    }}
+    }
+  }
 
-  findingChangedElement(productId){
+  findingChangedElement(productId) {
   }
 }
 

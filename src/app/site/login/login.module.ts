@@ -7,8 +7,11 @@ import {
   MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule,
   MatSnackBarModule
 } from '@angular/material';
-import { LoginComponent } from './login.component';
+import {LoginComponent} from './login.component';
 import {SharedModule} from '../../shared/shared.module';
+import { ChoosePasswordComponent } from './components/choose-password/choose-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 @NgModule({
   imports: [
@@ -25,7 +28,7 @@ import {SharedModule} from '../../shared/shared.module';
     MatFormFieldModule,
     MatSnackBarModule,
   ],
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, ChoosePasswordComponent, ForgotPasswordComponent, SignUpComponent],
 })
 export class LoginModule {
 

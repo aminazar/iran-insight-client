@@ -1,7 +1,7 @@
 <div fxLayout="row">
   <div fxFlex="50" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="25" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
     <mat-card>
-      <mat-card-content style="text-align: center;">
+      <mat-card-content class="center">
         <div>
           <form (ngSubmit)="login()" [formGroup]="loginForm">
             <div>
@@ -15,30 +15,28 @@
               </mat-input-container>
             </div>
             <div>
-              <button mat-raised-button type="submit" color="accent" [disabled]="!loginForm.valid">Sign In</button>
-              <button mat-raised-button type="button" color="primary">Sign Up</button>
+              <button mat-raised-button type="submit" class="success" [disabled]="!loginForm.valid">
+                <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;&nbsp;Sign In
+              </button>
+              <button mat-raised-button type="button" color="accent">
+                <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>&nbsp;&nbsp;Sign Up
+              </button>
             </div>
             <div style="margin: 30px;">
-              <a class="clickable-link" (click)="forgotPassword()">Forgot your password!!!</a>
+              <a class="clickable-link" [routerLink]="['/login/forgot']">Forgot your password!!!</a>
             </div>
           </form>
         </div>
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
-          <div fxFlex="33">
-            <button mat-icon-button (click)="login(oAuthTypes.google)">
-              <img src="../../../assets/images/google_plus.png" width="50px" height="50px">
-            </button>
-          </div>
-          <div fxFlex="33">
-            <button mat-icon-button (click)="login(oAuthTypes.facebook)">
-              <img src="../../../assets/images/facebook.png" width="50px" height="50px">
-            </button>
-          </div>
-          <div fxFlex="33">
-            <button mat-icon-button (click)="login(oAuthTypes.linkedin)">
-              <img src="../../../assets/images/linkedin.png" width="50px" height="50px">
-            </button>
-          </div>
+        <div>
+          <a class="oauth-btn" mat-icon-button href="api/login/google">
+            <img src="../../../assets/images/google_plus.png" width="50px" height="50px">
+          </a>
+          <button class="oauth-btn" mat-icon-button href="api/login/facebook">
+            <img src="../../../assets/images/facebook.png" width="50px" height="50px">
+          </button>
+          <button class="oauth-btn" mat-icon-button href="api/login/linkedin">
+            <img src="../../../assets/images/linkedin.png" width="50px" height="50px">
+          </button>
         </div>
       </mat-card-content>
     </mat-card>
