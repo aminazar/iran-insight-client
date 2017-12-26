@@ -18,7 +18,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadcrumbService.pushChild('Sign Up', this.router.url, true);
+    this.breadcrumbService.pushChild('Sign Up', this.router.url, false);
     this.initForm();
   }
 
