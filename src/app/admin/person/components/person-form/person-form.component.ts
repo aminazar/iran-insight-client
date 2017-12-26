@@ -1,32 +1,14 @@
-import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {AuthService} from '../../../../shared/services/auth.service';
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
-import {ActionEnum} from "../../../../shared/enum/action.enum";
-import {ProgressService} from "../../../../shared/services/progress.service";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import {ActivatedRoute, Router} from "@angular/router";
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
-import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
-import {CanComponentDeactivate} from "../../../leavingGuard";
+import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
 
 @Component({
   selector: 'ii-person-form',
   templateUrl: './person-form.component.html',
   styleUrls: ['./person-form.component.css']
 })
-export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeactivate {
-  @Input()
-  set personId(id) {
-    this._personId = id;
-  }
-
-  get personId() {
-    return this._personId;
-  }
-
-  @Output() changedPerson = new EventEmitter();
+export class PersonFormComponent extends AbstractFormComponent implements OnInit {
 
   periodTypes = [{
     title: 'Daily',
@@ -41,54 +23,27 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
     title: 'Never',
     value: 'n',
   }];
-  personForm: FormGroup;
-  _personId: number = null;
-  originalPerson: any = null;
-  anyChanges = false;
-  actionEnum = ActionEnum;
-
-  upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
-  resetPasswordBtnShouldDisabled: boolean = false;
-
-  constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService,
-              private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
-              private router: Router) {
-  }
+  resetPasswordBtnShouldDisabled = false;
 
   ngOnInit() {
+    this.viewName = 'Person';
+    super.ngOnInit();
+    this.initForm();
     this.route.params.subscribe(
       (params) => {
-        this.personId = +params['id'] ? +params['id'] : null;
-        this.initForm();
         this.initPerson();
-
-        this.breadcrumbService.pushChild((this.personId ? 'Update' : 'Add') + ' Person', this.router.url, false);
-      }
-    );
-
-    this.personForm.valueChanges.subscribe(
-      (data) => {
-        this.fieldChanged();
-      },
-      (err) => {
-        console.error('Error: ', err);
       }
     );
   }
 
-  ngOnDestroy() {
-    this.personForm = null;
-  }
 
   initForm() {
-    this.personForm = new FormBuilder().group({
+    this.form = new FormBuilder().group({
       firstname_en: [null],
       firstname_fa: [null],
       surname_en: [null],
       surname_fa: [null],
-      username: [{value: null, disabled: this.personId ? true : false}, [
+      username: [{value: null, disabled: this.formId ? true : false}, [
         Validators.required,
         Validators.email,
       ]],
@@ -112,37 +67,37 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
       display_name_en: [null],
       display_name_fa: [null],
     });
+
+    super.initForm();
   }
 
   initPerson() {
-    if (!this.personId) {
-      this.personForm = null;
-      this.initForm();
+
+    if (!this.formId)
       return;
-    }
 
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
-    this.authService.getPersonInfo(this.personId).subscribe(
+    this.authService.getPersonInfo(this.formId).subscribe(
       (data) => {
         data = data[0];
-        this.personForm.controls['username'].setValue(data.username);
-        this.personForm.controls['firstname_en'].setValue(data.firstname_en);
-        this.personForm.controls['firstname_fa'].setValue(data.firstname_fa);
-        this.personForm.controls['surname_en'].setValue(data.surname_en);
-        this.personForm.controls['surname_fa'].setValue(data.surname_fa);
-        this.personForm.controls['image'].setValue(data.image);
-        this.personForm.controls['address_en'].setValue(data.address_en);
-        this.personForm.controls['address_fa'].setValue(data.address_fa);
-        this.personForm.controls['phone_no'].setValue(data.phone_no);
-        this.personForm.controls['mobile_no'].setValue(data.mobile_no);
-        this.personForm.controls['birth_date'].setValue(data.birth_date);
-        this.personForm.controls['display_name_en'].setValue(data.display_name_en);
-        this.personForm.controls['display_name_fa'].setValue(data.display_name_fa);
-        this.personForm.controls['notify_period'].setValue(data.notify_period);
+        this.form.controls['username'].setValue(data.username);
+        this.form.controls['firstname_en'].setValue(data.firstname_en);
+        this.form.controls['firstname_fa'].setValue(data.firstname_fa);
+        this.form.controls['surname_en'].setValue(data.surname_en);
+        this.form.controls['surname_fa'].setValue(data.surname_fa);
+        this.form.controls['image'].setValue(data.image);
+        this.form.controls['address_en'].setValue(data.address_en);
+        this.form.controls['address_fa'].setValue(data.address_fa);
+        this.form.controls['phone_no'].setValue(data.phone_no);
+        this.form.controls['mobile_no'].setValue(data.mobile_no);
+        this.form.controls['birth_date'].setValue(data.birth_date);
+        this.form.controls['display_name_en'].setValue(data.display_name_en);
+        this.form.controls['display_name_fa'].setValue(data.display_name_fa);
+        this.form.controls['notify_period'].setValue(data.notify_period);
 
-        this.originalPerson = data;
+        this.originalForm = data;
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
@@ -162,24 +117,24 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
 
   modifyUser() {
     const personData = {
-      pid: this.personId,
-      username: this.personForm.controls['username'].value,
-      firstname_en: this.personForm.controls['firstname_en'].value,
-      firstname_fa: this.personForm.controls['firstname_fa'].value,
-      surname_en: this.personForm.controls['surname_en'].value,
-      surname_fa: this.personForm.controls['surname_fa'].value,
-      image: this.personForm.controls['image'].value,
-      address_en: this.personForm.controls['address_en'].value,
-      address_fa: this.personForm.controls['address_fa'].value,
-      phone_no: this.personForm.controls['phone_no'].value,
-      mobile_no: this.personForm.controls['mobile_no'].value,
-      birth_date: this.personForm.controls['birth_date'].value,
-      notify_period: this.personForm.controls['notify_period'].value,
-      display_name_en: this.personForm.controls['display_name_en'].value,
-      diplay_name_fa: this.personForm.controls['display_name_fa'].value,
+      pid: this.formId,
+      username: this.form.controls['username'].value,
+      firstname_en: this.form.controls['firstname_en'].value,
+      firstname_fa: this.form.controls['firstname_fa'].value,
+      surname_en: this.form.controls['surname_en'].value,
+      surname_fa: this.form.controls['surname_fa'].value,
+      image: this.form.controls['image'].value,
+      address_en: this.form.controls['address_en'].value,
+      address_fa: this.form.controls['address_fa'].value,
+      phone_no: this.form.controls['phone_no'].value,
+      mobile_no: this.form.controls['mobile_no'].value,
+      birth_date: this.form.controls['birth_date'].value,
+      notify_period: this.form.controls['notify_period'].value,
+      display_name_en: this.form.controls['display_name_en'].value,
+      diplay_name_fa: this.form.controls['display_name_fa'].value,
     };
 
-    if (!this.personId)
+    if (!this.formId)
       delete personData.pid;
 
     this.progressService.enable();
@@ -187,20 +142,18 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
     this.deleteBtnShouldDisabled = true;
     this.authService.setUserProfile(personData).subscribe(
       (data) => {
-        this.snackBar.open(this.personId ? 'Person is updated' : 'Person is added', null, {
+        this.snackBar.open(this.formId ? 'Person is updated' : 'Person is added', null, {
           duration: 2300,
         });
 
         this.anyChanges = false;
-        this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
 
-        if(!this.personId){
-          this.personForm.reset();
-          this.personForm.controls['notify_period'].setValue('d');
-        }
-        else{
-          this.originalPerson = Object.assign({pid: data.pid}, personData);
-          this.personId = data.pid;
+        if (!this.formId) {
+          this.form.reset();
+          this.form.controls['notify_period'].setValue('d');
+        } else {
+          this.originalForm = Object.assign({pid: data.pid}, personData);
+          this.formId = data;
         }
 
         this.progressService.disable();
@@ -208,7 +161,7 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot ' + this.personId ? 'add' : 'update' + ' this person. Try again', null, {
+        this.snackBar.open('Cannot ' + this.formId ? 'add' : 'update' + ' this person. Try again', null, {
           duration: 3200,
         });
         this.progressService.disable();
@@ -219,58 +172,52 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
   }
 
   fieldChanged() {
-    if(!this.originalPerson)
+    if (!this.originalForm)
       return;
 
     this.anyChanges = false;
 
-    Object.keys(this.personForm.controls).filter(el => !['image', 'username'].includes(el)).forEach(el => {
-      let formValue = this.personForm.controls[el].value;
-      let originalValue = this.originalPerson[el];
+    Object.keys(this.form.controls).filter(el => !['image', 'username'].includes(el)).forEach(el => {
+      let formValue = this.form.controls[el].value;
+      let originalValue = this.originalForm[el];
 
-      if(el === 'birth_date'){
-        if((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+      if (el === 'birth_date') {
+        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD'))
+            && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
-      }
-      else{
-        if(['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa', 'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)){
-          if(formValue && formValue.trim().length <= 0)
+      } else {
+        if (['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa',
+            'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)) {
+          if (formValue && formValue.trim().length <= 0)
             formValue = null;
-          else if(formValue)
+          else if (formValue)
             formValue = formValue.trim();
 
-          if(originalValue && originalValue.trim().length <= 0)
+          if (originalValue && originalValue.trim().length <= 0)
             originalValue = null;
-          else if(originalValue)
+          else if (originalValue)
             originalValue = originalValue.trim();
         }
 
-        if(formValue !== originalValue && (formValue !== '' || originalValue !== null))
+        if (formValue !== originalValue && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       }
     });
   }
 
   deletePerson() {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '250px'
-    });
-
-    rmDialog.afterClosed().subscribe(
+    super.delete().subscribe(
       (data) => {
         if (data) {
           this.progressService.enable();
           this.upsertBtnShouldDisabled = true;
           this.deleteBtnShouldDisabled = true;
 
-          this.authService.deletePerson(this.personId).subscribe(
+          this.authService.deletePerson(this.formId).subscribe(
             (dt) => {
               this.snackBar.open('Person is deleted successfully', null, {
                 duration: 2000,
               });
-
-              this.changedPerson.emit({action: this.actionEnum.delete, value: this.personId});
 
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
@@ -287,22 +234,22 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
             }
-          )
+          );
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    )
+    );
   }
 
-  resetPassword(){
+  resetPassword() {
     this.progressService.enable();
     this.resetPasswordBtnShouldDisabled = true;
 
-    this.authService.resetPassword(this.personForm.controls['username'].value).subscribe(
+    this.authService.resetPassword(this.form.controls['username'].value).subscribe(
       (data) => {
-        this.snackBar.open('Resetting password mail sent to ' + this.personForm.controls['username'].value, null, {
+        this.snackBar.open('Resetting password mail sent to ' + this.form.controls['username'].value, null, {
           duration: 2700,
         });
 
@@ -319,25 +266,5 @@ export class PersonFormComponent implements OnInit, OnDestroy, CanComponentDeact
         this.resetPasswordBtnShouldDisabled = false;
       }
     );
-  }
-
-  canDeactivate(): Promise<boolean>{
-    return new Promise((resolve, reject) => {
-      if(this.anyChanges){
-        let lvDialog = this.dialog.open(LeavingConfirmComponent);
-
-        lvDialog.afterClosed().subscribe(
-          (data) => {
-            if(data)
-              resolve(true);
-            else
-              resolve(false);
-          },
-          (err) => reject(false)
-        );
-      }
-      else
-        resolve(true);
-    })
   }
 }

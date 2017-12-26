@@ -3,7 +3,6 @@ export enum TargetEnum {
   business = 'business',
   organization = 'organization',
   product = 'product',
-  lce = 'lce',
   event = 'event',
   expertise = 'expertise',
   investment = 'investment',

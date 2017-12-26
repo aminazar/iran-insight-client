@@ -1,0 +1,34 @@
+<div>
+  <br/>
+  <ii-suggestion [name]="name.toLowerCase()" [placeholder]="name + ' attends to event'" [currentIds]="currentAttendanceIds" [idColumn]="id"
+                 [fieldNameEn]="fieldName" [fieldNameFa]="fieldNameFa" (add)="addAttendee($event)"></ii-suggestion>
+  <div class="rs-table" *ngIf="attendanceList.length > 0">
+    <table class="table table-striped table-responsive">
+      <thead>
+        <td class="col-xs-1 col-sm-1 col-md-1">No.</td>
+        <td class="col-xs-5 col-sm-5 col-md-5">Name</td>
+        <td class="col-xs-4 col-sm-4 col-md-4">Type</td>
+        <td class="col-xs-2 col-sm-2 col-md-2">&nbsp;</td>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of attendanceList; let i = index">
+        <td>{{i+1}}</td>
+        <td>
+          <a [routerLink]="['/admin/' + name.toLowerCase() + '/' + item.attendee_id]">{{item.name}}</a>
+        </td>
+        <td>
+          <mat-select *ngIf="attendanceTypes.length > 0" [(value)]="item.attendance_type_id" placeholder="'Type of Attendee'" (selectionChange)="updateAttendee(item.attendance_id, $event)">
+            <mat-option *ngFor="let type of attendanceTypes" [value]="type.id">{{type.name || type.name_fa}}</mat-option>
+          </mat-select>
+          <div *ngIf="attendanceTypes.length === 0">No Type Declared</div>
+        </td>
+        <td class="rm-col">
+          <button mat-icon-button (click)="removeAttendee(item.attendance_id)" color="warn">
+            <mat-icon aria-label="clear business attendee">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

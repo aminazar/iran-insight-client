@@ -1,0 +1,19 @@
+@import '../../../iraninsight-theme';
+
+.row{
+  margin: 20px 10px;
+}
+.card{
+  margin: 10px 5px;
+}
+.selected-card{
+  background-color: antiquewhite;
+}
+
+.warn {
+  color: mat-color($iraninsight-app-warn);
+}
+.success{
+
+  color: mat-color($iraninsight-app-success);;
+}

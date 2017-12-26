@@ -155,7 +155,8 @@ a:hover {
 }
 
 .mat-input-placeholder{
-  line-height: 20px !important;
+  /*line-height: 20px !important;*/
+  line-height: normal !important;
 }
 
 .ui-breadcrumb a  {
