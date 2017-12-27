@@ -90,6 +90,7 @@ export class AbstractSearchComponent implements OnInit {
     this.progressService.enable();
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
+
         this.cards = data[this.key];
         this.totalCards = this.cards && this.cards.length > 0 ? parseInt(this.cards[0].total, 10) : 0;
         this.aligningItems();

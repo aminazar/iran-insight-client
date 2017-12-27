@@ -1,25 +1,51 @@
 <div fxLayout="row" class="row">
-  <ii-search-fields fxFlex="100"  [target]="'type'" (searching)="search($event)"></ii-search-fields>
+  <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'type'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-  <button mat-fab color="accent" (click)="openForm()">
-    <mat-icon aria-label="add new type">add</mat-icon>
+  <button mat-fab color="accent" (click)="open('form', null)">
+    <mat-icon aria-label="add new person">add</mat-icon>
   </button>
 </div>
 
+<div *ngFor="let rw of rows">
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
+    <div fxFlex="25" *ngFor="let type of aligningObj[rw]" class="outer-card">
+      <mat-card class="card-view" (click)="select(type.pid)"
+                [ngClass]="{'selected-card mat-elevation-z12': type.pid === cardId}" style="min-height: 270px;">
+        <mat-card-header>
+          <mat-card-title>
+            <div>{{type.table_name}}</div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="min-height: 100px">
+          <div>
+            <b>Name: </b><span>{{type.name}}</span>
+          </div>
+          <div>
+            <b>Name (fa): </b><span>{{type.name_fa}}</span>
+          </div>
 
-<div fxLayout="row" class="row">
-  <div fxFlex="10" *ngFor="let type of types" class="type-card">
-    <mat-card (click)="openForm(type.type_name, type.id)">
-      <mat-card-header>
-        <mat-card-title><b>{{type.type_name}}</b></mat-card-title>
-        <mat-card-subtitle></mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{type.name}}</p>
-        <p>{{type.name_fa}}</p>
-        <p [type_active]="type.active ? 'green' : 'red'"> {{type.active ? 'active' : 'deactive'}}</p>
-      </mat-card-content>
-    </mat-card>
+          <div>
+            <span [ngClass]="{'success': type.active , 'warn' : !type.active}"></span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button (click)="open('view', p.pid )" color="primary">
+            <mat-icon aria-label="view">visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="open('form', p.pid)" color="accent">
+            <mat-icon aria-label="edit">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteType(p.pid)" color="warn">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
+</div>
+
+<div>
+  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+                 (page)="changeOffset($event)"></mat-paginator>
 </div>

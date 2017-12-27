@@ -1,84 +1,43 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {MatDialog} from '@angular/material/dialog';
-import {TypeFormComponent} from './components/type-form/type-form.component';
-import {SearchService} from '../../shared/services/search.service';
-import {IType} from './interfaces/type.interface';
-import {ProgressService} from '../../shared/services/progress.service';
+import {Component, OnInit} from '@angular/core';
+import {AbstractSearchComponent} from '../../shared/components/abstract-search/abstract-search.component';
 
 @Component({
   selector: 'ii-type',
   templateUrl: './type.component.html',
   styleUrls: ['./type.component.css']
 })
-export class TypeComponent implements OnInit, OnDestroy {
-
-
-  types: IType[] = [];
-
-  constructor(private router: Router,
-              private breadCrumbService: BreadcrumbService,
-              private dialog: MatDialog,
-              private searchService: SearchService,
-              private prgService: ProgressService) {
-  }
+export class TypeComponent extends AbstractSearchComponent implements OnInit {
 
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('Type', this.router.url, true);
+    this.key = 'type';
+    this.viewName = 'Types';
+    super.ngOnInit();
+
   }
 
-  openForm(type_name: string = '', id: number = null): void {
-    const dialogRef = this.dialog.open(TypeFormComponent, {
-      width: '600px',
-      data: {type_name, id}
-    });
+  deleteType(id: number = null): void {
 
-    dialogRef.afterClosed().subscribe(result => {
-
-      if (result) {
-        const type: IType[] = this.types.filter(t => t.type_name === result.type_name && t.id === parseInt(result.id, 10));
-        if (type.length === 1) { // update type card
-
-          type[0].name = result.name;
-          type[0].name_fa = result.name_fa;
-          type[0].active = result.active;
-
-        } else if (type.length === 0) { // insert new card
-          this.types.push(result);
-        }
-      }
-
-    });
-  }
-
-  search(searchBundle: any = null) {
-
-    this.prgService.enable();
-    this.searchService.search(searchBundle, 0).subscribe(res => {
-
-      this.prgService.disable();
-      this.types = [];
-      if (res.type) {
-        res.type.forEach(type => {
-          this.types.push(<IType>{
-            id: type.id,
-            name: type.name,
-            name_fa: type.name_fa,
-            type_name: type.table_name,
-            active: type.active
-
-          });
-        });
-      }
-
-    }, err => {
-      this.prgService.disable();
-    });
-  }
-
-  ngOnDestroy(): void {
+    super.deleteCard(id).subscribe((res) => {
+        // if (res)
+          // this.authService.deletePerson(id).subscribe(
+          //   (data) => {
+          //     this.cardId = null;
+          //     this.snackBar.open('Person is deleted successfully', null, {
+          //       duration: 2300
+          //     });
+          //     this.searching();
+          //   },
+          //   (err) => {
+          //     console.error('Cannot delete this person. Error: ', err);
+          //     this.snackBar.open('Cannot delete this person. Please try again.', null, {
+          //       duration: 3200
+          //     });
+          //   }
+          // );
+      },
+      (err) => {}
+    );
   }
 
 }

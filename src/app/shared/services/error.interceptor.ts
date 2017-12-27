@@ -26,7 +26,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
           });
           if (!found) {
-            this.snackBar.open(err.error.error || err.error);
+            this.snackBar.open(err.error.error || err.error , null, {duration: 3000});
           }
           console.error(`Backend returned code ${err.status}, body was: `, err.error);
         }
