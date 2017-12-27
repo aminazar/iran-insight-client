@@ -6,21 +6,20 @@ import {ProgressService} from '../../shared/services/progress.service';
 import {RestService} from '../../shared/services/rest.service';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 import {MatDialog} from '@angular/material/dialog';
-import {ILCE} from './interfaces/lce.interface';
+import {IPartnership} from './interfaces/partnership.interface';
 
 @Component({
-  selector: 'ii-lce',
-  templateUrl: './lce.component.html',
-  styleUrls: ['./lce.component.scss']
+  selector: 'ii-partnership',
+  templateUrl: './partnership.component.html',
+  styleUrls: ['./partnership.component.scss']
 })
-export class LCEComponent implements OnInit {
+export class PartnershipComponent implements OnInit {
 
 
-  companyType: string;
-  companyId: number = null;
-  companyName: string = null;
+  personId: number = null;
+  personName: string = null;
 
-  cards: ILCE[] = [];
+  cards: IPartnership[] = [];
 
   offset = 0;
   limit = 8;
@@ -40,11 +39,10 @@ export class LCEComponent implements OnInit {
   ngOnInit() {
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.companyType = this.router.url.split('/')[2];
-      this.companyId = params['id'];
-      this.companyName = decodeURIComponent(params['companyName']);
+      this.personId = params['id'];
+      this.personName = decodeURIComponent(params['personName']);
 
-      this.breadCrumbService.pushChild(`life cycle events of ${this.companyName}`, this.router.url, false);
+      this.breadCrumbService.pushChild(`Partnerships of ${this.personName}`, this.router.url, false);
 
     });
 
@@ -57,8 +55,8 @@ export class LCEComponent implements OnInit {
     this.router.navigate(id ? [state, id] : [state, ''], {relativeTo: this.activatedRoute});
   }
 
-  deleteLCE(id: number = null) {
-     if (!id)
+  deletePartnership(id: number = null) {
+    if (!id)
       return;
 
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
@@ -70,12 +68,12 @@ export class LCEComponent implements OnInit {
       if (res) {
 
         this.progressService.enable();
-        this.restService.delete(`lce/${this.companyType}/${id}`).subscribe(data => {
+        this.restService.delete(`person/partnership/${id}`).subscribe(data => {
 
           this.progressService.disable();
           this.cardId = null;
 
-          this.snackBar.open('life cycle event has been deleted', null, {
+          this.snackBar.open('partnership has been deleted', null, {
             duration: 3200,
           });
 
@@ -83,10 +81,6 @@ export class LCEComponent implements OnInit {
         }, err => {
 
           this.progressService.disable();
-          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
-            duration: 3200,
-          });
-
         });
       }
     }, err => {
@@ -104,17 +98,16 @@ export class LCEComponent implements OnInit {
 
     this.cards = [];
     this.progressService.enable();
-    this.restService.get(`lce/${this.companyType}/${this.companyId}/${this.offset}/${this.limit}`).subscribe(res => {
+    this.restService.get(`person/partnership/${this.personId}/${this.offset}/${this.limit}`).subscribe(res => {
 
-      res.forEach((lce: ILCE) => {
-        this.cards.push(lce);
+      res.forEach((partnership: IPartnership) => {
+        this.cards.push(partnership);
       });
       this.totalCards = this.cards.length > 0 ? this.cards[0].total : 0;
       this.aligningItems();
       this.progressService.disable();
     }, err => {
       this.progressService.disable();
-      this.snackBar.open('Cannot get data. Please check your connection');
     });
   }
 
@@ -146,6 +139,19 @@ export class LCEComponent implements OnInit {
       this.cardId = null;
     else
       this.cardId = id;
+  }
+
+  /*
+  key : possessor or joiner
+   */
+  getBestName(key: string, partnership: IPartnership) {
+
+    if (partnership[`${key}_display_name`])
+      return partnership[`${key}_display_name`];
+    if (partnership[`${key}_display_name_fa`])
+      return partnership[`${key}_display_name_fa`];
+
+    return '';
   }
 
 }

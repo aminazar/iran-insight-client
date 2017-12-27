@@ -5,29 +5,22 @@ import {RestService} from '../../../../shared/services/rest.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {ProgressService} from '../../../../shared/services/progress.service';
-import {ILCE} from '../../interfaces/lce.interface';
-
-enum LCEType {
-  ORG = 'organization',
-  BIZ = 'business'
-}
+import {IPartnership} from '../../interfaces/partnership.interface';
 
 
 @Component({
-  selector: 'ii-lce-view',
-  templateUrl: './lce-view.component.html',
-  styleUrls: ['./lce-view.component.css']
+  selector: 'ii-partnership-view',
+  templateUrl: './partnership-view.component.html',
+  styleUrls: ['./partnership-view.component.css']
 })
-export class LceViewComponent implements OnInit {
+export class PartnershipViewComponent implements OnInit {
 
-  companyType: string; // company is org or biz
-  companyId: number;
-  companyName: string;
-  companyKey: string;
+  personId: number;
+  personName: string;
 
   formId: number;
 
-  lce: ILCE;
+  partnership: IPartnership;
 
   constructor(private router: Router,
               private restService: RestService,
@@ -42,35 +35,28 @@ export class LceViewComponent implements OnInit {
 
     this.route.params.subscribe((params: Params) => {
 
-      this.companyType = this.router.url.split('/')[2];
-      this.companyId = params['id'];
+      this.personId = params['id'];
       this.formId = params['formId'];
-      this.companyName = decodeURIComponent(params['companyName']);
-      this.initLCE();
+      this.personName = decodeURIComponent(params['personName']);
+      this.initPartnership();
 
     });
-    this.companyKey = this.companyType === LCEType.BIZ ? 'bid' : 'oid';
-
   }
 
-  initLCE() {
+  initPartnership() {
 
     this.progressService.enable();
 
-    this.restService.get(`lce/${this.companyType}/${this.companyId}/${this.formId}`).subscribe(
+    this.restService.get(`person/partnership/${this.formId}`).subscribe(
       (res) => {
 
-
-        console.log('-> ', res[0]);
-        this.lce = res[0];
+        console.log('-> ', res);
+        this.partnership = res[0];
 
         this.progressService.disable();
       },
       (err) => {
         console.error(err);
-        this.snackBar.open('Cannot get life cycle event details. Please try again', null, {
-          duration: 3200,
-        });
         this.progressService.disable();
       }
     );
@@ -80,7 +66,7 @@ export class LceViewComponent implements OnInit {
 
 
 
-  deleteLCE() {
+  deletePartnership() {
 
     if (!this.formId)
       return;
@@ -94,7 +80,7 @@ export class LceViewComponent implements OnInit {
       if (res) {
 
         this.progressService.enable();
-        this.restService.delete(`lce/${this.companyType}/${this.formId}`).subscribe(data => {
+        this.restService.delete(`person/partnership/${this.formId}`).subscribe(data => {
 
           this.progressService.disable();
           this.snackBar.open('life cycle event has been deleted', null, {
@@ -103,13 +89,7 @@ export class LceViewComponent implements OnInit {
           this.breadcrumbService.popChild();
 
         }, err => {
-
           this.progressService.disable();
-          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
-            duration: 3200,
-          });
-          this.progressService.disable();
-
         });
       }
     }, err => {

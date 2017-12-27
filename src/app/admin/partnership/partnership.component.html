@@ -1,0 +1,64 @@
+<h4 class="row">Partnerships of: <b>{{personName}}</b></h4>
+
+<div fxLayout="row" class="row">
+  <button mat-fab color="accent" (click)="open('form')">
+    <mat-icon aria-label="add new person">add</mat-icon>
+  </button>
+</div>
+
+<div *ngFor="let rw of rows">
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+       fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
+    <div fxFlex="25" *ngFor="let partnership of aligningObj[rw]" class="outer-card">
+      <mat-card class="card-view" (click)="select(partnership.id)"
+                [ngClass]="{'selected-card mat-elevation-z12': partnership.id === cardId}" style="min-height: 270px;">
+        <mat-card-header>
+          <mat-card-title>
+            <div>{{partnership.description}}</div>
+            <div>{{partnership.description_fa}}</div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="min-height: 100px">
+          <div>
+            <b>Start Date: </b><span>{{partnership.start_date | date: 'yyyy-MMM-dd'}}</span>
+          </div>
+          <div>
+            <b>End Date: </b><span>{{partnership.end_date? (partnership.end_date | date: 'yyyy-MMM-dd') : '-'}}</span>
+          </div>
+          <div>
+            <b>Possessor: </b><span>{{getBestName('possessor', partnership)}}</span>
+          </div>
+
+          <div>
+            <b>Joiner: </b><span>{{getBestName('joiner', partnership)}}</span>
+          </div>
+
+          <div>
+            <b [ngClass]="{'warn' :!partnership.is_confirmed, 'success' : partnership.is_confirmed  } ">{{partnership.is_confirmed ? 'Confirmed' : 'Waiting for confirmation'}}</b>
+
+          </div>
+
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button (click)="open('view', partnership.id)" color="primary">
+            <mat-icon aria-label="view">visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="open('form', partnership.id)" color="accent">
+            <mat-icon aria-label="edit">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deletePartnership(partnership.id)" color="warn">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div>
+  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+                 (page)="changeOffset($event)"></mat-paginator>
+</div>
+
+
