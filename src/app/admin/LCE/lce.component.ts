@@ -83,10 +83,6 @@ export class LCEComponent implements OnInit {
         }, err => {
 
           this.progressService.disable();
-          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
-            duration: 3200,
-          });
-
         });
       }
     }, err => {
@@ -114,7 +110,6 @@ export class LCEComponent implements OnInit {
       this.progressService.disable();
     }, err => {
       this.progressService.disable();
-      this.snackBar.open('Cannot get data. Please check your connection');
     });
   }
 

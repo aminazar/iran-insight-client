@@ -28,12 +28,15 @@
           </div>
           <div *ngIf="p.pid === cardId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate"> Expertise</i></a>
-              <a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"> Membership</i></a>
+              <a fxFlex="50" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate"></i> Expertise</a>
+              <a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"></i> Membership</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university"> Businesses</i></a>
-              <a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"> Organizations</i></a>
+              <a fxFlex="50" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university"></i> Businesses</a>
+              <a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"></i> Organizations</a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
             </div>
           </div>
         </mat-card-content>

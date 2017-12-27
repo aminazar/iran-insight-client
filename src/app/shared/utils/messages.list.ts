@@ -17,9 +17,9 @@ const errors: IError[] = [
   }, {
 
     friendlyMessage_fa: '',
-    friendlyMessage: 'type with this id is not found',
-    error: new Error('No type found'),
-    code: 404
+    friendlyMessage: 'Please specify the joiner name',
+    error: new Error('null value in column "pid2" violates not-null constraint'),
+    code: 500
   }
 ];
 
