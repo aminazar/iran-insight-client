@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
 import {CanComponentDeactivate} from '../../../leavingGuard';
+import {RestService} from '../../../../shared/services/rest.service';
 
 @Component({
   selector: 'ii-product-form',
@@ -30,6 +31,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
 
   productForm: FormGroup;
   _productId: number = null;
+  businessId: number = null;
   originalProduct: any = null;
   anyChanges = false;
   actionEnum = ActionEnum;
@@ -39,7 +41,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
               private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
-              private router: Router) { }
+              private router: Router, private restService: RestService) { }
 
   ngOnInit() {
     this.initForm();
@@ -47,9 +49,17 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
     this.route.params.subscribe(
       (params) => {
         this.productId = +params['id'] ? +params['id'] : null;
+        this.businessId = +params['bid'] ? +params['bid'] : null;
         this.initProduct();
-
-        this.breadcrumbService.pushChild(this.productId ? 'Update' : 'Add' + ' Product', this.router.url, false);
+        this.restService.get('/business/one/' + this.businessId).subscribe(
+          (data) => {
+           this.breadcrumbService.pushChild(this.productId ? 'Update' : 'Add' + ' Product' + ` to ${data.name}`, this.router.url, false);
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+        // this.breadcrumbService.pushChild(this.productId ? 'Update' : 'Add' + ' Product', this.router.url, false);
       }
     );
     this.productForm.valueChanges.subscribe(
@@ -121,6 +131,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
 
   modifyProduct() {
     const data = {
+      business_id: this.businessId,
       product_id: this.productId,
       name: this.productForm.controls['name'].value,
       name_fa: this.productForm.controls['name_fa'].value,
@@ -134,7 +145,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
-    this.authService.setProductInfo(data, this.productId).subscribe(
+    this.authService.setProductInfo(data, this.businessId, this.productId).subscribe(
       (value) => {
         this.snackBar.open(this.productId ? 'Product is updated' : 'Product is added', null, {
           duration: 2300,
