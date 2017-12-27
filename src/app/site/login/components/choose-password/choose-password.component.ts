@@ -95,9 +95,6 @@ export class ChoosePasswordComponent implements OnInit {
         setTimeout(() => this.router.navigate(['login']), 1000);
       },
       (err) => {
-        this.snackBar.open('Cannot change your password. Maybe link is expired', null, {
-          duration: 2300,
-        });
         this.progressService.disable();
         this.shouldDisabledButton = false;
       }

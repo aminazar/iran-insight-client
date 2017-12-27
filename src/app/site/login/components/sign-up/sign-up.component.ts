@@ -68,9 +68,6 @@ export class SignUpComponent implements OnInit {
       (err) => {
         this.progressService.disable();
         this.shouldDisabledButton = false;
-        this.snackBar.open('Cannot send you an activation mail. Please check your email address', null, {
-          duration: 3200,
-        });
         console.error('Error when signup. Error: ', err);
       }
     );
