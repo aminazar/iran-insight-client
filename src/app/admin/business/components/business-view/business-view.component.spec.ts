@@ -1,20 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BusinessInfoComponent } from './business-info.component';
+import { BusinessViewComponent } from './business-view.component';
 import {AdminTestRouting} from '../../../admin.routing';
 import {TestModule} from '../../../../test/test.module';
-import {SuggestionComponent} from '../../../../shared/components/suggestion/suggestion.component';
 
-describe('BusinessInfoComponent', () => {
-  let component: BusinessInfoComponent;
-  let fixture: ComponentFixture<BusinessInfoComponent>;
+describe('BusinessViewComponent', () => {
+  let component: BusinessViewComponent;
+  let fixture: ComponentFixture<BusinessViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        BusinessInfoComponent,
-        SuggestionComponent,
-      ],
+      declarations: [ BusinessViewComponent ],
       imports: [
         TestModule,
         AdminTestRouting,
@@ -24,7 +20,7 @@ describe('BusinessInfoComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BusinessInfoComponent);
+    fixture = TestBed.createComponent(BusinessViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
