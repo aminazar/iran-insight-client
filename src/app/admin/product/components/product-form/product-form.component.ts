@@ -193,7 +193,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
           this.upsertBtnShouldDisabled = true;
           this.deleteBtnShouldDisabled = true;
 
-          this.authService.deleteProduct(this.productId).subscribe(
+          this.authService.deleteProduct(this.businessId, this.productId).subscribe(
             (data) => {
               this.snackBar.open('Product delete successfully', null, {
                 duration: 2000,
