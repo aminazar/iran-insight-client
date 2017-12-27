@@ -16,6 +16,7 @@ export class ChoosePasswordComponent implements OnInit {
   username = null;
   canChoosePassword = false;
   changePassForm: FormGroup;
+  shouldDisabledButton = false;
 
   constructor(private route: ActivatedRoute, private authService: AuthService,
               private snackBar: MatSnackBar, private progressService: ProgressService,
@@ -75,26 +76,27 @@ export class ChoosePasswordComponent implements OnInit {
     const rePassword = AC.get('rePassword').value;
 
     if (password !== rePassword) {
-      console.log('Has error');
-      AC.get('rePassword').setErrors({matchPassword: false});
+      AC.get('rePassword').setErrors({'matchPassword': 'Passwords are not matched'});
     } else {
-      console.log('No error in matched');
       return null;
     }
   }
 
   setPassword() {
+    this.progressService.enable();
+    this.shouldDisabledButton = true;
     this.authService.setPassword(this.changePassForm.controls['password'].value, this.username, this.link).subscribe(
       (data) => {
         this.snackBar.open('Your password changed successfully.', null, {
           duration: 2300,
         });
-        this.router.navigate(['login']);
+        this.progressService.disable();
+        this.shouldDisabledButton = false;
+        setTimeout(() => this.router.navigate(['login']), 1000);
       },
       (err) => {
-        this.snackBar.open('Cannot change your password. Maybe link is expired', null, {
-          duration: 2300,
-        });
+        this.progressService.disable();
+        this.shouldDisabledButton = false;
       }
     );
   }

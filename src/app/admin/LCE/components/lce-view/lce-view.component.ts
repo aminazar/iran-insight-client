@@ -60,7 +60,6 @@ export class LceViewComponent implements OnInit {
     this.restService.get(`lce/${this.companyType}/${this.companyId}/${this.formId}`).subscribe(
       (res) => {
 
-
         this.lce = res[0];
 
         this.progressService.disable();
