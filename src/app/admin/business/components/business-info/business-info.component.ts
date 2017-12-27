@@ -103,10 +103,13 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
         Validators.required,
       ]],
       ceo_pid: [this.loadedValue.ceo_pid],
-    });
+      latitude: [this.loadedValue.latitude ? this.loadedValue.latitude : 35.696491];
+    longitude: [this.loadedValue.longitude ? this.loadedValue.longitude : 51.379926];
+  })
+    ;
 
     this.productForm = new FormBuilder().group({
-      productName: [this.loadedValue.product ? this.loadedValue.product.name]
+      productName: [this.loadedValue.product ? this.loadedValue.product.name : null]
     });
 
     this.generalForm = new FormBuilder().group({});
@@ -117,6 +120,19 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   setCEO(value) {
     this.basicForm.controls['ceo_pid'].setValue(value.pid);
     this.ceoName = value.display_name_en;
+  }
+
+  setMarker(data) {
+    this.basicForm.controls['latitude'].setValue(data.coords.lat);
+    this.basicForm.controls['longitude'].setValue(data.coords.lng);
+  }
+
+  getLatitude() {
+    return this.basicForm.controls['latitude'].value;
+  }
+
+  getLongitude() {
+    return this.basicForm.controls['longitude'].value;
   }
 
   upsertBusiness() {

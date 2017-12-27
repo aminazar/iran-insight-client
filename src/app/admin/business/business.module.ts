@@ -14,6 +14,7 @@ import { BusinessMembersComponent } from './components/business-members/business
 import { BusinessInfoComponent } from './components/business-info/business-info.component';
 import {ActiveDirective} from './directives/active/active.directive';
 import { BusinessViewComponent } from './components/business-view/business-view.component';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
   imports: [
@@ -39,6 +40,9 @@ import { BusinessViewComponent } from './components/business-view/business-view.
     MatPaginatorModule,
     MatStepperModule,
     MatExpansionModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
+    }),
   ],
   declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessViewComponent],
   providers: [{ provide: 'Window', useValue: window }]

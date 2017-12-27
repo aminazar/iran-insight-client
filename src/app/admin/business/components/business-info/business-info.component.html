@@ -6,7 +6,7 @@
         <div *ngIf="!add">Edit Business</div>
       </mat-card-title>
     </mat-card-header>
-    <mat-horizontal-stepper [linear]="true">
+    <mat-horizontal-stepper>
       <mat-step [stepControl]="farsiForm">
         <form (ngSubmit)="upsertBusiness()" [formGroup]="farsiForm">
           <ng-template matStepLabel>اطلاعات فارسی</ng-template>
@@ -67,6 +67,17 @@
                   <textarea matInput placeholder="Address" formControlName="address" role="address-en"
                             tabindex="3"></textarea>
                 </mat-input-container>
+              </div>
+              <div>
+                <agm-map class="ev-loc" [latitude]="getLatitude()" [longitude]="getLongitude()">
+                  <agm-marker
+                    [latitude]="getLatitude()"
+                    [longitude]="getLongitude()"
+                    [markerClickable]="true"
+                    [markerDraggable]="true"
+                    (dragEnd)="setMarker($event)"
+                  ></agm-marker>
+                </agm-map>
               </div>
               <div>
                 <mat-input-container class="field">
@@ -180,6 +191,17 @@
                   <textarea matInput placeholder="Address" formControlName="address" role="address-en"
                             tabindex="3"></textarea>
                 </mat-input-container>
+              </div>
+              <div>
+                <agm-map class="ev-loc" [latitude]="getLatitude()" [longitude]="getLongitude()">
+                  <agm-marker
+                    [latitude]="getLatitude()"
+                    [longitude]="getLongitude()"
+                    [markerClickable]="true"
+                    [markerDraggable]="true"
+                    (dragEnd)="setMarker($event)"
+                  ></agm-marker>
+                </agm-map>
               </div>
               <div>
                 <mat-input-container class="field-90">
