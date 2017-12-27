@@ -41,10 +41,10 @@
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="openView(p.pid ,'/admin/person/' )" color="primary">
+          <button mat-icon-button (click)="open('view', p.pid )" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="openForm(p.pid , '/admin/person/form/' )" color="accent">
+          <button mat-icon-button (click)="open('form', p.pid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="deletePerson(p.pid)" color="warn">
