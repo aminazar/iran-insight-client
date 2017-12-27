@@ -215,11 +215,11 @@ a:hover {
   margin: 10px;
 }
 
-.success{
+.btn-success{
   color: white !important;
   background-color: mat-color($iraninsight-app-success) !important;
 }
 
-.success[disabled]{
+.btn-success[disabled]{
   background-color: mat-color($iraninsight-app-success, 100) !important;
 }

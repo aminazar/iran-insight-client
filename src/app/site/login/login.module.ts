@@ -12,6 +12,7 @@ import {SharedModule} from '../../shared/shared.module';
 import { ChoosePasswordComponent } from './components/choose-password/choose-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { OAuthHandlerComponent } from './components/o-auth-handler/o-auth-handler.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
     MatFormFieldModule,
     MatSnackBarModule,
   ],
-  declarations: [LoginComponent, ChoosePasswordComponent, ForgotPasswordComponent, SignUpComponent],
+  declarations: [LoginComponent, ChoosePasswordComponent, ForgotPasswordComponent, SignUpComponent, OAuthHandlerComponent],
 })
 export class LoginModule {
 

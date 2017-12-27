@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {RestService} from './rest.service';
@@ -22,12 +22,6 @@ export class AuthService {
         console.log('Not logged in: ', err);
         this.isLoggedIn.next(false);
         this.isAdmin.next(false);
-
-        // let rt = 'admin/login';
-        // if (this.router.url.includes('admin'))
-        //   rt = 'admin/' + rt;
-        //
-        // this.router.navigate([rt]);
       }
     );
   }
@@ -123,5 +117,25 @@ export class AuthService {
 
   emailExists(email) {
     return this.restService.post('user/email/isExist', {username: email});
+  }
+
+  loginCheck() {
+    return new Promise((resolve, reject) => {
+      this.restService.get('/validUser').subscribe(
+        (data) => {
+          this.isLoggedIn.next(true);
+          if (data.userType === 'admin')
+            this.isAdmin.next(true);
+          else
+            this.isAdmin.next(false);
+          resolve();
+        },
+        (err) => {
+          this.isLoggedIn.next(false);
+          this.isAdmin.next(false);
+          reject();
+        }
+      );
+    });
   }
 }

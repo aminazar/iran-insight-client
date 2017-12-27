@@ -2,7 +2,7 @@
   <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'person'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-  <button mat-fab color="accent" (click)="openForm(null ,'/admin/person/form/'  )">
+  <button mat-fab color="accent" (click)="open('form', null)">
     <mat-icon aria-label="add new person">add</mat-icon>
   </button>
 </div>
@@ -38,10 +38,10 @@
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="openView(p.pid ,'/admin/person/' )" color="primary">
+          <button mat-icon-button (click)="open('view', p.pid)" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="openForm(p.pid , '/admin/person/form/' )" color="accent">
+          <button mat-icon-button (click)="open('form', p.pid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="deletePerson(p.pid)" color="warn">
