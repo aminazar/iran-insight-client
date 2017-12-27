@@ -16,6 +16,7 @@ import {ActionEnum} from '../../../../shared/enum/action.enum';
 
 export class ProductViewComponent implements OnInit {
   productId: number = null;
+  businessId: number = null;
   product: any = null;
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
@@ -30,6 +31,7 @@ export class ProductViewComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.productId = +params['id'] ? +params['id'] : null;
+        this.businessId = +params['bid'] ? +params['bid'] : null;
         if (this.productId) {
           this.breadcrumbService.pushChild('Product Details', this.router.url, false);
           this.progressService.enable();
@@ -74,7 +76,7 @@ export class ProductViewComponent implements OnInit {
           this.upsertBtnShouldDisabled = true;
           this.deleteBtnShouldDisabled = true;
 
-          this.authService.deleteProduct(this.productId).subscribe(
+          this.authService.deleteProduct(this.businessId, this.productId).subscribe(
             (data) => {
               this.snackBar.open('Product delete successfully', null, {
                 duration: 2000,
