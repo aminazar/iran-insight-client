@@ -1,70 +1,238 @@
-<form (ngSubmit)="upsertBusiness()" [formGroup]="form">
-  <div fxLayout="row" fxFlexAlign="center center">
-    <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="1" fxFlexOffset.xs="2">
-      <mat-card-header>
-        <mat-card-title>
-          <div *ngIf="add">Add New Business</div>
-          <div *ngIf="!add">Edit Business</div>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
-          <div fxFlex="50">
-            <mat-input-container class="field-90">
-              <input matInput type="text" placeholder="Business Name" formControlName="name" role="name-en"
-                     tabindex="1"/>
-            </mat-input-container>
-          </div>
-          <div fxFlex="50" dir="rtl">
-            <mat-input-container class="field-90 farsi" role="name-fa">
-              <input matInput type="text" placeholder="نام کسب و کار" formControlName="name_fa" role="name-fa"
-                     tabindex="6"/>
-            </mat-input-container>
-          </div>
-        </div>
-        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center" class="CEOBox">
-          <div fxFlex="90">Chief Executive Officer</div>
-          <div fxFlex="90" *ngIf="!add || (ceoName !== null && ceoName !== undefined)" class="CEOStatic">{{ceoName}}</div>
-          <div fxFlex="90">
-            <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
-                           [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
-                           (add)="setCEO($event)"></ii-suggestion>
-          </div>
-        </div>
-        <div>
-          <mat-input-container class="field">
-            <textarea matInput placeholder="Address" formControlName="address_en" role="address-en"
-                      tabindex="3"></textarea>
-          </mat-input-container>
-        </div>
-        <div dir="rtl">
-          <mat-input-container class="field farsi">
-            <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"
-                      tabindex="7"></textarea>
-          </mat-input-container>
-        </div>
-        <div>
-          <mat-input-container class="field-90">
-            <input matInput type="text" placeholder="Telephone" formControlName="tel" role="tel" tabindex="4"/>
-          </mat-input-container>
-        </div>
-        <div>
-          <mat-input-container class="field-90">
-            <input matInput type="text" placeholder="URL" formControlName="url" role="url" tabindex="5"/>
-          </mat-input-container>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-
-        <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20"
-                [disabled]="upsertDisabled">
-          <mat-icon aria-label="accept">done</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
-                [disabled]="deleteDisabled">
-          <mat-icon aria-label="delete">delete</mat-icon>
-        </button>
-      </mat-card-actions>
-    </mat-card>
+<div fxLayout="row" fxFlexAlign="center center" fxShow fxHide.xs="true">
+  <div fxFlex="60" fxFlex.sm="100" fxFlexOffset="20" fxFlexOffset.sm="1">
+    <mat-card-header>
+      <mat-card-title>
+        <div *ngIf="add">Add New Business</div>
+        <div *ngIf="!add">Edit Business</div>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-horizontal-stepper>
+      <mat-step [stepControl]="farsiForm">
+        <form (ngSubmit)="upsertBusiness()" [formGroup]="farsiForm">
+          <ng-template matStepLabel>اطلاعات فارسی</ng-template>
+          <mat-card>
+            <mat-card-content dir="rtl">
+              <div>
+                <mat-input-container class="field-90 farsi" role="name-fa">
+                  <input matInput type="text" placeholder="نام کسب و کار" formControlName="name_fa" role="name-fa"
+                         tabindex="6"/>
+                </mat-input-container>
+              </div>
+              <div>
+                <mat-input-container class="field farsi">
+                    <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"
+                              tabindex="7"></textarea>
+                </mat-input-container>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button matStepperPrevious role="previous-0">
+                <mat-icon aria-label="previous">navigate_before</mat-icon>
+              </button>
+              <button mat-icon-button matStepperNext role="next-0">
+                <mat-icon aria-label="next">navigate_next</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid" role="submit-button" tabindex="20">
+                <mat-icon aria-label="accept">done</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21">
+                <mat-icon aria-label="delete">delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="basicForm">
+        <form (ngSubmit)="upsertBusiness()" [formGroup]="basicForm">
+          <ng-template matStepLabel>‌‌Basic Info</ng-template>
+          <mat-card>
+            <mat-card-content>
+              <div>
+                <mat-input-container class="field-90">
+                  <input matInput type="text" placeholder="Business Name" formControlName="name" role="name-en"
+                         tabindex="1"/>
+                </mat-input-container>
+              </div>
+              <div fxLayout="column" fxLayoutAlign="start start" class="CEOBox">
+                <div fxFlex="90">Chief Executive Officer</div>
+                <div fxFlex="90" *ngIf="!add || ceoName" class="CEOStatic">{{ceoName}}</div>
+                <div fxFlex="90">
+                  <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
+                                 [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
+                                 (add)="setCEO($event)" [placeholder]="ceoName"></ii-suggestion>
+                </div>
+              </div>
+              <div>
+                <mat-input-container class="field">
+                  <textarea matInput placeholder="Address" formControlName="address" role="address-en"
+                            tabindex="3"></textarea>
+                </mat-input-container>
+              </div>
+              <div>
+                <agm-map class="ev-loc" [latitude]="getLatitude()" [longitude]="getLongitude()">
+                  <agm-marker
+                    [latitude]="getLatitude()"
+                    [longitude]="getLongitude()"
+                    [markerClickable]="true"
+                    [markerDraggable]="true"
+                    (dragEnd)="setMarker($event)"
+                  ></agm-marker>
+                </agm-map>
+              </div>
+              <div>
+                <mat-input-container class="field">
+                  <input matInput type="text" placeholder="Telephone" formControlName="tel" role="tel" tabindex="4"/>
+                </mat-input-container>
+              </div>
+              <div>
+                <mat-input-container class="field">
+                  <input matInput type="text" placeholder="URL" formControlName="url" role="url" tabindex="5"/>
+                </mat-input-container>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button matStepperPrevious role="previous-1">
+                <mat-icon aria-label="previous">navigate_before</mat-icon>
+              </button>
+              <button mat-icon-button matStepperNext role="next-1">
+                <mat-icon aria-label="next">navigate_next</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="submit" [disabled]="!basicForm.valid" role="submit-button" tabindex="20"
+                      >
+                <mat-icon aria-label="accept">done</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+                      [disabled]="deleteDisabled">
+                <mat-icon aria-label="delete">delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
   </div>
-</form>
+</div>
+<div fxLayout="row" fxFlexAlign="center center" fxShow.xs="true" fxHide>
+  <div class="mobile-accordion-container">
+    <mat-card-header>
+      <mat-card-title>
+        <div *ngIf="add">Add New Business</div>
+        <div *ngIf="!add">Edit Business</div>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title dir="rtl">
+            اطلاعات به فارسی
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form (ngSubmit)="upsertBusiness()" [formGroup]="farsiForm">
+          <mat-card>
+            <mat-card-content dir="rtl">
+              <div>
+                <mat-input-container class="field-90 farsi" role="name-fa">
+                  <input matInput type="text" placeholder="نام کسب و کار" formControlName="name_fa" role="name-fa"
+                         tabindex="6"/>
+                </mat-input-container>
+              </div>
+              <div>
+                <mat-input-container class="field farsi">
+                    <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"
+                              tabindex="7"></textarea>
+                </mat-input-container>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button click="prevStep()" role="previous-sm-0">
+                <mat-icon aria-label="previous" (click)="prevStep()">navigate_before</mat-icon>
+              </button>
+              <button mat-icon-button role="next-sm-0" (click)="nextStep()">
+                <mat-icon aria-label="next">navigate_next</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid"role="submit-button" tabindex="20"
+                      >
+                <mat-icon aria-label="accept">done</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+                      [disabled]="deleteDisabled">
+                <mat-icon aria-label="delete">delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            ‌‌Basic Info
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form (ngSubmit)="upsertBusiness()" [formGroup]="basicForm">
+          <mat-card>
+            <mat-card-content>
+              <div>
+                <mat-input-container class="field-90">
+                  <input matInput type="text" placeholder="Business Name" formControlName="name" role="name-en"
+                         tabindex="1"/>
+                </mat-input-container>
+              </div>
+              <div fxLayout="column" fxLayoutAlign="center center" class="CEOBox">
+                <div fxFlex="100">Chief Executive Officer</div>
+                <div fxFlex="100" *ngIf="!add || ceoName" class="CEOStatic">{{ceoName}}</div>
+                <div fxFlex="100">
+                  <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
+                                 [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
+                                 (add)="setCEO($event)" [placeholder]="ceoName"></ii-suggestion>
+                </div>
+              </div>
+              <div>
+                <mat-input-container class="field">
+                  <textarea matInput placeholder="Address" formControlName="address" role="address-en"
+                            tabindex="3"></textarea>
+                </mat-input-container>
+              </div>
+              <div>
+                <agm-map class="ev-loc" [latitude]="getLatitude()" [longitude]="getLongitude()">
+                  <agm-marker
+                    [latitude]="getLatitude()"
+                    [longitude]="getLongitude()"
+                    [markerClickable]="true"
+                    [markerDraggable]="true"
+                    (dragEnd)="setMarker($event)"
+                  ></agm-marker>
+                </agm-map>
+              </div>
+              <div>
+                <mat-input-container class="field-90">
+                  <input matInput type="text" placeholder="Telephone" formControlName="tel" role="tel" tabindex="4"/>
+                </mat-input-container>
+              </div>
+              <div>
+                <mat-input-container class="field-90">
+                  <input matInput type="text" placeholder="URL" formControlName="url" role="url" tabindex="5"/>
+                </mat-input-container>
+              </div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-icon-button role="previous-sm-1" (click)="prevStep()">
+                <mat-icon aria-label="previous">navigate_before</mat-icon>
+              </button>
+              <button mat-icon-button role="next-sm-1" (click)="nextStep()">
+                <mat-icon aria-label="next">navigate_next</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20" [disabled]="!basicForm.valid">
+                <mat-icon aria-label="accept">done</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+                      [disabled]="deleteDisabled">
+                <mat-icon aria-label="delete">delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
