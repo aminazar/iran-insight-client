@@ -73,23 +73,24 @@ export class AuthService {
     return this.restService.get('user/profile/' + personId);
   }
 
-  setProductInfo(data, productId) {
+  setProductInfo(data, businessId, productId) {
     if (!productId)
-      return this.restService.put('product', data);
+      return this.restService.put('/business/product/' + businessId, data);
     else
-      return this.restService.post('/update-product/' + productId, data);
+      return this.restService.post('/business/product/' + businessId + '/' + productId , data);
   }
 
   getProductInfo(productId) {
     return this.restService.get('/product/one/' + productId);
   }
 
-  deletePerson(personId) {
-    return this.restService.delete('user/' + personId);
+  deleteProduct(productId) {
+    console.log('Product deleted: ', productId);
+    return this.restService.delete('/business/product/' + 7 + '/' + productId);
   }
 
-  deleteProduct(productId) {
-    return this.restService.delete('delete-product/' + productId);
+  deletePerson(personId) {
+    return this.restService.delete('user/' + personId);
   }
 
   resetPassword(person_mail) {

@@ -1,18 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog, MatSnackBar} from "@angular/material";
-import {ProgressService} from "../../../../shared/services/progress.service";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {ProgressService} from '../../../../shared/services/progress.service';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
-import {RestService} from "../../../../shared/services/rest.service";
-import {ActionEnum} from "../../../../shared/enum/action.enum";
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
-import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
-import {CanComponentDeactivate} from "../../../leavingGuard";
+import {RestService} from '../../../../shared/services/rest.service';
+import {ActionEnum} from '../../../../shared/enum/action.enum';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
+import {CanComponentDeactivate} from '../../../leavingGuard';
 
 
-enum OrganizerType{
+enum OrganizerType {
   person,
   business,
   organization,
@@ -44,18 +44,18 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
 
   private _eventId: number;
   eventForm: FormGroup;
-  upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
-  anyChanges: boolean = false;
+  upsertBtnShouldDisabled = false;
+  deleteBtnShouldDisabled = false;
+  anyChanges = false;
   originalEvent: any = null;
   actionEnum = ActionEnum;
   organizerType = OrganizerType;
   organizer = this.organizerType.person;
   organizerId: number = null;
   organizerName: string = null;
-  latitude: number = 35.696491;
-  longitude: number = 51.379926;
-  organizerHasError: boolean = false;
+  latitude = 35.696491;
+  longitude = 51.379926;
+  organizerHasError = false;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService,
@@ -69,7 +69,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
     this.route.params.subscribe(
       (params) => {
         this.eventId = +params['id'] ? +params['id'] : null;
-        if(this.eventId)
+        if (this.eventId)
           this.breadcrumbService.pushChild('Update Event', this.router.url, false);
         else{
           this.breadcrumbService.pushChild('Add Event', this.router.url, false);
@@ -87,13 +87,13 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
       title: [null, [
         Validators.required,
         (c: FormControl) => {
-          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'Title cannot be empty'}
+          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'Title cannot be empty'};
         },
       ]],
       title_fa: [null, [
         Validators.required,
         (c: FormControl) => {
-          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'عنوان نمی تواند خالی باشد'}
+          return (c.value && c.value.trim().length > 0) ? null : {notEmpty: 'عنوان نمی تواند خالی باشد'};
         },
       ]],
       location: [null],
@@ -171,7 +171,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
         this.upsertBtnShouldDisabled = true;
         this.deleteBtnShouldDisabled = true;
       }
-    )
+    );
   }
 
   dateChecker(AC: AbstractControl) {
@@ -198,7 +198,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
 
     let eventData = {};
     Object.keys(this.eventForm.controls).filter(el => !['organizer_name', 'organizer_name_fa'].includes(el)).forEach(el => {
-      if(el === 'start_date' || el === 'end_date')
+      if (el === 'start_date' || el === 'end_date')
         eventData[el] = this.eventForm.controls[el].value ? moment(this.eventForm.controls[el].value).format('YYYY-MM-DD') : null;
       else
         eventData[el] = this.eventForm.controls[el].value;
@@ -241,7 +241,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
             }, eventData)
           });
 
-          if(!this.eventId){
+          if (!this.eventId){
             this.organizerId = null;
             this.organizerName = null;
             this.eventForm.reset();
@@ -299,20 +299,20 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
       }
     });
 
-    if(this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
+    if (this.latitude !== this.originalEvent.latitude || this.longitude !== this.originalEvent.longitude)
       this.anyChanges = true;
 
-    if(this.organizerId !== (this.originalEvent.organizer_pid || this.originalEvent.organizer_bid || this.originalEvent.organizer_oid))
+    if (this.organizerId !== (this.originalEvent.organizer_pid || this.originalEvent.organizer_bid || this.originalEvent.organizer_oid))
       this.anyChanges = true;
 
-    if(!this.organizerId)
+    if (!this.organizerId)
       this.organizerHasError = true;
     else
       this.organizerHasError = false;
   }
 
   deleteEvent() {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '250px',
     });
@@ -347,13 +347,13 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
             }
-          )
+          );
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    )
+    );
   }
 
   organizerIsPerson() {
@@ -391,7 +391,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   directToOrganizer() {
-    if(this.organizerId){
+    if (this.organizerId){
       let url = '/admin/';
       switch (this.organizer){
         case this.organizerType.person: url += 'person';
@@ -422,18 +422,18 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
         this.longitude = el.coords.longitude;
       }, err => {
         console.log('ERROR: ', err);
-      })
+      });
     }
   }
 
-  canDeactivate(): Promise<boolean>{
+  canDeactivate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      if(this.anyChanges){
-        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+      if (this.anyChanges) {
+        const lvDialog = this.dialog.open(LeavingConfirmComponent);
 
         lvDialog.afterClosed().subscribe(
           (data) => {
-            if(data)
+            if (data)
               resolve(true);
             else
               resolve(false);
@@ -443,6 +443,6 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
       }
       else
         resolve(true);
-    })
+    });
   }
 }

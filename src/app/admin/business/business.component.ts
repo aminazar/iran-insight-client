@@ -15,8 +15,6 @@ import {BusinessViewComponent} from './components/business-view/business-view.co
   styleUrls: ['./business.component.css']
 })
 export class BusinessComponent implements OnInit {
-
-
   offset = 0;
   limit = 10;
   biz = [];
