@@ -15,6 +15,7 @@ import { BusinessInfoComponent } from './components/business-info/business-info.
 import {ActiveDirective} from './directives/active/active.directive';
 import { BusinessViewComponent } from './components/business-view/business-view.component';
 import {AgmCoreModule} from '@agm/core';
+import { BusinessProductsComponent } from './components/business-products/business-products.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,7 @@ import {AgmCoreModule} from '@agm/core';
       apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
     }),
   ],
-  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessViewComponent],
+  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessProductsComponent, BusinessViewComponent],
   providers: [{ provide: 'Window', useValue: window }]
 })
 export class BusinessModule { }

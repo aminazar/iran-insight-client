@@ -11,7 +11,7 @@ import {AdminRouting} from './admin.routing';
 import {SharedModule} from '../shared/shared.module';
 import {AuthGuard} from './auth.guard';
 import {AdminHomeComponent} from './home/home.component';
-import {LeavingGuard} from "./leavingGuard";
+import {LeavingGuard} from './leavingGuard';
 
 @NgModule({
   declarations: [

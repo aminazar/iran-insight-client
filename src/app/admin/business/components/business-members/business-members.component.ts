@@ -47,7 +47,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
       });
 
     });
-
   }
 
   openForm(id?: number): void {
@@ -80,6 +79,4 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     this.showInDeep = false;
     this.selectedIndex = 0;
   }
-
-
 }
