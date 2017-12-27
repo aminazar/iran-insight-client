@@ -90,9 +90,9 @@ export class AuthService {
     return this.restService.get('/product/one/' + productId);
   }
 
-  deleteProduct(productId) {
+  deleteProduct(businessId, productId) {
     console.log('Product deleted: ', productId);
-    return this.restService.delete('/business/product/' + 7 + '/' + productId);
+    return this.restService.delete('business/product/' + businessId + '/' + productId);
   }
 
   deletePerson(personId) {
