@@ -27,6 +27,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   deleteDisabled = false;
   ceoName = '';
   step = 0;
+  changed = false;
 
   setStep(index: number) {
     this.step = index;
@@ -104,6 +105,10 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       ceo_pid: [this.loadedValue.ceo_pid],
     });
 
+    this.productForm = new FormBuilder().group({
+      productName: [this.loadedValue.product ? this.loadedValue.product.name]
+    });
+
     this.generalForm = new FormBuilder().group({});
 
     this.financialForm = new FormBuilder().group({});
@@ -117,40 +122,48 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   upsertBusiness() {
     const bizData: any = {};
     ['farsiForm', 'basicForm'].forEach(form => {
-      for (const key in this[form].controls)
-        if (this[form].controls.hasOwnProperty(key)) {
-          bizData[key] = this[form].controls[key].value;
-        }
+      if (this[form].valid) {
+        for (const key in this[form].controls)
+          if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value) {
+            bizData[key] = this[form].controls[key].value;
+            this.changed = true;
+          }
+      }
     });
 
     if (this.add)
       delete bizData.bid;
+    else
+      bizData.bid = this.bid;
 
-    this.progressService.enable();
-    this.upsertDisabled = true;
-    this.deleteDisabled = true;
+    if (this.changed && this.farsiForm.valid && this.basicForm.valid) {
+      this.progressService.enable();
+      this.upsertDisabled = true;
+      this.deleteDisabled = true;
 
-    this.restService.post('business/profile', bizData)
-      .subscribe(
-        data => {
-          this.snackBar.open(`Business is ${this.add ? 'added' : 'updated'}.`, null, {duration: 2300});
-          this.progressService.disable();
-          this.loadedValue = bizData;
-          if (this.add)
-            this.loadedValue.bid = data;
-          this.initForm();
-          this.upsertDisabled = false;
-          this.deleteDisabled = false;
-        },
-        err => {
-          this.snackBar.open('Cannot ' + (this.add ? 'add' : 'update') + ' this business: ' + err.message, null, {
-            duration: 3200,
+      this.restService.post('business/profile', bizData)
+        .subscribe(
+          data => {
+            this.snackBar.open(`Business is ${this.add ? 'added' : 'updated'}.`, null, {duration: 2300});
+            this.progressService.disable();
+            this.loadedValue = bizData;
+            if (this.add)
+              this.loadedValue.bid = data;
+            this.initForm();
+            this.changed = false;
+            this.upsertDisabled = false;
+            this.deleteDisabled = false;
+          },
+          err => {
+            // this.snackBar.open('Cannot ' + (this.add ? 'add' : 'update') + ' this business: ' + err.message, null, {
+            //   duration: 3200,
+            // });
+            this.initForm();
+            this.progressService.disable();
+            this.upsertDisabled = false;
+            this.deleteDisabled = false;
           });
-          this.initForm();
-          this.progressService.disable();
-          this.upsertDisabled = false;
-          this.deleteDisabled = false;
-        });
+    }
   }
 
   deleteBusiness() {
@@ -179,10 +192,6 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
               this.deleteDisabled = false;
             },
             (error) => {
-              this.snackBar.open('Cannot delete this Business.', null, {
-                duration: 3200,
-              });
-
               this.progressService.disable();
               this.upsertDisabled = false;
               this.deleteDisabled = false;

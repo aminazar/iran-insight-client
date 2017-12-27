@@ -32,12 +32,10 @@
               <button mat-icon-button matStepperNext role="next-0">
                 <mat-icon aria-label="next">navigate_next</mat-icon>
               </button>
-              <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20"
-                      [disabled]="upsertDisabled">
+              <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid" role="submit-button" tabindex="20">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
-                      [disabled]="deleteDisabled">
+              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
             </mat-card-actions>
@@ -61,7 +59,7 @@
                 <div fxFlex="90">
                   <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
                                  [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
-                                 (add)="setCEO($event)"></ii-suggestion>
+                                 (add)="setCEO($event)" [placeholder]="ceoName"></ii-suggestion>
                 </div>
               </div>
               <div>
@@ -88,8 +86,8 @@
               <button mat-icon-button matStepperNext role="next-1">
                 <mat-icon aria-label="next">navigate_next</mat-icon>
               </button>
-              <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20"
-                      [disabled]="upsertDisabled">
+              <button mat-icon-button color="accent" type="submit" [disabled]="!basicForm.valid" role="submit-button" tabindex="20"
+                      >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
               <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
@@ -141,8 +139,8 @@
               <button mat-icon-button role="next-sm-0" (click)="nextStep()">
                 <mat-icon aria-label="next">navigate_next</mat-icon>
               </button>
-              <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20"
-                      [disabled]="upsertDisabled">
+              <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid"role="submit-button" tabindex="20"
+                      >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
               <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
@@ -174,7 +172,7 @@
                 <div fxFlex="100">
                   <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
                                  [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
-                                 (add)="setCEO($event)"></ii-suggestion>
+                                 (add)="setCEO($event)" [placeholder]="ceoName"></ii-suggestion>
                 </div>
               </div>
               <div>
@@ -201,8 +199,7 @@
               <button mat-icon-button role="next-sm-1" (click)="nextStep()">
                 <mat-icon aria-label="next">navigate_next</mat-icon>
               </button>
-              <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20"
-                      [disabled]="upsertDisabled">
+              <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20" [disabled]="!basicForm.valid">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
               <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
