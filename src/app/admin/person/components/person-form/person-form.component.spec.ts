@@ -3,11 +3,11 @@ import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/t
 import { PersonFormComponent } from './person-form.component';
 import {TestModule} from '../../../../test/test.module';
 import {AdminTestRouting} from '../../../admin.routing';
-import {By} from "@angular/platform-browser";
-import {AuthService} from "../../../../shared/services/auth.service";
-import {Observable} from "rxjs/Observable";
-import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {ProgressService} from "../../../../shared/services/progress.service";
+import {By} from '@angular/platform-browser';
+import {AuthService} from '../../../../shared/services/auth.service';
+import {Observable} from 'rxjs/Observable';
+import {PromiseObservable} from 'rxjs/observable/PromiseObservable';
+import {ProgressService} from '../../../../shared/services/progress.service';
 
 class mockService {
   enable(){
@@ -52,23 +52,23 @@ describe('PersonFormComponent', () => {
   });
 
   it('should add be disabled when username is invalid or empty', fakeAsync(() => {
-    expect(component.personId).toBe(null);
+    expect(component.formId).toBe(null);
 
-    let btn = fixture.debugElement.query(By.css('[role="submit-button"]')).nativeElement;
-    let addBtn: HTMLInputElement = <HTMLInputElement>btn.querySelector('button');
-    let label: HTMLElement = <HTMLElement>btn.querySelector('span');
+    const btn = fixture.debugElement.query(By.css('[role="submit-button"]')).nativeElement;
+    const addBtn: HTMLInputElement = <HTMLInputElement>btn.querySelector('button');
+    const label: HTMLElement = <HTMLElement>btn.querySelector('span');
 
     fixture.detectChanges();
     tick(1000);
 
     expect(label.innerText).toBe('Add');
     expect(addBtn.disabled).toBe(true);
-    expect(component.personForm.valid).toBe(false);
+    expect(component.form.valid).toBe(false);
   }));
 
   it('should update be disable when no changes in inputs', fakeAsync(() => {
-    let authService = TestBed.get(AuthService);
-    let authSpy = spyOn(authService, 'getPersonInfo').and.callFake(() => {
+    const authService = TestBed.get(AuthService);
+    const authSpy = spyOn(authService, 'getPersonInfo').and.callFake(() => {
       return PromiseObservable.create(Promise.resolve([{
         username: 'a@ii.com',
         firstname_en: '',
@@ -88,7 +88,7 @@ describe('PersonFormComponent', () => {
     });
     let spy = spyOn(component, 'initPerson').and.callThrough();
 
-    component.personId = 1;
+    component.formId = 1;
     fixture.detectChanges();
     tick(1000);
 
@@ -102,7 +102,7 @@ describe('PersonFormComponent', () => {
     expect(authSpy).toHaveBeenCalledWith(1);
     expect(label.innerText).toBe('Update');
     expect(updateBtn.disabled).toBe(true);
-    expect(component.personForm.valid).toBe(true);
+    expect(component.form.valid).toBe(true);
   }));
 
   it('should update person', fakeAsync(() => {
@@ -130,13 +130,13 @@ describe('PersonFormComponent', () => {
     });
     let spy = spyOn(component, 'modifyUser').and.callThrough();
 
-    component.personId = 1;
+    component.formId = 1;
     fixture.detectChanges();
     tick(1000);
 
     let fieldChangeSpy = spyOn(component, 'fieldChanged').and.callThrough();
 
-    component.personForm.controls['firstname_en'].setValue('Ali');
+    component.form.controls['firstname_en'].setValue('Ali');
     fixture.detectChanges();
     tick(1000);
 
@@ -156,6 +156,6 @@ describe('PersonFormComponent', () => {
     expect(fieldChangeSpy.calls.count()).toBe(1);
     expect(label.innerText).toBe('Update');
     fixture.detectChanges();
-    expect(component.personForm.valid).toBe(true);
+    expect(component.form.valid).toBe(true);
   }));
 });

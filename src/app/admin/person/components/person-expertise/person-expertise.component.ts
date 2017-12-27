@@ -90,13 +90,13 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
                 duration: 2700
               });
             }
-          )
+          );
         }
       },
       (err) => {
         console.error('Error in dialog: ', err);
       }
-    )
+    );
   }
 
   addExpertise(expObj) {

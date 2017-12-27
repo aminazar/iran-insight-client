@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {AuthService} from "../../../../shared/services/auth.service";
+import {AuthService} from '../../../../shared/services/auth.service';
 import * as moment from 'moment';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ProgressService} from "../../../../shared/services/progress.service";
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProgressService} from '../../../../shared/services/progress.service';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 
 @Component({
   selector: 'ii-person-view',
@@ -37,17 +37,17 @@ export class PersonViewComponent implements OnInit {
               this.progressService.disable();
               console.error('Cannot get person info. Error: ', err);
             }
-          )
+          );
         }
       }
     );
   }
 
-  editPerson(){
+  editPerson() {
     this.router.navigate(['/admin/person/form/' + this.personId]);
   }
 
-  deletePerson(){
+  deletePerson() {
     this.authService.deletePerson(this.personId).subscribe(
       (data) => this.breadcrumbService.popChild(),
       (err) => console.error('Cannot delete this person')

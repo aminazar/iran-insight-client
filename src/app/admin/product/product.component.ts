@@ -1,10 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {MatDialog, MatSnackBar} from '@angular/material';
+
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
 import {ActionEnum} from '../../shared/enum/action.enum';
 import {ProgressService} from '../../shared/services/progress.service';
+import {AuthService} from '../../shared/services/auth.service';
+import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
+
 
 @Component({
   selector: 'ii-product',
@@ -14,26 +18,61 @@ import {ProgressService} from '../../shared/services/progress.service';
 export class ProductComponent implements OnInit {
   offset = 0;
   limit = 10;
-  products = [];
-  productId: number = null;
   showInDeep = false;
+  productId: number = null;
   searchData: any = null;
-  actionEnum = ActionEnum;
   totalProducts: number = null;
-  aligningObj = {};
+  products = [];
   rows = [];
-
+  aligningObj = {};
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
-              private searchService: SearchService, private snackBar: MatSnackBar, private progressService: ProgressService) {
-  }
+              private searchService: SearchService, private snackBar: MatSnackBar,
+              private progressService: ProgressService, public dialog: MatDialog,
+              private authService: AuthService) { }
 
   ngOnInit() {
     this.breadCrumbService.pushChild('Product', this.router.url, true);
   }
 
-  openForm(id?: number): void {
+  openForm(id: number = null): void {
+    // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.productId = id;
-    this.showInDeep = true;
+    this.router.navigate(['/admin/product/form/' + id]);
+  }
+
+  openView(id: number = null): void {
+    this.productId = id;
+    this.router.navigate(['/admin/product/' + id]);
+  }
+
+  deleteProduct(id: number = null): void {
+    this.productId = id;
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '230px'
+    });
+    rmDialog.afterClosed().subscribe(
+      (res) => {
+        if (res) {
+          this.authService.deleteProduct(id).subscribe(
+            (data) => {
+              this.productId = null;
+              this.snackBar.open('Product delete successfully', null, {
+                duration: 2300,
+              });
+              this.searching();
+            },
+            (err) => {
+              console.error('Cannot delete this product. Error: ', err);
+              this.snackBar.open('Cannot delete this product. Please try again', null, {
+                duration: 2300
+              });
+            }
+          );
+        }
+      },
+      (err) => console.log('Error in closing component. Error: ', err)
+    );
   }
 
   search(data) {
@@ -55,22 +94,8 @@ export class ProductComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.products = data.product;
-        this.totalProducts = this.products.length > 0 ? parseInt(this.products[0].total, 10) : 0;
-
-        let colCounter = 0;
-        let rowCounter = 0;
-        this.aligningObj = this.products.length > 0 ? {0: []} : {};
-        this.products.forEach(el => {
-          if (colCounter > 4) {
-            this.aligningObj[++rowCounter] = [];
-            colCounter = 0;
-          }
-          this.aligningObj[rowCounter].push(el);
-          colCounter++;
-        });
-
-        this.rows = Object.keys(this.aligningObj);
-        console.log(this.aligningObj);
+        this.totalProducts = this.products && this.products.length > 0 ? parseInt(this.products[0].total) : 0;
+        this.aligningItems();
         this.progressService.disable();
       },
       (err) => {
@@ -83,37 +108,35 @@ export class ProductComponent implements OnInit {
     );
   }
 
-  applyChanges(data) {
-    console.log('In applyChanges: ', data);
-    switch (data.action) {
-      case this.actionEnum.add: {
-        this.products.unshift(data.value);
-        this.products = this.products.slice(0, this.products.length - 1);
-        console.log('ADD ==> ', this.aligningObj);
-      }
-        break;
-      case this.actionEnum.modify: {
-        this.products[this.products.findIndex(el => el.product_id === data.value.product_id)] = data.value;
-        console.log('UPDATE ==> ', this.aligningObj);
-      }
-        break;
-      case this.actionEnum.delete: {
-        this.products = this.products.filter(el => el.product_id !== data.value);
-        this.showInDeep = false;
-        this.productId = null;
-        console.log('DELETE ==> ', this.aligningObj);
-        let keys = Object.keys(this.aligningObj);
-        console.log('===>', keys);
-        console.log('===>', this.aligningObj[keys[0]]);
-        for (let i = 0; i < keys.length; i++) {
-          let ind = this.aligningObj[i].findIndex(el => el.product_id === data.value);
-          if (ind !== -1) {
-            this.aligningObj[i].splice(ind, 1);
-          }
-        }
-      }
-        break;
+  aligningItems() {
+    if (this.totalProducts <= 0) {
+      this.aligningObj = {};
+      this.rows = [];
+      return;
     }
+
+    let colCounter = 0;
+    let rowCounter = 0;
+    this.aligningObj = this.products.length > 0 ? {0: []} : {};
+    this.products.forEach(el => {
+      if (colCounter > 3) {
+        this.aligningObj[++rowCounter] = [];
+        colCounter = 0;
+      }
+
+      this.aligningObj[rowCounter].push(el);
+      colCounter++;
+    });
+
+    this.rows = Object.keys(this.aligningObj);
+  }
+
+  select(id: number = null) {
+    if (this.productId === id)
+      this.productId  = null;
+    else
+      this.productId  = id;
+    this.router.navigate(['/admin/product/' + id]);
   }
 
   findingChangedElement(productId) {

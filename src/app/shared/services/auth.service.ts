@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {RestService} from './rest.service';
@@ -22,12 +22,6 @@ export class AuthService {
         console.log('Not logged in: ', err);
         this.isLoggedIn.next(false);
         this.isAdmin.next(false);
-
-        // let rt = 'admin/login';
-        // if (this.router.url.includes('admin'))
-        //   rt = 'admin/' + rt;
-        //
-        // this.router.navigate([rt]);
       }
     );
   }
@@ -79,23 +73,24 @@ export class AuthService {
     return this.restService.get('user/profile/' + personId);
   }
 
-  setProductInfo(data, productId) {
+  setProductInfo(data, businessId, productId) {
     if (!productId)
-      return this.restService.put('product', data);
+      return this.restService.put('/business/product/' + businessId, data);
     else
-      return this.restService.post('/update-product/' + productId, data);
+      return this.restService.post('/business/product/' + businessId + '/' + productId , data);
   }
 
   getProductInfo(productId) {
     return this.restService.get('/product/one/' + productId);
   }
 
-  deletePerson(personId) {
-    return this.restService.delete('user/' + personId);
+  deleteProduct(productId) {
+    console.log('Product deleted: ', productId);
+    return this.restService.delete('/business/product/' + 7 + '/' + productId);
   }
 
-  deleteProduct(productId) {
-    return this.restService.delete('delete-product/' + productId);
+  deletePerson(personId) {
+    return this.restService.delete('user/' + personId);
   }
 
   resetPassword(person_mail) {
@@ -123,5 +118,25 @@ export class AuthService {
 
   emailExists(email) {
     return this.restService.post('user/email/isExist', {username: email});
+  }
+
+  loginCheck() {
+    return new Promise((resolve, reject) => {
+      this.restService.get('/validUser').subscribe(
+        (data) => {
+          this.isLoggedIn.next(true);
+          if (data.userType === 'admin')
+            this.isAdmin.next(true);
+          else
+            this.isAdmin.next(false);
+          resolve();
+        },
+        (err) => {
+          this.isLoggedIn.next(false);
+          this.isAdmin.next(false);
+          reject();
+        }
+      );
+    });
   }
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductFormComponent } from './product-form.component';
+import { OAuthHandlerComponent } from './o-auth-handler.component';
 
-describe('ProductFormComponent', () => {
-  let component: ProductFormComponent;
-  let fixture: ComponentFixture<ProductFormComponent>;
+describe('OAuthHandlerComponent', () => {
+  let component: OAuthHandlerComponent;
+  let fixture: ComponentFixture<OAuthHandlerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductFormComponent ]
+      declarations: [ OAuthHandlerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductFormComponent);
+    fixture = TestBed.createComponent(OAuthHandlerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

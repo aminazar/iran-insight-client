@@ -1,27 +1,28 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {ProgressService} from '../../../../shared/services/progress.service';
+import * as moment from 'moment';
 import {isUndefined} from 'util';
-
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {LeavingConfirmComponent} from '../../../../shared/components/leaving-confirm/leaving-confirm.component';
+import {CanComponentDeactivate} from '../../../leavingGuard';
+import {RestService} from '../../../../shared/services/rest.service';
 
 @Component({
   selector: 'ii-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent implements OnInit, OnDestroy {
+export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   @Input()
   set productId(id) {
     this._productId = id;
-    this.initProduct();
-    this.productForm = null;
-    this.initForm();
   }
-
   get productId() {
     return this._productId;
   }
@@ -30,25 +31,43 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   productForm: FormGroup;
   _productId: number = null;
-  anyChanges = false;
+  businessId: number = null;
   originalProduct: any = null;
+  anyChanges = false;
   actionEnum = ActionEnum;
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService) {
-  }
+              public dialog: MatDialog, private progressService: ProgressService,
+              private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
+              private router: Router, private restService: RestService) { }
 
   ngOnInit() {
     this.initForm();
 
+    this.route.params.subscribe(
+      (params) => {
+        this.productId = +params['id'] ? +params['id'] : null;
+        this.businessId = +params['bid'] ? +params['bid'] : null;
+        this.initProduct();
+        this.restService.get('/business/one/' + this.businessId).subscribe(
+          (data) => {
+           this.breadcrumbService.pushChild(this.productId ? 'Update' : 'Add' + ' Product' + ` to ${data.name}`, this.router.url, false);
+          },
+          (err) => {
+            console.error(err);
+          }
+        );
+        // this.breadcrumbService.pushChild(this.productId ? 'Update' : 'Add' + ' Product', this.router.url, false);
+      }
+    );
     this.productForm.valueChanges.subscribe(
       (data) => {
         this.fieldChanged();
       },
       (err) => {
-        console.log('Error: ', err);
+        console.error('Error: ', err);
       }
     );
   }
@@ -59,8 +78,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.productForm = new FormBuilder().group({
-      name: [null],
-      name_fa: [null],
+      name: [null, [
+        Validators.required,
+      ]],
+      name_fa:  [null, [
+        Validators.required,
+      ]],
       description: [null, [
         Validators.maxLength(500),
       ]],
@@ -82,21 +105,18 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
-    this.deleteBtnShouldDisabled = true;
     this.authService.getProductInfo(this.productId).subscribe(
       (data) => {
         data = data[0];
-        this.originalProduct = data;
 
         this.productForm.controls['name'].setValue(data.name);
         this.productForm.controls['name_fa'].setValue(data.name_fa);
         this.productForm.controls['description'].setValue(data.description);
         this.productForm.controls['description_fa'].setValue(data.description_fa);
-
+        this.originalProduct = data;
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
-        this.deleteBtnShouldDisabled = false;
       },
       (err) => {
         console.log(err);
@@ -104,14 +124,14 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           duration: 2500,
         });
         this.progressService.disable();
-        this.upsertBtnShouldDisabled = false;
-        this.deleteBtnShouldDisabled = false;
+        this.upsertBtnShouldDisabled = true;
       }
     );
   }
 
   modifyProduct() {
     const data = {
+      business_id: this.businessId,
       product_id: this.productId,
       name: this.productForm.controls['name'].value,
       name_fa: this.productForm.controls['name_fa'].value,
@@ -119,29 +139,38 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       description_fa: this.productForm.controls['description_fa'].value,
     };
 
+    if (!this.productId)
+      delete data.product_id;
+
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
-    this.authService.setProductInfo(data, this.productId).subscribe(
+    this.authService.setProductInfo(data, this.businessId, this.productId).subscribe(
       (value) => {
         this.snackBar.open(this.productId ? 'Product is updated' : 'Product is added', null, {
-          duration: 1800,
+          duration: 2300,
         });
 
         this.anyChanges = false;
-        this.originalProduct = Object.assign({product_id: value.product_id}, data);
         this.changedProduct.emit({
           action: this.productId ? this.actionEnum.modify : this.actionEnum.add,
           value: Object.assign({product_id: value.product_id}, data)
         });
+
+        if (!this.productId) {
+          this.productForm.reset();
+        } else {
+          this.originalProduct = Object.assign({product_id: data.product_id}, data);
+          this.productId = data.product_id;
+        }
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot add this product. Try again', null, {
-          duration: 2300,
+        this.snackBar.open('Cannot' + this.productId ? 'add' : 'update' + 'this product. Try again', null, {
+          duration: 3200,
         });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
@@ -151,7 +180,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   }
 
   deleteProduct() {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '230px'
     });
@@ -174,6 +203,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this product. Please try again', null, {
@@ -232,9 +263,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   nameRequiring(Ac: AbstractControl) {
     let name = Ac.get('name').value;
     let name_fa = Ac.get('name_fa').value;
-    if(name === null || isUndefined(name) )
+    if (name === null || isUndefined(name))
       name = '';
-    if(name_fa === null || isUndefined(name_fa) )
+    if (name_fa === null || isUndefined(name_fa))
       name_fa = '';
     name = name.trim();
     name_fa = name_fa.trim();
@@ -245,11 +276,30 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       if (!name_fa || name_fa === '') {
         Ac.get('name_fa').setErrors({beingNull: 'name_fa can not be null.'});
       }
-    }
-    else {
+    } else {
       Ac.get('name').setErrors(null);
       return null;
     }
   }
-}
 
+  canDeactivate(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (this.anyChanges) {
+        const lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if (data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    });
+  }
+
+}
