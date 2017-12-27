@@ -103,8 +103,8 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
         Validators.required,
       ]],
       ceo_pid: [this.loadedValue.ceo_pid],
-      latitude: [this.loadedValue.latitude ? this.loadedValue.latitude : 35.696491];
-    longitude: [this.loadedValue.longitude ? this.loadedValue.longitude : 51.379926];
+      latitude: [this.loadedValue.latitude ? this.loadedValue.latitude : 35.696491],
+      longitude: [this.loadedValue.longitude ? this.loadedValue.longitude : 51.379926],
   })
     ;
 
