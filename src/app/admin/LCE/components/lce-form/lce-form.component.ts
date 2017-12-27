@@ -215,9 +215,6 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot ' + !this.formId ? 'add' : 'update' + ' this life cycle event. Try again', null, {
-          duration: 3200,
-        });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
         this.deleteBtnShouldDisabled = false;
@@ -310,9 +307,6 @@ export class LceFormComponent extends AbstractFormComponent implements OnInit {
         }, err => {
 
           this.progressService.disable();
-          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
-            duration: 3200,
-          });
           this.progressService.disable();
           this.upsertBtnShouldDisabled = false;
           this.deleteBtnShouldDisabled = false;
