@@ -219,3 +219,7 @@ a:hover {
   color: white !important;
   background-color: mat-color($iraninsight-app-success) !important;
 }
+
+.success[disabled]{
+  background-color: mat-color($iraninsight-app-success, 100) !important;
+}

@@ -60,8 +60,6 @@ export class LceViewComponent implements OnInit {
     this.restService.get(`lce/${this.companyType}/${this.companyId}/${this.formId}`).subscribe(
       (res) => {
 
-
-        console.log('-> ',res[0]);
         this.lce = res[0];
 
         this.progressService.disable();
@@ -103,13 +101,7 @@ export class LceViewComponent implements OnInit {
           this.breadcrumbService.popChild();
 
         }, err => {
-
           this.progressService.disable();
-          this.snackBar.open('Cannot delete this life cycle event. Please try again', null, {
-            duration: 3200,
-          });
-          this.progressService.disable();
-
         });
       }
     }, err => {

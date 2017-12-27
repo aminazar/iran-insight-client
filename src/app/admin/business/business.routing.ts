@@ -9,6 +9,7 @@ const BUSINESS_ROUTES: Routes = [
   {path: 'members/:bid', component: BusinessMembersComponent},
   {path: 'upsert/:bid', component: BusinessInfoComponent},
   {path: 'view/:bid', component: BusinessViewComponent },
+  {path: 'lce/:id/:companyName', loadChildren: 'app/admin/lce/lce.module#LCEModule', canActivate: [AuthGuard]},
 ];
 
 export const businessRouting = RouterModule.forChild(BUSINESS_ROUTES);
