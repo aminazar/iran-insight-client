@@ -1,3 +1,4 @@
+@import './iraninsight-theme';
 @import "assets/fonts/franklin/index.css";
 @import "assets/fonts/merriweather/index.css";
 @import "assets/fonts/iran-sans/css/fontiran.css";
@@ -246,6 +247,10 @@ a:hover {
   margin-top: 150px;
 }
 
+.menu-button{
+  margin-top: 10px !important;
+}
+
 .ev-loc{
   height: 250px;
 }
@@ -255,5 +260,14 @@ a:hover {
 }
 .mobile-accordion-container {
   margin: 0px 5px;
-  width: 100%
+  width: 100%;
+}
+
+.btn-success{
+  color: white !important;
+  background-color: mat-color($iraninsight-app-success) !important;
+}
+
+.btn-success[disabled]{
+  background-color: mat-color($iraninsight-app-success, 100) !important;
 }

@@ -15,7 +15,7 @@
               </mat-input-container>
             </div>
             <div>
-              <button mat-raised-button type="submit" class="success" [disabled]="!loginForm.valid">
+              <button mat-raised-button type="submit" class="btn-success" [disabled]="!loginForm.valid">
                 <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;&nbsp;Sign In
               </button>
               <button mat-raised-button type="button" color="accent" [routerLink]="['/login/signup']">
@@ -23,18 +23,18 @@
               </button>
             </div>
             <div style="margin: 30px;">
-              <a class="clickable-link" [routerLink]="['/login/forgot']">Forgot your password!!!</a>
+              <a class="clickable-link" [routerLink]="['/login/forgot']">Forgot your password???</a>
             </div>
           </form>
         </div>
         <div>
-          <a class="oauth-btn" mat-icon-button href="api/login/google">
+          <a class="oauth-btn" mat-icon-button href="api/login/google" style="text-align: center;">
             <img src="../../../assets/images/google_plus.png" width="50px" height="50px">
           </a>
-          <button class="oauth-btn" mat-icon-button href="api/login/facebook">
+          <button class="oauth-btn" mat-icon-button href="api/login/facebook" style="text-align: center;">
             <img src="../../../assets/images/facebook.png" width="50px" height="50px">
           </button>
-          <button class="oauth-btn" mat-icon-button href="api/login/linkedin">
+          <button class="oauth-btn" mat-icon-button href="api/login/linkedin" style="text-align: center;">
             <img src="../../../assets/images/linkedin.png" width="50px" height="50px">
           </button>
         </div>
