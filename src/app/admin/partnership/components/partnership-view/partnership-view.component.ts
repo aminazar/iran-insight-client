@@ -50,7 +50,7 @@ export class PartnershipViewComponent implements OnInit {
     this.restService.get(`person/partnership/${this.formId}`).subscribe(
       (res) => {
 
-        console.log('-> ',res);
+        console.log('-> ', res);
         this.partnership = res[0];
 
         this.progressService.disable();
