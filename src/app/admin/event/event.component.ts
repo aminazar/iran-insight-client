@@ -53,7 +53,7 @@ export class EventComponent implements OnInit {
     }
   }
 
-  openForm(id: number): void {
+  openForm(id?: number): void {
     this.eventId = id;
     this.storageService.saveData('event', {
       searchData: this.searchData,

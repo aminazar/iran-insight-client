@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActionEnum} from '../../enum/action.enum';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../services/breadcrumb.service';
 import {SearchService} from '../../services/search.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
@@ -29,8 +28,9 @@ export class AbstractSearchComponent implements OnInit {
   viewName: string;
   key: string;
 
-  constructor(private router: Router, private breadCrumbService: BreadcrumbService,
-              private searchService: SearchService, protected snackBar: MatSnackBar,
+  constructor(private breadCrumbService: BreadcrumbService,
+              protected router: Router,
+              protected activatedRoute: ActivatedRoute, private searchService: SearchService, protected snackBar: MatSnackBar,
               private progressService: ProgressService, private dialog: MatDialog,
               protected authService: AuthService, private storageService: StorageService) {
   }
@@ -51,7 +51,8 @@ export class AbstractSearchComponent implements OnInit {
     }
   }
 
-  openForm(id: number = null, url: string): void {
+
+  open(state: string, id: number = null) {
     this.cardId = id;
     this.storageService.saveData(this.key, {
       searchData: this.searchData,
@@ -59,19 +60,9 @@ export class AbstractSearchComponent implements OnInit {
       offset: this.offset,
       limit: this.limit,
     });
-    this.router.navigate([url + '/' + id]);
+    this.router.navigate( id ? [state, id] : [state, ''], {relativeTo: this.activatedRoute});
   }
 
-  openView(id: number = null, url: string): void {
-    this.cardId = id;
-    this.storageService.saveData(this.key, {
-      searchData: this.searchData,
-      cardId: this.cardId,
-      offset: this.offset,
-      limit: this.limit,
-    });
-    this.router.navigate([url + '/' + id]);
-  }
 
   deleteCard(id: number = null): Observable<any> {
     this.cardId = id;
@@ -82,7 +73,7 @@ export class AbstractSearchComponent implements OnInit {
     return rmDialog.afterClosed();
   }
 
-  search(data, key: string) {
+  search(data) {
     this.searchData = data;
     this.cardId = null;
     this.searching();

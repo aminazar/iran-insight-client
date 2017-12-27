@@ -1,11 +1,15 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class RestService {
   constructor(private http: HttpClient) {
+  }
+
+  getWithoutJSON(url): Observable<any> {
+    return this.http.get('/api/' + url, {responseType: 'text'});
   }
 
   get(url): Observable<any> {

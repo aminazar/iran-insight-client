@@ -49,7 +49,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  openForm(id: number): void {
+  openForm(id?: number): void {
     this.memberId = id;
     this.showInDeep = true;
     this.selectedIndex = 0;

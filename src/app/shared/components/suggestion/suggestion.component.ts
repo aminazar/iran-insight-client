@@ -63,6 +63,7 @@ export class SuggestionComponent implements OnInit {
         phrase: phrase,
         idColumn: this.idColumn,
         fieldName: this.fn,
+        otherFieldName: (this.fn === this.fieldNameEn) ? this.fieldNameFa : this.fieldNameEn,
         currentIds: this.currentIds,
       }).subscribe(
         (data) => {

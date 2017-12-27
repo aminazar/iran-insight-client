@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatDialog, MatSnackBar} from '@angular/material';
 
@@ -139,4 +139,7 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/admin/product/' + id]);
   }
 
+  findingChangedElement(productId) {
+  }
 }
+

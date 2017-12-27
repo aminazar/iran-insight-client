@@ -21,6 +21,7 @@ import { UnderConstructionComponent } from './components/underConstruction/under
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { LeavingConfirmComponent } from './components/leaving-confirm/leaving-confirm.component';
 import { AbstractFormComponent } from './components/abstract-form/abstract-form.component';
+import {AbstractSearchComponent} from './components/abstract-search/abstract-search.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AbstractFormComponent } from './components/abstract-form/abstract-form.
     SuggestionComponent,
     LeavingConfirmComponent,
     AbstractFormComponent,
+    AbstractSearchComponent,
   ],
   imports: [
     RouterModule,
