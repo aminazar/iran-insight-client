@@ -19,7 +19,7 @@ class mockService {
   }
 }
 
-fdescribe('PersonFormComponent', () => {
+describe('PersonFormComponent', () => {
   let component: PersonFormComponent;
   let fixture: ComponentFixture<PersonFormComponent>;
 
