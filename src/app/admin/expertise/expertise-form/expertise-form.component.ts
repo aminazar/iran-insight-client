@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {RestService} from "../../../shared/services/rest.service";
-import {MatDialog, MatSnackBar} from "@angular/material";
-import {RemovingConfirmComponent} from "../../../shared/components/removing-confirm/removing-confirm.component";
-import {BreadcrumbService} from "../../../shared/services/breadcrumb.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {RestService} from '../../../shared/services/rest.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {RemovingConfirmComponent} from '../../../shared/components/removing-confirm/removing-confirm.component';
+import {BreadcrumbService} from '../../../shared/services/breadcrumb.service';
 
 @Component({
   selector: 'ii-expertise-form',
@@ -25,8 +25,8 @@ export class ExpertiseFormComponent implements OnInit {
       (params) => {
         this.personId = +params['id'] ? +params['id'] : null;
 
-        if(this.personId){
-          this.breadcrumbService.pushChild("User's Expertise", this.router.url, false);
+        if (this.personId) {
+          this.breadcrumbService.pushChild(`User's Expertise`, this.router.url, false);
           this.getUserExpertise();
         }
       },
@@ -55,32 +55,31 @@ export class ExpertiseFormComponent implements OnInit {
 
         this.currentExpertiseIds = this.userExpertiseList.map(el => el.expertise_id);
       },
-      (err) => console.error("Cannot get user's expertise. Error: ", err)
+      (err) => console.error(`Cannot get user's expertise. Error: `, err)
     );
   }
 
   removePersonExpertise(id) {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent);
+    const rmDialog = this.dialog.open(RemovingConfirmComponent);
 
     rmDialog.afterClosed().subscribe(
       (data) => {
-        if(data) {
+        if (data) {
           this.restService.delete('expertise/' + this.personId + '/' + id).subscribe(
             (dt) => {
-              this.snackBar.open("Person's expertise is deleted successfully", null, {
+              this.snackBar.open(`Person's expertise is deleted successfully`, null, {
                 duration: 2300,
               });
 
-              let item = this.userExpertiseList.find(el => el.expertise_id === id);
               this.userExpertiseList = this.userExpertiseList.filter(el => el.expertise_id !== id);
-              this.currentExpertiseIds = this.currentExpertiseIds.filter(el => el != id);
+              this.currentExpertiseIds = this.currentExpertiseIds.filter(el => el !== id);
             },
             (error) => {
-              this.snackBar.open("Cannot delete this person's expertise. Please try again", null, {
+              this.snackBar.open(`Cannot delete this person's expertise. Please try again`, null, {
                 duration: 3200,
               });
             }
-          )
+          );
         }
       },
       (err) => console.error('Error in dialog: ', err)
@@ -88,6 +87,8 @@ export class ExpertiseFormComponent implements OnInit {
   }
 
   addExpertise(expObj) {
+    console.log('=====>expOBj: ', expObj);
+
     this.restService.get('expertise/' + expObj.expertise_id).subscribe(
       (expData) => {
         this.restService.post('user/expertise', {
@@ -111,11 +112,11 @@ export class ExpertiseFormComponent implements OnInit {
           },
           (err) => {
             console.error('Cannot add expertise. Error: ', err);
-            this.snackBar.open('Cannot add this expertise. Please try again', null ,{
+            this.snackBar.open('Cannot add this expertise. Please try again', null, {
               duration: 3200,
             });
           }
-        )
+        );
       },
       (err) => console.error('Cannot get expertise details. Error: ', err)
     );

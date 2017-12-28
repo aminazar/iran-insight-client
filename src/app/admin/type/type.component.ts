@@ -17,7 +17,11 @@ export class TypeComponent implements OnInit, OnDestroy {
 
   types: IType[] = [];
 
-  constructor(private router: Router, private breadCrumbService: BreadcrumbService, private dialog: MatDialog, private searchService: SearchService, private prgService: ProgressService) {
+  constructor(private router: Router,
+              private breadCrumbService: BreadcrumbService,
+              private dialog: MatDialog,
+              private searchService: SearchService,
+              private prgService: ProgressService) {
   }
 
 
@@ -34,7 +38,7 @@ export class TypeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-        const type: IType[] = this.types.filter(t => t.type_name === result.type_name && t.id === parseInt(result.id));
+        const type: IType[] = this.types.filter(t => t.type_name === result.type_name && t.id === parseInt(result.id, 10));
         if (type.length === 1) { // update type card
 
           type[0].name = result.name;
@@ -69,7 +73,7 @@ export class TypeComponent implements OnInit, OnDestroy {
         });
       }
 
-    }, err =>{
+    }, err => {
       this.prgService.disable();
     });
   }

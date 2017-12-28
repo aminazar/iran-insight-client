@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TargetEnum} from '../../shared/enum/target.enum';
-import {WindowService} from "../../shared/services/window.service";
+import {WindowService} from '../../shared/services/window.service';
 
 @Component({
   selector: 'ii-admin-home',
@@ -26,7 +26,7 @@ export class AdminHomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.windowService.getWindow().innerWidth < 980)
+    if (this.windowService.getWindow().innerWidth < 980)
       this.showBurgerMenu = true;
     else
       this.showBurgerMenu = false;
@@ -34,7 +34,7 @@ export class AdminHomeComponent implements OnInit {
     this.height = this.windowService.getWindow().innerHeight - 100;
 
     this.windowService.getWindow().onresize = (e) => {
-      if(this.windowService.getWindow().innerWidth < 980)
+      if (this.windowService.getWindow().innerWidth < 980)
         this.showBurgerMenu = true;
       else
         this.showBurgerMenu = false;
@@ -51,15 +51,15 @@ export class AdminHomeComponent implements OnInit {
     // });
   }
 
-  menuIsOpen(data?){
-    if(data){
+  menuIsOpen(data?) {
+    if (data) {
       console.log(data);
     }
 
     return true;
   }
 
-  selectOnLink(link){
+  selectOnLink(link) {
     this.selectedLink = link;
     this.drawer.close();
   }

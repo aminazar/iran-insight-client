@@ -1,8 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ProductComponent } from './product.component';
-import {productRouting} from './product.routing';
-import {SharedModule} from '../../shared/shared.module';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
@@ -11,17 +8,21 @@ import {
   MatInputModule,
   MatNativeDateModule, MatPaginatorModule,
   MatSelectModule,
-  MatSnackBarModule, MatTabsModule
+  MatSnackBarModule, MatTableModule, MatTabsModule
 } from '@angular/material';
+import {SharedModule} from '../../shared/shared.module';
+import {productRouting} from './product.routing';
+import {ProductComponent} from './product.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
-
+import { ProductViewComponent } from './components/product-view/product-view.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
   imports: [
-    CommonModule,
     productRouting,
-    SharedModule,
+    CommonModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatCardModule,
@@ -38,6 +39,13 @@ import { ProductFormComponent } from './components/product-form/product-form.com
     MatTabsModule,
     MatPaginatorModule,
   ],
-  declarations: [ProductComponent, ProductFormComponent]
+  declarations: [
+    ProductComponent,
+    ProductFormComponent,
+    ProductViewComponent,
+    ProductDetailsComponent,
+  ],
+  entryComponents: [ProductFormComponent, ProductViewComponent, ProductDetailsComponent]
 })
-export class ProductModule { }
+export class ProductModule {
+}

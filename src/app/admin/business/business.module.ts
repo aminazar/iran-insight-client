@@ -6,12 +6,16 @@ import {SharedModule} from '../../shared/shared.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
   MatDialogModule, MatIconModule, MatSnackBarModule, MatSelectModule, MatNativeDateModule, MatDatepickerModule,
-  MatAutocompleteModule, MatGridListModule, MatPaginatorModule, MatTabsModule, MatCardModule, MatInputModule, MatButtonModule
+  MatAutocompleteModule, MatGridListModule, MatPaginatorModule, MatTabsModule, MatCardModule, MatInputModule,
+  MatButtonModule, MatStepperModule, MatExpansionModule, MatAccordion
 } from '@angular/material';
 import {businessRouting} from './business.routing';
 import { BusinessMembersComponent } from './components/business-members/business-members.component';
 import { BusinessInfoComponent } from './components/business-info/business-info.component';
 import {ActiveDirective} from './directives/active/active.directive';
+import { BusinessViewComponent } from './components/business-view/business-view.component';
+import {AgmCoreModule} from '@agm/core';
+import { BusinessProductsComponent } from './components/business-products/business-products.component';
 
 @NgModule({
   imports: [
@@ -35,7 +39,13 @@ import {ActiveDirective} from './directives/active/active.directive';
     MatAutocompleteModule,
     MatTabsModule,
     MatPaginatorModule,
+    MatStepperModule,
+    MatExpansionModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
+    }),
   ],
-  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective]
+  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessProductsComponent, BusinessViewComponent],
+  providers: [{ provide: 'Window', useValue: window }]
 })
 export class BusinessModule { }

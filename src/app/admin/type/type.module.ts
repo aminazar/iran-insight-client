@@ -33,7 +33,8 @@ import {SharedModule} from '../../shared/shared.module';
     MatGridListModule,
     SharedModule
   ],
-  declarations: [TypeComponent, TypeFormComponent, ActiveDirective]
+  declarations: [TypeComponent, TypeFormComponent, ActiveDirective],
+  entryComponents: [TypeFormComponent]
 })
 export class TypeModule {
 }

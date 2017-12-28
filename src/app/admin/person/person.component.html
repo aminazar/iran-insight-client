@@ -1,8 +1,8 @@
 <div fxLayout="row" class="row">
-  <ii-search-fields fxFlex="100" [target]="'person'" (searching)="search($event)"></ii-search-fields>
+  <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'person'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-  <button mat-fab color="accent" (click)="openForm()">
+  <button mat-fab color="accent" (click)="open('form', null)">
     <mat-icon aria-label="add new person">add</mat-icon>
   </button>
 </div>
@@ -11,18 +11,14 @@
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" *ngFor="let p of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(p.pid)"
-                [ngClass]="{'mat-elevation-z24': p.pid === personId}">
+                [ngClass]="{'selected-card mat-elevation-z12': p.pid === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
-            <label *ngIf="p.is_user" class="user">{{p.username}}</label>
-            <label *ngIf="!p.is_user" class="not-user">{{p.username}}</label>
-          </mat-card-title>
-          <mat-card-subtitle>
             <div>{{p.display_name_en}}</div>
             <div>{{p.display_name_fa}}</div>
-          </mat-card-subtitle>
+          </mat-card-title>
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content style="min-height: 100px">
           <div>
             <label *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
               <span *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</span> <span
@@ -30,22 +26,25 @@
             </label>
             <label *ngIf="!p.firstname_en && !p.firstname_fa && !p.surname_en && !p.surname_fa">-</label>
           </div>
-          <div *ngIf="p.pid === personId">
+          <div *ngIf="p.pid === cardId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate">Expertise</i></a>
-              <a fxFlex="50" class="clickable-link" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o">Membership</i></a>
+              <a fxFlex="50" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate"></i> Expertise</a>
+              <a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"></i> Membership</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" class="clickable-link" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university">Businesses</i></a>
-              <a fxFlex="50" class="clickable-link" [routerLink]="['./perso/organization/' + p.pid]"><i class="fa fa-industry">Organizations</i></a>
+              <a fxFlex="50" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university"></i> Businesses</a>
+              <a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"></i> Organizations</a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
             </div>
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="openView(p.pid)" color="primary">
+          <button mat-icon-button (click)="open('view', p.pid)" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="openForm(p.pid)" color="accent">
+          <button mat-icon-button (click)="open('form', p.pid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="deletePerson(p.pid)" color="warn">
@@ -58,10 +57,6 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalPeople" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20]"
+  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
-
-<!--<div *ngIf="showInDeep">-->
-  <!--<ii-person-details [personId]="personId" (changedPerson)="applyChanges($event)"></ii-person-details>-->
-<!--</div>-->

@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BusinessInfoComponent } from './business-info.component';
+import {AdminTestRouting} from '../../../admin.routing';
+import {TestModule} from '../../../../test/test.module';
+import {SuggestionComponent} from '../../../../shared/components/suggestion/suggestion.component';
 
 describe('BusinessInfoComponent', () => {
   let component: BusinessInfoComponent;
@@ -8,7 +11,14 @@ describe('BusinessInfoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BusinessInfoComponent ]
+      declarations: [
+        BusinessInfoComponent,
+        SuggestionComponent,
+      ],
+      imports: [
+        TestModule,
+        AdminTestRouting,
+      ],
     })
     .compileComponents();
   }));

@@ -1,6 +1,7 @@
-.row{
-    margin: 20px 10px;
+.name{
+    font-style:italic;
 }
-.product-card{
-    margin: 10px 5px;
+
+.name_fa{
+    font-style: normal;
 }

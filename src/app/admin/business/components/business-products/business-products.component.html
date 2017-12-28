@@ -1,0 +1,36 @@
+<div style="width: 80%;">
+  <div fxLayout="row" class="row">
+    <button mat-fab color="accent" (click)="openForm()">
+      <mat-icon aria-label="Add new product ">add</mat-icon>
+    </button>
+  </div>
+<br/>
+<div class="rs-table">
+  <table class="table">
+    <thead>
+    <td>No.</td>
+    <td>Product Name</td>
+    <td>Product Persian Name</td>
+    <td>Edit</td>
+    <td>Remove</td>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of bizProductList; let i = index">
+      <td>{{i+1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.name_fa}}</td>
+      <td>
+        <button mat-icon-button (click)="editProduct(item)" color="accent">
+          <mat-icon aria-label="edit">edit</mat-icon>
+        </button>
+      </td>
+      <td>
+        <button mat-icon-button (click)="removeBizProduct(item)">
+          <mat-icon aria-label="clear business Product">clear</mat-icon>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>

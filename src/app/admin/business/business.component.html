@@ -9,7 +9,7 @@
 
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" class="row">
-    <div fxFlex="25" *ngFor="let b of aligningObj[rw]" class="business-card">
+    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngFor="let b of aligningObj[rw]" class="business-card">
       <mat-card class="card-view" (click)="select(b.bid)"
                 [ngClass]="{'selected-card mat-elevation-z24': b.bid === bizId}">
         <mat-card-header>
@@ -23,28 +23,28 @@
         </mat-card-header>
         <mat-card-content>
             <div *ngIf="b.bid === bizId">
-            <div fxLayout="row" fxLayout.xs="column"  fxLayout.sm="column" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayout.xs="column"  fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['./members/'+ b.bid]"><i class="fa fa-user-circle-o"></i> Members</a>
-              <a fxFlex="50" [routerLink]="['./product/'+ b.bid]"><i class="fa fa-product-hunt"></i> Product</a>
+              <a fxFlex="50" [routerLink]="['./product/'+ b.bid]" ><i class="fa fa-product-hunt"></i> Product</a>
             </div>
-             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-            <a fxFlex="50" [routerLink]="['./lce/'+ b.bid]"><i class="fa fa-bolt"></i> LCEs</a>
-            <a fxFlex="50" [routerLink]="['./event/'+ b.bid]"><i class="fa fa-users"></i> Events</a>
-             </div>
-               <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-            <a fxFlex="50" [routerLink]="['./investment/'+ b.bid]"><i class="fa fa-money"></i> Investments</a>
-            <a fxFlex="50" [routerLink]="['./consultancy/'+ b.bid]"><i class="fa fa-adjust"></i> Consultancies</a>
-               </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./lce/', b.bid, b.name]"><i class="fa fa-bolt"></i> Life cycle events</a>
+              <a fxFlex="50" [routerLink]="['./event/'+ b.bid]"><i class="fa fa-users"></i> Events</a>
             </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./investment/'+ b.bid]"><i class="fa fa-money"></i> Investments</a>
+              <a fxFlex="50" [routerLink]="['./consultancy/'+ b.bid]"><i class="fa fa-adjust"></i> Consultancies</a>
+            </div>
+          </div>
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button color="primary">
-            <mat-icon aria-label="view">visibility</mat-icon>
+            <mat-icon aria-label="view" (click)="openView(b.bid)" color="primary">visibility</mat-icon>
           </button>
           <button mat-icon-button (click)="openForm(b.bid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn">
+          <button mat-icon-button (click)="deleteBusiness(b.bid)" color="warn">
           <mat-icon aria-label="delete">delete</mat-icon>
         </button>
         </mat-card-actions>
@@ -52,12 +52,10 @@
     </div>
   </div>
 </div>
-
 <div>
   <mat-paginator [length]="totalBiz" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
-
 <div fxLayout="row" *ngIf="showInDeep" class="row">
   <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
     <mat-card-content>
