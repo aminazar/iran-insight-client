@@ -1,0 +1,138 @@
+<div fxFlex="row" class="row">
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+    <mat-card-header>
+      <mat-card-title>
+        <div *ngIf="!eventId">Add new Event</div>
+        <div *ngIf="eventId">Edit Event</div>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        The Organizer:
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+          <div fxFlex="40" class="organizer-field">
+            <mat-radio-group [(ngModel)]="organizer" tabindex="1">
+              <div fxLayout="column" fxLayout.sm="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center">
+                <div fxFlex="33" style="margin-bottom: 8px">
+                  <mat-radio-button [value]="organizerType.person">Person</mat-radio-button>
+                </div>
+                <div fxFlex="33" style="margin-bottom: 8px">
+                  <mat-radio-button [value]="organizerType.business">Business</mat-radio-button>
+                </div>
+                <div fxFlex="33" style="margin-bottom: 8px">
+                  <mat-radio-button [value]="organizerType.organization">Organization</mat-radio-button>
+                </div>
+              </div>
+            </mat-radio-group>
+          </div>
+          <div fxFlex="60" tabindex="2" class="organizer-field field-container">
+            <ii-suggestion *ngIf="organizerIsPerson()" [idColumn]="'pid'" [name]="'person'"
+                           [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
+                           [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+            <ii-suggestion *ngIf="organizerIsBiz()" [idColumn]="'bid'" [name]="'business'"
+                           [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'"
+                           [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+            <ii-suggestion *ngIf="organizerIsOrg()" [idColumn]="'oid'" [name]="'organization'"
+                           [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'"
+                           [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+            <div *ngIf="organizerName">
+              <a class="clickable-link" (click)="directToOrganizer()">
+                <span>Organizer is </span>
+                <span>"{{organizerName}}"</span>
+              </a>
+            </div>
+            <mat-error *ngIf="organizerHasError">Please enter the organizer of event</mat-error>
+          </div>
+        </div>
+      </div>
+      <form (ngSubmit)="modifyEvent()" [formGroup]="eventForm">
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="Title" formControlName="title" role="title" tabindex="3"/>
+              <mat-error *ngIf="eventForm.controls['title'].hasError('notEmpty')">Please enter the title</mat-error>
+            </mat-input-container>
+          </div>
+          <div fxFlex="50" dir="rtl" class="field-container">
+            <mat-input-container class="field farsi">
+              <input matInput type="text" placeholder="عنوان" formControlName="title_fa" role="title-fa"
+                     tabindex="10"/>
+              <mat-error *ngIf="eventForm.controls['title_fa'].hasError('notEmpty')" style="margin-bottom: 4px;">لطفا عنوان را وارد کنید</mat-error>
+            </mat-input-container>
+          </div>
+        </div>
+        <div class="field-container">
+          <mat-input-container class="field">
+            <textarea matInput placeholder="Description" formControlName="description" role="description"
+                      tabindex="4"></textarea>
+          </mat-input-container>
+        </div>
+        <div dir="rtl" class="field-container">
+          <mat-input-container class="field farsi">
+            <textarea matInput placeholder="توضیحات" formControlName="description_fa" role="description-fa"
+                      tabindex="11"></textarea>
+          </mat-input-container>
+        </div>
+        <div class="field-container">
+          <mat-input-container class="field">
+            <textarea matInput placeholder="Address" formControlName="address" role="address" tabindex="5"></textarea>
+          </mat-input-container>
+        </div>
+        <div dir="rtl" class="field-container">
+          <mat-input-container class="field farsi">
+            <textarea matInput placeholder="آدرس" formControlName="address_fa" role="address-fa"
+                      tabindex="12"></textarea>
+          </mat-input-container>
+        </div>
+        <div>
+          <agm-map class="ev-loc" [latitude]="latitude" [longitude]="longitude">
+            <agm-marker
+              [latitude]="latitude"
+              [longitude]="longitude"
+              [markerClickable]="true"
+              [markerDraggable]="true"
+              (dragEnd)="setMarker($event)"
+            ></agm-marker>
+          </agm-map>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-form-field class="field">
+              <input matInput [matDatepicker]="start_date" placeholder="Start Date" formControlName="start_date"
+                     role="start-date" tabindex="6" class="field"/>
+              <mat-error *ngIf="eventForm.controls['start_date'].hasError('notNull') && !eventForm.controls['start_date'].hasError('compare')">Please set the start date</mat-error>
+              <mat-error *ngIf="!eventForm.controls['start_date'].hasError('notNull') && eventForm.controls['start_date'].hasError('compare')">Start date must be before end date</mat-error>
+              <mat-datepicker-toggle matSuffix [for]="start_date" tabindex="7"></mat-datepicker-toggle>
+              <mat-datepicker #start_date></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="field-container">
+            <mat-form-field class="field">
+              <input matInput [matDatepicker]="end_date" placeholder="End Date" formControlName="end_date"
+                     role="end-date" tabindex="8" class="field"/>
+              <mat-datepicker-toggle matSuffix [for]="end_date" tabindex="9"></mat-datepicker-toggle>
+              <mat-datepicker #end_date></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="eventId">
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+            <a fxFlex="50" class="clickable-link" [routerLink]="['./attendee/' + eventId]"><i class="fa fa-bullhorn"></i>Attendee</a>
+          </div>
+        </div>
+        <div role="submit-button">
+          <button mat-icon-button color="accent" type="submit"
+                  [disabled]="upsertBtnShouldDisabled || !eventForm.valid || (eventId && !anyChanges)" tabindex="20">
+            <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" *ngIf="eventId" (click)="deleteEvent()"
+                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

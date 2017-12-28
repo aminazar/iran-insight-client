@@ -1,5 +1,9 @@
 <mat-card>
-  <mat-card-header>Filtering Options</mat-card-header>
+  <mat-card-header>
+    <mat-card-title>
+      Filtering Options
+    </mat-card-title>
+  </mat-card-header>
   <mat-card-content>
     <div class="flex-container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
          fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
@@ -15,11 +19,11 @@
           </button>
         </div>
       </div>
-      <div class="flex-item" fxFlex="70" fxFlex.sm="50" fxFlex.xs="50">
+      <div class="field" fxFlex="70" fxFlex.sm="50" fxFlex.xs="50">
         <form>
-          <div>
+          <div class="field-container">
             <mat-input-container class="field">
-              <input matInput type="text" placeholder="phrase" [formControl]="searchCtrl" role="phrase-field"/>
+              <input class="field" matInput type="text" placeholder="phrase" [formControl]="searchCtrl" role="phrase-field"/>
             </mat-input-container>
           </div>
           <div *ngIf="target == targetEnum.investment" class="flex-container" fxLayout="row" fxLayout.sm="column"

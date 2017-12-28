@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ProgressService} from '../../services/progress.service';
+
+import {ProgressService} from "../../services/progress.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'ii-header',
@@ -8,16 +10,25 @@ import {ProgressService} from '../../services/progress.service';
 })
 export class HeaderComponent implements OnInit {
   @Input() header_title: string;
+  isLoggedIn: boolean = false;
   showProgressing: boolean = false;
   color: any = 'primary';
   mode: any;
   value: any;
   bufferValue: any;
 
-  constructor(private progressService: ProgressService) {
+  constructor(private progressService: ProgressService, private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.authService.isLoggedIn.subscribe(
+      (data) => this.isLoggedIn = data,
+      (err) => {
+        this.isLoggedIn = false;
+        console.log('Error when subscribing on authService.isLoggedIn: ', err);
+      }
+    );
+
     this.progressService.showProgress.subscribe(
       (data) => this.showProgressing = data,
       (err) => {
@@ -49,5 +60,9 @@ export class HeaderComponent implements OnInit {
         console.error('An error occurred when subscribing on progressBufferValue in progressService: ', err);
       }
     );
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

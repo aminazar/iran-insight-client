@@ -7,8 +7,19 @@ import {By} from "@angular/platform-browser";
 import {AuthService} from "../../../../shared/services/auth.service";
 import {Observable} from "rxjs/Observable";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
+import {ProgressService} from "../../../../shared/services/progress.service";
 
-describe('PersonFormComponent', () => {
+class mockService {
+  enable(){
+    return;
+  }
+
+  disable(){
+    return;
+  }
+}
+
+fdescribe('PersonFormComponent', () => {
   let component: PersonFormComponent;
   let fixture: ComponentFixture<PersonFormComponent>;
 
@@ -20,6 +31,11 @@ describe('PersonFormComponent', () => {
       imports: [
         TestModule,
         AdminTestRouting,
+      ],
+      providers: [
+        {
+          provide: ProgressService, useClass: mockService
+        }
       ]
     })
     .compileComponents();
@@ -89,7 +105,7 @@ describe('PersonFormComponent', () => {
     expect(component.personForm.valid).toBe(true);
   }));
 
-  xit('should update person', fakeAsync(() => {
+  it('should update person', fakeAsync(() => {
     let authService = TestBed.get(AuthService);
     let getSpy = spyOn(authService, 'getPersonInfo').and.callFake(() => {
       return PromiseObservable.create(Promise.resolve([{
@@ -110,34 +126,36 @@ describe('PersonFormComponent', () => {
       }]));
     });
     let authSpy = spyOn(authService, 'setUserProfile').and.callFake(() => {
-      return PromiseObservable.create(Promise.resolve(1))
+      return PromiseObservable.create(Promise.resolve({pid: 1}))
     });
     let spy = spyOn(component, 'modifyUser').and.callThrough();
 
     component.personId = 1;
     fixture.detectChanges();
-    tick();
+    tick(1000);
 
     let fieldChangeSpy = spyOn(component, 'fieldChanged').and.callThrough();
 
     component.personForm.controls['firstname_en'].setValue('Ali');
     fixture.detectChanges();
-    tick();
+    tick(1000);
 
     let btn = fixture.debugElement.query(By.css('[role="submit-button"]')).nativeElement;
     let updateBtn: HTMLInputElement = <HTMLInputElement>btn.querySelector('button');
     let label: HTMLElement = <HTMLElement>btn.querySelector('span');
 
+    expect(component.anyChanges).toBe(true, 'AnyChanges is not true');
+
     updateBtn.click();
-    fixture.detectChanges();
     tick(2000);
+    fixture.detectChanges();
 
     expect(getSpy).toHaveBeenCalled();
     expect(authSpy).toHaveBeenCalled();
     expect(spy.calls.count()).toBe(1);
     expect(fieldChangeSpy.calls.count()).toBe(1);
     expect(label.innerText).toBe('Update');
-    expect(component.anyChanges).toBe(true, 'AnyChanges is not true');
+    fixture.detectChanges();
     expect(component.personForm.valid).toBe(true);
   }));
 });

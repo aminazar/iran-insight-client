@@ -1,13 +1,6 @@
 <div>
   <br/>
-  <mat-input-container class="field farsi">
-    <input matInput type="text" placeholder="Expertise name" [matAutocomplete]="auto" [formControl]="expertiseCtrl"/>
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let exp of filteredExpertise | async" [value]="exp" (click)="addExpertise(exp)" class="farsi">
-        {{exp}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-input-container>
+  <ii-suggestion [name]="'expertise'" [currentIds]="currentExpertiseIds" [idColumn]="'expertise_id'" [fieldNameEn]="'name_en'" [fieldNameFa]="'name_fa'" (add)="addExpertise($event)"></ii-suggestion>
 </div>
 <br/>
 <div class="rs-table">

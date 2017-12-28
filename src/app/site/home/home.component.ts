@@ -13,6 +13,6 @@ export class HomeComponent implements OnInit{
 
   ngOnInit() {
 
-    this.breadCrumbService.pushChild('home' , this.router.url);
+    this.breadCrumbService.pushChild('Home' , this.router.url);
   }
 }

@@ -1,10 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 import {ActionEnum} from "../../../../shared/enum/action.enum";
 import {ProgressService} from "../../../../shared/services/progress.service";
+import * as moment from 'moment';
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {LeavingConfirmComponent} from "../../../../shared/components/leaving-confirm/leaving-confirm.component";
 
 @Component({
   selector: 'ii-person-form',
@@ -15,9 +19,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   @Input()
   set personId(id) {
     this._personId = id;
-    this.initPerson();
-    this.personForm = null;
-    this.initForm();
   }
 
   get personId() {
@@ -44,17 +45,32 @@ export class PersonFormComponent implements OnInit, OnDestroy {
   originalPerson: any = null;
   anyChanges = false;
   actionEnum = ActionEnum;
+  checkOnLeave: boolean = true;
 
   upsertBtnShouldDisabled: boolean = false;
   deleteBtnShouldDisabled: boolean = false;
   resetPasswordBtnShouldDisabled: boolean = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
-              public dialog: MatDialog, private progressService: ProgressService) {
+              public dialog: MatDialog, private progressService: ProgressService,
+              private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
+              private router: Router) {
   }
 
   ngOnInit() {
     this.initForm();
+
+    this.route.params.subscribe(
+      (params) => {
+        this.personId = +params['id'] ? +params['id'] : null;
+        this.initPerson();
+
+        if(this.personId)
+          this.breadcrumbService.pushChild('Update Person', this.router.url, false);
+        else
+          this.breadcrumbService.pushChild('Add Person', this.router.url, false);
+      }
+    );
 
     this.personForm.valueChanges.subscribe(
       (data) => {
@@ -78,13 +94,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       surname_fa: [null],
       username: [{value: null, disabled: this.personId ? true : false}, [
         Validators.required,
-        Validators.pattern('[^ @]*@[^ @]*'),
-      ]],
-      password: [null, [
-        Validators.minLength(8),
-      ]],
-      re_password: [null, [
-        Validators.minLength(8),
+        Validators.email,
       ]],
       image: [null],
       address_en: [null, [
@@ -105,8 +115,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       ]],
       display_name_en: [null],
       display_name_fa: [null],
-    }, {
-      validator: this.matchingPassword
     });
   }
 
@@ -147,7 +155,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       (err) => {
         console.error(err);
         this.snackBar.open('Cannot get user details. Please try again', null, {
-          duration: 2500,
+          duration: 3200,
         });
         this.progressService.disable();
         this.upsertBtnShouldDisabled = true;
@@ -164,7 +172,6 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       firstname_fa: this.personForm.controls['firstname_fa'].value,
       surname_en: this.personForm.controls['surname_en'].value,
       surname_fa: this.personForm.controls['surname_fa'].value,
-      secret: this.personForm.controls['password'].value,
       image: this.personForm.controls['image'].value,
       address_en: this.personForm.controls['address_en'].value,
       address_fa: this.personForm.controls['address_fa'].value,
@@ -176,10 +183,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
       diplay_name_fa: this.personForm.controls['display_name_fa'].value,
     };
 
-    if (!this.personId){
-      delete personData.secret;
+    if (!this.personId)
       delete personData.pid;
-    }
 
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
@@ -191,15 +196,22 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         });
 
         this.anyChanges = false;
-        this.originalPerson = Object.assign({pid: data.pid}, personData);
         this.changedPerson.emit({action: this.personId ? this.actionEnum.modify :  this.actionEnum.add, value: Object.assign({pid: data.pid}, personData)});
+
+        if(!this.personId){
+          this.personForm.reset();
+        }
+        else{
+          this.originalPerson = Object.assign({pid: data.pid}, personData);
+          this.personId = data.pid;
+        }
 
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot add this person. Try again', null, {
+        this.snackBar.open('Cannot ' + this.personId ? 'add' : 'update' + ' this person. Try again', null, {
           duration: 3200,
         });
         this.progressService.disable();
@@ -209,53 +221,43 @@ export class PersonFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  matchingPassword(AC: AbstractControl) {
-    const password = AC.get('password').value;
-    const confirmPassword = AC.get('re_password').value;
-    if (password !== confirmPassword)
-      AC.get('re_password').setErrors({MathPassword: true});
-    else
-      return null;
-  }
-
   fieldChanged() {
     if(!this.originalPerson)
       return;
 
     this.anyChanges = false;
 
-    if (this.personForm.controls['firstname_en'].value !== this.originalPerson.firstname_en && (this.personForm.controls['firstname_en'].value !== '' || this.originalPerson.firstname_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['firstname_fa'].value !== this.originalPerson.firstname_fa && (this.personForm.controls['firstname_fa'].value !== '' || this.originalPerson.firstname_fa !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['surname_en'].value !== this.originalPerson.surname_en && (this.personForm.controls['surname_en'].value !== '' || this.originalPerson.surname_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['surname_fa'].value !== this.originalPerson.surname_fa && (this.personForm.controls['surname_fa'].value !== '' || this.originalPerson.surname_fa !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['display_name_en'].value !== this.originalPerson.display_name_en && (this.personForm.controls['display_name_en'].value !== '' || this.originalPerson.display_name_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['display_name_fa'].value !== this.originalPerson.display_name_fa && (this.personForm.controls['display_name_fa'].value !== '' || this.originalPerson.display_name_fa !== null))
-      this.anyChanges = true;
-    // if(this.personForm.controls['image'].value !== this.originalPerson.image)
-    //   this.anyChanges = true;
-    if (this.personForm.controls['address_en'].value !== this.originalPerson.address_en && (this.personForm.controls['address_en'].value !== '' || this.originalPerson.address_en !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['address_fa'].value !== this.originalPerson.address_fa && (this.personForm.controls['address_fa'].value !== '' || this.originalPerson.address_fa !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['phone_no'].value !== this.originalPerson.phone_no && (this.personForm.controls['phone_no'].value !== '' || this.originalPerson.phone_no !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['mobile_no'].value !== this.originalPerson.mobile_no && (this.personForm.controls['mobile_no'].value !== '' || this.originalPerson.mobile_no !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['birth_date'].value !== this.originalPerson.birth_date && (this.personForm.controls['birth_date'].value !== '' || this.originalPerson.birth_date !== null))
-      this.anyChanges = true;
-    if (this.personForm.controls['notify_period'].value !== this.originalPerson.notify_period && (this.personForm.controls['notify_period'].value !== '' || this.originalPerson.notify_period !== null))
-      this.anyChanges = true;
+    Object.keys(this.personForm.controls).filter(el => !['image', 'username'].includes(el)).forEach(el => {
+      let formValue = this.personForm.controls[el].value;
+      let originalValue = this.originalPerson[el];
+
+      if(el === 'birth_date'){
+        if((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+          this.anyChanges = true;
+      }
+      else{
+        if(['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa', 'phone_no', 'mobile_no', 'birth_date', 'display_name_en', 'display_name_fa'].includes(el)){
+          if(formValue && formValue.trim().length <= 0)
+            formValue = null;
+          else if(formValue)
+            formValue = formValue.trim();
+
+          if(originalValue && originalValue.trim().length <= 0)
+            originalValue = null;
+          else if(originalValue)
+            originalValue = originalValue.trim();
+        }
+
+        if(formValue !== originalValue && (formValue !== '' || originalValue !== null))
+          this.anyChanges = true;
+      }
+    });
   }
 
   deletePerson() {
     let rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
-      height: '230px'
+      height: '250px'
     });
 
     rmDialog.afterClosed().subscribe(
@@ -266,8 +268,8 @@ export class PersonFormComponent implements OnInit, OnDestroy {
           this.deleteBtnShouldDisabled = true;
 
           this.authService.deletePerson(this.personId).subscribe(
-            (data) => {
-              this.snackBar.open('Person delete successfully', null, {
+            (dt) => {
+              this.snackBar.open('Person is deleted successfully', null, {
                 duration: 2000,
               });
 
@@ -276,10 +278,12 @@ export class PersonFormComponent implements OnInit, OnDestroy {
               this.progressService.disable();
               this.upsertBtnShouldDisabled = false;
               this.deleteBtnShouldDisabled = false;
+
+              this.breadcrumbService.popChild();
             },
             (error) => {
               this.snackBar.open('Cannot delete this person. Please try again', null, {
-                duration: 2700
+                duration: 3200,
               });
 
               this.progressService.disable();
@@ -290,7 +294,7 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         }
       },
       (err) => {
-        console.log('Error in dialog: ', err);
+        console.error('Error in dialog: ', err);
       }
     )
   }
@@ -318,5 +322,25 @@ export class PersonFormComponent implements OnInit, OnDestroy {
         this.resetPasswordBtnShouldDisabled = false;
       }
     );
+  }
+
+  canDeactivate(){
+    return new Promise((resolve, reject) => {
+      if(this.anyChanges){
+        let lvDialog = this.dialog.open(LeavingConfirmComponent);
+
+        lvDialog.afterClosed().subscribe(
+          (data) => {
+            if(data)
+              resolve(true);
+            else
+              resolve(false);
+          },
+          (err) => reject(false)
+        );
+      }
+      else
+        resolve(true);
+    })
   }
 }

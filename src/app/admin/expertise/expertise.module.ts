@@ -7,6 +7,7 @@ import {expertiseRouting} from './expertise.routing';
 import {SharedModule} from '../../shared/shared.module';
 import {ExpertiseComponent} from './expertise.component';
 import {ExpertiseFormComponent} from './expertise-form/expertise-form.component';
+import {MatButtonModule, MatCardModule, MatIconModule, MatSnackBarModule} from "@angular/material";
 
 @NgModule({
   imports: [
@@ -16,7 +17,10 @@ import {ExpertiseFormComponent} from './expertise-form/expertise-form.component'
     SharedModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-
+    MatSnackBarModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
   ],
   declarations: [
     ExpertiseComponent,

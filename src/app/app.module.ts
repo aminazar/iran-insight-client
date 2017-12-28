@@ -12,6 +12,7 @@ import {BreadcrumbService} from './shared/services/breadcrumb.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ErrorInterceptor} from './shared/services/error.interceptor';
 import {ProgressService} from './shared/services/progress.service';
+import {WindowService} from "./shared/services/window.service";
 
 
 
@@ -37,6 +38,7 @@ import {ProgressService} from './shared/services/progress.service';
     AuthService,
     BreadcrumbService,
     ProgressService,
+    WindowService,
   ],
 
   bootstrap: [AppComponent]

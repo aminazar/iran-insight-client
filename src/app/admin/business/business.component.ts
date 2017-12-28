@@ -32,13 +32,19 @@ export class BusinessComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('business', this.router.url, true);
+    this.breadCrumbService.pushChild('Business', this.router.url, true);
   }
 
-  openForm(id: number): void {
-    this.bizId = id;
-    this.showInDeep = true;
-    this.selectedIndex = 0;
+  openForm(id: number = 0): void {
+    this.router.navigate(['admin', 'business', 'upsert', id])
+      .then(() => console.log('done routing'));
+  }
+
+  select(id: number = 0): void {
+    if  (this.bizId === id)
+      this.bizId = null;
+    else
+      this.bizId = id;
   }
 
   search(data) {
@@ -60,21 +66,22 @@ export class BusinessComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.biz = data.business;
-        this.totalBiz = this.biz.length > 0 ? parseInt(this.biz[0].total) : 0;
+        this.totalBiz = this.biz && this.biz.length > 0 ? +this.biz[0].total : 0;
 
         let colCounter = 0;
         let rowCounter = 0;
-        this.aligningObj = this.biz.length > 0 ? {0: []} : {};
-        this.biz.forEach(el => {
-          if (colCounter > 4) {
-            this.aligningObj[++rowCounter] = [];
-            colCounter = 0;
-          }
+        this.aligningObj = this.biz && this.biz.length > 0 ? {0: []} : {};
+        if (this.biz) {
+          this.biz.forEach(el => {
+            if (colCounter > 3) {
+              this.aligningObj[++rowCounter] = [];
+              colCounter = 0;
+            }
 
-          this.aligningObj[rowCounter].push(el);
-          colCounter++;
-        });
-
+            this.aligningObj[rowCounter].push(el);
+            colCounter++;
+          });
+        }
         this.rows = Object.keys(this.aligningObj);
         this.progressService.disable();
       },

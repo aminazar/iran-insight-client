@@ -8,20 +8,50 @@
 </div>
 
 <div *ngFor="let rw of rows">
-  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
-    <div fxFlex="20" *ngFor="let p of aligningObj[rw]" class="person-card">
-      <mat-card (click)="openForm(p.pid)" class="card-view" [class.selected-user]="p.pid === personId">
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
+    <div fxFlex="25" *ngFor="let p of aligningObj[rw]" class="outer-card">
+      <mat-card class="card-view" (click)="select(p.pid)"
+                [ngClass]="{'mat-elevation-z24': p.pid === personId}">
+        <mat-card-header>
+          <mat-card-title>
+            <label *ngIf="p.is_user" class="user">{{p.username}}</label>
+            <label *ngIf="!p.is_user" class="not-user">{{p.username}}</label>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <div>{{p.display_name_en}}</div>
+            <div>{{p.display_name_fa}}</div>
+          </mat-card-subtitle>
+        </mat-card-header>
         <mat-card-content>
-          <div *ngIf="p.username" class="card-header">{{p.username}}</div>
-          <br/>
-          <div *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
-            Name: <label *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</label> <label *ngIf="p.surname_en || p.surname_fa">{{p.surname_en || p.surname_fa}}</label>
-          </div>
           <div>
-            <label *ngIf="p.is_user" class="user">This person is authenticated</label>
-            <label *ngIf="!p.is_user" class="not-user">This person is not user</label>
+            <label *ngIf="p.firstname_en || p.firstname_fa || p.surname_en || p.surname_fa">
+              <span *ngIf="p.firstname_en || p.firstname_fa">{{p.firstname_en || p.firstname_fa}}</span> <span
+              *ngIf="p.surname_en || p.surname_fa">{{p.surname_en || p.surname_fa}}</span>
+            </label>
+            <label *ngIf="!p.firstname_en && !p.firstname_fa && !p.surname_en && !p.surname_fa">-</label>
+          </div>
+          <div *ngIf="p.pid === personId">
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate">Expertise</i></a>
+              <a fxFlex="50" class="clickable-link" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o">Membership</i></a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" class="clickable-link" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university">Businesses</i></a>
+              <a fxFlex="50" class="clickable-link" [routerLink]="['./perso/organization/' + p.pid]"><i class="fa fa-industry">Organizations</i></a>
+            </div>
           </div>
         </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button (click)="openView(p.pid)" color="primary">
+            <mat-icon aria-label="view">visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openForm(p.pid)" color="accent">
+            <mat-icon aria-label="edit">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deletePerson(p.pid)" color="warn">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </mat-card-actions>
       </mat-card>
     </div>
   </div>
@@ -32,20 +62,6 @@
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
 
-<div fxLayout="row" *ngIf="showInDeep" class="row">
-  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
-    <mat-card-content>
-      <mat-tab-group>
-        <mat-tab label="Information">
-          <ii-person-form [personId]="personId" (changedPerson)="applyChanges($event)"></ii-person-form>
-        </mat-tab>
-        <mat-tab label="Expertise">
-          <ii-person-expertise [personId]="personId"></ii-person-expertise>
-        </mat-tab>
-        <!--<mat-tab label="Partnership">-->
-          <!--<ii-person-partnership [personId]="personId"></ii-person-partnership>-->
-        <!--</mat-tab>-->
-      </mat-tab-group>
-    </mat-card-content>
-  </mat-card>
-</div>
+<!--<div *ngIf="showInDeep">-->
+  <!--<ii-person-details [personId]="personId" (changedPerson)="applyChanges($event)"></ii-person-details>-->
+<!--</div>-->

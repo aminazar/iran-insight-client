@@ -5,7 +5,8 @@ import {BidiModule} from '@angular/cdk/bidi';
 import {BreadcrumbModule} from 'primeng/primeng';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatInputModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatFormFieldModule, MatIconModule,
+  MatInputModule,
   MatMenuModule, MatNativeDateModule, MatOptionModule, MatProgressBarModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
@@ -17,6 +18,8 @@ import {HeaderComponent} from './components/header/header.component';
 import {SearchFieldsComponent} from './components/search-fields/search-fields.component';
 import {RemovingConfirmComponent} from './components/removing-confirm/removing-confirm.component';
 import { UnderConstructionComponent } from './components/underConstruction/under-construction.component';
+import { SuggestionComponent } from './components/suggestion/suggestion.component';
+import { LeavingConfirmComponent } from './components/leaving-confirm/leaving-confirm.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,8 @@ import { UnderConstructionComponent } from './components/underConstruction/under
     SearchFieldsComponent,
     RemovingConfirmComponent,
     UnderConstructionComponent,
+    SuggestionComponent,
+    LeavingConfirmComponent,
   ],
   imports: [
     RouterModule,
@@ -49,13 +54,16 @@ import { UnderConstructionComponent } from './components/underConstruction/under
     HttpClientModule,
     MatSnackBarModule,
     MatProgressBarModule,
+    MatIconModule,
   ],
-  entryComponents: [RemovingConfirmComponent, UnderConstructionComponent],
+  entryComponents: [RemovingConfirmComponent, LeavingConfirmComponent, UnderConstructionComponent],
   exports: [
     HeaderComponent,
     SearchFieldsComponent,
     RemovingConfirmComponent,
+    LeavingConfirmComponent,
     UnderConstructionComponent,
+    SuggestionComponent,
   ]
 })
 export class SharedModule {
