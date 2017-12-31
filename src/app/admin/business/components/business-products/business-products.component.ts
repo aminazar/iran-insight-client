@@ -154,5 +154,4 @@ export class BusinessProductsComponent implements OnInit, OnDestroy {
     this.productId = proObj.product_id;
     this.router.navigate([`/admin/product/form/${this.productId}/${this.businessId}`]);
   }
-
 }
