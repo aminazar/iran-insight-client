@@ -52,7 +52,7 @@ export class ProductViewComponent implements OnInit {
   }
 
   editProduct() {
-    this.router.navigate(['/admin/product/form/' + this.productId]);
+    this.router.navigate([`/admin/product/form/${this.productId}/${this.businessId}`]);
   }
 
   // deleteProduct() {
