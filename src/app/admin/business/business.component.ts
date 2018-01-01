@@ -7,7 +7,6 @@ import {SearchService} from '../../shared/services/search.service';
 import {ProgressService} from '../../shared/services/progress.service';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 import {RestService} from '../../shared/services/rest.service';
-import {BusinessViewComponent} from './components/business-view/business-view.component';
 
 @Component({
   selector: 'ii-business',
@@ -43,12 +42,7 @@ export class BusinessComponent implements OnInit {
   }
 
   openView(bid: number = 0): void {
-    if (this.window.innerWidth >= 600) {
-      const dialog = this.dialog.open(BusinessViewComponent, {data: {bid}});
-    } else {
-      this.router.navigate(['admin', 'business', 'view', bid])
-        .then(() => console.log('done routing'));
-    }
+    this.router.navigate(['admin', 'business', 'view', bid]);
   }
 
   select(id: number = 0): void {

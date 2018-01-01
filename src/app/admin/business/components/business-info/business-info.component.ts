@@ -68,6 +68,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       this.breadCrumbService.pushChild(this.add ? 'Add' : 'Update', this.router.url, false);
     });
 
+    this.initLocation();
   }
 
   setCEOName(lang = 'en') {
@@ -105,7 +106,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       ceo_pid: [this.loadedValue.ceo_pid],
       latitude: [this.loadedValue.latitude ? this.loadedValue.latitude : 35.696491],
       longitude: [this.loadedValue.longitude ? this.loadedValue.longitude : 51.379926],
-  })
+    })
     ;
 
     this.productForm = new FormBuilder().group({
@@ -115,6 +116,17 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.generalForm = new FormBuilder().group({});
 
     this.financialForm = new FormBuilder().group({});
+  }
+
+  initLocation() {
+    if (navigator.geolocation && !this.bid) {
+      navigator.geolocation.getCurrentPosition(el => {
+        this.basicForm.controls['latitude'].value = el.coords.latitude;
+        this.basicForm.controls['longitude'].value = el.coords.longitude;
+      }, err => {
+        console.log('ERROR: ', err);
+      });
+    }
   }
 
   setCEO(value) {
@@ -163,9 +175,11 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             this.snackBar.open(`Business is ${this.add ? 'added' : 'updated'}.`, null, {duration: 2300});
             this.progressService.disable();
             this.loadedValue = bizData;
-            if (this.add)
-              this.loadedValue.bid = data;
-            this.initForm();
+            if (this.add) {
+              // this.loadedValue.bid = data;
+              this.initForm();
+            }
+
             this.changed = false;
             this.upsertDisabled = false;
             this.deleteDisabled = false;

@@ -1,14 +1,76 @@
-<mat-card style="min-width:550px">
-  <mat-card-header>
-    <mat-card-title>
-      {{data.name}}
-    </mat-card-title>
-    <mat-card-subtitle>
-      {{data.name_fa}}
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content><pre>
-    {{parsed}}
-  </pre>
-  </mat-card-content>
-</mat-card>
+<div fxLayout="row">
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+    <mat-card-header>
+      <mat-card-title>
+        {{data.name}}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{data.name_fa}}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="100">
+          <img src="{{data.logo}}" class="logo"/>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div class="view-title">Address</div>
+          <div class="view-content">{{data.address}}</div>
+        </div>
+        <div fxFlex="50" dir="rtl" class="farsi">
+          <div class="view-title">آدرس</div>
+          <div class="view-content">{{data.address_fa}}</div>
+        </div>
+      </div>
+      <div style="margin: 10px;">
+        <agm-map class="ev-loc" [latitude]="data.latitude" [longitude]="data.longitude">
+          <agm-marker [latitude]="data.latitude"
+                      [longitude]="data.longitude"
+                      [markerClickable]="false"
+                      [markerDraggable]="false">
+          </agm-marker>
+        </agm-map>
+      </div>
+      <div>
+        <div class="view-title"><i class="fa fa-phone" aria-hidden="true"></i> TEL</div>
+        <div class="view-content">{{data.tel}}</div>
+      </div>
+      <div>
+        <div class="view-title"><i class="fa fa-internet-explorer" aria-hidden="true"></i> URL</div>
+        <div class="view-content">
+          <a href="{{data.url}}" target="_blank">{{data.url}}</a>
+        </div>
+      </div>
+      <div>
+        <div class="view-title">
+          <a class="clickable-link" [routerLink]="['/admin/business/members/'+ bid]"><i class="fa fa-user-circle-o"></i>
+            Members</a>
+        </div>
+        <div class="view-content">
+          <label *ngFor="let mem of data.members">
+            {{mem}} -
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="view-title">
+          <a class="clickable-link" [routerLink]="['/admin/business/product/'+ bid]"><i class="fa fa-product-hunt"></i>
+            Products</a>
+        </div>
+        <div class="view-content">{{data.product}}</div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button (click)="editBusiness()" color="accent">
+        <mat-icon aria-label="edit">edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteBusiness()" color="warn">
+        <mat-icon aria-label="delete">delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

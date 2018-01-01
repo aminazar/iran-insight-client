@@ -71,7 +71,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
         this.eventId = +params['id'] ? +params['id'] : null;
         if (this.eventId)
           this.breadcrumbService.pushChild('Update Event', this.router.url, false);
-        else{
+        else {
           this.breadcrumbService.pushChild('Add Event', this.router.url, false);
           this.organizer = this.organizerType.person;
         }
@@ -182,8 +182,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
       AC.get('start_date').setErrors({notNull: 'Start date cannot be null'});
     if (moment(sd).isAfter(ed)) {
       AC.get('start_date').setErrors({compare: 'Start date must be before end date'});
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -241,13 +240,12 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
             }, eventData)
           });
 
-          if (!this.eventId){
+          if (!this.eventId) {
             this.organizerId = null;
             this.organizerName = null;
             this.eventForm.reset();
             this.eventForm.controls['start_date'].setValue(new Date());
-          }
-          else{
+          } else {
             this.originalEvent = Object.assign({eid: data}, eventData);
             this.eventId = data;
           }
@@ -278,11 +276,18 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
       let originalValue = this.originalEvent[el];
 
       if (el === 'start_date' || el === 'end_date') {
-        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) && (formValue !== '' || originalValue !== null))
+        if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD')) &&
+          (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
-      }
-      else {
-        if (['title', 'title_fa', 'address', 'address_fa', 'description', 'description_fa', 'organizer_name', 'organizer_name_fa'].includes(el)) {
+      } else {
+        if (['title',
+            'title_fa',
+            'address',
+            'address_fa',
+            'description',
+            'description_fa',
+            'organizer_name',
+            'organizer_name_fa'].includes(el)) {
           if (formValue && formValue.trim().length <= 0)
             formValue = null;
           else if (formValue)
@@ -391,15 +396,18 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   directToOrganizer() {
-    if (this.organizerId){
+    if (this.organizerId) {
       let url = '/admin/';
-      switch (this.organizer){
-        case this.organizerType.person: url += 'person';
-        break;
-        case this.organizerType.business: url += 'business';
-        break;
-        case this.organizerType.organization: url += 'organization';
-        break;
+      switch (this.organizer) {
+        case this.organizerType.person:
+          url += 'person';
+          break;
+        case this.organizerType.business:
+          url += 'business';
+          break;
+        case this.organizerType.organization:
+          url += 'organization';
+          break;
       }
 
       url += ('/' + this.organizerId);
@@ -440,8 +448,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
           },
           (err) => reject(false)
         );
-      }
-      else
+      } else
         resolve(true);
     });
   }
