@@ -69,6 +69,11 @@ export class HeaderComponent implements OnInit {
   }
 
   showProfile() {
-    this.router.navigate(['/profile']);
+    let tr = '/';
+
+    if (this.router.url.includes('admin'))
+      tr = '/admin/';
+
+    this.router.navigate([tr + 'profile']);
   }
 }
