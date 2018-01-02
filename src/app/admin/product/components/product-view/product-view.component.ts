@@ -55,13 +55,6 @@ export class ProductViewComponent implements OnInit {
     this.router.navigate([`/admin/product/form/${this.productId}/${this.businessId}`]);
   }
 
-  // deleteProduct() {
-  //   this.authService.deleteProduct(this.productId).subscribe(
-  //     (data) => this.breadcrumbService.popChild(),
-  //     (err) => console.error('Cannot delete this product')
-  //   );
-  // }
-
   deleteProduct() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
