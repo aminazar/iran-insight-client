@@ -3,10 +3,11 @@ import {investmentRouting} from './investment.routing';
 import {InvestmentComponent} from './investment.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { InvestmentFormComponent } from './components/investment-form/investment-form.component';
-import {MatButtonModule, MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatSnackBarModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SharedModule} from '../../shared/shared.module';
 import {CommonModule} from '@angular/common';
+import { InvestmentViewComponent } from './components/investment-view/investment-view.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {CommonModule} from '@angular/common';
     MatCardModule,
     MatButtonModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
-  declarations: [InvestmentComponent, InvestmentFormComponent],
+  declarations: [InvestmentComponent, InvestmentFormComponent, InvestmentViewComponent],
 })
 export class InvestmentModule { }

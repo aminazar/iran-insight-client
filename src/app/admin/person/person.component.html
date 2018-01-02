@@ -36,6 +36,10 @@
               <a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"></i> Organizations</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['/admin/investment/'+ p.pid]" [queryParams]="{ is_person: true, name: p.display_name_en || p.display_name_fa }"><i class="fa fa-money"></i> Investments</a>
+              <a fxFlex="50" [routerLink]="['/admin/consultancy/'+ p.pid]" [queryParams]="{ is_person: true, name: p.display_name_en || p.display_name_fa }"><i class="fa fa-adjust"></i> Consultancies</a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
             </div>
           </div>
