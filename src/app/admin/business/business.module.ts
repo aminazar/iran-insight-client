@@ -45,7 +45,13 @@ import { BusinessProductsComponent } from './components/business-products/busine
       apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
     }),
   ],
-  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessProductsComponent, BusinessViewComponent],
+  declarations: [
+    BusinessComponent,
+    BusinessMembersComponent,
+    BusinessInfoComponent,
+    ActiveDirective,
+    BusinessProductsComponent,
+    BusinessViewComponent],
   providers: [{ provide: 'Window', useValue: window }]
 })
 export class BusinessModule { }
