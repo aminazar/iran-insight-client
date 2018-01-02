@@ -84,6 +84,10 @@ export class AuthService {
     return this.restService.get('/product/one/' + productId);
   }
 
+  getExpertiseInfo(expertiseId) {
+    return this.restService.get('/expertise/' + expertiseId);
+  }
+
   deleteProduct(businessId, productId) {
     console.log('Product deleted: ', productId);
     return this.restService.delete('business/product/' + businessId + '/' + productId);

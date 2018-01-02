@@ -27,8 +27,8 @@ export class ExpertiseComponent extends AbstractSearchComponent implements OnIni
 
   openView(id: number = null): void {
     //TODO: view expertise card
-    // this.expertiseId = id;
-    // this.router.navigate(['/admin/expertise/' + id]);
+    this.cardId = id;
+    this.router.navigate(['/admin/expertise/' + id]);
   }
 
   deleteExpertise(id: number = null): void {
