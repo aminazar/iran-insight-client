@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth.service';
-import * as moment from 'moment';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';

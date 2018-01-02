@@ -6,35 +6,19 @@
 
 <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="20" *ngFor="let m of members" class="member-card">
-        <mat-card class="card-view" (click)="openForm(m.mid)" [class.selected-member]="m.mid === memberId">
+        <mat-card class="card-view" [class.selected-member]="m.mid === memberId">
             <mat-card-content>
                 <div>
                     <b>name (En): </b><span>{{m.display_name_en}}</span>
                 </div>
                 <div>
-                    <b>name (Fa): </b><span>
-            {{m.display_name_fa}}</span>
-                </div>
-                <div>
                     <b>Username: </b><span>{{m.username}}</span>
                 </div>
-
                 <div>
-                    <b [memberActive]="m.is_active ? 'green' : 'red'">{{m.is_active ? 'active user' : 'not active
-                        user'}}</b>
+                    <b [memberActive]="m.is_active ? 'green' : 'red'">{{m.is_active ? 'active user' : 'not activeuser'}}</b>
                 </div>
                 <div>
                     <b>{{m.is_representative ? 'representative' : 'ordinary member'}}</b>
-                </div>
-                <div>
-                    <b>Position (En): </b><span>{{m.position_name}}</span>
-                </div>
-                <div>
-                    <b>Position (Fa): </b><span>{{m.position_name_fa}}</span>
-                </div>
-                <div>
-                    <b [memberActive]="m.position_active ? 'green' : 'red'">{{m.position_active ? 'active position' :
-                        'not active position'}}</b>
                 </div>
             </mat-card-content>
             <mat-card-actions>

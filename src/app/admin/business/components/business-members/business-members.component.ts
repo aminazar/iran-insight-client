@@ -29,7 +29,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('In Business-Members Component.');
-    this.breadCrumbService.pushChild('Member', this.router.url, false);
+    this.breadCrumbService.pushChild('Members', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = params['bid'];
       this.getBizMember();
@@ -54,16 +54,19 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   openForm(id?: number): void {
+    console.log('form');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
   }
 
   openView(id: number = null): void {
-    // this.productId = id;
-    // this.router.navigate(['/admin/product/' + id]);
+    console.log('view');
+    this.memberId = id;
+    this.router.navigate([`/admin/business/member/${this.bid}/${this.memberId}`]);
   }
 
   deleteMembership(mid: number = null): void {
+    console.log('delete');
   }
 
   ngOnDestroy(): void {
