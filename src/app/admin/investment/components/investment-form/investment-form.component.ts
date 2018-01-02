@@ -3,6 +3,12 @@ import {RestService} from '../../../../shared/services/rest.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ProgressService} from "../../../../shared/services/progress.service";
+
+enum InvestorType {
+  person,
+  organization,
+}
 
 @Component({
   selector: 'ii-investment-form',
@@ -11,11 +17,18 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class InvestmentFormComponent implements OnInit {
   id = null;
+  investmentId = null;
   investmentForm: FormGroup;
   loadedValue: any = {};
   upsertBtnShouldDisabled = false;
   deleteBtnShouldDisabled = false;
   anyChanges = false;
+  investorType = InvestorType;
+  investor = this.investorType.person;
+  investorObj = {
+    name: null,
+    id: null,
+  };
   currencyList = [
     {name: 'Afghani', value: 'AFN'},
     {name: 'European euro', value: 'EUR'},
@@ -72,7 +85,8 @@ export class InvestmentFormComponent implements OnInit {
   ];
 
   constructor(private restService: RestService, private breadcrumbService: BreadcrumbService,
-              private router: Router, private route: ActivatedRoute) {
+              private router: Router, private route: ActivatedRoute,
+              private progressService: ProgressService) {
   }
 
   ngOnInit() {
@@ -81,8 +95,12 @@ export class InvestmentFormComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.id = params['id'] ? +params['id'] : null;
-        if (this.id)
+        this.investmentId = params['invid'] ? +params['invid'] : null;
+
+        if (this.investmentId)
           this.getInvestment();
+
+        this.breadcrumbService.pushChild((this.id ? 'Update' : 'Add') + ' Investment', this.router.url, false);
       },
       (err) => {
         console.error('Cannot parse parameters from url: ', err);
@@ -94,6 +112,7 @@ export class InvestmentFormComponent implements OnInit {
     this.investmentForm = new FormBuilder().group({
       amount: [this.loadedValue.amount, [
         Validators.required,
+        Validators.pattern(/^-?\d*(\.\d+)?$/),
       ]],
       currency: [this.loadedValue.currency, [
         Validators.required,
@@ -109,10 +128,53 @@ export class InvestmentFormComponent implements OnInit {
   }
 
   modifyInvestment() {
+    if (!this.investorObj.id)
+      return;
 
+    let data = {};
+
+    Object.keys(this.investmentForm.controls).forEach(el => {
+      data[el] = this.investmentForm.controls[el].value;
+    });
+
+    this.progressService.enable();
+    this.restService.put(
+        (this.investor === this.investorType.person ? 'personalInvestment' : 'orgInvestment') +
+        '/' + this.id +
+        '/' + this.investorObj.id, data).subscribe(
+      (rs) => {
+        console.log(rs);
+        this.loadedValue.id = rs;
+
+        this.progressService.disable();
+      },
+      (err) => {
+        this.progressService.disable();
+      }
+    );
   }
 
   deleteInvestment() {
 
+  }
+
+  setInvestor(data) {
+    this.investorObj.id = this.investor === this.investorType.person ?
+      data.pid :
+      data.oid;
+    this.investorObj.name = this.investor === this.investorType.person ?
+      (data.display_name_en || data.display_name_fa) :
+      (data.name || data.name_fa);
+  }
+
+  directToInvestor() {
+    let url = '/admin/';
+
+    if (this.investor === this.investorType.person)
+      url += 'person';
+    else if (this.investor === this.investorType.organization)
+      url += 'organization';
+
+    this.router.navigate([url + '/view/' + this.investorObj.id]);
   }
 }

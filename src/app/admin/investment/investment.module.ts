@@ -4,7 +4,8 @@ import {InvestmentComponent} from './investment.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { InvestmentFormComponent } from './components/investment-form/investment-form.component';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatInputModule, MatSelectModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatInputModule, MatRadioModule,
+  MatSelectModule,
   MatSnackBarModule
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -28,6 +29,7 @@ import { InvestmentViewComponent } from './components/investment-view/investment
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatRadioModule,
   ],
   declarations: [InvestmentComponent, InvestmentFormComponent, InvestmentViewComponent],
 })

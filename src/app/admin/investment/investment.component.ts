@@ -61,9 +61,9 @@ export class InvestmentComponent implements OnInit {
 
   open(type, id) {
     if (type === 'view')
-      this.router.navigate(['../../investment/view/' + id]);
+      this.router.navigate(['/admin/investment/view/' + this.id + '/' + id]);
     else if (type === 'form')
-      this.router.navigate(['../../admin/investment/form/' + id]);
+      this.router.navigate(['/admin/investment/form/' + this.id + '/' + id]);
   }
 
   deleteInvestment(id) {

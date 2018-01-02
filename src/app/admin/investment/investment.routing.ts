@@ -5,8 +5,8 @@ import {InvestmentViewComponent} from './components/investment-view/investment-v
 
 const INVESTMENT_ROUTES: Routes = [
   {path: ':id', component: InvestmentComponent},
-  {path: 'form/:id', component: InvestmentFormComponent},
-  {path: 'view/:id', component: InvestmentViewComponent},
+  {path: 'form/:id/:invid', component: InvestmentFormComponent},
+  {path: 'view/:id/:invid', component: InvestmentViewComponent},
 ];
 
 export const investmentRouting = RouterModule.forChild(INVESTMENT_ROUTES);
