@@ -11,7 +11,7 @@
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" class="row">
     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngFor="let b of aligningObj[rw]" class="business-card">
       <mat-card class="card-view" (click)="select(b.bid)"
-                [ngClass]="{'selected-card mat-elevation-z24': b.bid === bizId}">
+                [ngClass]="{'selected-card mat-elevation-z24': b.bid === bizId, 'dead-entity': bizIsDead(b)}">
         <mat-card-header>
           <!--<div mat-card-avatar><img src="../../../assets/logo4.jpg" style="width:40px;height: 40px;"/></div>-->
           <mat-card-title>
@@ -22,10 +22,10 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <div *ngIf="b.bid === bizId">
-            <div fxLayout="row" fxLayout.xs="column"  fxLayoutAlign="start start">
+          <div *ngIf="b.bid === bizId">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['./members/'+ b.bid]"><i class="fa fa-user-circle-o"></i> Members</a>
-              <a fxFlex="50" [routerLink]="['./product/'+ b.bid]" ><i class="fa fa-product-hunt"></i> Product</a>
+              <a fxFlex="50" [routerLink]="['./product/'+ b.bid]"><i class="fa fa-product-hunt"></i> Product</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['./lce/', b.bid, b.name]"><i class="fa fa-bolt"></i> Life cycle events</a>
@@ -44,9 +44,9 @@
           <button mat-icon-button (click)="openForm(b.bid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteBusiness(b.bid)" color="warn">
-          <mat-icon aria-label="delete">delete</mat-icon>
-        </button>
+          <button mat-icon-button (click)="deleteBusiness(b.bid)" color="warn" *ngIf="!bizIsDead(b)">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>

@@ -3,6 +3,7 @@ import {ActionEnum} from '../../shared/enum/action.enum';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
+import * as moment from 'moment';
 import {SearchService} from '../../shared/services/search.service';
 import {ProgressService} from '../../shared/services/progress.service';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
@@ -129,7 +130,7 @@ export class BusinessComponent implements OnInit {
       (data) => {
         if (data) {
           this.progressService.enable();
-          this.restService.delete('business/one/' + bid).subscribe(
+          this.restService.delete('business/one/' + bid + '/' + moment().format('YYYY-MM-DD')).subscribe(
             () => {
               this.snackBar.open('Business is deleted successfully', null, {
                 duration: 2000,
@@ -150,5 +151,9 @@ export class BusinessComponent implements OnInit {
         console.error('Error in dialog: ', err);
       }
     );
+  }
+
+  bizIsDead(biz) {
+    return (biz && biz.end_date > biz.start_date);
   }
 }

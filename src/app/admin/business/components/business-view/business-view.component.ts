@@ -5,6 +5,7 @@ import {RestService} from '../../../../shared/services/rest.service';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ii-business-view',
@@ -58,7 +59,7 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data)
-          this.restService.delete('business/one/' + this.bid).subscribe(
+          this.restService.delete('business/one/' + this.bid + '/' + moment().format('YYYY-MM-DD')).subscribe(
             (rs) => this.breadCrumbService.popChild(),
             (er) => {
               console.error('Cannot delete this business: ', er);
@@ -69,5 +70,9 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
         console.error('Error in closing component. Error: ', err);
       }
     );
+  }
+
+  bizIsDead() {
+    return (this.data && this.data.end_date > this.data.start_date);
   }
 }
