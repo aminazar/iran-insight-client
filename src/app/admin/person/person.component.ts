@@ -13,16 +13,12 @@ import {AbstractSearchComponent} from '../../shared/components/abstract-search/a
 })
 export class PersonComponent extends AbstractSearchComponent implements OnInit {
 
-
   ngOnInit() {
     this.key = 'person';
     this.viewName = 'Person';
     super.ngOnInit();
 
   }
-
-
-
 
   deletePerson(id: number = null): void {
 

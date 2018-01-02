@@ -35,6 +35,7 @@ export class BusinessComponent implements OnInit {
 
   ngOnInit() {
     this.breadCrumbService.pushChild('Business', this.router.url, true);
+    console.log('In Business Component.');
   }
 
   openForm(id: number = 0): void {

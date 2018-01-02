@@ -2,10 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {ActionEnum} from '../../../../shared/enum/action.enum';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {RestService} from '../../../../shared/services/rest.service';
 import {IMember} from '../../interfaces/member';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
   selector: 'ii-business-members',
@@ -17,42 +18,58 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   bid: number;
   members: IMember[] = [];
   memberId: number = null;
+  add = false;
   showInDeep = false;
   actionEnum = ActionEnum;
-  selectedIndex = 0;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private activatedRoute: ActivatedRoute,
-              private restService: RestService) {
+              private restService: RestService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.breadCrumbService.pushChild('Members', this.router.url, false);
+    console.log('In Business-Members Component.');
+    this.breadCrumbService.pushChild('Member', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = params['bid'];
-      this.progressService.enable();
-      this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
+      this.getBizMember();
+    });
+  }
 
-        this.members = [];
-        res.forEach(member => {
+  getBizMember() {
+    this.progressService.enable();
+    this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
+      this.members = [];
+      res.forEach(member => {
 
-          this.members.push(member);
-
-        });
-        console.log('-> ', this.members);
-        this.progressService.disable();
-      }, err => {
-        this.progressService.disable();
+        this.members.push(member);
 
       });
+      console.log('--> ', this.members);
+      this.progressService.disable();
+    }, err => {
+      this.progressService.disable();
 
     });
   }
 
   openForm(id?: number): void {
     this.memberId = id;
-    this.showInDeep = true;
-    this.selectedIndex = 0;
+    this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
+  }
+
+  openView(id: number = null): void {
+    // this.productId = id;
+    // this.router.navigate(['/admin/product/' + id]);
+  }
+
+  deleteMembership(mid: number = null): void {
+  }
+
+  ngOnDestroy(): void {
+    this.bid = null;
+    this.members = null;
+    this.memberId = null;
   }
 
   applyChanges(data) {
@@ -71,12 +88,5 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
         break;
     }
   }
-
-  ngOnDestroy(): void {
-    this.bid = null;
-    this.members = null;
-    this.memberId = null;
-    this.showInDeep = false;
-    this.selectedIndex = 0;
-  }
 }
+
