@@ -7,19 +7,34 @@
     <mat-card-content>
       <form (ngSubmit)="modifyInvestment()" [formGroup]="investmentForm">
         <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign="center center">
-          <div fxFlex="50" class="field-container">
+          <div fxFlex="40" class="field-container">
             <mat-input-container class="field">
               <input matInput type="text" placeholder="Amount" formControlName="amount" role="amount" tabindex="1"/>
             </mat-input-container>
           </div>
-          <div fxFlex="50" class="field-container">
-            <mat-select>
-              <mat-option *ngFor="let cur of currencyList" [value]="cur">{{cur}}</mat-option>
+          <div fxFlex="30" class="field-container">
+            <mat-select formControlName="currency" placeholder="Choose Currency" tabindex="2">
+              <mat-option *ngFor="let cur of currencyList" [value]="cur.value">{{cur.name}} - {{cur.value}}</mat-option>
             </mat-select>
-            <mat-input-container>
-              <input type="text" placeholder="Currency Abbreviation" />
+          </div>
+          <div fxFlex="30" class="field-container">
+            <mat-input-container class="field">
+              <input matInput type="text" placeholder="Or add if not exist" formControlName="currency" tabindex="3"/>
             </mat-input-container>
           </div>
+        </div>
+        <div>
+          <mat-checkbox formControlName="is_lead">Is Leader</mat-checkbox>
+        </div>
+        <div role="submit-button">
+          <button mat-icon-button color="accent" type="submit"
+                  [disabled]="upsertBtnShouldDisabled || (!investmentForm.valid || (id && !anyChanges))" tabindex="20">
+            <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" *ngIf="id" (click)="deleteInvestment()"
+                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
         </div>
       </form>
     </mat-card-content>
