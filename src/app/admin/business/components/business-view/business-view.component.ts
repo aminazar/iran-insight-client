@@ -59,7 +59,9 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data)
-          this.restService.delete('business/one/' + this.bid + '/' + moment().format('YYYY-MM-DD')).subscribe(
+          this.restService.post('business/one/delete/' + this.bid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
             (rs) => this.breadCrumbService.popChild(),
             (er) => {
               console.error('Cannot delete this business: ', er);

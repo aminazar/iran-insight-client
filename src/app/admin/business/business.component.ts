@@ -130,7 +130,9 @@ export class BusinessComponent implements OnInit {
       (data) => {
         if (data) {
           this.progressService.enable();
-          this.restService.delete('business/one/' + bid + '/' + moment().format('YYYY-MM-DD')).subscribe(
+          this.restService.post('business/one/delete/' + bid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
             () => {
               this.snackBar.open('Business is deleted successfully', null, {
                 duration: 2000,
