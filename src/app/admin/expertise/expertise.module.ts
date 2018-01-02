@@ -22,6 +22,7 @@ import {
   MatSelectModule,
   MatInputModule
 } from "@angular/material";
+import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import {
   declarations: [
     ExpertiseComponent,
     ExpertiseFormComponent,
+    ExpertiseViewComponent,
   ],
 })
 export class ExpertiseModule{
