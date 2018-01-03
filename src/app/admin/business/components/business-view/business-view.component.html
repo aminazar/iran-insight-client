@@ -2,7 +2,8 @@
   <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
     <mat-card-header>
       <mat-card-title>
-        {{data.name}}
+        <div *ngIf="bizIsDead()" style="color: darkred; font-weight: bold;">This Business Is Deleted</div>
+        <div>{{data.name}}</div>
       </mat-card-title>
       <mat-card-subtitle>
         {{data.name_fa}}
@@ -26,7 +27,7 @@
           <div class="view-content">{{data.address_fa}}</div>
         </div>
       </div>
-      <div style="margin: 10px;">
+      <div style="margin: 20px;">
         <agm-map class="ev-loc" [latitude]="data.latitude" [longitude]="data.longitude">
           <agm-marker [latitude]="data.latitude"
                       [longitude]="data.longitude"
@@ -68,7 +69,7 @@
       <button mat-icon-button (click)="editBusiness()" color="accent">
         <mat-icon aria-label="edit">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="deleteBusiness()" color="warn">
+      <button mat-icon-button (click)="deleteBusiness()" color="warn" *ngIf="!bizIsDead()">
         <mat-icon aria-label="delete">delete</mat-icon>
       </button>
     </mat-card-actions>
