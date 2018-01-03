@@ -53,14 +53,17 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  openForm(id?: number): void {
-    console.log('form');
+  openForm(id ?: number): void {
+    if (id)
+      console.log('edit');
+    else
+      console.log('add form');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
   }
 
   openView(id: number = null): void {
-    console.log('view');
+    console.log('view details');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/${this.bid}/${this.memberId}`]);
   }
