@@ -1,9 +1,11 @@
 import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {RestService} from '../../../../shared/services/rest.service';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ii-business-view',
@@ -13,36 +15,66 @@ import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service'
 export class BusinessViewComponent implements OnInit, OnDestroy {
   bid: number;
   data: any = {};
-  parsed = '';
 
-  constructor(@Optional() @Inject(MAT_DIALOG_DATA) public dialogData: any, private router: Router,
-              private breadCrumbService: BreadcrumbService, private snackBar: MatSnackBar,
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private progressService: ProgressService, private activatedRoute: ActivatedRoute,
               private restService: RestService, public dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.bid = +params['bid'];
-      if (this.bid) {
-        this.breadCrumbService.pushChild('View', this.router.url, false);
-      } else { // Opens as dialog
-        this.bid = this.dialogData.bid;
+    this.activatedRoute.params.subscribe(
+      (params) => {
+        this.bid = +params['bid'] ? +params['bid'] : null;
+
+        if (this.bid)
+          this.breadCrumbService.pushChild('View', this.router.url, false);
+
+        this.progressService.enable();
+        this.restService.get(`business/oneAll/${this.bid}`).subscribe(
+          (res) => {
+            this.data = res;
+            this.progressService.disable();
+          },
+          (err) => {
+            this.progressService.disable();
+          }
+        );
       }
-      this.progressService.enable();
-      this.restService.get(`business/oneAll/${this.bid}`).subscribe(res => {
-        this.data = res;
-        this.parsed = JSON.stringify(res, null, 2);
-        this.progressService.disable();
-      }, err => {
-        this.progressService.disable();
-
-      });
-      this.progressService.enable();
-    });
-
+    );
   }
 
   ngOnDestroy() {
+  }
+
+  editBusiness() {
+    this.router.navigate(['/admin/business/form' + this.bid]);
+  }
+
+  deleteBusiness() {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '250px'
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (data) => {
+        if (data)
+          this.restService.post('business/one/delete/' + this.bid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
+            (rs) => this.breadCrumbService.popChild(),
+            (er) => {
+              console.error('Cannot delete this business: ', er);
+            }
+          );
+      },
+      (err) => {
+        console.error('Error in closing component. Error: ', err);
+      }
+    );
+  }
+
+  bizIsDead() {
+    return (this.data && this.data.end_date > this.data.start_date);
   }
 }
