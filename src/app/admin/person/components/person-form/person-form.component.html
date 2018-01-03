@@ -24,9 +24,15 @@
             </mat-input-container>
           </div>
           <div fxFlex="50">
-            <!--<mat-input-container>-->
-            <!--<input type="file" placeholder="Image" formControlName="image" role="image"/>-->
-            <!--</mat-input-container>-->
+            <image-upload *ngIf="formId"
+              [max]="1"
+              [url]="'api/profile/image/' + form.controls['username'].value + '/' + formId"
+              [uploadedFiles]="userProfileImage"
+              [extensions]="['jpg','png']"
+              [buttonCaption]="'Select Image'"
+              [dropBoxMessage]="''"
+              (removed)="profileImageRemoved()"
+              (uploadFinished)="uploadFinished()"></image-upload>
           </div>
         </div>
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.xs="center center">
@@ -61,6 +67,8 @@
             <mat-input-container class="field">
               <input matInput type="text" placeholder="Display Name" formControlName="display_name_en"
                      role="display-name-en" tabindex="4"/>
+              <mat-hint>At least one of the display names must be declared</mat-hint>
+              <mat-error *ngIf="form.controls['display_name_en'].hasError('oneNeed')">At least one of the display names must be declared</mat-error>
             </mat-input-container>
           </div>
           <div fxFlex="50" dir="rtl" class="field-container">

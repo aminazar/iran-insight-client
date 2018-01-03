@@ -10,6 +10,7 @@ import {
   MatSelectModule,
   MatSnackBarModule, MatTableModule, MatTabsModule
 } from '@angular/material';
+import {ImageUploadModule} from 'angular2-image-upload';
 import {PersonFormComponent} from './components/person-form/person-form.component';
 import {SharedModule} from '../../shared/shared.module';
 import { PersonExpertiseComponent } from './components/person-expertise/person-expertise.component';
@@ -40,6 +41,7 @@ import { PersonViewComponent } from './components/person-view/person-view.compon
     MatAutocompleteModule,
     MatTabsModule,
     MatPaginatorModule,
+    ImageUploadModule.forRoot(),
   ],
   declarations: [
     PersonComponent,

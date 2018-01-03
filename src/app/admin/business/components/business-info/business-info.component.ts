@@ -6,11 +6,31 @@ import {RestService} from '../../../../shared/services/rest.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import * as moment from 'moment';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 @Component({
   selector: 'ii-business-info',
   templateUrl: './business-info.component.html',
-  styleUrls: ['./business-info.component.css']
+  styleUrls: ['./business-info.component.css'],
+  providers: [
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 export class BusinessInfoComponent implements OnInit, OnDestroy {
 
@@ -68,6 +88,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       this.breadCrumbService.pushChild(this.add ? 'Add' : 'Update', this.router.url, false);
     });
 
+    this.initLocation();
   }
 
   setCEOName(lang = 'en') {
@@ -105,8 +126,11 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       ceo_pid: [this.loadedValue.ceo_pid],
       latitude: [this.loadedValue.latitude ? this.loadedValue.latitude : 35.696491],
       longitude: [this.loadedValue.longitude ? this.loadedValue.longitude : 51.379926],
-  })
-    ;
+      start_date: [this.loadedValue.start_date ? this.loadedValue.start_date : new Date(), [
+        Validators.required,
+      ]],
+      end_date: [this.loadedValue.end_date ? this.loadedValue.end_date : null],
+    });
 
     this.productForm = new FormBuilder().group({
       productName: [this.loadedValue.product ? this.loadedValue.product.name : null]
@@ -115,6 +139,17 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.generalForm = new FormBuilder().group({});
 
     this.financialForm = new FormBuilder().group({});
+  }
+
+  initLocation() {
+    if (navigator.geolocation && !this.bid) {
+      navigator.geolocation.getCurrentPosition(el => {
+        this.basicForm.controls['latitude'].value = el.coords.latitude;
+        this.basicForm.controls['longitude'].value = el.coords.longitude;
+      }, err => {
+        console.log('ERROR: ', err);
+      });
+    }
   }
 
   setCEO(value) {
@@ -163,9 +198,11 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             this.snackBar.open(`Business is ${this.add ? 'added' : 'updated'}.`, null, {duration: 2300});
             this.progressService.disable();
             this.loadedValue = bizData;
-            if (this.add)
-              this.loadedValue.bid = data;
-            this.initForm();
+            if (this.add) {
+              // this.loadedValue.bid = data;
+              this.initForm();
+            }
+
             this.changed = false;
             this.upsertDisabled = false;
             this.deleteDisabled = false;
@@ -174,7 +211,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             // this.snackBar.open('Cannot ' + (this.add ? 'add' : 'update') + ' this business: ' + err.message, null, {
             //   duration: 3200,
             // });
-            this.initForm();
+            // this.initForm();
             this.progressService.disable();
             this.upsertDisabled = false;
             this.deleteDisabled = false;
@@ -195,7 +232,9 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.upsertDisabled = true;
           this.deleteDisabled = true;
 
-          this.restService.delete('business/one/' + this.loadedValue.bid).subscribe(
+          this.restService.post('business/one/delete/' + this.loadedValue.bid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
             () => {
               this.router.navigate(['admin', 'business'])
                 .then(() => {
@@ -219,5 +258,11 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
         console.error('Error in dialog: ', err);
       }
     );
+  }
+
+  bizIsDead() {
+    return (!this.add &&
+            this.basicForm.controls['end_date'].value &&
+            this.basicForm.controls['end_date'].value > this.basicForm.controls['start_date'].value);
   }
 }

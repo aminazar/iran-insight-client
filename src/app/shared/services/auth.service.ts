@@ -3,11 +3,15 @@ import {Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {RestService} from './rest.service';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
+  private defaultDisplayName = 'Anonymous user';
   isLoggedIn: ReplaySubject<boolean> = new ReplaySubject(1);
   isAdmin: ReplaySubject<boolean> = new ReplaySubject(1);
+  userId: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  displayName: BehaviorSubject<string> = new BehaviorSubject<string>(this.defaultDisplayName);
 
   constructor(private restService: RestService, private router: Router) {
     this.restService.get('validUser').subscribe(
@@ -17,11 +21,15 @@ export class AuthService {
           this.isAdmin.next(true);
         else
           this.isAdmin.next(false);
+        this.userId.next(data.pid);
+        this.displayName.next(data.displayName);
       },
       (err) => {
         console.log('Not logged in: ', err);
         this.isLoggedIn.next(false);
         this.isAdmin.next(false);
+        this.userId.next(null);
+        this.displayName.next(this.defaultDisplayName);
       }
     );
   }
@@ -31,17 +39,21 @@ export class AuthService {
       this.restService.post('login', {username: username, password: password}).subscribe(
         (data) => {
           this.isLoggedIn.next(true);
-
           if (data.userType === 'admin')
             this.isAdmin.next(true);
           else
             this.isAdmin.next(false);
+          this.userId.next(data.pid);
+          this.displayName.next(data.displayName);
 
           resolve();
         },
         (err) => {
           this.isLoggedIn.next(false);
           console.log('Error: ', err);
+          this.isAdmin.next(false);
+          this.userId.next(null);
+          this.displayName.next(this.defaultDisplayName);
           reject();
         }
       );
@@ -57,6 +69,9 @@ export class AuthService {
           rt = 'admin/' + rt;
 
         this.isLoggedIn.next(false);
+        this.isAdmin.next(false);
+        this.userId.next(null);
+        this.displayName.next(this.defaultDisplayName);
         this.router.navigate([rt]);
       },
       (err) => {
@@ -129,11 +144,15 @@ export class AuthService {
             this.isAdmin.next(true);
           else
             this.isAdmin.next(false);
+          this.userId.next(data.pid);
+          this.displayName.next(data.displayName);
           resolve();
         },
         (err) => {
           this.isLoggedIn.next(false);
           this.isAdmin.next(false);
+          this.userId.next(null);
+          this.displayName.next(this.defaultDisplayName);
           reject();
         }
       );
