@@ -17,11 +17,11 @@ const Admin_ROUTES: Routes = [
       {path: 'expertise', loadChildren: 'app/admin/expertise/expertise.module#ExpertiseModule', canActivate: [AuthGuard]},
       {path: 'attendance', loadChildren: 'app/admin/attendance/attendance.module#AttendanceModule', canActivate: [AuthGuard]},
       {path: 'profile', loadChildren: 'app/site/profile/profile.module#ProfileModule', canActivate: [AuthGuard]},
+      {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
       // {path: 'lce/:type/:id', loadChildren: 'app/admin/LCE/lce.module#LCEModule', canActivate: [AuthGuard]},
     ],
   },
   {path: 'admin/organization', component: UnderConstructionComponent},
-  {path: 'admin/investment', component: UnderConstructionComponent},
   {path: 'admin/consultancy', component: UnderConstructionComponent},
   {path: 'admin/login', loadChildren: 'app/admin/login/login.module#LoginModule'},
 ];

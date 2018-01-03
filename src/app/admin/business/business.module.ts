@@ -52,7 +52,7 @@ import {BusinessProductsComponent} from './components/business-products/business
     ActiveDirective,
     BusinessProductsComponent,
     BusinessViewComponent],
-  providers: [{provide: 'Window', useValue: window}]
+    providers: [{ provide: 'Window', useValue: window }]
 })
 export class BusinessModule {
 }
