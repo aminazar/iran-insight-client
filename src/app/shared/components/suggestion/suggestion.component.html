@@ -1,8 +1,11 @@
 <mat-input-container class="field">
-  <input matInput type="text" placeholder="{{placeholder}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl"/>
+  <input matInput type="text" placeholder="{{placeholder}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl" (keyup.enter)="onEntered($event)"/>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItem($event)">
-    <mat-option *ngFor="let item of filteredItems" [value]="item[fn]" class="farsi">
-      {{item[fn]}}
+    <mat-option *ngFor="let item of filteredItems" [value]="item[fn]">
+      <div>
+        {{item[fn]}}
+      </div>
+      <div *ngIf="dscp_fn" class="description">{{item[dscp_fn]}}</div>
     </mat-option>
   </mat-autocomplete>
 </mat-input-container>
