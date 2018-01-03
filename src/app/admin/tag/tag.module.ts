@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
@@ -37,7 +38,8 @@ import {TagRouting} from './tag.routing';
     MatExpansionModule,
     MatDatepickerModule,
     MatPaginatorModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   declarations: [TagComponent],
 })

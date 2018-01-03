@@ -2,25 +2,33 @@
 
 <mat-card-header>
 
-  tags for :{{name}}
+  <h3>tags for :{{name}}</h3>
+
 </mat-card-header>
 <mat-card-content>
 
-
-  <mat-form-field>
+  <mat-form-field class="new-tag-suggestion">
     <mat-chip-list #chipList>
-      <mat-chip>Chip 1</mat-chip>
-      <mat-chip>Chip 2</mat-chip>
-    </mat-chip-list>
-    <mat-input-container class="field">
-      <input matInput type="text"  [matAutocomplete]="auto" [formControl]="suggestionCtrl"/>
-      <mat-autocomplete #auto="matAutocomplete" >
-        <mat-option *ngFor="let item of ['hello','salam']" [value]="item" class="farsi">
+      <mat-chip *ngFor="let tag of tags"
+                [selectable]="true"
+                [removable]="true" (remove)="remove(tag)">
+        {{tag}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="insert new tag..."
+             [matAutocomplete]="auto"
+             [formControl]="suggestionCtrl"
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="add($event)" />
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItem($event)">
+        <mat-option *ngFor="let item of filteredItems" [value]="item" class="farsi">
           {{item}}
         </mat-option>
       </mat-autocomplete>
-    </mat-input-container>
 
+    </mat-chip-list>
   </mat-form-field>
 
 
