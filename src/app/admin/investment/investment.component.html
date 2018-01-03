@@ -9,22 +9,23 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
     <div fxFlex="25" *ngFor="let inv of aligningObj[rw]" class="outer-card">
-      <mat-card class="card-view" [ngClass]="{'selected-card mat-elevation-z12': p.pid === cardId}" style="min-height: 270px;">
+      <mat-card class="card-view" [ngClass]="{'selected-card mat-elevation-z12': inv.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>{{inv.investmentRelationName}}</mat-card-title>
         </mat-card-header>
         <mat-card-content style="min-height: 100px">
-          <div>{{inv.amount}} {{inv.currency}}</div>
+          <div>Amount: {{inv.amount}}</div>
+          <div>Currency: {{inv.currency}}</div>
           <div *ngIf="inv.is_lead" color="accent">Is Leader</div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="open('view', inv.pid)" color="primary">
+          <button mat-icon-button (click)="open('view', inv.id)" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="open('form', inv.pid)" color="accent">
+          <button mat-icon-button (click)="open('form', inv.id)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteInvestment(inv.pid)" color="warn">
+          <button mat-icon-button (click)="deleteInvestment(inv.id)" color="warn">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </mat-card-actions>

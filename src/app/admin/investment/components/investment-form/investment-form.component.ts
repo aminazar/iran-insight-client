@@ -3,7 +3,10 @@ import {RestService} from '../../../../shared/services/rest.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ProgressService} from "../../../../shared/services/progress.service";
+import {ProgressService} from '../../../../shared/services/progress.service';
+import {AuthService} from '../../../../shared/services/auth.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 enum InvestorType {
   person,
@@ -17,6 +20,10 @@ enum InvestorType {
 })
 export class InvestmentFormComponent implements OnInit {
   id = null;
+  isPerson = false;
+  isBiz = false;
+  isOrg = false;
+  isInvestor = false;
   investmentId = null;
   investmentForm: FormGroup;
   loadedValue: any = {};
@@ -26,6 +33,10 @@ export class InvestmentFormComponent implements OnInit {
   investorType = InvestorType;
   investor = this.investorType.person;
   investorObj = {
+    name: null,
+    id: null,
+  };
+  investmentObj = {
     name: null,
     id: null,
   };
@@ -86,7 +97,8 @@ export class InvestmentFormComponent implements OnInit {
 
   constructor(private restService: RestService, private breadcrumbService: BreadcrumbService,
               private router: Router, private route: ActivatedRoute,
-              private progressService: ProgressService) {
+              private progressService: ProgressService, private authService: AuthService,
+              private snackBar: MatSnackBar, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -96,11 +108,15 @@ export class InvestmentFormComponent implements OnInit {
       (params) => {
         this.id = params['id'] ? +params['id'] : null;
         this.investmentId = params['invid'] ? +params['invid'] : null;
+        this.isInvestor = params['is_investor'] ? (params['is_investor'] === 'true' ? true : false) : false;
+        this.isBiz = params['type'] ? false : true;
+        this.isPerson = params['type'] ? (params['type'].toLowerCase() === 'person' ? true : false) : false;
+        this.isOrg = params['type'] ? (params['type'].toLowerCase() === 'organization' ? true : false) : false;
 
         if (this.investmentId)
           this.getInvestment();
 
-        this.breadcrumbService.pushChild((this.id ? 'Update' : 'Add') + ' Investment', this.router.url, false);
+        this.breadcrumbService.pushChild((this.investmentId ? 'Update' : 'Add') + ' Investment', this.router.url, false);
       },
       (err) => {
         console.error('Cannot parse parameters from url: ', err);
@@ -120,42 +136,113 @@ export class InvestmentFormComponent implements OnInit {
       is_lead: [this.loadedValue.is_lead ? this.loadedValue.is_lead : false, [
         Validators.required
       ]],
+      is_confirmed: [this.loadedValue.is_confirmed ? this.loadedValue.is_confirmed : false, [
+        Validators.required,
+      ]],
     });
   }
 
   getInvestment() {
-    this.initForm();
+    if (!this.investmentId)
+      return;
+
+    this.restService.get('investment/' + this.investmentId).subscribe(
+      (data) => {
+        this.loadedValue = data;
+        if (data.pid) {
+          this.investorObj.id = data.pid;
+          this.investorObj.name = data.person_display_name || data.perosn_display_name_fa;
+        } else if (data.oid) {
+          this.investorObj.id = data.oid;
+          this.investorObj.name = data.name || data.name_fa;
+        }
+
+        this.initForm();
+      },
+      (err) => {
+        console.error('Cannot get investment details');
+      }
+    );
   }
 
   modifyInvestment() {
-    if (!this.investorObj.id)
+    if (!this.investorObj.id && !this.investmentObj.id)
       return;
 
-    let data = {};
+    let data: any = {};
 
     Object.keys(this.investmentForm.controls).forEach(el => {
       data[el] = this.investmentForm.controls[el].value;
     });
 
-    this.progressService.enable();
-    this.restService.put(
-        (this.investor === this.investorType.person ? 'personalInvestment' : 'orgInvestment') +
-        '/' + this.id +
-        '/' + this.investorObj.id, data).subscribe(
-      (rs) => {
-        console.log(rs);
-        this.loadedValue.id = rs;
+    if (this.investmentForm.controls['is_confirmed'].value)
+      data.confirmed_by = this.authService.userId.getValue();
 
-        this.progressService.disable();
-      },
-      (err) => {
-        this.progressService.disable();
-      }
-    );
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
+
+    let url = '';
+    if (this.isInvestor) {
+      url = (this.isPerson ? 'personalInvestment' : 'orgInvestment') + '/' + this.investmentObj.id + '/' + this.id;
+    } else {
+      url = (this.investor === this.investorType.person ? 'personalInvestment' : 'orgInvestment') +
+        '/' + this.id +
+        '/' + this.investorObj.id;
+    }
+
+    this.restService.put(url, data)
+      .subscribe(
+        (rs) => {
+          this.loadedValue.id = rs;
+
+          if (!this.investmentId) {
+            this.initForm();
+            this.investorObj = {
+              id: null,
+              name: null,
+            };
+          }
+
+          this.snackBar.open('The investment is added successfully', null, {
+            duration: 2300,
+          });
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+        },
+        (err) => {
+          this.progressService.disable();
+          this.upsertBtnShouldDisabled = false;
+          this.deleteBtnShouldDisabled = false;
+        }
+      );
   }
 
   deleteInvestment() {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
 
+    rmDialog.afterClosed().subscribe(
+      (data) => {
+        if (data)
+          this.restService.delete('investment/' + this.investmentId).subscribe(
+            (rs) => {
+              this.snackBar.open('The investment is deleted successfully', null, {
+                duration: 2300,
+              });
+              this.breadcrumbService.popChild();
+            },
+            (er) => {
+              console.error('Cannot delete this investment');
+            }
+          );
+      },
+      (err) => {
+        console.error('Error when closing dialog: ', err);
+      }
+    );
   }
 
   setInvestor(data) {
@@ -167,14 +254,25 @@ export class InvestmentFormComponent implements OnInit {
       (data.name || data.name_fa);
   }
 
-  directToInvestor() {
+  setTargetBusiness(data) {
+    this.investmentObj.id = data.bid;
+    this.investmentObj.name = data.name || data.name_fa;
+  }
+
+  directToInvDone() {
     let url = '/admin/';
 
-    if (this.investor === this.investorType.person)
-      url += 'person';
-    else if (this.investor === this.investorType.organization)
-      url += 'organization';
+    if (this.isInvestor)
+      url += 'business/view/' + this.investmentObj.id;
+    else {
+      if (this.investor === this.investorType.person)
+        url += 'person';
+      else if (this.investor === this.investorType.organization)
+        url += 'organization';
 
-    this.router.navigate([url + '/view/' + this.investorObj.id]);
+      url += '/view/' + this.investorObj.id;
+    }
+
+    this.router.navigate([url]);
   }
 }

@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RestService} from '../../shared/services/rest.service';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../shared/services/progress.service';
+import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
   selector: 'ii-investment',
@@ -24,16 +25,20 @@ export class InvestmentComponent implements OnInit {
 
   constructor(private breadcrumbService: BreadcrumbService, private router: Router,
               private route: ActivatedRoute, private restService: RestService,
-              private snackBar: MatSnackBar, private progressService: ProgressService) {
+              private snackBar: MatSnackBar, private progressService: ProgressService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(
-      (qp) => {
-        this.investmentRelationName = qp['name'] ? qp['name'] : null;
-        this.isPerson = qp['is_person'] ? qp['is_person'] : false;
-        this.isBiz = qp['is_business'] ? qp['is_business'] : false;
-        this.isOrg = qp['is_organization'] ? qp['is_organization'] : false;
+    this.route.params.subscribe(
+      (params) => {
+        this.investmentRelationName = params['name'] ? params['name'] : null;
+        const type = params['type'] ? params['type'] : null;
+
+        this.isPerson = this.router.url.toLowerCase().includes('person') ? true : false;
+        this.isBiz = this.router.url.toLowerCase().includes('business') ? true : false;
+        this.isOrg = this.router.url.toLowerCase().includes('organization') ? true : false;
+
         this.isInvestor = (this.isPerson || this.isOrg);
         this.getInvestments();
         if (!this.breadcrumbIsSet) {
@@ -42,16 +47,9 @@ export class InvestmentComponent implements OnInit {
             this.investmentRelationName, this.router.url, false);
 
           this.breadcrumbIsSet = true;
+          this.id = params['id'] ? +params['id'] : null;
+          this.getInvestments();
         }
-      },
-      (err) => {
-        console.error('Cannot parse query parameters from url: ', err);
-      }
-    );
-    this.route.params.subscribe(
-      (params) => {
-        this.id = params['id'] ? +params['id'] : null;
-        this.getInvestments();
       },
       (err) => {
         console.error('Cannot parse parameters from url: ', err);
@@ -61,20 +59,38 @@ export class InvestmentComponent implements OnInit {
 
   open(type, id) {
     if (type === 'view')
-      this.router.navigate(['/admin/investment/view/' + this.id + '/' + id]);
+      this.router.navigate(['/admin/investment/view/' +
+      (this.isBiz ? '' : (this.isPerson ? 'person/' : 'organization/')) +
+      this.isInvestor + '/' + this.id + '/' + id]);
     else if (type === 'form')
-      this.router.navigate(['/admin/investment/form/' + this.id + '/' + id]);
+      this.router.navigate(['/admin/investment/form/' +
+      (this.isBiz ? '' : (this.isPerson ? 'person/' : 'organization/')) +
+      this.isInvestor + '/' + this.id + '/' + id]);
   }
 
   deleteInvestment(id) {
-    this.restService.delete('investment/' + id).subscribe(
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(
       (data) => {
-        this.snackBar.open('The investment is deleted successfully', null, {
-          duration: 2300,
-        });
+        if (data)
+          this.restService.delete('investment/' + id).subscribe(
+            (rs) => {
+              this.investmentList = this.investmentList.filter(el => el.id !== id);
+              this.aligningItems();
+              this.snackBar.open('The investment is deleted successfully', null, {
+                duration: 2300,
+              });
+            },
+            (err) => {
+              console.error('Cannot delete investment: ', err);
+            }
+          );
       },
       (err) => {
-        console.error('Cannot delete investment: ', err);
+        console.error('Error when closing dialog: ', err);
       }
     );
   }
@@ -88,12 +104,13 @@ export class InvestmentComponent implements OnInit {
         url += 'business/';
       else if (this.isOrg)
         url += 'organization/';
-      url += this.id;
+      url += 'all/' + this.id;
 
       this.progressService.enable();
       this.restService.get(url).subscribe(
         (data) => {
           this.investmentList = data;
+          this.aligningItems();
           this.progressService.disable();
         },
         (err) => {
