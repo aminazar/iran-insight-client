@@ -140,6 +140,11 @@ export class InvestmentFormComponent implements OnInit {
         Validators.required,
       ]],
     });
+
+    this.investmentForm.valueChanges.subscribe(
+      (dt) => this.fieldChanged(),
+      (er) => console.error('Error when subscribing on form valueChanges: ', er)
+    );
   }
 
   getInvestment() {
@@ -184,32 +189,44 @@ export class InvestmentFormComponent implements OnInit {
 
     let url = '';
     if (this.isInvestor) {
-      url = (this.isPerson ? 'personalInvestment' : 'orgInvestment') + '/' + this.investmentObj.id + '/' + this.id;
+      url = (this.isPerson ? 'personalInvestment' : 'orgInvestment') +
+        '/' + (this.investmentId ? this.investmentId + '/' : '') +
+        this.investmentObj.id + '/' + this.id;
     } else {
       url = (this.investor === this.investorType.person ? 'personalInvestment' : 'orgInvestment') +
+        '/' + (this.investmentId ? this.investmentId + '/' : '') +
         '/' + this.id +
         '/' + this.investorObj.id;
     }
 
-    this.restService.put(url, data)
+    (this.investmentId ?
+      this.restService.post(url, data) :
+      this.restService.put(url, data))
       .subscribe(
         (rs) => {
-          this.loadedValue.id = rs;
-
           if (!this.investmentId) {
             this.initForm();
             this.investorObj = {
               id: null,
               name: null,
             };
+            this.investmentObj = {
+              id: null,
+              name: null,
+            };
+          } else {
+            Object.keys(data).forEach(el => this.loadedValue[el] = data[el]);
+            this.loadedValue.id = rs;
           }
 
-          this.snackBar.open('The investment is added successfully', null, {
+          this.snackBar.open('The investment is ' + (this.investmentId ? 'updated' : 'added') + ' successfully', null, {
             duration: 2300,
           });
           this.progressService.disable();
           this.upsertBtnShouldDisabled = false;
           this.deleteBtnShouldDisabled = false;
+
+          this.anyChanges = false;
         },
         (err) => {
           this.progressService.disable();
@@ -252,11 +269,13 @@ export class InvestmentFormComponent implements OnInit {
     this.investorObj.name = this.investor === this.investorType.person ?
       (data.display_name_en || data.display_name_fa) :
       (data.name || data.name_fa);
+    this.fieldChanged();
   }
 
   setTargetBusiness(data) {
     this.investmentObj.id = data.bid;
     this.investmentObj.name = data.name || data.name_fa;
+    this.fieldChanged();
   }
 
   directToInvDone() {
@@ -274,5 +293,26 @@ export class InvestmentFormComponent implements OnInit {
     }
 
     this.router.navigate([url]);
+  }
+
+  fieldChanged() {
+    if (!this.loadedValue || !Object.keys(this.loadedValue))
+      return;
+
+    this.anyChanges = false;
+
+    Object.keys(this.investmentForm.controls).forEach(el => {
+      if (this.investmentForm.controls[el].value != this.loadedValue[el])
+        this.anyChanges = true;
+    });
+
+    if (this.investmentObj.id) {
+      if (this.investmentObj.id !== this.loadedValue.bid)
+        this.anyChanges = true;
+    } else if (this.investorObj.id) {
+      const tempId = this.loadedValue[(this.investor === this.investorType.person ? 'pid' : 'oid')];
+      if (this.investorObj.id !== tempId)
+        this.anyChanges = true;
+    }
   }
 }
