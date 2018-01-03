@@ -1,5 +1,5 @@
 <mat-input-container class="field">
-  <input matInput type="text" placeholder="{{placeholder}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl" (keyup.enter)="onEntered($event)"/>
+  <input matInput type="text" placeholder="{{placeholder}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl"/>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItem($event)">
     <mat-option *ngFor="let item of filteredItems" [value]="item[fn]">
       <div>
