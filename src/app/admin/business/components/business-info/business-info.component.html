@@ -35,7 +35,7 @@
               <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid" role="submit-button" tabindex="20">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21">
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
             </mat-card-actions>
@@ -55,7 +55,7 @@
               </div>
               <div fxLayout="column" fxLayoutAlign="start start" class="CEOBox">
                 <div fxFlex="90">Chief Executive Officer</div>
-                <div fxFlex="90" *ngIf="!add || ceoName" class="CEOStatic">{{ceoName}}</div>
+                <div fxFlex="90" *ngIf="!add || !!ceoName" class="CEOStatic">{{ceoName}}</div>
                 <div fxFlex="90">
                   <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
                                  [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
@@ -89,6 +89,26 @@
                   <input matInput type="text" placeholder="URL" formControlName="url" role="url" tabindex="5"/>
                 </mat-input-container>
               </div>
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+                <div fxFlex="50" class="field-container">
+                  <mat-form-field class="field">
+                    <input matInput [matDatepicker]="start_date_picker" placeholder="Start Date" formControlName="start_date"
+                           role="start-date" tabindex="6"/>
+                    <mat-datepicker-toggle matSuffix [for]="start_date_picker" role="start-date-picker"
+                                           tabindex="7"></mat-datepicker-toggle>
+                    <mat-datepicker #start_date_picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="field-container">
+                  <mat-form-field class="field">
+                    <input matInput [matDatepicker]="end_date_picker" placeholder="End Date" formControlName="end_date"
+                           role="end-date" tabindex="8"/>
+                    <mat-datepicker-toggle matSuffix [for]="end_date_picker" role="end-date-picker"
+                                           tabindex="9"></mat-datepicker-toggle>
+                    <mat-datepicker #end_date_picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
             </mat-card-content>
             <mat-card-actions>
               <button mat-icon-button matStepperPrevious role="previous-1">
@@ -101,7 +121,7 @@
                       >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
@@ -154,7 +174,7 @@
                       >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
@@ -179,7 +199,7 @@
               </div>
               <div fxLayout="column" fxLayoutAlign="center center" class="CEOBox">
                 <div fxFlex="100">Chief Executive Officer</div>
-                <div fxFlex="100" *ngIf="!add || ceoName" class="CEOStatic">{{ceoName}}</div>
+                <div fxFlex="100" *ngIf="!add || !!ceoName" class="CEOStatic">{{ceoName}}</div>
                 <div fxFlex="100">
                   <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
                                  [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
@@ -224,7 +244,7 @@
               <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20" [disabled]="!basicForm.valid">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>

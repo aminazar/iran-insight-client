@@ -16,13 +16,14 @@ export class PersonViewComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router,
               private progressService: ProgressService, private route: ActivatedRoute,
-              private breadcrumbService: BreadcrumbService) { }
+              private breadcrumbService: BreadcrumbService) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(
       (params) => {
         this.personId = +params['id'] ? +params['id'] : null;
-        if(this.personId){
+        if (this.personId) {
           this.breadcrumbService.pushChild('Person Details', this.router.url, false);
           this.progressService.enable();
 
@@ -54,12 +55,16 @@ export class PersonViewComponent implements OnInit {
     );
   }
 
-  getNofityPeroid(notify_peroid){
-    switch (notify_peroid){
-      case 'd': return 'Daily';
-      case 'w': return 'Weekly';
-      case 'm': return 'Monthly';
-      case 'n': return 'Never';
+  getNofityPeroid(notify_peroid) {
+    switch (notify_peroid) {
+      case 'd':
+        return 'Daily';
+      case 'w':
+        return 'Weekly';
+      case 'm':
+        return 'Monthly';
+      case 'n':
+        return 'Never';
     }
   }
 }
