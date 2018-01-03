@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {RestService} from '../../../../shared/services/rest.service';
 import {ActionEnum} from '../../../../shared/enum/action.enum';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 
 @Component({
@@ -18,10 +19,6 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
   bid: number = null;
   memberId: number = null;
   member: any = null;
-  upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
-  actionEnum = ActionEnum;
-  @Output() changedProduct = new EventEmitter();
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
@@ -40,7 +37,7 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
 
           this.restService.get(`joiners/biz/${this.bid}`).subscribe(
             (data) => {
-              this.member = data[0];
+              this.member = data.filter(el => el.mid === this.memberId)[0];
               this.progressService.disable();
             },
             (err) => {
@@ -60,6 +57,37 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
 
   deleteMembership(mid: number = null): void {
     console.log('delete');
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '230px'
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (status) => {
+        if (status) {
+          this.progressService.enable();
+          this.restService.delete(`/joiner/deleteUserOrRepAfterConfirm/${this.memberId}`).subscribe(
+            (data) => {
+              this.snackBar.open('Membership delete successfully', null, {
+                duration: 2000,
+              });
+              this.progressService.disable();
+
+              this.breadcrumbService.popChild();
+            },
+            (error) => {
+              this.snackBar.open('Cannot delete this membership. Please try again', null, {
+                duration: 2700
+              });
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.log('Error in dialog: ', err);
+      }
+    );
   }
 
   ngOnDestroy() {
