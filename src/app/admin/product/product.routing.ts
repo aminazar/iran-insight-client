@@ -6,7 +6,7 @@ import {ProductFormComponent} from './components/product-form/product-form.compo
 
 const Product_ROUTES: Routes = [
   {path: '', component: ProductComponent, pathMatch: 'full'},
-  {path: ':id', component: ProductViewComponent},
+  {path: ':id/:bid', component: ProductViewComponent},
   {path: 'form/:id/:bid', component: ProductFormComponent, canDeactivate: [LeavingGuard]},
 ];
 

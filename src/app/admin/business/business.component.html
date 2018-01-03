@@ -35,6 +35,9 @@
               <a fxFlex="50" [routerLink]="['./investment/'+ b.bid]"><i class="fa fa-money"></i> Investments</a>
               <a fxFlex="50" [routerLink]="['./consultancy/'+ b.bid]"><i class="fa fa-adjust"></i> Consultancies</a>
             </div>
+              <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+                <a fxFlex="50" [routerLink]="['./tag/', b.bid, b.name]"><i class="fa fa-money"></i> Tag</a>
+              </div>
           </div>
         </mat-card-content>
         <mat-card-actions>

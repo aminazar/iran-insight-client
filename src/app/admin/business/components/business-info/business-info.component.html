@@ -55,7 +55,7 @@
               </div>
               <div fxLayout="column" fxLayoutAlign="start start" class="CEOBox">
                 <div fxFlex="90">Chief Executive Officer</div>
-                <div fxFlex="90" *ngIf="!add || ceoName" class="CEOStatic">{{ceoName}}</div>
+                <div fxFlex="90" *ngIf="!add || !!ceoName" class="CEOStatic">{{ceoName}}</div>
                 <div fxFlex="90">
                   <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
                                  [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
@@ -179,7 +179,7 @@
               </div>
               <div fxLayout="column" fxLayoutAlign="center center" class="CEOBox">
                 <div fxFlex="100">Chief Executive Officer</div>
-                <div fxFlex="100" *ngIf="!add || ceoName" class="CEOStatic">{{ceoName}}</div>
+                <div fxFlex="100" *ngIf="!add || !!ceoName" class="CEOStatic">{{ceoName}}</div>
                 <div fxFlex="100">
                   <ii-suggestion [idColumn]="'pid'" [name]="'person'" role="ceo" tabindex="2"
                                  [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
