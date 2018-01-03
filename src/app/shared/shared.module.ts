@@ -22,6 +22,7 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
 import { LeavingConfirmComponent } from './components/leaving-confirm/leaving-confirm.component';
 import { AbstractFormComponent } from './components/abstract-form/abstract-form.component';
 import {AbstractSearchComponent} from './components/abstract-search/abstract-search.component';
+import {ImageUploadModule} from 'angular2-image-upload';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import {AbstractSearchComponent} from './components/abstract-search/abstract-sea
     MatSnackBarModule,
     MatProgressBarModule,
     MatIconModule,
+    ImageUploadModule.forRoot(),
   ],
   entryComponents: [RemovingConfirmComponent, LeavingConfirmComponent, UnderConstructionComponent],
   exports: [

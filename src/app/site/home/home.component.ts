@@ -7,12 +7,12 @@ import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private breadCrumbService: BreadcrumbService) { }
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService) {
+  }
 
   ngOnInit() {
-
-    this.breadCrumbService.pushChild('Home' , this.router.url);
+    this.breadCrumbService.pushChild('Home', this.router.url, true);
   }
 }

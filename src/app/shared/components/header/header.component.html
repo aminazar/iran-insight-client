@@ -5,7 +5,12 @@
       <!--<span>{{header_title}}</span>-->
       <span class="fill-remaining-space"></span>
       <span *ngIf="isLoggedIn" style="font-size: 0.8em;">
-        <a style="text-decoration: none; cursor: pointer;" (click)="logout()">Logout</a>
+        <button mat-button [matMenuTriggerFor]="menu">{{authService.displayName.getValue()}}</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="showProfile()">My Profile</button>
+          <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+        <!--<a style="text-decoration: none; cursor: pointer;" (click)="logout()">Logout</a>-->
       </span>
     </mat-toolbar-row>
   </mat-toolbar>

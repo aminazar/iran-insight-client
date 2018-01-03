@@ -1,15 +1,33 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import * as moment from 'moment';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 
 @Component({
   selector: 'ii-person-form',
   templateUrl: './person-form.component.html',
-  styleUrls: ['./person-form.component.css']
+  styleUrls: ['./person-form.component.css'],
+  providers: [
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 export class PersonFormComponent extends AbstractFormComponent implements OnInit {
-
   periodTypes = [{
     title: 'Daily',
     value: 'd',
@@ -24,6 +42,8 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
     value: 'n',
   }];
   resetPasswordBtnShouldDisabled = false;
+  userProfileImage = [];
+  userId = null;
 
   ngOnInit() {
     this.viewName = 'Person';
@@ -35,7 +55,6 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
       }
     );
   }
-
 
   initForm() {
     this.form = new FormBuilder().group({
@@ -66,6 +85,8 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
       ]],
       display_name_en: [null],
       display_name_fa: [null],
+    }, {
+      validator: this.displayNameValidation
     });
 
     super.initForm();
@@ -81,6 +102,8 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
     this.deleteBtnShouldDisabled = true;
     this.authService.getPersonInfo(this.formId).subscribe(
       (data) => {
+        this.getUserProfileImage();
+
         data = data[0];
         this.form.controls['username'].setValue(data.username);
         this.form.controls['firstname_en'].setValue(data.firstname_en);
@@ -113,6 +136,7 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
         this.deleteBtnShouldDisabled = true;
       }
     );
+
   }
 
   modifyUser() {
@@ -128,10 +152,10 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
       address_fa: this.form.controls['address_fa'].value,
       phone_no: this.form.controls['phone_no'].value,
       mobile_no: this.form.controls['mobile_no'].value,
-      birth_date: this.form.controls['birth_date'].value,
+      birth_date: this.form.controls['birth_date'].value ? moment(this.form.controls['birth_date'].value).format('YYYY-MM-DD') : null,
       notify_period: this.form.controls['notify_period'].value,
       display_name_en: this.form.controls['display_name_en'].value,
-      diplay_name_fa: this.form.controls['display_name_fa'].value,
+      display_name_fa: this.form.controls['display_name_fa'].value,
     };
 
     if (!this.formId)
@@ -183,7 +207,7 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
 
       if (el === 'birth_date') {
         if ((moment(formValue).format('YYYY-MM-DD') !== moment(originalValue).format('YYYY-MM-DD'))
-            && (formValue !== '' || originalValue !== null))
+          && (formValue !== '' || originalValue !== null))
           this.anyChanges = true;
       } else {
         if (['firstname_en', 'firstname_fa', 'surname_en', 'surname_fa', 'username', 'address_en', 'address_fa',
@@ -264,6 +288,51 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
 
         this.progressService.disable();
         this.resetPasswordBtnShouldDisabled = false;
+      }
+    );
+  }
+
+  displayNameValidation(AC: AbstractControl) {
+    const dn_en = AC.get('display_name_en').value;
+    const dn_fa = AC.get('display_name_fa').value;
+
+    if (!dn_en && !dn_fa)
+      AC.get('display_name_en').setErrors({'oneNeed': true});
+    else {
+      // AC.get('display_name_en').setErrors({'oneNeed': null});
+      return null;
+    }
+  }
+
+  profileImageRemoved() {
+    this.restService.delete('profile/image/' + this.formId).subscribe(
+      () => {
+        this.snackBar.open('Your image is removed', null, {
+          duration: 2300,
+        });
+      },
+      (err) => {
+        console.error('Cannot remove profile image');
+      }
+    );
+  }
+
+  uploadFinished() {
+    this.snackBar.open(`User's profile image is set successfully`, null, {
+      duration: 2300,
+    });
+  }
+
+  getUserProfileImage() {
+    this.restService.get('profile/image/' + this.formId).subscribe(
+      (data) => {
+        if (data) {
+          this.userProfileImage = [];
+          this.userProfileImage.push(data);
+        }
+      },
+      (err) => {
+        console.error('Cannot get user profile image. Error: ', err);
       }
     );
   }

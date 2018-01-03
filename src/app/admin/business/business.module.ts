@@ -47,7 +47,15 @@ import { BizMemberViewComponent } from './components/biz-member-view/biz-member-
       apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
     }),
   ],
-  declarations: [BusinessComponent, BusinessMembersComponent, BusinessInfoComponent, ActiveDirective, BusinessProductsComponent, BusinessViewComponent, BizMemberFormComponent, BizMemberViewComponent],
+  declarations: [
+    BusinessComponent,
+    BusinessMembersComponent,
+    BusinessInfoComponent,
+    ActiveDirective,
+    BusinessProductsComponent,
+    BusinessViewComponent,
+    BizMemberFormComponent,
+    BizMemberViewComponent],
   providers: [{ provide: 'Window', useValue: window }]
 })
 export class BusinessModule { }

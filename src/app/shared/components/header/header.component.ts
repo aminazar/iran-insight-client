@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import {ProgressService} from "../../services/progress.service";
-import {AuthService} from "../../services/auth.service";
+import {ProgressService} from '../../services/progress.service';
+import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ii-header',
@@ -10,14 +11,15 @@ import {AuthService} from "../../services/auth.service";
 })
 export class HeaderComponent implements OnInit {
   @Input() header_title: string;
-  isLoggedIn: boolean = false;
-  showProgressing: boolean = false;
+  isLoggedIn = false;
+  showProgressing = false;
   color: any = 'primary';
   mode: any;
   value: any;
   bufferValue: any;
 
-  constructor(private progressService: ProgressService, private authService: AuthService) {
+  constructor(private progressService: ProgressService, private authService: AuthService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -64,5 +66,14 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  showProfile() {
+    let tr = '/';
+
+    if (this.router.url.includes('admin'))
+      tr = '/admin/';
+
+    this.router.navigate([tr + 'profile']);
   }
 }
