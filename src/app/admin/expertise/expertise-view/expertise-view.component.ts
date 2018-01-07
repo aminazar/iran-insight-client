@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../../shared/services/breadcrumb.service";
 import {ProgressService} from "../../../shared/services/progress.service";
 import {AuthService} from "../../../shared/services/auth.service";
-import {expertiseRouting} from "../expertise.routing";
+// import {expertiseRouting} from "../expertise.routing";
 import {MatSnackBar} from "@angular/material";
 
 @Component({
@@ -43,7 +43,7 @@ export class ExpertiseViewComponent implements OnInit {
   }
 
   editExpertise() {
-    //TODO: edit expertise
+    this.router.navigate([`/admin/expertise/form/${null}/${this.expertiseId}`]);
   }
 
   deleteExpertise() {

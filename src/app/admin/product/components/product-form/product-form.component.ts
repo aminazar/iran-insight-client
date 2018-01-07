@@ -5,7 +5,7 @@ import {AuthService} from '../../../../shared/services/auth.service';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {ProgressService} from '../../../../shared/services/progress.service';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 import {isUndefined} from 'util';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
@@ -169,7 +169,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
         this.deleteBtnShouldDisabled = false;
       },
       (err) => {
-        this.snackBar.open('Cannot' + this.productId ? 'add' : 'update' + 'this product. Try again', null, {
+        this.snackBar.open('Cannot ' + this.productId ? 'add' : 'update' + 'this product. Try again', null, {
           duration: 3200,
         });
         this.progressService.disable();

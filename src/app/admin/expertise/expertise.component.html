@@ -3,7 +3,7 @@
 </div>
 <div fxLayout="row" class="row">
   <button mat-fab color="accent" (click)="openForm()">
-    <mat-icon aria-label="Add new Expertise ">add</mat-icon>
+    <mat-icon aria-label="Add new Expertise">add</mat-icon>
   </button>
 </div>
 <div *ngFor="let rw of rows">
@@ -39,6 +39,6 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalExpertises" [pageSize]="10" [pageSizeOptions]="[4, 8, 16, 32]"
+  <mat-paginator [length]="totalCards" [pageSize]="10" [pageSizeOptions]="[4, 8, 16, 32]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
