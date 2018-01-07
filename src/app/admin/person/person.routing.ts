@@ -11,7 +11,7 @@ const Person_ROUTES: Routes = [
   {path: 'view/:id', component: PersonViewComponent},
   {path: 'form/:formId', component: PersonFormComponent, canDeactivate: [LeavingGuard]},
   {path: 'partnership/:id/:personName', loadChildren: 'app/admin/partnership/partnership.module#PartnershipModule'},
-  {path: 'expertise/:pid', component: PersonExpertiseComponent},
+  {path: 'expertises/:pid', component: PersonExpertiseComponent},
 ];
 
 export const personRouting = RouterModule.forChild(Person_ROUTES);

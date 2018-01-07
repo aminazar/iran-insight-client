@@ -28,7 +28,7 @@
           </div>
           <div *ngIf="p.pid === cardId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['/admin/expertise/' + p.pid]"><i class="fa fa-certificate"></i> Expertise</a>
+              <a fxFlex="50" [routerLink]="['/admin/person/expertises/' + p.pid]"><i class="fa fa-certificate"></i> Expertises</a>
               <a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"></i> Membership</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">

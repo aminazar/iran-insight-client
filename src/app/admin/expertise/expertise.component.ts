@@ -20,9 +20,8 @@ export class ExpertiseComponent extends AbstractSearchComponent implements OnIni
   }
 
   openForm(id: number = null): void {
-    //TODO: open edit expertise form / new expertise form
     this.cardId = id;
-    this.router.navigate([`/admin/expertise/form/${null}/${id}`]);
+    this.router.navigate([`/admin/expertise/form/${id}`]);
   }
 
   openView(id: number = null): void {
