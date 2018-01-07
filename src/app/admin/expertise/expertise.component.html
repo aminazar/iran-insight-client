@@ -20,7 +20,10 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div></div>
+          <label *ngIf="e.is_education"
+                 class="success">Educational</label>
+          <label *ngIf="!e.is_education"
+                 class="warn">Not Educational</label>
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button (click)="openView(e.expertise_id)" color="primary">

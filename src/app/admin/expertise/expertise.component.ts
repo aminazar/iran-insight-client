@@ -9,7 +9,7 @@ import {AbstractSearchComponent} from "../../shared/components/abstract-search/a
 @Component({
   selector: 'ii-expertise',
   templateUrl: './expertise.component.html',
-  styleUrls: ['./expertise.component.css']
+  styleUrls: ['./expertise.component.scss']
 })
 export class ExpertiseComponent extends AbstractSearchComponent implements OnInit {
 
