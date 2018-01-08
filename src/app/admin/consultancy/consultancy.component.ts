@@ -33,6 +33,8 @@ export class ConsultancyComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.consultancyRelationName = params['name'] ? params['name'] : null;
+        this.consultancyRelationName = this.consultancyRelationName.replace(/%20/g, ' ');
+
         const type = params['type'] ? params['type'] : null;
 
         this.isPerson = this.router.url.toLowerCase().includes('person') ? true : false;

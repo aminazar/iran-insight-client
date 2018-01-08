@@ -154,12 +154,17 @@ export class InvestmentFormComponent implements OnInit {
     this.restService.get('investment/' + this.investmentId).subscribe(
       (data) => {
         this.loadedValue = data;
-        if (data.pid) {
-          this.investorObj.id = data.pid;
-          this.investorObj.name = data.person_display_name || data.perosn_display_name_fa;
-        } else if (data.oid) {
-          this.investorObj.id = data.oid;
-          this.investorObj.name = data.name || data.name_fa;
+        if (this.isInvestor) {
+          this.investmentObj.id = data.bid;
+          this.investmentObj.name = data.biz_name || data.biz_name_fa;
+        } else {
+          if (data.pid) {
+            this.investorObj.id = data.pid;
+            this.investorObj.name = data.person_display_name || data.perosn_display_name_fa;
+          } else if (data.oid) {
+            this.investorObj.id = data.oid;
+            this.investorObj.name = data.name || data.name_fa;
+          }
         }
 
         this.initForm();
