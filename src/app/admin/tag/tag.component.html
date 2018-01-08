@@ -1,39 +1,35 @@
 <mat-card class="row">
 
-<mat-card-header>
+  <mat-card-header>
 
-  <h3>tags for :{{name}}</h3>
+    <h3>tags for :{{name}}</h3>
 
-</mat-card-header>
-<mat-card-content>
+  </mat-card-header>
+  <mat-card-content>
 
-  <mat-form-field class="new-tag-suggestion">
-    <mat-chip-list #chipList>
-      <mat-chip *ngFor="let tag of tags"
-                [selectable]="true"
-                [removable]="true" (remove)="remove(tag)">
-        {{tag}}
-        <mat-icon matChipRemove>cancel</mat-icon>
-      </mat-chip>
-      <input placeholder="insert new tag..."
-             [matAutocomplete]="auto"
-             [formControl]="suggestionCtrl"
-             [matChipInputFor]="chipList"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="add($event)" />
+    <mat-input-container  class="field">
+      <input matInput placeholder="insert new tag..." [matAutocomplete]="auto"  [formControl]="suggestionCtrl" #tagInput (keyup.enter)="add(tagInput.value)" />
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItem($event)">
-        <mat-option *ngFor="let item of filteredItems" [value]="item" class="farsi">
-          {{item}}
+        <mat-option *ngFor="let item of filteredItems" [value]="item.name" class="farsi">
+          {{item.name}}
         </mat-option>
       </mat-autocomplete>
+    </mat-input-container>
+
+    <mat-checkbox [(ngModel)]="active">Add active tag?</mat-checkbox>
+
+    <mat-chip-list>
+      <mat-chip [color]="tag.active ?  'accent' : 'primary'"  *ngFor="let tag of tags"
+                [selectable]="true" selected="true"
+                [removable]="true" (remove)="remove(tag)">
+        {{tag.name}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
 
     </mat-chip-list>
-  </mat-form-field>
 
 
-
-</mat-card-content>
+  </mat-card-content>
 
 
 </mat-card>

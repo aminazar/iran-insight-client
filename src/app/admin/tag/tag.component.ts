@@ -5,7 +5,7 @@ import {MatChipInputEvent, MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../shared/services/progress.service';
 import {RestService} from '../../shared/services/rest.service';
 import {FormControl} from '@angular/forms';
-import {ENTER} from '@angular/cdk/keycodes';
+import {ITag} from './interfaces/itag.interface';
 
 @Component({
   selector: 'ii-tag',
@@ -13,6 +13,7 @@ import {ENTER} from '@angular/cdk/keycodes';
   styleUrls: ['./tag.component.css']
 })
 export class TagComponent implements OnInit {
+  active = true;
   id: number;
   private type: string;
   private name: string;
@@ -20,12 +21,9 @@ export class TagComponent implements OnInit {
   id_name: string;
 
   suggestionCtrl: FormControl;
-  isSuggested = false;
 
   filteredItems: any[] = [];
-  // Enter
-  separatorKeysCodes = [ENTER];
-  tags: string[] = [];
+  tags: ITag[] = [];
 
   Types: any = {
     ORG: 'organization',
@@ -58,16 +56,11 @@ export class TagComponent implements OnInit {
       else if (this.type === this.Types.PROD)
         this.id_name = 'product_id';
 
-        this.progressService.enable();
+      this.progressService.enable();
 
       this.restService.get(`tag/${this.type}/${this.id}`).subscribe(res => {
 
-        if (res[0] && res[0].gettags) {
-          this.tags = [];
-          res[0].gettags.forEach(tag => {
-            this.tags.push(tag);
-          });
-        }
+        this.tags = res;
         this.progressService.disable();
 
       }, err => {
@@ -77,27 +70,86 @@ export class TagComponent implements OnInit {
 
     });
     this.suggestionCtrl = new FormControl();
-
-  }
-
-  addItem(data) {
-    const item = this.filteredItems.filter(el => el.toLowerCase() === data.option.value.toLowerCase())[0];
-    this.tags.push(item);
-    this.isSuggested = true;
-  }
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    if (!this.isSuggested) {
-      const value = event.value;
-      // Add our tag
-      if ((value || '').trim()) {
-        this.tags.push(value.trim());
+    this.suggestionCtrl.valueChanges.debounceTime(150).subscribe(
+      (data) => {
+        this.filtering(data);
+      },
+      (err) => {
+        this.filteredItems = [];
       }
-    } else {
-      this.isSuggested = false;
+    );
+
+  }
+
+  filtering(phrase: string) {
+    if ((!phrase || phrase === '') || phrase.length < 3)
+      this.filteredItems = [];
+    else {
+      this.progressService.enable();
+      this.restService.post('tag/getList', {
+        name: phrase
+      }).subscribe(
+        (data) => {
+
+          console.log('-> ', data);
+          this.filteredItems = data;
+          this.progressService.disable();
+        },
+        (err) => {
+          this.filteredItems = [];
+          this.progressService.disable();
+        }
+      );
     }
-    input.value = '';
+  }
+
+  /**
+   * called when suggested value of auto complete is selected
+   * @param data
+   */
+  addItem(data) {
+
+    const item = this.filteredItems.filter(el => el.name.toLowerCase() === data.option.value.toLowerCase())[0];
+    if (this.tags.filter(tag => tag.name === item.name).length === 0) {
+      this.tags.push(item);
+      this.add(item.name);
+    }
+    this.suggestionCtrl.setValue('');
+  }
+
+  /**
+   * called after value of auto complete view is selected or value in input view is entered
+   * @param value
+   */
+  add(value): void {
+    if ((value || '').trim()) {
+
+      if (this.tags.filter(tag => tag.name === value).length !== 0)
+        return;
+
+      const body = {
+        name: value,
+        active: this.active
+      };
+      body[this.id_name] = this.id;
+
+      this.progressService.enable();
+      this.restService.put('tag/add', body).subscribe(res => {
+        this.tags.push({
+          tid: res.id,
+          name: value.trim(),
+          active: this.active
+        });
+        this.progressService.disable();
+        this.suggestionCtrl.setValue('');
+
+      }, err => {
+        this.progressService.disable();
+        this.suggestionCtrl.setValue('');
+
+      });
+
+    }
   }
 
   remove(tag: any): void {
@@ -107,7 +159,7 @@ export class TagComponent implements OnInit {
 
       this.progressService.enable();
 
-      const body = {name: tag};
+      const body = {name: tag.name};
       body[this.id_name] = this.id;
 
       this.restService.post('tag/removeFrom', body).subscribe(res => {
@@ -116,7 +168,6 @@ export class TagComponent implements OnInit {
         this.progressService.disable();
 
       }, err => {
-
         this.progressService.disable();
       });
 

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {
   MatAutocompleteModule,
   MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule,
-  MatFormFieldModule,
   MatGridListModule,
   MatIconModule, MatInputModule,
   MatOptionModule, MatPaginatorModule,
@@ -30,7 +29,6 @@ import {TagRouting} from './tag.routing';
     MatSnackBarModule,
     MatIconModule,
     MatDialogModule,
-    MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
