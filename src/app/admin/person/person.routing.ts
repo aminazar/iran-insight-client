@@ -11,6 +11,7 @@ const Person_ROUTES: Routes = [
   {path: 'view/:id', component: PersonViewComponent},
   {path: 'form/:formId', component: PersonFormComponent, canDeactivate: [LeavingGuard]},
   {path: 'partnership/:id/:personName', loadChildren: 'app/admin/partnership/partnership.module#PartnershipModule'},
+  {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
   {path: 'expertise/:pid', component: PersonExpertiseComponent},
 ];
 

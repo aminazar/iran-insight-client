@@ -32,8 +32,8 @@
               <a fxFlex="50" [routerLink]="['./event/'+ b.bid]"><i class="fa fa-users"></i> Events</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['/admin/investment/'+ b.bid]" [queryParams]="{ is_business: true, name: b.name }"><i class="fa fa-money"></i> Investments</a>
-              <a fxFlex="50" [routerLink]="['/admin/consultancy/'+ b.bid]" [queryParams]="{ is_business: true, name: b.name }"><i class="fa fa-adjust"></i> Consultancies</a>
+              <a fxFlex="50" [routerLink]="['/admin/business/investment', b.bid, b.name]"><i class="fa fa-money"></i> Investments</a>
+              <a fxFlex="50" [routerLink]="['/admin/business/consultancy', b.bid, b.name]"><i class="fa fa-adjust"></i> Consultancies</a>
             </div>
           </div>
         </mat-card-content>

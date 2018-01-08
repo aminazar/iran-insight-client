@@ -15,11 +15,15 @@ const errors: IError[] = [
     error: new Error('illegal type name is specified'),
     code: 404
   }, {
-
     friendlyMessage_fa: '',
     friendlyMessage: 'Please specify the joiner name',
     error: new Error('null value in column "pid2" violates not-null constraint'),
     code: 500
+  }, {
+    friendlyMessage_fa: 'کسب و کاری با این شناسه وجود ندارد',
+    friendlyMessage: 'There is no business with this id',
+    error: new Error('insert or update on table "association" violates foreign key constraint "association_bid_fkey"'),
+    code: 500,
   }
 ];
 
