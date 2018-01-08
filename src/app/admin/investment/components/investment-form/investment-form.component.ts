@@ -151,8 +151,7 @@ export class InvestmentFormComponent implements OnInit {
     } else {
       url = (this.investor === this.investorType.person ? 'personalInvestment' : 'orgInvestment') +
         '/' + (this.investmentId ? this.investmentId + '/' : '') +
-        '/' + this.id +
-        '/' + this.investorObj.id;
+        this.id + '/' + this.investorObj.id;
     }
 
     (this.investmentId ?
