@@ -45,7 +45,7 @@ export class ForgotPasswordComponent implements OnInit {
       (err) => {
         this.snackBar.open('Cannot send an email to ' +
           this.forgotForm.controls['email'].value +
-          '. If you are not register, please register first.', null, {
+          '. If you are not registered, please register first.', null, {
           duration: 3200
         });
         this.shouldDisabledButton = false;
