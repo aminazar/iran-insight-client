@@ -14,8 +14,8 @@
           <mat-card-title>{{cns.consultancyRelationName}}</mat-card-title>
         </mat-card-header>
         <mat-card-content style="min-height: 100px">
-          <div>Amount: {{cns.amount}}</div>
-          <div>Currency: {{cns.currency}}</div>
+          <div>Subject: {{cns.subject}}</div>
+          <div *ngIf="cns.subject_fa">عنوان: {{cns.subject_fa}}</div>
           <div *ngIf="cns.is_mentor" color="accent">Is Mentor</div>
         </mat-card-content>
         <mat-card-actions>

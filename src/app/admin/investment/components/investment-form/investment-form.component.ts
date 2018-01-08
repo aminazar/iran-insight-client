@@ -102,6 +102,7 @@ export class InvestmentFormComponent implements OnInit {
     if (!this.investmentId)
       return;
 
+    this.progressService.enable();
     this.restService.get('investment/' + this.investmentId).subscribe(
       (data) => {
         this.loadedValue = data;
@@ -119,9 +120,11 @@ export class InvestmentFormComponent implements OnInit {
         }
 
         this.initForm();
+        this.progressService.disable();
       },
       (err) => {
         console.error('Cannot get investment details');
+        this.progressService.disable();
       }
     );
   }
@@ -130,7 +133,7 @@ export class InvestmentFormComponent implements OnInit {
     if (!this.investorObj.id && !this.investmentObj.id)
       return;
 
-    let data: any = {};
+    const data: any = {};
 
     Object.keys(this.investmentForm.controls).forEach(el => {
       data[el] = this.investmentForm.controls[el].value;
