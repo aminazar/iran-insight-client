@@ -229,7 +229,7 @@ export class ConsultancyFormComponent implements OnInit {
     this.fieldChanged();
   }
 
-  directToInvDone() {
+  directToCnsDone() {
     let url = '/admin/';
 
     if (this.isConsulting)

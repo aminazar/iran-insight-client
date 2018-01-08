@@ -32,7 +32,7 @@
                          [descriptionFieldNameFa]="consulting === consultingType.person ? 'username' : null"
                          (add)="setConsulting($event)"></ii-suggestion>
           <div *ngIf="consultingObj.id">
-            <a class="clickable-link" (click)="directToConDone()">
+            <a class="clickable-link" (click)="directToCnsDone()">
               <span>Consulting is </span>
               <span>"{{consultingObj.name}}"</span>
             </a>
@@ -48,7 +48,7 @@
                        [idColumn]="'bid'"
                        (add)="setTargetBusiness($event)"></ii-suggestion>
         <div *ngIf="consultancyObj.id">
-          <a class="clickable-link" (click)="directToConDone()">
+          <a class="clickable-link" (click)="directToCnsDone()">
             <span>Consult on</span>
             <span>"{{consultancyObj.name}}"</span>
             <span> business</span>
