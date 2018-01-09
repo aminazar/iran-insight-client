@@ -66,7 +66,7 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
       (status) => {
         if (status) {
           this.progressService.enable();
-          this.restService.delete(`/joiner/deleteUserOrRepAfterConfirm/${this.memberId}`).subscribe(
+          this.restService.delete(`/joiner/delete/membership/${this.memberId}`).subscribe(
             (data) => {
               this.snackBar.open('Membership delete successfully', null, {
                 duration: 2000,
