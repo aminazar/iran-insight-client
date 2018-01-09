@@ -63,7 +63,7 @@ export class ConsultancyComponent implements OnInit {
       this.router.navigate(['/admin/consultancy/view/' +
       (this.isBiz ? '' : (this.isPerson ? 'person/' : 'organization/')) +
       this.isConsulting + '/' + this.id + '/' + id]);
-    else if (type === 'from')
+    else if (type === 'form')
       this.router.navigate(['/admin/consultancy/form/' +
       (this.isBiz ? '' : (this.isPerson ? 'person/' : 'organization/')) +
       this.isConsulting + '/' + this.id + '/' + id]);
