@@ -18,8 +18,8 @@ export class ProductViewComponent implements OnInit {
   productId: number = null;
   businessId: number = null;
   product: any = null;
-  upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
+  upsertBtnShouldDisabled = false;
+  deleteBtnShouldDisabled = false;
   actionEnum = ActionEnum;
   @Output() changedProduct = new EventEmitter();
 

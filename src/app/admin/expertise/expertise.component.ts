@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // import {MatSnackBar} from "@angular/material";
 // import {Router} from "@angular/router";
 // import {BreadcrumbService} from "../../shared/services/breadcrumb.service";
-import {AbstractSearchComponent} from "../../shared/components/abstract-search/abstract-search.component";
+import {AbstractSearchComponent} from '../../shared/components/abstract-search/abstract-search.component';
 
 @Component({
   selector: 'ii-expertise',
@@ -30,6 +30,6 @@ export class ExpertiseComponent extends AbstractSearchComponent implements OnIni
   }
 
   deleteExpertise(id: number = null): void {
-    //TODO: delete
+    // TODO: delete
   }
 }

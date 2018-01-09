@@ -2,25 +2,25 @@ import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RestService} from '../../shared/services/rest.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../shared/services/progress.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
-  selector: 'ii-investment',
-  templateUrl: './investment.component.html',
-  styleUrls: ['./investment.component.css']
+  selector: 'ii-consultancy',
+  templateUrl: './consultancy.component.html',
+  styleUrls: ['./consultancy.component.css']
 })
-export class InvestmentComponent implements OnInit {
+export class ConsultancyComponent implements OnInit {
   id = null;
-  investmentRelationName = '';
-  isInvestor = false;
+  consultancyRelationName = '';
+  isConsulting = false;
   isPerson = false;
   isOrg = false;
   isBiz = false;
   aligningObj = {};
   rows = [];
-  investmentList = [];
+  consultancyList = [];
   breadcrumbIsSet = false;
 
   constructor(private breadcrumbService: BreadcrumbService, private router: Router,
@@ -32,8 +32,8 @@ export class InvestmentComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(
       (params) => {
-        this.investmentRelationName = params['name'] ? params['name'] : null;
-        this.investmentRelationName = this.investmentRelationName.replace(/%20/g, ' ');
+        this.consultancyRelationName = params['name'] ? params['name'] : null;
+        this.consultancyRelationName = this.consultancyRelationName.replace(/%20/g, ' ');
 
         const type = params['type'] ? params['type'] : null;
 
@@ -41,15 +41,15 @@ export class InvestmentComponent implements OnInit {
         this.isBiz = this.router.url.toLowerCase().includes('business') ? true : false;
         this.isOrg = this.router.url.toLowerCase().includes('organization') ? true : false;
 
-        this.isInvestor = (this.isPerson || this.isOrg);
+        this.isConsulting = (this.isPerson || this.isOrg);
         if (!this.breadcrumbIsSet) {
-          this.breadcrumbService.pushChild('Investments' +
-            (this.isInvestor ? ' of ' : ' on ') +
-            this.investmentRelationName, this.router.url, false);
+          this.breadcrumbService.pushChild('Consultancy' +
+            (this.isConsulting ? ' of ' : ' on ') +
+            this.consultancyRelationName, this.router.url, false);
 
           this.breadcrumbIsSet = true;
           this.id = params['id'] ? +params['id'] : null;
-          this.getInvestments();
+          this.getConsultancies();
         }
       },
       (err) => {
@@ -60,16 +60,16 @@ export class InvestmentComponent implements OnInit {
 
   open(type, id) {
     if (type === 'view')
-      this.router.navigate(['/admin/investment/view/' +
+      this.router.navigate(['/admin/consultancy/view/' +
       (this.isBiz ? '' : (this.isPerson ? 'person/' : 'organization/')) +
-      this.isInvestor + '/' + this.id + '/' + id]);
-    else if (type === 'form')
-      this.router.navigate(['/admin/investment/form/' +
+      this.isConsulting + '/' + this.id + '/' + id]);
+    else if (type === 'from')
+      this.router.navigate(['/admin/consultancy/form/' +
       (this.isBiz ? '' : (this.isPerson ? 'person/' : 'organization/')) +
-      this.isInvestor + '/' + this.id + '/' + id]);
+      this.isConsulting + '/' + this.id + '/' + id]);
   }
 
-  deleteInvestment(id) {
+  deleteConsultancy(id) {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
     });
@@ -77,16 +77,16 @@ export class InvestmentComponent implements OnInit {
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data)
-          this.restService.delete('investment/' + id).subscribe(
+          this.restService.delete('consultancy/' + id).subscribe(
             (rs) => {
-              this.investmentList = this.investmentList.filter(el => el.id !== id);
+              this.consultancyList = this.consultancyList.filter(el => el.id !== id);
               this.aligningItems();
-              this.snackBar.open('The investment is deleted successfully', null, {
+              this.snackBar.open('The consultancy is deleted successfully', null, {
                 duration: 2300,
               });
             },
             (err) => {
-              console.error('Cannot delete investment: ', err);
+              console.error('Cannot delete consultancy: ', err);
             }
           );
       },
@@ -96,9 +96,9 @@ export class InvestmentComponent implements OnInit {
     );
   }
 
-  getInvestments() {
+  getConsultancies() {
     if (this.id && (this.isPerson || this.isBiz || this.isOrg)) {
-      let url = 'investment/';
+      let url = 'consultancy/';
       if (this.isPerson)
         url += 'person/';
       else if (this.isBiz)
@@ -110,7 +110,7 @@ export class InvestmentComponent implements OnInit {
       this.progressService.enable();
       this.restService.get(url).subscribe(
         (data) => {
-          this.investmentList = data;
+          this.consultancyList = data;
           this.aligningItems();
           this.progressService.disable();
         },
@@ -124,8 +124,8 @@ export class InvestmentComponent implements OnInit {
   aligningItems() {
     let colCounter = 0;
     let rowCounter = 0;
-    this.aligningObj = this.investmentList.length > 0 ? {0: []} : {};
-    this.investmentList.forEach(el => {
+    this.aligningObj = this.consultancyList.length > 0 ? {0: []} : {};
+    this.consultancyList.forEach(el => {
       if (colCounter > 3) {
         this.aligningObj[++rowCounter] = [];
         colCounter = 0;

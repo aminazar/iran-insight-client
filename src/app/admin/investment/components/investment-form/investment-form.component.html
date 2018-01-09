@@ -75,6 +75,12 @@
             <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">Please choose currency</mat-error>
           </div>
         </div>
+        <div>
+          <mat-input-container>
+            <input matInput type="number" placeholder="Investment Cycle" formControlName="investment_cycle" role="investment-cycle" min="1"/>
+          </mat-input-container>
+          <mat-error class="error-msg" *ngIf="investmentForm.controls['investment_cycle'].hasError('min')">The minimum value is 1</mat-error>
+        </div>
         <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
           <div fxFlex="50">
             <mat-checkbox formControlName="is_lead">

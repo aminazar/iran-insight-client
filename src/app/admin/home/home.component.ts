@@ -18,8 +18,8 @@ export class AdminHomeComponent implements OnInit {
     {label: 'Type', path: '/admin/type'},
     {label: 'Expertise', path: '/admin/expertise'},
   ];
-  showBurgerMenu: boolean = false;
-  height: number = 300;
+  showBurgerMenu = false;
+  height = 300;
   selectedLink = 'Person';
 
   constructor(private windowService: WindowService) {
