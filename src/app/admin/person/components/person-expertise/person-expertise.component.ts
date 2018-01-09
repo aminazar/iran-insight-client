@@ -1,19 +1,22 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormControl} from "@angular/forms";
-import {startWith} from "rxjs/operators/startWith";
-import {Observable} from "rxjs/Observable";
-import {map} from "rxjs/operators/map";
+// import {FormControl} from "@angular/forms";
+// import {startWith} from "rxjs/operators/startWith";
+// import {Observable} from "rxjs/Observable";
+// import {map} from "rxjs/operators/map";
 import {RestService} from "../../../../shared/services/rest.service";
 import {MatDialog, MatSnackBar} from "@angular/material";
 import {PersonExpertiseInterface} from "../../interfaces/personExpertise.interface";
 import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
 
 @Component({
   selector: 'ii-person-expertise',
   templateUrl: './person-expertise.component.html',
   styleUrls: ['./person-expertise.component.css']
 })
-export class PersonExpertiseComponent implements OnInit, OnDestroy {
+export class PersonExpertiseComponent implements OnInit {
+
   @Input()
   set personId(id) {
     this._personId = id;
@@ -27,16 +30,24 @@ export class PersonExpertiseComponent implements OnInit, OnDestroy {
   userExpertiseList: PersonExpertiseInterface[] = [];
   _personId: number = null;
   currentExpertiseIds: number[] = [];
-
   constructor(private restService: RestService, public dialog: MatDialog,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar, private route: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService, private router: Router) {
   }
-
   ngOnInit() {
-    this.getUserExpertise();
-  }
+    this.route.params.subscribe(
+      (params) => {
+        this.personId = +params['pid'] ? +params['pid'] : null;
 
-  ngOnDestroy() {
+        if(this.personId) {
+          this.breadcrumbService.pushChild('User\'s Expertise', this.router.url, false);
+          this.getUserExpertise();
+        }
+      },
+      (err) => {
+        console.error('Cannot parse params');
+      }
+    );
   }
 
   getUserExpertise() {
