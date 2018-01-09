@@ -51,7 +51,7 @@ export class ProductFormComponent implements OnInit, OnDestroy, CanComponentDeac
         this.productId = +params['id'] ? +params['id'] : null;
         this.businessId = +params['bid'] ? +params['bid'] : null;
         this.initProduct();
-        this.restService.get('/business/one/' + this.businessId).subscribe(
+        this.restService.get('business/one/' + this.businessId).subscribe(
           (data) => {
            this.breadcrumbService.pushChild(this.productId ? 'Update' : 'Add' + ' Product' + ` to ${data.name}`, this.router.url, false);
           },

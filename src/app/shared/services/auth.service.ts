@@ -96,7 +96,7 @@ export class AuthService {
   }
 
   getProductInfo(productId) {
-    return this.restService.get('/product/one/' + productId);
+    return this.restService.get('product/one/' + productId);
   }
 
   //TODO: delete specific expertise (backend needed too)

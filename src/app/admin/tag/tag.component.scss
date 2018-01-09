@@ -1,0 +1,15 @@
+@import '../../../iraninsight-theme';
+
+.new-tag-suggestion {
+  width: 100%;
+}
+.suggestion-card{
+ background-color: mat-color($iraninsight-app-warn, 700);
+
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

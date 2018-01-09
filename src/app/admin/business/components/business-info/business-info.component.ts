@@ -45,7 +45,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
   loadedValue: any = {};
   upsertDisabled = false;
   deleteDisabled = false;
-  ceoName = '';
+  ceoName  = '';
   step = 0;
   changed = false;
 
