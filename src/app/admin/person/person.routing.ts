@@ -4,7 +4,8 @@ import {PersonFormComponent} from './components/person-form/person-form.componen
 import {PersonViewComponent} from './components/person-view/person-view.component';
 import {LeavingGuard} from '../leavingGuard';
 // import {AuthGuard} from '../auth.guard';
-import {PersonExpertiseComponent} from "./components/person-expertise/person-expertise.component";
+import {PersonExpertiseComponent} from './components/person-expertise/person-expertise.component';
+import {AuthGuard} from '../auth.guard';
 
 const Person_ROUTES: Routes = [
   {path: '', component: PersonComponent, pathMatch: 'full'},
