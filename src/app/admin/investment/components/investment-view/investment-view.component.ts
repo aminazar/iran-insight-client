@@ -52,8 +52,8 @@ export class InvestmentViewComponent implements OnInit {
 
   editInvestment() {
     if (this.investment)
-      this.router.navigate(['/admin/investment/form/' +
-      (this.type ? this.type : '') + '/' + this.isInvestor + '/' + this.id + '/' + this.investmentId]);
+      this.router.navigate(['/admin/investment/form' +
+      (this.type ? `/${this.type}` : '') + '/' + this.isInvestor + '/' + this.id + '/' + this.investmentId]);
   }
 
   deleteInvestment() {
