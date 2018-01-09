@@ -44,7 +44,7 @@ export class ExpertiseViewComponent implements OnInit {
   }
 
   editExpertise() {
-    // TODO: edit expertise
+    this.router.navigate([`/admin/expertise/form/${this.expertiseId}`]);
   }
 
   deleteExpertise() {

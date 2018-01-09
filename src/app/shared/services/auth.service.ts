@@ -99,6 +99,11 @@ export class AuthService {
     return this.restService.get('/product/one/' + productId);
   }
 
+  //TODO: delete specific expertise (backend needed too)
+  deleteExpertise(personId, expertiseId) {
+
+  }
+
   getExpertiseInfo(expertiseId) {
     return this.restService.get('/expertise/' + expertiseId);
   }

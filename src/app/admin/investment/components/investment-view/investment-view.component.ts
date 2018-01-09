@@ -51,10 +51,9 @@ export class InvestmentViewComponent implements OnInit {
   }
 
   editInvestment() {
-    this.breadcrumbService.popChild(false);
     if (this.investment)
-      this.router.navigate(['/admin/investment/form/' +
-      (this.type ? this.type : '') + '/' + this.isInvestor + '/' + this.id + '/' + this.investmentId]);
+      this.router.navigate(['/admin/investment/form' +
+      (this.type ? `/${this.type}` : '') + '/' + this.isInvestor + '/' + this.id + '/' + this.investmentId]);
   }
 
   deleteInvestment() {

@@ -4,7 +4,7 @@ import {PersonFormComponent} from './components/person-form/person-form.componen
 import {PersonViewComponent} from './components/person-view/person-view.component';
 import {LeavingGuard} from '../leavingGuard';
 import {AuthGuard} from '../auth.guard';
-import {PersonExpertiseComponent} from './components/person-expertise/person-expertise.component';
+import {PersonExpertiseComponent} from "./components/person-expertise/person-expertise.component";
 
 const Person_ROUTES: Routes = [
   {path: '', component: PersonComponent, pathMatch: 'full'},
@@ -13,7 +13,7 @@ const Person_ROUTES: Routes = [
   {path: 'partnership/:id/:personName', loadChildren: 'app/admin/partnership/partnership.module#PartnershipModule'},
   {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
   {path: 'consultancy', loadChildren: 'app/admin/consultancy/consultancy.module#ConsultancyModule', canActivate: [AuthGuard]},
-  {path: 'expertise/:pid', component: PersonExpertiseComponent},
+  {path: 'expertises/:pid', component: PersonExpertiseComponent},
 ];
 
 export const personRouting = RouterModule.forChild(Person_ROUTES);

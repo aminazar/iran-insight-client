@@ -9,7 +9,7 @@ import {AbstractSearchComponent} from '../../shared/components/abstract-search/a
 @Component({
   selector: 'ii-expertise',
   templateUrl: './expertise.component.html',
-  styleUrls: ['./expertise.component.css']
+  styleUrls: ['./expertise.component.scss']
 })
 export class ExpertiseComponent extends AbstractSearchComponent implements OnInit {
 
@@ -20,13 +20,11 @@ export class ExpertiseComponent extends AbstractSearchComponent implements OnIni
   }
 
   openForm(id: number = null): void {
-    // TODO: open edit expertise form / new expertise form
-    // this.expertiseId = id;
-    // this.router.navigate(['/admin/expertise/form/' + id]);
+    this.cardId = id;
+    this.router.navigate([`/admin/expertise/form/${id}`]);
   }
 
   openView(id: number = null): void {
-    // TODO: view expertise card
     this.cardId = id;
     this.router.navigate(['/admin/expertise/' + id]);
   }
