@@ -7,8 +7,9 @@
   </mat-card-header>
   <mat-card-content>
 
-    <mat-input-container  class="field">
-      <input matInput placeholder="insert new tag..." [matAutocomplete]="auto"  [formControl]="suggestionCtrl" #tagInput (keyup.enter)="add(tagInput.value)" />
+    <mat-input-container class="field">
+      <input matInput placeholder="insert new tag..." [matAutocomplete]="auto" [formControl]="suggestionCtrl" #tagInput
+             (keyup.enter)="add(tagInput.value)"/>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItem($event)">
         <mat-option *ngFor="let item of filteredItems" [value]="item.name" class="farsi">
           {{item.name}}
@@ -19,7 +20,7 @@
     <mat-checkbox [(ngModel)]="active">Add active tag?</mat-checkbox>
 
     <mat-chip-list>
-      <mat-chip [color]="tag.active ?  'accent' : 'primary'"  *ngFor="let tag of tags"
+      <mat-chip [color]="tag.active ?  'accent' : 'primary'" *ngFor="let tag of tags"
                 [selectable]="true" selected="true"
                 [removable]="true" (remove)="remove(tag)">
         {{tag.name}}
@@ -27,6 +28,30 @@
       </mat-chip>
 
     </mat-chip-list>
+
+    <hr>
+
+    <h3>Suggestions:</h3>
+
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+         fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
+      <div fxFlex="20" *ngFor="let connectedTag of connectedTags" class="outer-card">
+        <mat-card class="suggestion-card">
+
+          <div class="button-row">
+            <span style="color: #fffffa">{{connectedTag.name}}</span>
+
+            <button mat-icon-button (click)="acceptConnectedTag(connectedTag)">
+              <mat-icon color="accent">done</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="rejectConnectedTag(connectedTag)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+
+      </div>
+    </div>
 
 
   </mat-card-content>

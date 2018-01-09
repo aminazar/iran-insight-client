@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {MatChipInputEvent, MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../shared/services/progress.service';
 import {RestService} from '../../shared/services/rest.service';
 import {FormControl} from '@angular/forms';
@@ -10,7 +10,7 @@ import {ITag} from './interfaces/itag.interface';
 @Component({
   selector: 'ii-tag',
   templateUrl: './tag.component.html',
-  styleUrls: ['./tag.component.css']
+  styleUrls: ['./tag.component.scss']
 })
 export class TagComponent implements OnInit {
   active = true;
@@ -24,6 +24,7 @@ export class TagComponent implements OnInit {
 
   filteredItems: any[] = [];
   tags: ITag[] = [];
+  connectedTags: ITag[] = [];
 
   Types: any = {
     ORG: 'organization',
@@ -90,8 +91,6 @@ export class TagComponent implements OnInit {
         name: phrase
       }).subscribe(
         (data) => {
-
-          console.log('-> ', data);
           this.filteredItems = data;
           this.progressService.disable();
         },
@@ -110,10 +109,7 @@ export class TagComponent implements OnInit {
   addItem(data) {
 
     const item = this.filteredItems.filter(el => el.name.toLowerCase() === data.option.value.toLowerCase())[0];
-    if (this.tags.filter(tag => tag.name === item.name).length === 0) {
-      this.tags.push(item);
-      this.add(item.name);
-    }
+    this.add(item.name);
     this.suggestionCtrl.setValue('');
   }
 
@@ -136,12 +132,25 @@ export class TagComponent implements OnInit {
       this.progressService.enable();
       this.restService.put('tag/add', body).subscribe(res => {
         this.tags.push({
-          tid: res.id,
-          name: value.trim(),
+          tid: res.tid,
+          name: value,
           active: this.active
         });
-        this.progressService.disable();
         this.suggestionCtrl.setValue('');
+
+        this.restService.post('tag/getConnection', {name: value}).subscribe(res => {
+
+          res.forEach((tag: ITag) => {
+
+            if (this.tags.filter(t => t.name === tag.name).length === 0)
+              this.connectedTags.push(tag);
+          });
+
+          this.progressService.disable();
+        }, err => {
+          this.progressService.disable();
+        });
+
 
       }, err => {
         this.progressService.disable();
@@ -152,10 +161,9 @@ export class TagComponent implements OnInit {
     }
   }
 
-  remove(tag: any): void {
-    const index = this.tags.indexOf(tag);
+  remove(tag: ITag): void {
 
-    if (index >= 0) {
+    if (this.tags.filter(t => t.name === tag.name).length > 0) {
 
       this.progressService.enable();
 
@@ -164,7 +172,7 @@ export class TagComponent implements OnInit {
 
       this.restService.post('tag/removeFrom', body).subscribe(res => {
 
-        this.tags.splice(index, 1);
+        this.tags = this.tags.filter(t => t.name !== tag.name);
         this.progressService.disable();
 
       }, err => {
@@ -173,6 +181,62 @@ export class TagComponent implements OnInit {
 
     }
 
+
+  }
+
+  acceptConnectedTag(tag: ITag) {
+
+    if (this.tags.filter(t => t.name === tag.name).length > 0)
+      return;
+
+    const body = {
+      name: tag.name,
+      active: tag.active
+    };
+    body[this.id_name] = this.id;
+
+    this.progressService.enable();
+    this.restService.put('tag/add', body).subscribe(res => {
+      this.tags.push(res);
+      this.suggestionCtrl.setValue('');
+
+      this.restService.post('tag/getConnection', {name: tag.name}).subscribe(res => {
+
+        res.forEach((tag: ITag) => {
+          if (this.tags.filter(t => t.name === tag.name).length === 0)
+            this.connectedTags.push(tag);
+        });
+
+        this.connectedTags = this.connectedTags.filter(t => t.name !== tag.name);
+        this.progressService.disable();
+      }, err => {
+        this.progressService.disable();
+      });
+
+
+    }, err => {
+      this.progressService.disable();
+      this.suggestionCtrl.setValue('');
+
+    });
+  }
+
+  rejectConnectedTag(tag: ITag) {
+
+
+    this.progressService.enable();
+
+    const body = {name: tag.name};
+    body[this.id_name] = this.id;
+
+    this.restService.post('tag/removeFrom', body).subscribe(res => {
+
+      this.connectedTags = this.connectedTags.filter(t => t.name !== tag.name);
+      this.progressService.disable();
+
+    }, err => {
+      this.progressService.disable();
+    });
 
   }
 
