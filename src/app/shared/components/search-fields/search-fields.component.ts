@@ -10,7 +10,7 @@ enum ElementEnum {
   isEducation,
   isLead,
   isActive,
-};
+}
 
 @Component({
   selector: 'ii-search-fields',
@@ -19,13 +19,15 @@ enum ElementEnum {
 })
 export class SearchFieldsComponent implements OnInit, OnDestroy {
   @Input() target = null;
-  @Input() searchInFirst: boolean = true;
+  @Input() searchInFirst = true;
+
   @Input()
-  set initItems(value){
+  set initItems(value) {
     this._initItems = value;
     this.setInitSearchData();
   }
-  get initItems(){
+
+  get initItems() {
     return this._initItems;
   }
 
@@ -38,13 +40,14 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
   amountCtrl = new FormControl();
   _initItems: any = null;
 
-  //View variables
+  // View variables
   phrase = null;
   amount = null;
   isEducation = null;
   isLead = null;
   isMentor = null;
   isActive = null;
+  searchOnTag = false;
   comparison = {
     lt: false,
     gt: false,
@@ -70,7 +73,7 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
       // this.searchOnData(null);
     }
 
-    if(this.searchInFirst && this.target)
+    if (this.searchInFirst && this.target)
       this.searchOnData(null);
 
     this.searchCtrl.valueChanges.debounceTime(500).subscribe(
@@ -109,8 +112,8 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
     this.endDate = null;
   }
 
-  setInitSearchData(){
-    if(this.initItems){
+  setInitSearchData() {
+    if (this.initItems) {
       this.searchCtrl.setValue(this.initItems.phrase ? this.initItems.phrase : null);
       this.phrase = this.initItems.phrase ? this.initItems.phrase : null;
       this.amountCtrl.setValue(this.initItems.options.amount ? this.initItems.options.amount : null);
@@ -126,7 +129,7 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
   }
 
   addTarget(target_index) {
-    let target_title = this.targetList[target_index];
+    const target_title = this.targetList[target_index];
     this.targets.push(target_title);
     this.targetList = this.targetList.filter(el => el.toLowerCase() !== target_title.toLowerCase());
   }
@@ -149,7 +152,7 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
       trg[el] = true;
     });
 
-    let searchData = {
+    const searchData = {
       phrase: phrase,
       options: {
         target: trg,
@@ -165,15 +168,17 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
           eq: this.comparison.eq,
         },
         amount: this.amount,
+        tag_search: this.searchOnTag,
         show_all: (this.target
-          && (phrase === null || phrase === '')
-          && this.isMentor === null
-          && this.isEducation === null
-          && this.isLead === null
-          && this.isActive === null
-          && this.amount === null
-          && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq
-          && !this.startDate && !this.endDate),
+        && (phrase === null || phrase === '')
+        && this.isMentor === null
+        && this.isEducation === null
+        && this.isLead === null
+        && this.isActive === null
+        && this.amount === null
+        && !this.comparison.lt && !this.comparison.gt && !this.comparison.eq
+        && !this.startDate && !this.endDate
+        && !this.searchOnTag),
       }
     };
 
@@ -208,7 +213,6 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
         else if (this.isEducation === false)
           this.isEducation = null;
       }
-        ;
         break;
       case this.elementEnum.isLead: {
         if (this.isLead === null)
@@ -218,7 +222,6 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
         else if (this.isLead === false)
           this.isLead = null;
       }
-        ;
         break;
       case this.elementEnum.isMentor: {
         if (this.isMentor === null)
@@ -228,7 +231,6 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
         else if (this.isMentor === false)
           this.isMentor = null;
       }
-        ;
         break;
       case this.elementEnum.isActive: {
         if (this.isActive === null)
@@ -238,7 +240,6 @@ export class SearchFieldsComponent implements OnInit, OnDestroy {
         else if (this.isActive === false)
           this.isActive = null;
       }
-        ;
         break;
     }
 
