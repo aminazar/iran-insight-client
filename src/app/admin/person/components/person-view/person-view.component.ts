@@ -4,6 +4,8 @@ import * as moment from 'moment';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
+import {MatDialog} from '@angular/material';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
   selector: 'ii-person-view',
@@ -16,7 +18,7 @@ export class PersonViewComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router,
               private progressService: ProgressService, private route: ActivatedRoute,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -49,9 +51,19 @@ export class PersonViewComponent implements OnInit {
   }
 
   deletePerson() {
-    this.authService.deletePerson(this.personId).subscribe(
-      (data) => this.breadcrumbService.popChild(),
-      (err) => console.error('Cannot delete this person')
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (dt) => {
+        if (dt)
+          this.authService.deletePerson(this.personId).subscribe(
+            (data) => this.breadcrumbService.popChild(),
+            (err) => console.error('Cannot delete this person')
+          );
+      },
+      (err) => console.error('An error occurred when subscribing afterClosed dialog method: ', err)
     );
   }
 

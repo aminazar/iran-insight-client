@@ -8,7 +8,7 @@ const INVESTMENT_ROUTES: Routes = [
   {path: 'form/:type/:is_investor/:id/:invid', component: InvestmentFormComponent},
   {path: 'form/:is_investor/:id/:invid', component: InvestmentFormComponent},
   {path: 'view/:type/:is_investor/:id/:invid', component: InvestmentViewComponent},
-  {path: 'view/is_investor/:id/:invid', component: InvestmentViewComponent},
+  {path: 'view/:is_investor/:id/:invid', component: InvestmentViewComponent},
 ];
 
 export const investmentRouting = RouterModule.forChild(INVESTMENT_ROUTES);
