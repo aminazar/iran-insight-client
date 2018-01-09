@@ -22,7 +22,7 @@ export class ProductViewComponent implements OnInit {
   actionEnum = ActionEnum;
   @Output() changedProduct = new EventEmitter();
 
-  constructor(private authService: AuthService, private router: Router,public dialog: MatDialog,
+  constructor(private authService: AuthService, private router: Router, public dialog: MatDialog,
               private progressService: ProgressService, private route: ActivatedRoute,
               private breadcrumbService: BreadcrumbService, private snackBar: MatSnackBar) { }
 

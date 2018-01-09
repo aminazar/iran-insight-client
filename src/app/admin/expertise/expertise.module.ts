@@ -7,7 +7,23 @@ import {expertiseRouting} from './expertise.routing';
 import {SharedModule} from '../../shared/shared.module';
 import {ExpertiseComponent} from './expertise.component';
 import {ExpertiseFormComponent} from './expertise-form/expertise-form.component';
-import {MatButtonModule, MatCardModule, MatIconModule, MatSnackBarModule} from "@angular/material";
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatIconModule,
+  MatPaginatorModule,
+  MatSnackBarModule,
+  MatCheckboxModule,
+  MatNativeDateModule,
+  MatGridListModule,
+  MatTabsModule,
+  MatAutocompleteModule,
+  MatSelectModule,
+  MatInputModule
+} from "@angular/material";
+import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
 
 @NgModule({
   imports: [
@@ -17,14 +33,25 @@ import {MatButtonModule, MatCardModule, MatIconModule, MatSnackBarModule} from "
     SharedModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    MatSnackBarModule,
-    MatIconModule,
     MatCardModule,
+    MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatTabsModule,
+    MatPaginatorModule,
   ],
   declarations: [
     ExpertiseComponent,
     ExpertiseFormComponent,
+    ExpertiseViewComponent,
   ],
 })
 export class ExpertiseModule{
