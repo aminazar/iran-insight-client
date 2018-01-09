@@ -8,4 +8,5 @@ export enum TargetEnum {
   investment = 'investment',
   consultancy = 'consultancy',
   type = 'type',
+  tag = 'tag',
 }

@@ -1,47 +1,46 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RestService} from '../../../../shared/services/rest.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {forEach} from '@angular/router/src/utils/collection';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
-import {CurrencyList} from '../../../../shared/constants/currency';
 
-enum InvestorType {
+enum ConsultingType {
   person,
   organization,
 }
 
 @Component({
-  selector: 'ii-investment-form',
-  templateUrl: './investment-form.component.html',
-  styleUrls: ['./investment-form.component.css']
+  selector: 'ii-consultancy-form',
+  templateUrl: './consultancy-form.component.html',
+  styleUrls: ['./consultancy-form.component.css']
 })
-export class InvestmentFormComponent implements OnInit {
+export class ConsultancyFormComponent implements OnInit {
   id = null;
   isPerson = false;
   isBiz = false;
   isOrg = false;
-  isInvestor = false;
-  investmentId = null;
-  investmentForm: FormGroup;
+  isConsulting = false;
+  consultancyId = null;
+  consultancyForm: FormGroup;
   loadedValue: any = {};
   upsertBtnShouldDisabled = false;
   deleteBtnShouldDisabled = false;
   anyChanges = false;
-  investorType = InvestorType;
-  investor = this.investorType.person;
-  investorObj = {
+  consultingType = ConsultingType;
+  consulting = this.consultingType.person;
+  consultingObj = {
     name: null,
     id: null,
   };
-  investmentObj = {
+  consultancyObj = {
     name: null,
     id: null,
   };
-  currencyList = CurrencyList;
 
   constructor(private restService: RestService, private breadcrumbService: BreadcrumbService,
               private router: Router, private route: ActivatedRoute,
@@ -55,16 +54,16 @@ export class InvestmentFormComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.id = params['id'] ? +params['id'] : null;
-        this.investmentId = params['invid'] ? +params['invid'] : null;
-        this.isInvestor = params['is_investor'] ? (params['is_investor'] === 'true' ? true : false) : false;
+        this.consultancyId = params['cnsid'] ? +params['cnsid'] : null;
+        this.isConsulting = params['is_consulting'] ? (params['is_consulting'] === 'true' ? true : false) : false;
         this.isBiz = params['type'] ? false : true;
         this.isPerson = params['type'] ? (params['type'].toLowerCase() === 'person' ? true : false) : false;
         this.isOrg = params['type'] ? (params['type'].toLowerCase() === 'organization' ? true : false) : false;
 
-        if (this.investmentId)
-          this.getInvestment();
+        if (this.consultancyId)
+          this.getConsultancy();
 
-        this.breadcrumbService.pushChild((this.investmentId ? 'Update' : 'Add') + ' Investment', this.router.url, false);
+        this.breadcrumbService.pushChild((this.consultancyId ? 'Update' : 'Add') + ' Consultancy', this.router.url, false);
       },
       (err) => {
         console.error('Cannot parse parameters from url: ', err);
@@ -73,49 +72,43 @@ export class InvestmentFormComponent implements OnInit {
   }
 
   initForm() {
-    this.investmentForm = new FormBuilder().group({
-      amount: [this.loadedValue.amount, [
-        Validators.required,
-        Validators.pattern(/^-?\d*(\.\d+)?$/),
-      ]],
-      currency: [this.loadedValue.currency, [
-        Validators.required,
-      ]],
-      is_lead: [this.loadedValue.is_lead ? this.loadedValue.is_lead : false, [
+    this.consultancyForm = new FormBuilder().group({
+      subject: [this.loadedValue.subject, [
         Validators.required
+      ]],
+      subject_fa: [this.loadedValue.subject_fa],
+      is_mentor: [this.loadedValue.is_mentor ? this.loadedValue.is_mentor : false, [
+        Validators.required,
       ]],
       is_confirmed: [this.loadedValue.is_confirmed ? this.loadedValue.is_confirmed : false, [
         Validators.required,
       ]],
-      investment_cycle: [this.loadedValue.investment_cycle ? this.loadedValue.investment_cycle : null, [
-        Validators.min(1),
-      ]],
     });
 
-    this.investmentForm.valueChanges.subscribe(
+    this.consultancyForm.valueChanges.subscribe(
       (dt) => this.fieldChanged(),
       (er) => console.error('Error when subscribing on form valueChanges: ', er)
     );
   }
 
-  getInvestment() {
-    if (!this.investmentId)
+  getConsultancy() {
+    if (!this.consultancyId)
       return;
 
     this.progressService.enable();
-    this.restService.get('investment/' + this.investmentId).subscribe(
+    this.restService.get('consultancy/' + this.consultancyId).subscribe(
       (data) => {
         this.loadedValue = data;
-        if (this.isInvestor) {
-          this.investmentObj.id = data.bid;
-          this.investmentObj.name = data.biz_name || data.biz_name_fa;
+        if (this.isConsulting) {
+          this.consultancyObj.id = data.bid;
+          this.consultancyObj.name = data.biz_name || data.biz_name_fa;
         } else {
           if (data.pid) {
-            this.investorObj.id = data.pid;
-            this.investorObj.name = data.person_display_name || data.perosn_display_name_fa;
+            this.consultingObj.id = data.pid;
+            this.consultingObj.name = data.person_display_name || data.person_display_name_fa;
           } else if (data.oid) {
-            this.investorObj.id = data.oid;
-            this.investorObj.name = data.name || data.name_fa;
+            this.consultingObj.id = data.oid;
+            this.consultingObj.name = data.name || data.name_fa;
           }
         }
 
@@ -123,23 +116,23 @@ export class InvestmentFormComponent implements OnInit {
         this.progressService.disable();
       },
       (err) => {
-        console.error('Cannot get investment details');
+        console.error('Cannot get consultancy details: ', err);
         this.progressService.disable();
       }
     );
   }
 
-  modifyInvestment() {
-    if (!this.investorObj.id && !this.investmentObj.id)
+  modifyConsultancy() {
+    if (!this.consultingObj.id && !this.consultancyObj.id)
       return;
 
     const data: any = {};
 
-    Object.keys(this.investmentForm.controls).forEach(el => {
-      data[el] = this.investmentForm.controls[el].value;
+    Object.keys(this.consultancyForm.controls).forEach(el => {
+      data[el] = this.consultancyForm.controls[el].value;
     });
 
-    if (this.investmentForm.controls['is_confirmed'].value)
+    if (this.consultancyForm.controls['is_confirmed'].value)
       data.confirmed_by = this.authService.userId.getValue();
 
     this.progressService.enable();
@@ -147,28 +140,28 @@ export class InvestmentFormComponent implements OnInit {
     this.deleteBtnShouldDisabled = true;
 
     let url = '';
-    if (this.isInvestor) {
-      url = (this.isPerson ? 'personalInvestment' : 'orgInvestment') +
-        '/' + (this.investmentId ? this.investmentId + '/' : '') +
-        this.investmentObj.id + '/' + this.id;
+    if (this.isConsulting) {
+      url = (this.isPerson ? 'personalConsultancy' : 'orgConsultancy') +
+        '/' + (this.consultancyId ? this.consultancyId + '/' : '') +
+        this.consultancyObj.id + '/' + this.id;
     } else {
-      url = (this.investor === this.investorType.person ? 'personalInvestment' : 'orgInvestment') +
-        '/' + (this.investmentId ? this.investmentId + '/' : '') +
-        this.id + '/' + this.investorObj.id;
+      url = (this.consulting === this.consultingType.person ? 'personalConsultancy' : 'orgConsultancy') +
+        '/' + (this.consultancyId ? this.consultancyId + '/' : '') +
+        this.id + '/' + this.consultingObj.id;
     }
 
-    (this.investmentId ?
+    (this.consultancyId ?
       this.restService.post(url, data) :
       this.restService.put(url, data))
       .subscribe(
         (rs) => {
-          if (!this.investmentId) {
+          if (!this.consultancyId) {
             this.initForm();
-            this.investorObj = {
+            this.consultingObj = {
               id: null,
               name: null,
             };
-            this.investmentObj = {
+            this.consultancyObj = {
               id: null,
               name: null,
             };
@@ -177,7 +170,7 @@ export class InvestmentFormComponent implements OnInit {
             this.loadedValue.id = rs;
           }
 
-          this.snackBar.open('The investment is ' + (this.investmentId ? 'updated' : 'added') + ' successfully', null, {
+          this.snackBar.open('The consultancy is ' + (this.consultancyId ? 'updated' : 'added') + ' successfully', null, {
             duration: 2300,
           });
           this.progressService.disable();
@@ -194,7 +187,7 @@ export class InvestmentFormComponent implements OnInit {
       );
   }
 
-  deleteInvestment() {
+  deleteConsultancy() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
     });
@@ -202,9 +195,9 @@ export class InvestmentFormComponent implements OnInit {
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data)
-          this.restService.delete('investment/' + this.investmentId).subscribe(
+          this.restService.delete('consultancy/' + this.consultancyId).subscribe(
             (rs) => {
-              this.snackBar.open('The investment is deleted successfully', null, {
+              this.snackBar.open('The consultancy is deleted successfully', null, {
                 duration: 2300,
               });
               this.breadcrumbService.popChild();
@@ -220,34 +213,34 @@ export class InvestmentFormComponent implements OnInit {
     );
   }
 
-  setInvestor(data) {
-    this.investorObj.id = this.investor === this.investorType.person ?
+  setConsulting(data) {
+    this.consultingObj.id = this.consulting === this.consultingType.person ?
       data.pid :
       data.oid;
-    this.investorObj.name = this.investor === this.investorType.person ?
+    this.consultingObj.name = this.consulting === this.consultingType.person ?
       (data.display_name_en || data.display_name_fa) :
       (data.name || data.name_fa);
     this.fieldChanged();
   }
 
   setTargetBusiness(data) {
-    this.investmentObj.id = data.bid;
-    this.investmentObj.name = data.name || data.name_fa;
+    this.consultancyObj.id = data.bid;
+    this.consultancyObj.name = data.name || data.name_fa;
     this.fieldChanged();
   }
 
-  directToInvDone() {
+  directToCnsDone() {
     let url = '/admin/';
 
-    if (this.isInvestor)
-      url += 'business/view/' + this.investmentObj.id;
+    if (this.isConsulting)
+      url += 'business/view/' + this.consultancyObj.id;
     else {
-      if (this.investor === this.investorType.person)
+      if (this.consulting === this.consultingType.person)
         url += 'person';
-      else if (this.investor === this.investorType.organization)
+      else if (this.consulting === this.consultingType.organization)
         url += 'organization';
 
-      url += '/view/' + this.investorObj.id;
+      url += '/view/' + this.consultingObj.id;
     }
 
     this.router.navigate([url]);
@@ -259,17 +252,17 @@ export class InvestmentFormComponent implements OnInit {
 
     this.anyChanges = false;
 
-    Object.keys(this.investmentForm.controls).forEach(el => {
-      if (this.investmentForm.controls[el].value != this.loadedValue[el])
+    Object.keys(this.consultancyForm.controls).forEach(el => {
+      if (this.consultancyForm.controls[el].value != this.loadedValue[el])
         this.anyChanges = true;
     });
 
-    if (this.investmentObj.id) {
-      if (this.investmentObj.id !== this.loadedValue.bid)
+    if (this.consultancyObj.id) {
+      if (this.consultancyObj.id !== this.loadedValue.bid)
         this.anyChanges = true;
-    } else if (this.investorObj.id) {
-      const tempId = this.loadedValue[(this.investor === this.investorType.person ? 'pid' : 'oid')];
-      if (this.investorObj.id !== tempId)
+    } else if (this.consultingObj.id) {
+      const tempId = this.loadedValue[(this.consulting === this.consultingType.person ? 'pid' : 'oid')];
+      if (this.consultingObj.id !== tempId)
         this.anyChanges = true;
     }
   }

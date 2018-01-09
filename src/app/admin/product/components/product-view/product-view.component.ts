@@ -18,12 +18,12 @@ export class ProductViewComponent implements OnInit {
   productId: number = null;
   businessId: number = null;
   product: any = null;
-  upsertBtnShouldDisabled: boolean = false;
-  deleteBtnShouldDisabled: boolean = false;
+  upsertBtnShouldDisabled = false;
+  deleteBtnShouldDisabled = false;
   actionEnum = ActionEnum;
   @Output() changedProduct = new EventEmitter();
 
-  constructor(private authService: AuthService, private router: Router,public dialog: MatDialog,
+  constructor(private authService: AuthService, private router: Router, public dialog: MatDialog,
               private progressService: ProgressService, private route: ActivatedRoute,
               private breadcrumbService: BreadcrumbService, private snackBar: MatSnackBar) { }
 

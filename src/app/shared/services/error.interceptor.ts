@@ -21,7 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           let found = false;
           errors.forEach(e => {
             if (err.error === e.error.message && err.status === e.code) {
-              this.snackBar.open(e.friendlyMessage);
+              this.snackBar.open(e.friendlyMessage , 'Dismiss');
               found = true;
             }
           });

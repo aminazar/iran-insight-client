@@ -17,11 +17,14 @@ export class SuggestionComponent implements OnInit {
   @Input() fieldNameEn = '';
   @Input() fieldNameFa = '';
   @Input() currentIds: number[] = [];
+  @Input() descriptionFieldName = '';
+  @Input() descriptionFieldNameFa = '';
   @Output() add = new EventEmitter<any>();
 
   suggestionCtrl: FormControl;
   filteredItems: any[] = [];
   fn = '';
+  dscp_fn = '';
 
   constructor(private restService: RestService, private progressService: ProgressService) {
   }
@@ -53,10 +56,13 @@ export class SuggestionComponent implements OnInit {
     else {
       this.progressService.enable();
 
-      if (phrase.charCodeAt(0) >= 48 && phrase.charCodeAt(0) <= 122)
+      if (phrase.charCodeAt(0) >= 48 && phrase.charCodeAt(0) <= 122) {
         this.fn = this.fieldNameEn;
-      else
+        this.dscp_fn = this.descriptionFieldName ? this.descriptionFieldName : null;
+      } else {
         this.fn = this.fieldNameFa;
+        this.dscp_fn = this.descriptionFieldNameFa ? this.descriptionFieldNameFa : null;
+      }
 
       this.restService.post('suggest', {
         table: this.name,
@@ -65,6 +71,8 @@ export class SuggestionComponent implements OnInit {
         fieldName: this.fn,
         otherFieldName: (this.fn === this.fieldNameEn) ? this.fieldNameFa : this.fieldNameEn,
         currentIds: this.currentIds,
+        dscpFieldName: this.descriptionFieldName,
+        dscpFieldNameFa: this.descriptionFieldNameFa,
       }).subscribe(
         (data) => {
           this.filteredItems = data;
