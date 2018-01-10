@@ -5,7 +5,7 @@ import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {RestService} from '../../../../shared/services/rest.service';
-import {IMember} from '../../interfaces/member';
+import {IMember} from '../../../../shared/interfaces/member';
 
 @Component({
   selector: 'ii-business-members',

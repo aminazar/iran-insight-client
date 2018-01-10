@@ -1,9 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {MatDialog, MatSnackBar} from '@angular/material';
-
-import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
-import {SearchService} from '../../shared/services/search.service';
 import {AbstractSearchComponent} from '../../shared/components/abstract-search/abstract-search.component';
 
 @Component({
