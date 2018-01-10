@@ -8,6 +8,7 @@ import {AuthService} from '../../services/auth.service';
 import {StorageService} from '../../services/storage.service';
 import {RemovingConfirmComponent} from '../removing-confirm/removing-confirm.component';
 import {Observable} from 'rxjs/Observable';
+import {RestService} from "../../services/rest.service";
 
 @Component({
   selector: 'ii-abstract-search',
@@ -29,9 +30,9 @@ export class AbstractSearchComponent implements OnInit {
   key: string;
 
   constructor(private breadCrumbService: BreadcrumbService,
-              protected router: Router,
+              protected router: Router, protected restService: RestService,
               protected activatedRoute: ActivatedRoute, private searchService: SearchService, protected snackBar: MatSnackBar,
-              private progressService: ProgressService, private dialog: MatDialog,
+              protected progressService: ProgressService, private dialog: MatDialog,
               protected authService: AuthService, private storageService: StorageService) {
   }
 

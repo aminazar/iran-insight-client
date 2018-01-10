@@ -3,7 +3,6 @@ import {Routes, RouterModule} from '@angular/router';
 import {AuthGuard} from './auth.guard';
 import {AdminHomeComponent} from './home/home.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import {UnderConstructionComponent} from '../shared/components/underConstruction/under-construction.component';
 
 const Admin_ROUTES: Routes = [
   {
@@ -19,10 +18,10 @@ const Admin_ROUTES: Routes = [
       {path: 'profile', loadChildren: 'app/site/profile/profile.module#ProfileModule', canActivate: [AuthGuard]},
       {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
       {path: 'consultancy', loadChildren: 'app/admin/consultancy/consultancy.module#ConsultancyModule', canActivate: [AuthGuard]},
+      {path: 'organization', loadChildren: 'app/admin/organization/organization.module#OrganizationModule', canActivate: [AuthGuard]},
       // {path: 'lce/:type/:id', loadChildren: 'app/admin/LCE/lce.module#LCEModule', canActivate: [AuthGuard]},
     ],
   },
-  {path: 'admin/organization', component: UnderConstructionComponent},
   {path: 'admin/login', loadChildren: 'app/admin/login/login.module#LoginModule'},
 ];
 

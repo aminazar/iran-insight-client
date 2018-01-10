@@ -1,0 +1,65 @@
+<div fxLayout="row" class="row">
+  <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'organization'"
+                    (searching)="search($event)"></ii-search-fields>
+</div>
+<div fxLayout="row" class="row">
+  <button mat-fab color="accent" (click)="open('form', null)">
+    <mat-icon aria-label="add new organization">add</mat-icon>
+  </button>
+</div>
+
+<div *ngFor="let rw of rows">
+  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+       fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
+    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngFor="let o of aligningObj[rw]" class="entity-card">
+      <mat-card class="card-view" (click)="select(o.oid)"
+                [ngClass]="{'selected-card mat-elevation-z24': o.oid === cardId, 'dead-entity': orgIsDead(o)}" style="min-height: 270px;">
+        <mat-card-header>
+          <!--<div mat-card-avatar><img src="../../../assets/logo4.jpg" style="width:40px;height: 40px;"/></div>-->
+          <mat-card-title>
+            {{o.name}}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{o.name_fa}}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="o.oid === cardId">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./members/'+ o.oid]"><i class="fa fa-user-circle-o"></i> Members</a>
+              <a fxFlex="50" [routerLink]="['./product/'+ o.oid]"><i class="fa fa-product-hunt"></i> Product</a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./lce/', o.oid, o.name]"><i class="fa fa-bolt"></i> Life cycle events</a>
+              <a fxFlex="50" [routerLink]="['./event/'+ o.oid]"><i class="fa fa-users"></i> Events</a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['/admin/organization/investment', o.oid, o.name]"><i
+                class="fa fa-money"></i> Investments</a>
+              <a fxFlex="50" [routerLink]="['/admin/organization/consultancy', o.oid, o.name]"><i
+                class="fa fa-adjust"></i> Consultancies</a>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['./tag/', o.oid, o.name]"><i class="fa fa-tags"></i> Tag</a>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="primary">
+            <mat-icon aria-label="view" (click)="open('view', o.oid)" color="primary">visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="open('view', o.oid)" color="accent">
+            <mat-icon aria-label="edit">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteOrganization(o.oid)" color="warn" *ngIf="!orgIsDead(o)">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<div>
+  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+                 (page)="changeOffset($event)"></mat-paginator>
+</div>
