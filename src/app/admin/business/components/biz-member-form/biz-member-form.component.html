@@ -1,3 +1,46 @@
-<p>
-  biz-member-form works!
-</p>
+<div fxLayout="row">
+    <mat-card fxFlex="60" fxFlex.xs="100" fxFlex.sm="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+        <mat-card-title>
+            <label *ngIf="memberId">Update Membership</label>
+            <label *ngIf="!memberId">Add Membership</label>
+        </mat-card-title>
+        <mat-card-content>
+            <div>
+                <ii-suggestion [name]="'person'"
+                               [placeholder]="'Person Name'"
+                               [currentIds]="memberObj.id ? [memberObj.id] : null"
+                               [fieldNameFa]="'display_name_fa'"
+                               [fieldNameEn]="'display_name_en'"
+                               [idColumn]="'pid'"
+                               [descriptionFieldName]="'username'"
+                               [descriptionFieldNameFa]="'username'"
+                               (add)="setPerson($event)"></ii-suggestion>
+                <div *ngIf="memberObj.id">
+                    <a class="clickable-link" (click)="directToInvDone()">
+                        <span>Member is </span>
+                        <span>"{{memberObj.name}}"</span>
+                    </a>
+                </div>
+            </div>
+            <form (ngSubmit)="modifyMembership()" [formGroup]="membershipForm">
+                <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
+                    <div fxFlex="50">
+                        <mat-checkbox formControlName="is_active" tabindex="6">
+                            <span *ngIf="membershipForm.controls['is_active'].value === true">Is Acive</span>
+                            <span *ngIf="membershipForm.controls['is_active'].value === false">Is not Active</span>
+                        </mat-checkbox>
+                    </div>
+                    <div fxFlex="50">
+                        <mat-checkbox formControlName="is_representative" tabindex="7">
+                            <span *ngIf="membershipForm.controls['is_representative'].value === true">Representative</span>
+                            <span *ngIf="membershipForm.controls['is_representative'].value === false">Not Representative</span>
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <button mat-icon-button color="accent" type="submit">
+                    <mat-icon aria-label="accept">done</mat-icon>
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

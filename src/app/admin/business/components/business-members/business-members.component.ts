@@ -103,41 +103,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     );
   }
 
-  // deleteMembership(mid: number = null): void {
-  //   console.log('delete');
-  //   const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-  //     width: '330px',
-  //     height: '230px'
-  //   });
-  //
-  //   rmDialog.afterClosed().subscribe(
-  //     (status) => {
-  //       if (status) {
-  //         this.progressService.enable();
-  //         this.restService.delete(`/joiner/deleteUserOrRepAfterConfirm/${mid}`).subscribe(
-  //           (data) => {
-  //             this.snackBar.open('Membership delete successfully', null, {
-  //               duration: 2000,
-  //             });
-  //             this.progressService.disable();
-  //
-  //             this.breadCrumbService.popChild();
-  //           },
-  //           (error) => {
-  //             this.snackBar.open('Cannot delete this membership. Please try again', null, {
-  //               duration: 2700
-  //             });
-  //             this.progressService.disable();
-  //           }
-  //         );
-  //       }
-  //     },
-  //     (err) => {
-  //       console.log('Error in dialog: ', err);
-  //     }
-  //   );
-  // }
-
   ngOnDestroy(): void {
     this.bid = null;
     this.members = null;

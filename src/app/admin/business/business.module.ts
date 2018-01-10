@@ -7,7 +7,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {
   MatDialogModule, MatIconModule, MatSnackBarModule, MatSelectModule, MatNativeDateModule, MatDatepickerModule,
   MatAutocompleteModule, MatGridListModule, MatPaginatorModule, MatTabsModule, MatCardModule, MatInputModule,
-  MatButtonModule, MatStepperModule, MatExpansionModule, MatAccordion
+  MatButtonModule, MatStepperModule, MatExpansionModule, MatAccordion, MatCheckboxModule
 } from '@angular/material';
 import {businessRouting} from './business.routing';
 import { BusinessMembersComponent } from './components/business-members/business-members.component';
@@ -42,6 +42,7 @@ import { BizMemberViewComponent } from './components/biz-member-view/biz-member-
     MatTabsModule,
     MatPaginatorModule,
     MatStepperModule,
+    MatCheckboxModule,
     MatExpansionModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'

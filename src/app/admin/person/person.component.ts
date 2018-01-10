@@ -45,7 +45,6 @@ export class PersonComponent extends AbstractSearchComponent implements OnInit {
   }
 
   getBestName(person) {
-
     if (person.display_name_en)
       return person.display_name_en;
 
