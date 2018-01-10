@@ -61,7 +61,7 @@ export class AbstractSearchComponent implements OnInit {
       offset: this.offset,
       limit: this.limit,
     });
-    this.router.navigate( id ? [state, id] : [state, ''], {relativeTo: this.activatedRoute});
+    this.router.navigate([state + '/' + id], {relativeTo: this.activatedRoute});
   }
 
 
