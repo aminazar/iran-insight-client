@@ -10,5 +10,5 @@
     "test.ts",
     "./app/test/test.module.ts",
     "**/*.spec.ts"
-  ]
+   ]
 }

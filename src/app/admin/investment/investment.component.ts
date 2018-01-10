@@ -33,6 +33,8 @@ export class InvestmentComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.investmentRelationName = params['name'] ? params['name'] : null;
+        this.investmentRelationName = this.investmentRelationName.replace(/%20/g, ' ');
+
         const type = params['type'] ? params['type'] : null;
 
         this.isPerson = this.router.url.toLowerCase().includes('person') ? true : false;
@@ -40,7 +42,6 @@ export class InvestmentComponent implements OnInit {
         this.isOrg = this.router.url.toLowerCase().includes('organization') ? true : false;
 
         this.isInvestor = (this.isPerson || this.isOrg);
-        this.getInvestments();
         if (!this.breadcrumbIsSet) {
           this.breadcrumbService.pushChild('Investments' +
             (this.isInvestor ? ' of ' : ' on ') +

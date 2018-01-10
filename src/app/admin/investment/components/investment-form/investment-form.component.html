@@ -27,6 +27,8 @@
                          [fieldNameFa]="investor === investorType.person ? 'display_name_fa' : 'name_fa'"
                          [fieldNameEn]="investor === investorType.person ? 'display_name_en' : 'name'"
                          [idColumn]="investor === investorType.person ? 'pid' : 'oid'"
+                         [descriptionFieldName]="investor === investorType.person ? 'username' : null"
+                         [descriptionFieldNameFa]="investor === investorType.person ? 'username' : null"
                          (add)="setInvestor($event)"></ii-suggestion>
           <div *ngIf="investorObj.id">
             <a class="clickable-link" (click)="directToInvDone()">
@@ -73,17 +75,23 @@
             <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">Please choose currency</mat-error>
           </div>
         </div>
+        <div>
+          <mat-input-container>
+            <input matInput type="number" placeholder="Investment Cycle" formControlName="investment_cycle" role="investment-cycle" min="1"/>
+          </mat-input-container>
+          <mat-error class="error-msg" *ngIf="investmentForm.controls['investment_cycle'].hasError('min')">The minimum value is 1</mat-error>
+        </div>
         <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
           <div fxFlex="50">
-            <mat-checkbox formControlName="is_lead">
+            <mat-checkbox formControlName="is_lead" tabindex="6">
               <span *ngIf="investmentForm.controls['is_lead'].value === true">Is Leader</span>
               <span *ngIf="investmentForm.controls['is_lead'].value === false">Is not Leader</span>
             </mat-checkbox>
           </div>
           <div fxFlex="50">
-            <mat-checkbox formControlName="is_confirmed">
+            <mat-checkbox formControlName="is_confirmed" tabindex="7">
               <span *ngIf="investmentForm.controls['is_confirmed'].value === true">Confirmed</span>
-              <span *ngIf="investmentForm.controls['is_confirmed'].value === false">No Confirmed</span>
+              <span *ngIf="investmentForm.controls['is_confirmed'].value === false">Not Confirmed</span>
             </mat-checkbox>
           </div>
         </div>

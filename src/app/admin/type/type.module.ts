@@ -5,12 +5,10 @@ import {typeRouting} from './type.routing';
 import {TypeFormComponent} from './components/type-form/type-form.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule,
-  MatOptionModule,
-  MatSelectModule, MatSnackBarModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule,
+  MatOptionModule,  MatSelectModule, MatSnackBarModule, MatPaginatorModule,
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import { ActiveDirective } from './directives/active/active.directive';
 import {SharedModule} from '../../shared/shared.module';
 
 @NgModule({
@@ -30,10 +28,10 @@ import {SharedModule} from '../../shared/shared.module';
     MatInputModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    MatGridListModule,
-    SharedModule
+    SharedModule,
+    MatPaginatorModule
   ],
-  declarations: [TypeComponent, TypeFormComponent, ActiveDirective],
+  declarations: [TypeComponent, TypeFormComponent],
   entryComponents: [TypeFormComponent]
 })
 export class TypeModule {

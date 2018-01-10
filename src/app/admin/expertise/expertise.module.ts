@@ -22,8 +22,8 @@ import {
   MatAutocompleteModule,
   MatSelectModule,
   MatInputModule
-} from "@angular/material";
-import { ExpertiseViewComponent } from './expertise-view/expertise-view.component';
+} from '@angular/material';
+import {ExpertiseViewComponent} from './expertise-view/expertise-view.component';
 
 @NgModule({
   imports: [
@@ -54,6 +54,6 @@ import { ExpertiseViewComponent } from './expertise-view/expertise-view.componen
     ExpertiseViewComponent,
   ],
 })
-export class ExpertiseModule{
+export class ExpertiseModule {
 
 }

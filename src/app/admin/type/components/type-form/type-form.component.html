@@ -1,59 +1,81 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="form">
+<div fxLayout="row" class="row">
 
-  <mat-card>
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+
     <mat-card-header>
-      <mat-card-title>{{typeId ? 'Edit type' : 'Add new type'}}</mat-card-title>
-      <mat-card-subtitle></mat-card-subtitle>
+      <mat-card-title><b>{{formId ? 'Edit type' : 'Add new type'}}</b>
+      </mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
 
-      <mat-form-field>
-        <mat-select formControlName="type_name" role="type_name" (change)="onChange($event.value)" [disabled]="typeId">
-          <mat-option *ngFor="let cat of cats" [value]="cat">{{cat}}</mat-option>
-        </mat-select>
-        <mat-placeholder>Select Type</mat-placeholder>
-      </mat-form-field>
+      <form (ngSubmit)="modifyType()" [formGroup]="form">
 
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="50">
-
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
           <mat-form-field>
-            <input matInput formControlName="name" role="name" placeholder="name" required>
+            <mat-select formControlName="type_name" role="type_name" (change)="onChange($event.value)"
+                        [disabled]="formId">
+              <mat-option *ngFor="let cat of cats" [value]="cat">{{cat}}</mat-option>
+            </mat-select>
+            <mat-placeholder>Select Type</mat-placeholder>
           </mat-form-field>
         </div>
-        <div fxFlex="50" dir="rtl">
-          <mat-form-field>
-            <input matInput formControlName="name_fa" role="name_fa" placeholder="نام فارسی" required>
-          </mat-form-field>
+
+
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+          <div fxFlex="50" class="field-container">
+            <mat-form-field class="filed">
+              <input matInput formControlName="name" role="name" placeholder="name" required>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" dir="rtl" class="field-container">
+            <mat-form-field class="filed">
+              <input matInput formControlName="name_fa" role="name_fa" placeholder="نام فارسی" required>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
 
-      <div *ngIf="form.value.suggested_by" style="margin: 10px 0">
-        <b>Suggested by:</b>
-        <span>
-        <input type="text" formControlName="suggested_by" role="suggested_by" readonly style="border:0">
-      </span>
-      </div>
-      <div fxLayout="row" fxLayout.xs="column">
+        <div *ngIf="form.value.suggested_by" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+             fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+          <b>Suggested by:</b>
+          <input type="text" formControlName="suggested_by" role="suggested_by" readonly style="border:0">
+        </div>
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+             fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
 
-        <mat-checkbox *ngIf="has_killer"
-                      fxFlex="50"
-                      formControlName="is_killer"
-                      role="is_killer">
-          Is Killer?
-        </mat-checkbox>
+          <mat-checkbox *ngIf="has_killer"
+                        fxFlex="50"
+                        formControlName="is_killer"
+                        role="is_killer">
+            Is Killer?
+          </mat-checkbox>
 
-        <mat-checkbox fxFlex="50"
-                      name="active"
-                      formControlName="active"
-                      role="active">
-          Is Active?
-        </mat-checkbox>
-      </div>
+          <mat-checkbox fxFlex="50"
+                        name="active"
+                        formControlName="active"
+                        role="active">
+            Is Active?
+          </mat-checkbox>
+        </div>
+        <div role="submit-button">
+          <button mat-icon-button color="accent" type="submit"
+                  [disabled]="upsertBtnShouldDisabled || !form.valid || (formId && !anyChanges)" tabindex="10">
+            <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" *ngIf="formId" (click)="deleteType()" tabindex="11"
+                  [disabled]="deleteBtnShouldDisabled">
+            <mat-icon aria-label="delete">delete</mat-icon>
+          </button>
+        </div>
+      </form>
+
+
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button type="submit" role="submit" color="accent" [disabled]="!form.valid">Save</button>
-      <button mat-raised-button type="button" (click)="onCancel()" color="warn">Cancel</button>
-    </mat-card-actions>
   </mat-card>
-</form>
+</div>
+
+
+

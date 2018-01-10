@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {RestService} from "../../../../shared/services/rest.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ProgressService} from "../../../../shared/services/progress.service";
+import {RestService} from '../../../../shared/services/rest.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ProgressService} from '../../../../shared/services/progress.service';
 import * as moment from 'moment';
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 
 @Component({
   selector: 'ii-event-view',
@@ -38,7 +38,7 @@ export class EventViewComponent implements OnInit {
             this.progressService.disable();
             console.error('Cannot get event info. Error: ', err);
           }
-        )
+        );
       },
       (err) => {
         console.error('Cannot parse params. Error: ', err);
@@ -53,9 +53,9 @@ export class EventViewComponent implements OnInit {
   deleteEvent() {
     this.restService.delete('event/' + this.eventId).subscribe(
       (data) => {
-        this.breadcrumbService.popChild()
+        this.breadcrumbService.popChild();
       },
       (err) => console.error('Cannot delete this event')
-    )
+    );
   }
 }

@@ -6,6 +6,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IType} from '../../interfaces/type.interface';
 import {TargetEnum} from '../../../../shared/enum/target.enum';
 import {ProgressService} from '../../../../shared/services/progress.service';
+import {AbstractFormComponent} from '../../../../shared/components/abstract-form/abstract-form.component';
+import {Params} from '@angular/router';
 
 
 @Component({
@@ -13,36 +15,23 @@ import {ProgressService} from '../../../../shared/services/progress.service';
   templateUrl: './type-form.component.html',
   styleUrls: ['./type-form.component.css']
 })
-export class TypeFormComponent implements OnInit, OnDestroy {
+export class TypeFormComponent extends AbstractFormComponent implements OnInit{
 
-  type_name: string;
-  typeId: number;
+  typeName: string;
+
   has_killer = false;
   cats: string[] = [];
   form: FormGroup;
-  canSubmit = true; // it is only false when submit button is pressed and waiting for response
-
-
-  constructor(public dialogRef: MatDialogRef<TypeFormComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private  restService: RestService,
-              private snackBar: MatSnackBar,
-              private fb: FormBuilder,
-              private prgService: ProgressService) {
-
-  }
 
   ngOnInit() {
-    this.typeId = this.data.id;
-    this.type_name = this.data.type_name;
 
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      name_fa: ['', Validators.required],
-      type_name: [{value: '', disabled: !!this.typeId}, Validators.required],
-      suggested_by: [''],
-      active: [false],
-      is_killer: [false]
+    this.viewName = 'Partnership';
+    super.ngOnInit();
+    this.initForm();
+
+    this.route.params.subscribe((params: Params) => {
+      this.typeName = decodeURIComponent(params['personName']);
+      this.initType();
 
     });
 
@@ -50,16 +39,39 @@ export class TypeFormComponent implements OnInit, OnDestroy {
       this.cats = res.map(r => TargetEnum[r] ? TargetEnum[r] : r.charAt(0).toUpperCase() + r.slice(1));
     });
 
-    if (this.typeId) {
+  }
 
-      this.form.controls.type_name.setValue(this.type_name);
+  initForm() {
+    this.form = new FormBuilder().group({
+      name: ['', Validators.required],
+      name_fa: ['', Validators.required],
+      type_name: [{value: '', disabled: !!this.formId}, Validators.required],
+      suggested_by: [''],
+      active: [false],
+      is_killer: [false]
 
-      this.prgService.enable();
-      this.restService.get(`type/${this.type_name}_type/${this.typeId}`).subscribe(res => {
+    });
+    super.initForm();
+  }
 
-        this.prgService.disable();
+  initType() {
 
-        if (this.type_name === 'lce')
+    if (!this.formId) {
+      return;
+    }
+
+    this.form.controls.type_name.setValue(this.typeName);
+
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
+
+    this.restService.get(`type/${this.typeName}_type/${this.formId}`).subscribe(
+      (res) => {
+
+        this.originalForm = res[0];
+
+        if (this.typeName === 'lce')
           this.has_killer = true;
 
         const result = res[0];
@@ -69,76 +81,76 @@ export class TypeFormComponent implements OnInit, OnDestroy {
         this.form.controls.is_killer.setValue(result.is_killer);
         this.form.controls.active.setValue(result.active);
 
-      });
-
-    }
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
+      },
+      (err) => {
+        console.error(err);
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = true;
+        this.deleteBtnShouldDisabled = true;
+      }
+    );
   }
 
-  onSubmit() {
+  modifyType() {
 
-    if (this.form.valid) {
+    const typeData: any = {
+      id: this.formId,
+      name: this.form.controls['name'].value,
+      name_fa: this.form.controls['name_fa'].value,
+      is_killer: this.form.controls['suggested_by'].value,
+      active: this.form.controls['is_confirmed'].value
+    };
 
-      this.canSubmit = false;
+    if (!this.typeName)
+      this.typeName = this.form.value.type_name.toLowerCase();
 
-      const body: any = {
-        name: this.form.value.name,
-        name_fa: this.form.value.name_fa,
-        active: !!this.form.value.active,
-      };
+    if (this.typeName === 'lce')
+      typeData.is_killer = !!this.form.value.is_killer;
 
+    if (!this.formId)
+      delete typeData.id;
 
-      if (!this.type_name)
-        this.type_name = this.form.value.type_name.toLowerCase();
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
 
-      if (this.type_name === 'lce')
-        body.is_killer = !!this.form.value.is_killer;
+    const rest = this.formId ?
+      this.restService.put(`type/${this.typeName}_type/${this.formId}`, typeData) : // update
+      this.restService.post(`type/${this.typeName}_type`, typeData); // insert
 
-      const rest = this.typeId ?
-        this.restService.put(`type/${this.type_name}_type/${this.typeId}`, body) : // update
-        this.restService.post(`type/${this.type_name}_type`, body); // insert
+    rest.subscribe(
+      (data) => {
+        this.snackBar.open(this.formId ? typeUpdateSuccessful.message : typeInsertSuccessful.message);
 
-      this.prgService.enable();
+        this.anyChanges = false;
 
-      rest.subscribe(res => {
+        if (!this.formId) {
+          this.form.reset();
+        } else {
+          this.formId = data[0].id;
+        }
 
-        this.canSubmit = true;
-
-        this.prgService.disable();
-
-        this.snackBar.open(this.typeId ? typeUpdateSuccessful.message : typeInsertSuccessful.message);
-
-        this.dialogRef.close(<IType>{
-          id: res.id,
-          type_name: this.form.value.type_name,
-          name: this.form.value.name,
-          name_fa: this.form.value.name_fa,
-          active: this.form.value.active,
-        });
-
-
-      }, err => {
-        this.canSubmit = true;
-        this.prgService.disable();
-
-      });
-    }
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
+      },
+      (err) => {
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
+      }
+    );
   }
 
   onChange(cat) {
-    this.has_killer = cat === 'lce';
-  }
-
-  onCancel() {
-    this.dialogRef.close();
+    this.has_killer = cat.toLowerCase() === 'lce';
   }
 
 
-  ngOnDestroy() {
-    this.type_name = null;
-    this.typeId = null;
-    this.form = null;
-    this.has_killer = false;
-    this.cats = [];
-  }
+
+
 
 }
