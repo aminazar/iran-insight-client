@@ -47,13 +47,12 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
   }
 
   editBusiness() {
-    this.router.navigate(['/admin/business/form' + this.bid]);
+    this.router.navigate(['/admin/business/form/' + this.bid]);
   }
 
   deleteBusiness() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '250px'
+      width: '400px',
     });
 
     rmDialog.afterClosed().subscribe(

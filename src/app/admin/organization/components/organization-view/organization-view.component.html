@@ -1,3 +1,55 @@
-<p>
-  organization-view works!
-</p>
+<div fxLayout="row">
+  <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0" *ngIf="data">
+    <mat-card-header>
+      <mat-card-title>
+        <div *ngIf="orgIsDead()" style="color: darkred; font-weight: bold;">This Organization Is Deleted</div>
+        <div>{{data.org_name}}</div>
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{data.org_name_fa}}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <br/>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div class="view-title">Organization's type</div>
+          <div class="view-content" *ngIf="data.org_type_id">
+            <a class="clickable-link" [routerLink]="['/admin/type/view/' + data.org_type_id]">{{data.org_type || data.org_type_fa}}</a>
+          </div>
+          <div class="view-content" *ngIf="!data.org_type_id">Type not declared</div>
+        </div>
+        <div fxFlex="50">
+          <div class="view-title">Organization's CEO</div>
+          <div class="view-content" *ngIf="data.ceo_id">
+            <a class="clickable-link" [routerLink]="['/admin/person/view/' + data.ceo_id]">{{data.ceo_name || data.ceo_name_fa}}</a>
+          </div>
+          <div class="view-content" *ngIf="!data.ceo_id">CEO not declared</div>
+        </div>
+      </div>
+      <br/>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50">
+          <div class="view-title">Start Date</div>
+          <div class="view-content" *ngIf="data.org_start_date">{{data.org_start_date}}</div>
+          <div class="view-content" *ngIf="!data.org_start_date">-</div>
+        </div>
+        <div fxFlex="50">
+          <div class="view-title">End Date</div>
+          <div class="view-content" *ngIf="data.org_end_date">{{data.org_end_date}}</div>
+          <div class="view-content" *ngIf="!data.org_end_date">-</div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button (click)="editOrg()" color="accent">
+        <mat-icon aria-label="edit">edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteOrg()" color="warn" *ngIf="!orgIsDead()">
+        <mat-icon aria-label="delete">delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
