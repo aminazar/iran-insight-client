@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth.service';
-import * as moment from 'moment';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
@@ -54,13 +53,6 @@ export class ProductViewComponent implements OnInit {
   editProduct() {
     this.router.navigate([`/admin/product/form/${this.productId}/${this.businessId}`]);
   }
-
-  // deleteProduct() {
-  //   this.authService.deleteProduct(this.productId).subscribe(
-  //     (data) => this.breadcrumbService.popChild(),
-  //     (err) => console.error('Cannot delete this product')
-  //   );
-  // }
 
   deleteProduct() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {

@@ -149,8 +149,4 @@ export class TypeFormComponent extends AbstractFormComponent implements OnInit{
     this.has_killer = cat.toLowerCase() === 'lce';
   }
 
-
-
-
-
 }

@@ -45,6 +45,8 @@ export class SuggestionComponent implements OnInit {
   }
 
   addItem(data) {
+    console.log('DATA: ', data.option.viewValue);
+
     const item = this.filteredItems.filter(el => el[this.fn].toLowerCase() === data.option.value.toLowerCase())[0];
     this.add.emit(item);
     this.suggestionCtrl.setValue('');
