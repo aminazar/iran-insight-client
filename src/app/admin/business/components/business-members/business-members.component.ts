@@ -6,6 +6,7 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {RestService} from '../../../../shared/services/rest.service';
 import {IMember} from '../../../../shared/interfaces/member';
+import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
 
 @Component({
   selector: 'ii-business-members',
@@ -85,7 +86,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
               });
               this.progressService.disable();
 
-              this.breadCrumbService.popChild();
+              this.getBizMember();
             },
             (error) => {
               this.snackBar.open('Cannot delete this membership. Please try again', null, {

@@ -16,7 +16,12 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
 
   businessId: number = null;
   memberId: number = null;
+  isAdd: boolean = true;
   memberObj = {
+    name: null,
+    id: null,
+  };
+  positionObj = {
     name: null,
     id: null,
   };
@@ -48,10 +53,15 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   setPerson(data) {
-    console.log(data);
-    this.memberObj.id = data.pid,
-      this.memberObj.name = (data.display_name_en || data.display_name_fa),
-      this.fieldChanged();
+    this.memberObj.id = data.pid;
+    this.memberObj.name = (data.display_name_en || data.display_name_fa);
+    this.fieldChanged();
+  }
+
+  setPosition(data) {
+    this.positionObj.id = data.id;
+    this.positionObj.name = (data.name || data.name_fa);
+    this.fieldChanged();
   }
 
   directToInvDone() {
@@ -67,9 +77,14 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     this.restService.get(`joiners/biz/${this.businessId}`).subscribe(
       (data) => {
         this.member = data.filter(el => el.mid === this.memberId)[0];
+        console.log(this.member);
         this.progressService.disable();
         this.loadedValue = this.member;
-        this.memberObj.id = this.member.mid;
+        this.isAdd = false;
+        this.memberObj.id = this.member.person_pid;
+        this.memberObj.name = this.member.display_name_en;
+        this.positionObj.id = this.member.position_id;
+        this.positionObj.name = this.member.position_name;
         this.initForm();
       },
       (err) => {
@@ -122,13 +137,24 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     Object.keys(this.membershipForm.controls).forEach(el => {
       data[el] = this.membershipForm.controls[el].value;
     });
-    data.pid = this.memberObj.id,
-      data.bid = this.businessId;
-    console.log('****', data);
+    data.mid = this.memberId;
+    data.pid = this.memberObj.id;
+    data.bid = this.businessId;
+    data.position_id = this.positionObj.id;
     this.restService.post('joiner/upsert/membership', data).subscribe((next) => {
-        this.snackBar.open('Product was added to this business', null, {
+        this.snackBar.open(this.isAdd ? 'Membership was added to this business' : 'Membership was updated successfully',
+          null, {
           duration: 2300,
         });
+        this.anyChanges = false;
+        if (!this.memberId) {
+          this.membershipForm.reset();
+          this.memberObj.id = null;
+          this.memberObj.name = null;
+          this.positionObj.id = null;
+          this.positionObj.name = null;
+          this.initForm();
+        }
       },
       (err) => {
         console.log('Cannot get business details. Error: ', err);
