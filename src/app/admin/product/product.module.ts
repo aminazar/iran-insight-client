@@ -15,7 +15,6 @@ import {productRouting} from './product.routing';
 import {ProductComponent} from './product.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 import { ProductViewComponent } from './components/product-view/product-view.component';
-import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
   imports: [
@@ -43,9 +42,8 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     ProductComponent,
     ProductFormComponent,
     ProductViewComponent,
-    ProductDetailsComponent,
   ],
-  entryComponents: [ProductFormComponent, ProductViewComponent, ProductDetailsComponent]
+  entryComponents: [ProductFormComponent, ProductViewComponent]
 })
 export class ProductModule {
 }

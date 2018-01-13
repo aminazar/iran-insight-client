@@ -46,6 +46,7 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(bid, id: number = null): void {
+    // console.log('***');
     // this.productId = id;
     // const rmDialog = this.dialog.open(RemovingConfirmComponent, {
     //   width: '330px',
