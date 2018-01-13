@@ -58,8 +58,11 @@
               </mat-checkbox>
             </div>
           </div>
-          <button mat-icon-button color="accent" type="submit">
+          <button mat-icon-button color="accent" type="submit" [disabled]="upsertBtnShouldDisabled || !anyChanges">
             <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteMembership(member.mid)" color="warn" [disabled]="deleteBtnShouldDisabled">
+            <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </form>
       </div>

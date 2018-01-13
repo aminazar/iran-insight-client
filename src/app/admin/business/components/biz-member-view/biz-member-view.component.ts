@@ -50,13 +50,11 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
   }
 
   openForm(id?: number): void {
-    console.log('edit');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
   }
 
   deleteMembership(mid: number = null): void {
-    console.log('delete');
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '230px'
@@ -91,6 +89,7 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('view component destroyed');
   }
 
 }

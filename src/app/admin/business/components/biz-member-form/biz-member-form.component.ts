@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {RestService} from '../../../../shared/services/rest.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
   selector: 'ii-biz-member-form',
@@ -28,6 +29,8 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   member: any = null;
   membershipForm: FormGroup;
   loadedValue: any = {};
+  upsertBtnShouldDisabled = false;
+  deleteBtnShouldDisabled = false;
   anyChanges = false;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
@@ -37,6 +40,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('in biz-member-form component');
     this.initForm();
 
     this.route.params.subscribe(
@@ -50,6 +54,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('biz-form component destroyed');
   }
 
   setPerson(data) {
@@ -110,27 +115,6 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  fieldChanged() {
-    if (!this.loadedValue || !Object.keys(this.loadedValue))
-      return;
-
-    this.anyChanges = false;
-
-    Object.keys(this.membershipForm.controls).forEach(el => {
-      if (this.membershipForm.controls[el].value != this.loadedValue[el])
-        this.anyChanges = true;
-    });
-
-    if (this.memberObj.id) {
-      if (this.memberObj.id !== this.loadedValue.bid)
-        this.anyChanges = true;
-    } else if (this.memberObj.id) {
-      // const tempId = this.loadedValue[(this.investor === this.investorType.person ? 'pid' : 'oid')];
-      // if (this.memberObj.id !== tempId)
-      //   this.anyChanges = true;
-    }
-  }
-
   modifyMembership() {
     const data: any = {};
 
@@ -141,11 +125,17 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     data.pid = this.memberObj.id;
     data.bid = this.businessId;
     data.position_id = this.positionObj.id;
+    this.progressService.enable();
+    this.upsertBtnShouldDisabled = true;
+    this.deleteBtnShouldDisabled = true;
     this.restService.post('joiner/upsert/membership', data).subscribe((next) => {
         this.snackBar.open(this.isAdd ? 'Membership was added to this business' : 'Membership was updated successfully',
           null, {
-          duration: 2300,
-        });
+            duration: 2300,
+          });
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
         this.anyChanges = false;
         if (!this.memberId) {
           this.membershipForm.reset();
@@ -158,7 +148,62 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
       },
       (err) => {
         console.log('Cannot get business details. Error: ', err);
+        this.progressService.disable();
+        this.upsertBtnShouldDisabled = false;
+        this.deleteBtnShouldDisabled = false;
       }
     );
   }
+
+  deleteMembership(mid: number = null): void {
+    console.log('delete');
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '330px',
+      height: '230px'
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (status) => {
+        if (status) {
+          this.progressService.enable();
+          this.restService.delete(`/joiner/delete/membership/${this.memberId}`).subscribe(
+            (data) => {
+              this.snackBar.open('Membership delete successfully', null, {
+                duration: 2000,
+              });
+              this.progressService.disable();
+
+              this.breadcrumbService.popChild();
+            },
+            (error) => {
+              this.snackBar.open('Cannot delete this membership. Please try again', null, {
+                duration: 2700
+              });
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.log('Error in dialog: ', err);
+      }
+    );
+  }
+
+  fieldChanged() {
+    if (!this.loadedValue || !Object.keys(this.loadedValue))
+      return;
+
+    this.anyChanges = false;
+    Object.keys(this.membershipForm.controls).forEach(el => {
+      if (this.membershipForm.controls[el].value !== this.loadedValue[el])
+        this.anyChanges = true;
+    });
+
+    if (this.positionObj.id) {
+      if (this.positionObj.id !== this.loadedValue.position_id)
+        this.anyChanges = true;
+    }
+  }
+
 }

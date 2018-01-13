@@ -260,7 +260,7 @@ export class InvestmentFormComponent implements OnInit {
     this.anyChanges = false;
 
     Object.keys(this.investmentForm.controls).forEach(el => {
-      if (this.investmentForm.controls[el].value != this.loadedValue[el])
+      if (this.investmentForm.controls[el].value !== this.loadedValue[el])
         this.anyChanges = true;
     });
 
