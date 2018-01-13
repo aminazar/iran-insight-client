@@ -9,6 +9,7 @@ import {RemovingConfirmComponent} from '../../../../shared/components/removing-c
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as moment from 'moment';
+import {EndingEntityComponent} from '../../../../shared/components/ending-entity/ending-entity.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -221,8 +222,10 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
 
   deleteBusiness() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '250px'
+      width: '400px',
+      data: {
+        name: this.loadedValue.name || this.loadedValue.name_fa,
+      }
     });
 
     rmDialog.afterClosed().subscribe(
@@ -232,9 +235,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.upsertDisabled = true;
           this.deleteDisabled = true;
 
-          this.restService.post('business/one/delete/' + this.loadedValue.bid, {
-            end_date: moment().format('YYYY-MM-DD'),
-          }).subscribe(
+          this.restService.delete('delete/' + this.loadedValue.bid).subscribe(
             () => {
               this.router.navigate(['admin', 'business'])
                 .then(() => {
@@ -260,9 +261,47 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     );
   }
 
-  bizIsDead() {
+  endBusiness() {
+    const lcDialog = this.dialog.open(EndingEntityComponent, {
+      width: '400px',
+      data: {
+        name: this.loadedValue.name || this.loadedValue.name_fa,
+      }
+    });
+
+    lcDialog.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          this.progressService.enable();
+          this.restService.post('business/one/delete/' + this.loadedValue.bid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
+            () => {
+              this.snackBar.open('Business is ended successfully', null, {
+                duration: 2000,
+              });
+              this.progressService.disable();
+            },
+            (error) => {
+              this.snackBar.open('Cannot ending this Business.', null, {
+                duration: 3200,
+              });
+
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.error('Error in dialog: ', err);
+      }
+    );
+  }
+
+  bizIsEnd() {
     return (!this.add &&
-            this.basicForm.controls['end_date'].value &&
-            this.basicForm.controls['end_date'].value > this.basicForm.controls['start_date'].value);
+            this.loadedValue &&
+            this.loadedValue.end_date &&
+            this.loadedValue.end_date >= this.loadedValue.start_date);
   }
 }

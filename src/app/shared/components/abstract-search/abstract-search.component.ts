@@ -8,7 +8,8 @@ import {AuthService} from '../../services/auth.service';
 import {StorageService} from '../../services/storage.service';
 import {RemovingConfirmComponent} from '../removing-confirm/removing-confirm.component';
 import {Observable} from 'rxjs/Observable';
-import {RestService} from "../../services/rest.service";
+import {RestService} from '../../services/rest.service';
+import {EndingEntityComponent} from '../ending-entity/ending-entity.component';
 
 @Component({
   selector: 'ii-abstract-search',
@@ -64,7 +65,6 @@ export class AbstractSearchComponent implements OnInit {
     this.router.navigate([state + '/' + id], {relativeTo: this.activatedRoute});
   }
 
-
   deleteCard(id: number = null): Observable<any> {
     this.cardId = id;
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
@@ -72,6 +72,15 @@ export class AbstractSearchComponent implements OnInit {
     });
 
     return rmDialog.afterClosed();
+  }
+
+  endCard(id: number = null): Observable<any> {
+    this.cardId = id;
+    const lcDialog = this.dialog.open(EndingEntityComponent, {
+      width: '400px',
+    });
+
+    return lcDialog.afterClosed();
   }
 
   search(data) {

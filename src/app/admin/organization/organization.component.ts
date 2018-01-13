@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractSearchComponent} from '../../shared/components/abstract-search/abstract-search.component';
 import * as moment from 'moment';
 
@@ -14,29 +14,58 @@ export class OrganizationComponent extends AbstractSearchComponent implements On
     super.ngOnInit();
   }
 
+  endOrganization(org) {
+    super.endCard(org.oid).subscribe(
+      (res) => {
+        if (res) {
+          this.progressService.enable();
+          this.restService.post('organization/one/delete/' + org.oid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
+            (data) => {
+              this.cardId = null;
+              this.snackBar.open('Organization is ended successfully', null, {
+                duration: 2300,
+              });
+              org.end_date = moment().format('YYYY-MM-DD');
+              this.progressService.disable();
+            },
+            (err) => {
+              console.error('Cannot end this organization. Error: ', err);
+              this.snackBar.open('Cannot end this organization. Please try again.', null, {
+                duration: 3200,
+              });
+              this.progressService.disable();
+            }
+          );
+        }
+      }
+    );
+  }
+
   deleteOrganization(id: number = null): void {
     super.deleteCard(id).subscribe(
       (res) => {
-        this.progressService.enable();
-        this.restService.post('organization/one/delete/' + id, {
-          end_date: moment().format('YYYY-MM-DD'),
-        }).subscribe(
-          (data) => {
-            this.cardId = null;
-            this.snackBar.open('Organization is delete successfully', null, {
-              duration: 2300,
-            });
-            this.searching();
-            this.progressService.disable();
-          },
-          (err) => {
-            console.error('Cannot delete this organization. Error: ', err);
-            this.snackBar.open('Cannot delete this organization. Please try again.', null, {
-              duration: 3200,
-            });
-            this.progressService.disable();
-          }
-        );
+        if (res) {
+          this.progressService.enable();
+          this.restService.delete('organization/' + id).subscribe(
+            (data) => {
+              this.cardId = null;
+              this.snackBar.open('Organization is deleted successfully', null, {
+                duration: 2300,
+              });
+              this.searching();
+              this.progressService.disable();
+            },
+            (err) => {
+              console.error('Cannot delete this organization. Error: ', err);
+              this.snackBar.open('Cannot delete this organization. Please try again.', null, {
+                duration: 3200,
+              });
+              this.progressService.disable();
+            }
+          );
+        }
       },
       (err) => console.error('Error in closing component. Error: ', err)
     );
@@ -50,7 +79,7 @@ export class OrganizationComponent extends AbstractSearchComponent implements On
     return '';
   }
 
-  orgIsDead(org) {
-    return (org && org.end_date > org.start_date);
+  orgIsEnd(org) {
+    return (org && org.end_date >= org.start_date);
   }
 }
