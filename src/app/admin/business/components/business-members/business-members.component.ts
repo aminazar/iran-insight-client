@@ -26,6 +26,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.breadCrumbService.pushChild('Members', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = params['bid'];
@@ -38,9 +39,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
       this.members = [];
       res.forEach(member => {
-
         this.members.push(member);
-
       });
       this.progressService.disable();
     }, err => {
@@ -75,7 +74,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
                 duration: 2000,
               });
               this.progressService.disable();
-
               this.getBizMember();
             },
             (error) => {
@@ -94,6 +92,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('biz-member component destroyed');
     this.bid = null;
     this.members = null;
     this.memberId = null;
