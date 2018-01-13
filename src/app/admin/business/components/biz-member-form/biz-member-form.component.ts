@@ -40,7 +40,6 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('in biz-member-form component');
     this.initForm();
 
     this.route.params.subscribe(
@@ -54,7 +53,6 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('biz-form component destroyed');
   }
 
   setPerson(data) {
@@ -193,17 +191,19 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   fieldChanged() {
     if (!this.loadedValue || !Object.keys(this.loadedValue))
       return;
-
     this.anyChanges = false;
-    Object.keys(this.membershipForm.controls).forEach(el => {
-      if (this.membershipForm.controls[el].value !== this.loadedValue[el])
-        this.anyChanges = true;
-    });
+    if (this.memberObj.id) {
+      Object.keys(this.membershipForm.controls).forEach(el => {
+        if (this.membershipForm.controls[el].value !== this.loadedValue[el])
+          this.anyChanges = true;
+      });
 
-    if (this.positionObj.id) {
-      if (this.positionObj.id !== this.loadedValue.position_id)
-        this.anyChanges = true;
+      if (this.positionObj.id) {
+        if (this.positionObj.id !== this.loadedValue.position_id)
+          this.anyChanges = true;
+      }
     }
+    else this.anyChanges = false;
   }
 
 }

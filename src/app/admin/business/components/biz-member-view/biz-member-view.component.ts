@@ -26,7 +26,6 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
               private router: Router, private restService: RestService) { }
 
   ngOnInit() {
-    console.log('In Member-View Component.')
     this.route.params.subscribe(
       (params) => {
         this.memberId = +params['mid'] ? +params['mid'] : null;
@@ -89,7 +88,6 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('view component destroyed');
   }
 
 }

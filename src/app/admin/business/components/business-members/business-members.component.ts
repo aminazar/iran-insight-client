@@ -26,7 +26,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('In Business-Members Component.');
     this.breadCrumbService.pushChild('Members', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = params['bid'];
@@ -95,7 +94,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('biz-member component destroyed');
     this.bid = null;
     this.members = null;
     this.memberId = null;
