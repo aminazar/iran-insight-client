@@ -75,8 +75,7 @@ export class AbstractFormComponent implements OnInit, OnDestroy, CanComponentDea
 
   delete(): Observable<any> {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '250px'
+      width: '400px',
     });
 
     return rmDialog.afterClosed();
