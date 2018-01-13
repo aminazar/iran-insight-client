@@ -62,7 +62,7 @@
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
           <button mat-icon-button (click)="deleteMembership(member.mid)" color="warn" [disabled]="deleteBtnShouldDisabled">
-            <mat-icon aria-label="delete">delete</mat-icon>
+            <mat-icon aria-label="delete" *ngIf="!isAdd">delete</mat-icon>
           </button>
         </form>
       </div>

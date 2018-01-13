@@ -80,7 +80,6 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     this.restService.get(`joiners/biz/${this.businessId}`).subscribe(
       (data) => {
         this.member = data.filter(el => el.mid === this.memberId)[0];
-        console.log(this.member);
         this.progressService.disable();
         this.loadedValue = this.member;
         this.isAdd = false;
@@ -142,6 +141,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
           this.positionObj.id = null;
           this.positionObj.name = null;
           this.initForm();
+          this.anyChanges = false;
         }
       },
       (err) => {
@@ -154,12 +154,10 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   deleteMembership(mid: number = null): void {
-    console.log('delete');
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '230px'
     });
-
     rmDialog.afterClosed().subscribe(
       (status) => {
         if (status) {
