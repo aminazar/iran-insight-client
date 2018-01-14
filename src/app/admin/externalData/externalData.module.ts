@@ -8,7 +8,7 @@ import {
   MatInputModule,
   MatPaginatorModule,
   MatSelectModule,
-  MatSnackBarModule, MatTableModule, MatTabsModule
+  MatSnackBarModule, MatSortModule, MatTableModule, MatTabsModule
 } from '@angular/material';
 import {SharedModule} from '../../shared/shared.module';
 import {externalDataRouting} from './externalData.routing';
@@ -31,6 +31,7 @@ import {ExternalDataComponent} from './external-data.component';
     MatAutocompleteModule,
     MatTabsModule,
     MatTableModule,
+    MatSortModule,
     MatCheckboxModule,
     MatPaginatorModule,
   ],

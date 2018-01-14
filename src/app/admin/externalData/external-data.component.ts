@@ -62,7 +62,12 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
     })
       .subscribe(
         (data) => {
-          this.dataSource.data = data;
+          const tempData = [];
+          let counter = this.offset;
+          data.forEach(el => {
+            tempData.push(Object.assign({position: ++counter}, el));
+          });
+          this.dataSource.data = tempData;
           this.totalRecords = data.length > 0 ? data[0].total : null;
           this.progressService.disable();
         },
