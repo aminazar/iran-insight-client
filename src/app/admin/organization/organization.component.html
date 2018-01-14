@@ -48,7 +48,7 @@
           <button mat-icon-button color="primary">
             <mat-icon aria-label="view" (click)="open('view', o.oid)" color="primary">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="open('view', o.oid)" color="accent">
+          <button mat-icon-button (click)="open('form', o.oid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="deleteOrganization(o.oid)" color="warn" *ngIf="!orgIsDead(o)">
