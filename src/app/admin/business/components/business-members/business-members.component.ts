@@ -19,8 +19,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   members: IMember[] = [];
   memberId: number = null;
   add = false;
-  showInDeep = false;
-  actionEnum = ActionEnum;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private activatedRoute: ActivatedRoute,
@@ -28,7 +26,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('In Business-Members Component.');
+
     this.breadCrumbService.pushChild('Members', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.bid = params['bid'];
@@ -41,11 +39,8 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
       this.members = [];
       res.forEach(member => {
-
         this.members.push(member);
-
       });
-      console.log('--> ', this.members);
       this.progressService.disable();
     }, err => {
       this.progressService.disable();
@@ -54,22 +49,16 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   openForm(id ?: number): void {
-    if (id)
-      console.log('edit');
-    else
-      console.log('add form');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
   }
 
   openView(id: number = null): void {
-    console.log('view details');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/${this.bid}/${this.memberId}`]);
   }
 
   deleteMembership(mid: number = null): void {
-    console.log('delete');
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '230px'
@@ -85,7 +74,6 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
                 duration: 2000,
               });
               this.progressService.disable();
-
               this.getBizMember();
             },
             (error) => {
@@ -104,26 +92,10 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.log('biz-member component destroyed');
     this.bid = null;
     this.members = null;
     this.memberId = null;
-  }
-
-  applyChanges(data) {
-    switch (data.action) {
-      case this.actionEnum.add:
-        this.members.unshift(data.value);
-        this.members = this.members.slice(0, this.members.length - 1);
-        break;
-      case this.actionEnum.modify:
-        this.members[this.members.findIndex(el => el.mid === data.value.pid)] = data.value;
-        break;
-      case this.actionEnum.delete:
-        this.members = this.members.filter(el => el.mid !== data.value);
-        this.showInDeep = false;
-        this.members = null;
-        break;
-    }
   }
 }
 
