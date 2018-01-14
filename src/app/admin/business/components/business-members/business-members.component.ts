@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {Router, ActivatedRoute, Params} from '@angular/router';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {RestService} from '../../../../shared/services/rest.service';
 import {IMember} from '../../../../shared/interfaces/member';
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ii-business-members',
@@ -96,6 +96,10 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     this.bid = null;
     this.members = null;
     this.memberId = null;
+  }
+
+  membershipIsDead(m) {
+    return (m && moment(m.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
   }
 }
 

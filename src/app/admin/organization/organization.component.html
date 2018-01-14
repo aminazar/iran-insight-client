@@ -15,7 +15,6 @@
       <mat-card class="card-view" (click)="select(o.oid)"
                 [ngClass]="{'selected-card mat-elevation-z24': o.oid === cardId, 'dead-entity': orgIsDead(o)}" style="min-height: 270px;">
         <mat-card-header>
-          <!--<div mat-card-avatar><img src="../../../assets/logo4.jpg" style="width:40px;height: 40px;"/></div>-->
           <mat-card-title>
             {{o.name}}
           </mat-card-title>

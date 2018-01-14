@@ -15,7 +15,7 @@ import {Params} from '@angular/router';
   templateUrl: './type-form.component.html',
   styleUrls: ['./type-form.component.css']
 })
-export class TypeFormComponent extends AbstractFormComponent implements OnInit{
+export class TypeFormComponent extends AbstractFormComponent implements OnInit {
 
   typeName: string;
 

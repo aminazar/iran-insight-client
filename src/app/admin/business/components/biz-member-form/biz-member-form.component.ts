@@ -53,6 +53,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    ['membershipForm'].forEach(form => this[form] = null);
   }
 
   setPerson(data) {
@@ -104,6 +105,10 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
       is_representative: [this.loadedValue.is_representative ? this.loadedValue.is_representative : false, [
         Validators.required,
       ]],
+      start_time: [this.loadedValue.membership_start_time ? this.loadedValue.membership_start_time : new Date(), [
+        Validators.required,
+      ]],
+      end_time: [this.loadedValue.membership_end_time ? this.loadedValue.membership_end_time : null],
     });
 
     this.membershipForm.valueChanges.subscribe(

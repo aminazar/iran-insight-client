@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {RestService} from '../../../../shared/services/rest.service';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 
 @Component({
@@ -86,7 +86,10 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
       }
     );
   }
-
+  membershipIsDead() {
+    // return (this.member && this.member.membership_end_time < moment().format('YYYY-MM-DD'));
+    return (this.member && moment(this.member.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
+  }
   ngOnDestroy() {
   }
 
