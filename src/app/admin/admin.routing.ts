@@ -19,6 +19,7 @@ const Admin_ROUTES: Routes = [
       {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
       {path: 'consultancy', loadChildren: 'app/admin/consultancy/consultancy.module#ConsultancyModule', canActivate: [AuthGuard]},
       {path: 'organization', loadChildren: 'app/admin/organization/organization.module#OrganizationModule', canActivate: [AuthGuard]},
+      {path: 'exdata', loadChildren: 'app/admin/externalData/externalData.module#ExternalDataModule', canActivate: [AuthGuard]},
       // {path: 'lce/:type/:id', loadChildren: 'app/admin/LCE/lce.module#LCEModule', canActivate: [AuthGuard]},
     ],
   },
