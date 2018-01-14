@@ -5,4 +5,6 @@ export interface ExData {
   category: string;
   market_share: number;
   province: string;
+  hhi: number;
+  class: string;
 }
