@@ -166,8 +166,9 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
         this.snackBar.open(this.checkedList.length + ' new item' + (this.checkedList.length > 1 ? 's are' : ' is') + ' added', null, {
           duration: 2300,
         });
-        this.progressService.disable();
         this.checkedList = [];
+        this.progressService.disable();
+        this.getData();
       },
       (err) => {
         this.progressService.disable();
