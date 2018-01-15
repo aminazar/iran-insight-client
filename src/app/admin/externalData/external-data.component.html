@@ -1,0 +1,87 @@
+<div fxLayout="row">
+  <mat-card fxFlex="80" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="10" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+    <mat-card-header>
+      <mat-card-title>Choose from External Data</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+        <div fxFlex="50" class="field-container">
+          <mat-input-container class="field">
+            <input matInput placeholder="Category" aria-label="Category" [matAutocomplete]="auto" [formControl]="catCtrl" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setCategory($event)">
+              <mat-option *ngFor="let cat of filteredCategories" [value]="cat">
+                <span>{{ cat }}</span>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-input-container>
+        </div>
+        <div fxFlex="50" class="field-container">
+          <mat-input-container class="field">
+            <input matInput type="text" (keyup)="applyFilter($event.target.value)" placeholder="Filter"/>
+          </mat-input-container>
+        </div>
+      </div>
+      <div>
+        <mat-table #table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.position}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="hhi">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Herffindal Hirschman </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.hhi}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.type}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="category">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.category}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="class">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Classification </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.class}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="market_share">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Market-Share </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.market_share}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="province">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Province </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.province}}</mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div>
+        <mat-paginator [length]="totalRecords"
+                       [pageSize]="limit"
+                       [pageSizeOptions]="[5, 10, 20, 50]"
+                       (page)="changePageSetting($event)">
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
