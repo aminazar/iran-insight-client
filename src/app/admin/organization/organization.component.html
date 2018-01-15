@@ -13,7 +13,7 @@
        fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngFor="let o of aligningObj[rw]" class="entity-card">
       <mat-card class="card-view" (click)="select(o.oid)"
-                [ngClass]="{'selected-card mat-elevation-z24': o.oid === cardId, 'dead-entity': orgIsDead(o)}" style="min-height: 270px;">
+                [ngClass]="{'selected-card mat-elevation-z24': o.oid === cardId, 'dead-entity': orgIsEnd(o)}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
             {{o.name}}
@@ -50,7 +50,10 @@
           <button mat-icon-button (click)="open('form', o.oid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteOrganization(o.oid)" color="warn" *ngIf="!orgIsDead(o)">
+          <button mat-icon-button (click)="endOrganization(o)" color="warn" *ngIf="!orgIsEnd(o)">
+            <mat-icon aria-label="lock">lock</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteOrganization(o.oid)" color="accent">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </mat-card-actions>

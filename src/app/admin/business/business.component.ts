@@ -8,6 +8,7 @@ import {SearchService} from '../../shared/services/search.service';
 import {ProgressService} from '../../shared/services/progress.service';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 import {RestService} from '../../shared/services/rest.service';
+import {EndingEntityComponent} from '../../shared/components/ending-entity/ending-entity.component';
 
 @Component({
   selector: 'ii-business',
@@ -25,7 +26,6 @@ export class BusinessComponent implements OnInit {
   totalBiz: number = null;
   aligningObj = {};
   rows = [];
-  selectedIndex = 0;
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
@@ -120,19 +120,19 @@ export class BusinessComponent implements OnInit {
     this.searching();
   }
 
-  deleteBusiness(bid) {
+  deleteBusiness(biz) {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '250px'
+      width: '400px',
+      data: {
+        name: biz.name || biz.name_fa
+      }
     });
 
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data) {
           this.progressService.enable();
-          this.restService.post('business/one/delete/' + bid, {
-            end_date: moment().format('YYYY-MM-DD'),
-          }).subscribe(
+          this.restService.delete('business/' + biz.bid).subscribe(
             () => {
               this.snackBar.open('Business is deleted successfully', null, {
                 duration: 2000,
@@ -155,7 +155,45 @@ export class BusinessComponent implements OnInit {
     );
   }
 
-  bizIsDead(biz) {
-    return (biz && biz.end_date > biz.start_date);
+  endBusiness(biz) {
+    const lcDialog = this.dialog.open(EndingEntityComponent, {
+      width: '400px',
+      data: {
+        name: biz.name || biz.name_fa,
+      }
+    });
+
+    lcDialog.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          this.progressService.enable();
+          this.restService.post('business/one/delete/' + biz.bid, {
+            end_date: moment().format('YYYY-MM-DD'),
+          }).subscribe(
+            () => {
+              this.snackBar.open('Business is ended successfully', null, {
+                duration: 2000,
+              });
+              biz.end_date = moment().format('YYYY-MM-DD');
+              this.progressService.disable();
+            },
+            (error) => {
+              this.snackBar.open('Cannot ending this Business.', null, {
+                duration: 3200,
+              });
+
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.error('Error in dialog: ', err);
+      }
+    );
+  }
+
+  bizIsEnd(biz) {
+    return (biz && biz.end_date >= biz.start_date);
   }
 }

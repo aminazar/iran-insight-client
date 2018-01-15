@@ -35,7 +35,11 @@
               <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid" role="submit-button" tabindex="20">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21">
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="lock">lock</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
+                      [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
             </mat-card-actions>
@@ -121,7 +125,10 @@
                       >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="lock">lock</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
@@ -174,7 +181,10 @@
                       >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="lock">lock</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
@@ -244,7 +254,10 @@
               <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20" [disabled]="!basicForm.valid">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsDead()" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="lock">lock</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>

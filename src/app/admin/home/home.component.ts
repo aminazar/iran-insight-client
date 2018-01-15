@@ -17,6 +17,7 @@ export class AdminHomeComponent implements OnInit {
     {label: 'Event', path: '/admin/event'},
     {label: 'Type', path: '/admin/type'},
     {label: 'Expertise', path: '/admin/expertise'},
+    {label: 'External Data', path: '/admin/exdata'},
   ];
   showBurgerMenu = false;
   height = 300;

@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material";
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'ii-removing-confirm',
@@ -7,13 +7,16 @@ import {MatDialogRef} from "@angular/material";
   styleUrls: ['./removing-confirm.component.css']
 })
 export class RemovingConfirmComponent implements OnInit {
+  name = null;
 
-  constructor(public dialogRef: MatDialogRef<RemovingConfirmComponent>) { }
-  @Input() name = '';
-  ngOnInit() {
+  constructor(public dialogRef: MatDialogRef<RemovingConfirmComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-  remove(answer){
+  ngOnInit() {
+    this.name = (this.data && this.data.name) ? this.data.name : null;
+  }
+
+  remove(answer) {
     this.dialogRef.close(answer);
   }
 }

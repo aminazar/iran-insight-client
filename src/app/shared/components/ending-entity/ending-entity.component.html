@@ -1,24 +1,23 @@
 <mat-card class="center">
   <mat-card-header>
-    Removing Confirmation
+    Ending Entity Confirmation
   </mat-card-header>
   <mat-card-content class="page">
     <div>
-      Are you sure to remove
+      Are you sure to end
       <span *ngIf="name">"{{name}}"</span>
       <span *ngIf="!name"> entity </span>
-      permanently?
+      ?
     </div>
-    <div class="sub-title">Removing {{name}} may caused other parts to be removed</div>
     <br/>
     <div fxLayout="row" rxLayout.xs="column" fxLayoutAlign="center center">
       <div fxFlex="50" role="yes-btn">
-        <button mat-icon-button (click)="remove(true)">
+        <button mat-icon-button (click)="setEnd(true)">
           <mat-icon aria-label="yes">done</mat-icon>
         </button>
       </div>
       <div fxFlex="50" role="no-btn">
-        <button mat-icon-button (click)="remove(false)">
+        <button mat-icon-button (click)="setEnd(false)">
           <mat-icon aria-label="no">clear</mat-icon>
         </button>
       </div>

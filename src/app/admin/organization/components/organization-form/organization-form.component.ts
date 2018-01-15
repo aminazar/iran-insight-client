@@ -103,8 +103,8 @@ export class OrganizationFormComponent extends AbstractFormComponent implements 
       oid: this.formId,
       name: this.form.controls['name'].value,
       name_fa: this.form.controls['name_fa'].value,
-      start_date: this.form.controls['start_date'].value,
-      end_date: this.form.controls['end_date'].value,
+      start_date: this.form.controls['start_date'].value ? moment(this.form.controls['start_date'].value).format('YYYY-MM-DD') : null,
+      end_date: this.form.controls['end_date'].value ? moment(this.form.controls['end_date'].value).format('YYYY-MM-DD') : null,
       ceo_pid: this.ceo.id ? this.ceo.id : null,
       org_type_id: this.orgType.id ? this.orgType.id : null,
     };
@@ -173,8 +173,8 @@ export class OrganizationFormComponent extends AbstractFormComponent implements 
     });
   }
 
-  deleteOrg() {
-    super.delete().subscribe(
+  endOrg() {
+    super.end(this.originalForm.name || this.originalForm.name_fa).subscribe(
       (data) => {
         if (data) {
           this.progressService.enable();
@@ -184,6 +184,35 @@ export class OrganizationFormComponent extends AbstractFormComponent implements 
           this.restService.post('organization/one/delete/' + this.formId, {
             end_date: this.form.controls['end_date'].value ? this.form.controls['end_date'].value : moment().format('YYYY-MM-DD'),
           }).subscribe(
+            (dt) => {
+              this.snackBar.open('Organization is ended successfully', null, {
+                duration: 2300,
+              });
+
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
+            },
+            (error) => {
+              this.progressService.disable();
+              this.upsertBtnShouldDisabled = false;
+              this.deleteBtnShouldDisabled = false;
+            }
+          );
+        }
+      }
+    );
+  }
+
+  deleteOrg() {
+    super.delete(this.originalForm.name || this.originalForm.name_fa).subscribe(
+      (data) => {
+        if (data) {
+          this.progressService.enable();
+          this.upsertBtnShouldDisabled = true;
+          this.deleteBtnShouldDisabled = true;
+
+          this.restService.delete('organization/' + this.formId).subscribe(
             (dt) => {
               this.snackBar.open('Organization is deleted successfully', null, {
                 duration: 2300,
@@ -227,9 +256,10 @@ export class OrganizationFormComponent extends AbstractFormComponent implements 
     this.router.navigate(['admin/type/view/' + this.orgType.id]);
   }
 
-  orgIsDead() {
+  orgIsEnd() {
     return (this.formId &&
-    this.form.controls['end_date'].value &&
-    this.form.controls['end_date'].value > this.form.controls['start_date'].value);
+    this.originalForm &&
+    this.originalForm.end_date &&
+    this.originalForm.end_date >= this.originalForm.start_date);
   }
 }

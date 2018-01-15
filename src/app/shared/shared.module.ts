@@ -23,6 +23,7 @@ import { LeavingConfirmComponent } from './components/leaving-confirm/leaving-co
 import { AbstractFormComponent } from './components/abstract-form/abstract-form.component';
 import {AbstractSearchComponent} from './components/abstract-search/abstract-search.component';
 import {ImageUploadModule} from 'angular2-image-upload';
+import { EndingEntityComponent } from './components/ending-entity/ending-entity.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {ImageUploadModule} from 'angular2-image-upload';
     LeavingConfirmComponent,
     AbstractFormComponent,
     AbstractSearchComponent,
+    EndingEntityComponent,
   ],
   imports: [
     RouterModule,
@@ -62,7 +64,7 @@ import {ImageUploadModule} from 'angular2-image-upload';
     MatIconModule,
     ImageUploadModule.forRoot(),
   ],
-  entryComponents: [RemovingConfirmComponent, LeavingConfirmComponent, UnderConstructionComponent],
+  entryComponents: [RemovingConfirmComponent, LeavingConfirmComponent, UnderConstructionComponent, EndingEntityComponent],
   exports: [
     HeaderComponent,
     SearchFieldsComponent,

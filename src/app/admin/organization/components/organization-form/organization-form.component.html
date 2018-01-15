@@ -85,8 +85,11 @@
             [disabled]="upsertBtnShouldDisabled || (!form.valid || (formId && !anyChanges))" tabindex="20">
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
-          <button mat-icon-button color="warn" type="button" *ngIf="!orgIsDead()" (click)="deleteOrg()"
-                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
+          <button mat-icon-button color="warn" type="button" *ngIf="!orgIsEnd()" (click)="endOrg()" tabindex="21">
+            <mat-icon aria-label="end">lock</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" type="button" (click)="deleteOrg()"
+                  [disabled]="deleteBtnShouldDisabled" tabindex="22">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </div>
