@@ -1,6 +1,9 @@
-<div fxLayout="row" style="width: 50%;">
+<div fxLayout="row">
     <mat-card fxFlex="60" fxFlex.sm="100" fxFlex.xs="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0"  *ngIf="member">
       <mat-card-content>
+        <div *ngIf="membershipIsDead()" style="color: darkred; font-weight: bold;">
+          This Membership Is Expired !!
+        </div>
         <div>
           <b>name (En): </b><span>{{member.display_name_en}}</span>
         </div>
@@ -11,9 +14,8 @@
         <div>
           <b>Username: </b><span>{{member.username}}</span>
         </div>
-
         <div>
-          <b [memberActive]="member.is_active ? 'green' : 'red'">{{member.is_active ? 'active user' : 'not activeuser'}}</b>
+          <b [ngClass]="member.is_active ? 'success' : 'warn'">{{member.is_active ? 'active user' : 'not activeuser'}}</b>
         </div>
         <div>
           <b>{{member.is_representative ? 'representative' : 'ordinary member'}}</b>
@@ -25,7 +27,7 @@
           <b>Position (Fa): </b><span>{{member.position_name_fa}}</span>
         </div>
         <div>
-          <b [memberActive]="member.position_active ? 'green' : 'red'">{{member.position_active ? 'active position' :
+          <b [ngClass]="member.position_active ? 'success' : 'warn'">{{member.position_active ? 'active position' :
             'not active position'}}</b>
         </div>
       </mat-card-content>
@@ -39,3 +41,5 @@
       </mat-card-actions>
     </mat-card>
 </div>
+
+

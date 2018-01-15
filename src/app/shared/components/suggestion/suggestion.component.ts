@@ -45,9 +45,11 @@ export class SuggestionComponent implements OnInit {
   }
 
   addItem(data) {
-    console.log('DATA: ', data.option.viewValue);
-
-    const item = this.filteredItems.filter(el => el[this.fn].toLowerCase() === data.option.value.toLowerCase())[0];
+    const item = this.filteredItems.filter(el => {
+      const checkStr = (this.dscp_fn) ? (el[this.fn] + '-' + el[this.dscp_fn]).toLowerCase() : el[this.fn].toLowerCase();
+      if (checkStr === data.option.value.toLowerCase())
+        return el;
+    })[0];
     this.add.emit(item);
     this.suggestionCtrl.setValue('');
   }

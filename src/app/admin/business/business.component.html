@@ -11,7 +11,7 @@
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" class="row">
     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" *ngFor="let b of aligningObj[rw]" class="entity-card">
       <mat-card class="card-view" (click)="select(b.bid)"
-                [ngClass]="{'selected-card mat-elevation-z24': b.bid === bizId, 'dead-entity': bizIsDead(b)}">
+                [ngClass]="{'selected-card mat-elevation-z24': b.bid === bizId, 'dead-entity': bizIsEnd(b)}">
         <mat-card-header>
           <!--<div mat-card-avatar><img src="../../../assets/logo4.jpg" style="width:40px;height: 40px;"/></div>-->
           <mat-card-title>
@@ -47,7 +47,10 @@
           <button mat-icon-button (click)="openForm(b.bid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteBusiness(b.bid)" color="warn" *ngIf="!bizIsDead(b)">
+          <button mat-icon-button (click)="endBusiness(b)" color="warn" *ngIf="!bizIsEnd(b)">
+            <mat-icon aria-label="lock">lock</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteBusiness(b)" color="accent">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </mat-card-actions>

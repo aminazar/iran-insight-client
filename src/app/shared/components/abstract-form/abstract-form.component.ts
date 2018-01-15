@@ -10,6 +10,7 @@ import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../../services/auth.service';
 import {ProgressService} from '../../services/progress.service';
 import {RestService} from '../../services/rest.service';
+import {EndingEntityComponent} from '../ending-entity/ending-entity.component';
 
 @Component({
   selector: 'ii-abstract-form',
@@ -73,12 +74,26 @@ export class AbstractFormComponent implements OnInit, OnDestroy, CanComponentDea
 
   }
 
-  delete(): Observable<any> {
+  delete(name?): Observable<any> {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
+      data: {
+        name: name,
+      }
     });
 
     return rmDialog.afterClosed();
+  }
+
+  end(name?): Observable<any> {
+    const lcDialog = this.dialog.open(EndingEntityComponent, {
+      width: '400px',
+      data: {
+        name: name,
+      }
+    });
+
+    return lcDialog.afterClosed();
   }
 
   canDeactivate(): Promise<boolean> {
