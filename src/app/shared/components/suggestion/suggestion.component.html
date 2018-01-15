@@ -1,8 +1,10 @@
 <mat-input-container class="field">
   <input matInput type="text" placeholder="{{placeholder}}" [matAutocomplete]="auto" [formControl]="suggestionCtrl"/>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addItem($event)">
-    <mat-option *ngFor="let item of filteredItems" [value]="item[fn]">
-      <div>{{item[fn]}}</div>
+    <mat-option *ngFor="let item of filteredItems" [value]="item[fn] + (item[dscp_fn] ? '-' + item[dscp_fn] : '')">
+      <div>
+        {{item[fn]}}
+      </div>
       <div *ngIf="dscp_fn" class="description">{{item[dscp_fn]}}</div>
     </mat-option>
   </mat-autocomplete>
