@@ -40,20 +40,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
       this.getBizMember();
     });
   }
-  //
-  // getBizMember() {
-  //   this.progressService.enable();
-  //   this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
-  //     this.members = [];
-  //     res.forEach(member => {
-  //       this.members.push(member);
-  //     });
-  //     this.progressService.disable();
-  //   }, err => {
-  //     this.progressService.disable();
-  //
-  //   });
-  // }
+
   openForm(id ?: number): void {
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
