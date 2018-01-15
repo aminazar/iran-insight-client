@@ -39,11 +39,9 @@
             <b>Joiner (fa): </b><span>{{lce.joiner_name_fa? lce.joiner_name_fa : '-'}}</span>
           </div>
           <div *ngIf="lce.joiner_name || lce.joiner_name_fa">
-            <b [ngClass]="{'warn' :!lce.is_confirmed, 'success' : lce.is_confirmed  } ">{{lce.is_confirmed ? 'Confirmed' : 'Waiting for confirmation'}}</b>
+            <b [ngClass]="{'warn' :!lce.is_confirmed, 'success' : lce.is_confirmed }">{{lce.is_confirmed ? 'Confirmed' : 'Waiting for confirmation'}}</b>
 
           </div>
-
-
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button (click)="open('view', lce.id)" color="primary">

@@ -6,7 +6,7 @@
 
 <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="20" *ngFor="let m of members" class="member-card">
-        <mat-card class="card-view" [class.selected-member]="m.mid === memberId">
+        <mat-card class="card-view" [class.selected-member]="m.mid === memberId" [ngClass]="{'selected-card mat-elevation-z24': m.mid === memberId, 'dead-entity': membershipIsDead(m)}">
             <mat-card-content>
                 <div>
                     <b>name (En): </b><span>{{m.display_name_en}}</span>
@@ -15,7 +15,7 @@
                     <b>Username: </b><span>{{m.username}}</span>
                 </div>
                 <div>
-                    <b [memberActive]="m.is_active ? 'green' : 'red'">{{m.is_active ? 'active user' : 'not activeuser'}}</b>
+                    <b [ngClass]="m.is_active ? 'success' : 'warn'">{{m.is_active ? 'active user' : 'not activeuser'}}</b>
                 </div>
                 <div>
                     <b>{{m.is_representative ? 'representative' : 'ordinary member'}}</b>
@@ -34,4 +34,8 @@
             </mat-card-actions>
         </mat-card>
     </div>
+</div>
+<div>
+    <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+                   (page)="changeOffset($event)"></mat-paginator>
 </div>

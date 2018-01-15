@@ -1,18 +1,18 @@
-import {Component, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {RestService} from '../../../../shared/services/rest.service';
-import {ActionEnum} from '../../../../shared/enum/action.enum';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 
 @Component({
   selector: 'ii-biz-member-view',
   templateUrl: './biz-member-view.component.html',
-  styleUrls: ['./biz-member-view.component.css']
+  styleUrls: ['./biz-member-view.component.scss']
 })
 
 export class BizMemberViewComponent implements OnInit, OnDestroy {
@@ -26,7 +26,6 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
               private router: Router, private restService: RestService) { }
 
   ngOnInit() {
-    console.log('In Member-View Component.')
     this.route.params.subscribe(
       (params) => {
         this.memberId = +params['mid'] ? +params['mid'] : null;
@@ -50,13 +49,11 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
   }
 
   openForm(id?: number): void {
-    console.log('edit');
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
   }
 
   deleteMembership(mid: number = null): void {
-    console.log('delete');
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '330px',
       height: '230px'
@@ -89,7 +86,9 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
       }
     );
   }
-
+  membershipIsDead() {
+    return (this.member && moment(this.member.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
+  }
   ngOnDestroy() {
   }
 
