@@ -4,8 +4,9 @@
     </button>
 </div>
 
+<div *ngFor="let rw of rows">
 <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
-    <div fxFlex="20" *ngFor="let m of members" class="member-card">
+    <div fxFlex="25" *ngFor="let m of aligningObj[rw]" class="member-card">
         <mat-card class="card-view" [class.selected-member]="m.mid === memberId" [ngClass]="{'selected-card mat-elevation-z24': m.mid === memberId, 'dead-entity': membershipIsDead(m)}">
             <mat-card-content>
                 <div>
@@ -35,7 +36,8 @@
         </mat-card>
     </div>
 </div>
+</div>
 <div>
-    <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+    <mat-paginator [length]="totalBizMembers" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                    (page)="changeOffset($event)"></mat-paginator>
 </div>

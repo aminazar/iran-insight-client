@@ -34,9 +34,9 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
           this.breadcrumbService.pushChild('Membership Details', this.router.url, false);
           this.progressService.enable();
 
-          this.restService.get(`joiners/biz/${this.bid}`).subscribe(
+          this.restService.get(`joiners/biz/${this.bid}/${this.memberId}`).subscribe(
             (data) => {
-              this.member = data.filter(el => el.mid === this.memberId)[0];
+              this.member = data[0];
               this.progressService.disable();
             },
             (err) => {
@@ -86,9 +86,11 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   membershipIsDead() {
     return (this.member && moment(this.member.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
   }
+
   ngOnDestroy() {
   }
 

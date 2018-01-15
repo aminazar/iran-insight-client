@@ -19,6 +19,13 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   members: IMember[] = [];
   memberId: number = null;
   add = false;
+  searchData: any = null;
+  offset = 0;
+  limit = 8;
+  totalBizMembers: number = null;
+  bizMembers = [];
+  rows = [];
+  aligningObj = {};
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private activatedRoute: ActivatedRoute,
@@ -33,21 +40,20 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
       this.getBizMember();
     });
   }
-
-  getBizMember() {
-    this.progressService.enable();
-    this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
-      this.members = [];
-      res.forEach(member => {
-        this.members.push(member);
-      });
-      this.progressService.disable();
-    }, err => {
-      this.progressService.disable();
-
-    });
-  }
-
+  //
+  // getBizMember() {
+  //   this.progressService.enable();
+  //   this.restService.get(`joiners/biz/${this.bid}`).subscribe(res => {
+  //     this.members = [];
+  //     res.forEach(member => {
+  //       this.members.push(member);
+  //     });
+  //     this.progressService.disable();
+  //   }, err => {
+  //     this.progressService.disable();
+  //
+  //   });
+  // }
   openForm(id ?: number): void {
     this.memberId = id;
     this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
@@ -91,6 +97,54 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     );
   }
 
+  changeOffset(data) {
+    this.limit = data.pageSize ? data.pageSize : 10;
+    this.offset = data.pageIndex * this.limit;
+    this.getBizMember();
+  }
+
+  getBizMember() {
+    this.progressService.enable();
+    this.restService.get(`joiners/biz/${this.bid}/${this.offset}/${this.limit}`).subscribe(
+      (data) => {
+        this.bizMembers = data;
+        this.totalBizMembers = this.bizMembers && this.bizMembers.length > 0 ? parseInt(this.bizMembers[0].total) : 0;
+        this.aligningItems();
+        this.progressService.disable();
+      },
+      (err) => {
+        console.error('Cannot get data', err);
+        this.snackBar.open('Cannot get data. Please check your connection', null, {
+          duration: 3000,
+        });
+        this.progressService.disable();
+      }
+    );
+  }
+
+  aligningItems() {
+    if (this.totalBizMembers <= 0) {
+      this.aligningObj = {};
+      this.rows = [];
+      return;
+    }
+
+    let colCounter = 0;
+    let rowCounter = 0;
+    this.aligningObj = this.bizMembers.length > 0 ? {0: []} : {};
+    this.bizMembers.forEach(el => {
+      if (colCounter > 3) {
+        this.aligningObj[++rowCounter] = [];
+        colCounter = 0;
+      }
+
+      this.aligningObj[rowCounter].push(el);
+      colCounter++;
+    });
+
+    this.rows = Object.keys(this.aligningObj);
+  }
+
   ngOnDestroy(): void {
     console.log('biz-member component destroyed');
     this.bid = null;
@@ -102,4 +156,3 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     return (m && moment(m.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
   }
 }
-
