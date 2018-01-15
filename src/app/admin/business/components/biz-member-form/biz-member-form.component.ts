@@ -32,8 +32,6 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   upsertBtnShouldDisabled = false;
   deleteBtnShouldDisabled = false;
   anyChanges = false;
-  offset = 0;
-  limit = 30;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
