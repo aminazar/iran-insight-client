@@ -25,6 +25,7 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
   categoriesList = [];
   catCtrl: FormControl;
   displayedColumns = ['select', 'position', 'hhi', 'name', 'type', 'class', 'category', 'market_share', 'province'];
+  checkedList = [];
 
   constructor(private restService: RestService, private progressService: ProgressService,
               private snackBar: MatSnackBar) {
@@ -63,12 +64,19 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
       .subscribe(
         (data) => {
           const tempData = [];
+          this.selection.clear();
           let counter = this.offset;
           data.forEach(el => {
             tempData.push(Object.assign({position: ++counter}, el));
           });
           this.dataSource.data = tempData;
-          this.totalRecords = data.length > 0 ? data[0].total : null;
+
+          this.dataSource.data.forEach(el => {
+            if (this.checkedList.findIndex(i => i.eid === el.eid) !== -1)
+              this.selection.select(el);
+          });
+
+          this.totalRecords = data.length > 0 ? data[0].total : 0;
           this.progressService.disable();
         },
         (err) => {
@@ -100,9 +108,15 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
   }
 
   masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.dataSource.data.forEach(row => this.removeFromChecked(row));
+    } else {
+      this.dataSource.data.forEach(row => {
+        this.saveAsChecked(row);
+        this.selection.select(row);
+      });
+    }
   }
 
   changePageSetting(data) {
@@ -120,5 +134,44 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
   setCategory(cat) {
     this.category = cat.option.value;
     this.getData();
+  }
+
+  selectRow(data, row) {
+    if (data) {
+      this.selection.toggle(row);
+
+      if (data.checked)
+        this.saveAsChecked(row);
+      else
+        this.removeFromChecked(row);
+    }
+  }
+
+  saveAsChecked(row) {
+    if (this.checkedList.findIndex(el => el.eid === row.eid) === -1)
+      this.checkedList.push(row);
+  }
+
+  removeFromChecked(row) {
+    this.checkedList = this.checkedList.filter(el => el.eid !== row.eid);
+  }
+
+  insertData() {
+    if (this.checkedList.length <= 0)
+      return;
+
+    this.progressService.enable();
+    this.restService.put('exdata/batch', this.checkedList).subscribe(
+      (data) => {
+        this.snackBar.open(this.checkedList.length + ' new item' + (this.checkedList.length > 1 ? 's are' : ' is') + ' added', null, {
+          duration: 2300,
+        });
+        this.progressService.disable();
+        this.checkedList = [];
+      },
+      (err) => {
+        this.progressService.disable();
+      }
+    );
   }
 }

@@ -290,3 +290,12 @@ a:hover {
   color: rgba(176,182,180,0.92) !important;
   margin-top: -30px !important;
 }
+
+.mat-cell, .mat-header-cell{
+  text-align: center !important;
+}
+
+.mat-header-cell .mat-sort-header-container{
+  display: flex;
+  justify-content: center;
+}

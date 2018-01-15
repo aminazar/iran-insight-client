@@ -24,27 +24,33 @@
       <div>
         <mat-table #table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="select">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <mat-header-cell *matHeaderCellDef style="max-width: 60px;">
               <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked]="selection.hasValue() && isAllSelected()"
                             [indeterminate]="selection.hasValue() && !isAllSelected()">
 
               </mat-checkbox>
             </mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()"
-                            (change)="$event ? selection.toggle(row) : null"
+            <mat-cell *matCellDef="let row" style="max-width: 60px">
+              <mat-checkbox *ngIf="!row.pending"
+                            (click)="$event.stopPropagation()"
+                            (change)="selectRow($event, row)"
                             [checked]="selection.isSelected(row)">
               </mat-checkbox>
+              <label *ngIf="row.pending">
+                <i class="fa fa-check-circle" color="primary" aria-hidden="true"></i>
+              </label>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="position">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.position}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 40px"> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element" style="max-width: 40px">{{element.position}}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+            <mat-cell *matCellDef="let element">
+              <a class="clickable-link" target="_blank" href="http://{{element.name}}">{{element.name}}</a>
+            </mat-cell>
           </ng-container>
           <ng-container matColumnDef="hhi">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Herffindal Hirschman </mat-header-cell>
@@ -83,5 +89,10 @@
         </mat-paginator>
       </div>
     </mat-card-content>
+    <mat-card-actions>
+      <button mat-icon-button color="accent" [disabled]="checkedList.length === 0" (click)="insertData()">
+        <mat-icon aria-label="insert items">check</mat-icon>
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>
