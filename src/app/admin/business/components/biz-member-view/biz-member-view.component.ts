@@ -12,7 +12,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'ii-biz-member-view',
   templateUrl: './biz-member-view.component.html',
-  styleUrls: ['./biz-member-view.component.css']
+  styleUrls: ['./biz-member-view.component.scss']
 })
 
 export class BizMemberViewComponent implements OnInit, OnDestroy {
@@ -87,7 +87,6 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
     );
   }
   membershipIsDead() {
-    // return (this.member && this.member.membership_end_time < moment().format('YYYY-MM-DD'));
     return (this.member && moment(this.member.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
   }
   ngOnDestroy() {

@@ -11,7 +11,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'ii-business-members',
   templateUrl: './business-members.component.html',
-  styleUrls: ['./business-members.component.css']
+  styleUrls: ['./business-members.component.scss']
 })
 export class BusinessMembersComponent implements OnInit, OnDestroy {
 

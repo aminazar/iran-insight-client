@@ -1,4 +1,14 @@
-@import '../../../iraninsight-theme';
+@import '../../../../../iraninsight-theme';
+.row{
+  margin: 20px 10px;
+}
+.member-card{
+  margin: 10px 5px;
+}
+.selected-member{
+  background-color: #a69d96;
+  color: white !important;
+}
 
 .row{
   margin: 20px 10px;
