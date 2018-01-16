@@ -47,7 +47,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
         this.memberId = +params['mid'] ? +params['mid'] : null;
         this.businessId = +params['bid'] ? +params['bid'] : null;
         if (this.memberId)
-          this.getmembership();
+          this.getMembership();
       });
     this.breadcrumbService.pushChild(this.memberId ? 'Update' : 'Add', this.router.url, false);
   }
@@ -74,7 +74,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     this.router.navigate([url]);
   }
 
-  getmembership() {
+  getMembership() {
     if (!this.memberId)
       return;
     this.progressService.enable();
