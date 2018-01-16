@@ -78,9 +78,9 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     if (!this.memberId)
       return;
     this.progressService.enable();
-    this.restService.get(`joiners/biz/${this.businessId}`).subscribe(
+    this.restService.get(`joiners/biz/${this.businessId}/${this.memberId}`).subscribe(
       (data) => {
-        this.member = data.filter(el => el.mid === this.memberId)[0];
+        this.member = data[0];
         this.progressService.disable();
         this.loadedValue = this.member;
         this.isAdd = false;
