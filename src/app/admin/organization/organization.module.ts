@@ -6,7 +6,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {
   MatDialogModule, MatIconModule, MatSnackBarModule, MatSelectModule, MatNativeDateModule, MatDatepickerModule,
   MatAutocompleteModule, MatGridListModule, MatPaginatorModule, MatTabsModule, MatCardModule, MatInputModule,
-  MatButtonModule, MatStepperModule, MatExpansionModule, MatAccordion
+  MatButtonModule, MatStepperModule, MatExpansionModule, MatAccordion, MatCheckboxModule
 } from '@angular/material';
 import {organizationRouting} from './organization.routing';
 import {AgmCoreModule} from '@agm/core';
@@ -36,6 +36,7 @@ import { OrgMemberViewComponent } from './components/org-member-view/org-member-
     MatDatepickerModule,
     MatNativeDateModule,
     MatGridListModule,
+    MatCheckboxModule,
     MatAutocompleteModule,
     MatTabsModule,
     MatPaginatorModule,
