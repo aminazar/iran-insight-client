@@ -7,6 +7,7 @@ import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service'
 import {RestService} from '../../../../shared/services/rest.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ii-biz-member-form',
@@ -32,6 +33,9 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   upsertBtnShouldDisabled = false;
   deleteBtnShouldDisabled = false;
   anyChanges = false;
+  serverBaseDate = null;
+  serverOffset = null;
+  start_time = null;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
@@ -41,6 +45,18 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initForm();
+
+    this.restService.get(`general/datetime`).subscribe(
+      (data) => {
+        this.serverBaseDate = data[0].serverdate;
+        this.serverOffset = moment(this.serverBaseDate).diff(new Date());
+        if (this.start_time === null)
+          this.start_time = this.currentServerDate();
+      },
+      (err) => {
+        console.error('Cannot get server time info. Error: ', err);
+      }
+    );
 
     this.route.params.subscribe(
       (params) => {
@@ -54,6 +70,10 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     ['membershipForm'].forEach(form => this[form] = null);
+  }
+
+  currentServerDate() {
+    return moment().add('milliseconds', this.serverOffset).toDate();
   }
 
   setPerson(data) {
@@ -127,6 +147,21 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     data.pid = this.memberObj.id;
     data.bid = this.businessId;
     data.position_id = this.positionObj.id;
+
+    // validate
+    if (this.start_time === null) {
+      this.start_time = this.currentServerDate();
+      data.start_time = this.start_time;
+    }
+    if (data.start_time !== null && data.end_time !== null &&
+        data.end_time < data.start_time) {
+      this.snackBar.open('End date cannot be before start date',
+        null, {
+          duration: 2300,
+        });
+      return;
+    }
+
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;

@@ -67,6 +67,7 @@
                             <mat-form-field class="field">
                                 <input matInput [matDatepicker]="start_time_picker" placeholder="Start Date"
                                        formControlName="start_time"
+                                       [(ngModel)]="start_time"
                                        role="start-date" tabindex="6"/>
                                 <mat-datepicker-toggle matSuffix [for]="start_time_picker" role="start-date-picker"
                                                        tabindex="7"></mat-datepicker-toggle>
