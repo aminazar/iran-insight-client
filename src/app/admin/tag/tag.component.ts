@@ -16,7 +16,7 @@ export class TagComponent implements OnInit {
   active = true;
   id: number;
   private type: string;
-  private name: string;
+  name: string;
 
   id_name: string;
 
