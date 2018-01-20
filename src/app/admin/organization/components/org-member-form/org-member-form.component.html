@@ -1,0 +1,101 @@
+<div fxLayout="row">
+  <mat-card fxFlex="60" fxFlex.xs="100" fxFlex.sm="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+    <mat-card-header>
+      <mat-card-title>
+        <label *ngIf="memberId">Update Membership</label>
+        <label *ngIf="!memberId">Add New Membership</label>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div faLayout="row">
+        <ii-suggestion [name]="'person'"
+                       [placeholder]="'Person Name'"
+                       [currentIds]="memberObj.id ? [memberObj.id] : null"
+                       [fieldNameFa]="'display_name_fa'"
+                       [fieldNameEn]="'display_name_en'"
+                       [idColumn]="'pid'"
+                       [descriptionFieldName]="'username'"
+                       [descriptionFieldNameFa]="'username'"
+                       (add)="setPerson($event)"
+                       *ngIf="isAdd"></ii-suggestion>
+        <div *ngIf="memberObj.id">
+          <a class="clickable-link" (click)="directToInvDone()">
+            <span>Member is </span>
+            <span>"{{memberObj.name}}"</span>
+          </a>
+        </div>
+      </div>
+
+      <div faLayout="row">
+        <ii-suggestion [name]="'position_type'"
+                       [placeholder]="'Position Type'"
+                       [currentIds]="positionObj.id ? [positionObj.id] : null"
+                       [fieldNameFa]="'name_fa'"
+                       [fieldNameEn]="'name'"
+                       [idColumn]="'id'"
+                       [descriptionFieldName]="''"
+                       [descriptionFieldNameFa]="''"
+                       (add)="setPosition($event)"></ii-suggestion>
+        <div *ngIf="positionObj.id">
+          <a class="clickable-link">
+            <span>Position is </span>
+            <span>"{{positionObj.name}}"</span>
+          </a>
+        </div>
+      </div>
+
+      <div faLayout="row">
+        <form (ngSubmit)="modifyMembership()" [formGroup]="membershipForm">
+          <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
+            <div fxFlex="50">
+              <mat-checkbox formControlName="is_active" tabindex="6">
+                <span *ngIf="membershipForm.controls['is_active'].value === true">Is Acive</span>
+                <span *ngIf="membershipForm.controls['is_active'].value === false">Is not Active</span>
+              </mat-checkbox>
+            </div>
+            <div fxFlex="50">
+              <mat-checkbox formControlName="is_representative" tabindex="7">
+                <span *ngIf="membershipForm.controls['is_representative'].value === true">Representative</span>
+                <span *ngIf="membershipForm.controls['is_representative'].value === false">Not Representative</span>
+              </mat-checkbox>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+               fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+            <div fxFlex="50" class="field-container">
+              <mat-form-field class="field">
+                <input matInput [matDatepicker]="start_time_picker" placeholder="Start Date"
+                       formControlName="start_time"
+                       role="start-date" tabindex="6"/>
+                <mat-datepicker-toggle matSuffix [for]="start_time_picker" role="start-date-picker"
+                                       tabindex="7"></mat-datepicker-toggle>
+                <mat-datepicker #start_time_picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="50" class="field-container">
+              <mat-form-field class="field">
+                <input matInput [matDatepicker]="end_time_picker" placeholder="End Date"
+                       formControlName="end_time"
+                       role="end-date" tabindex="8"/>
+                <mat-datepicker-toggle matSuffix [for]="end_time_picker" role="end-date-picker"
+                                       tabindex="9"></mat-datepicker-toggle>
+                <mat-datepicker #end_time_picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <button mat-icon-button color="accent" type="submit"
+                  [disabled]="upsertBtnShouldDisabled || !anyChanges">
+            <mat-icon aria-label="accept">done</mat-icon>
+          </button>
+          <button mat-icon-button type="button" (click)="deleteMembership(member.mid)" color="warn"
+                  [disabled]="deleteBtnShouldDisabled">
+            <mat-icon aria-label="delete" *ngIf="!isAdd">delete</mat-icon>
+          </button>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

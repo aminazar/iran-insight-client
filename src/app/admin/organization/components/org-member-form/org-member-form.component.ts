@@ -9,13 +9,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
-  selector: 'ii-biz-member-form',
-  templateUrl: './biz-member-form.component.html',
-  styleUrls: ['./biz-member-form.component.css']
+  selector: 'ii-org-member-form',
+  templateUrl: './org-member-form.component.html',
+  styleUrls: ['./org-member-form.component.css']
 })
-export class BizMemberFormComponent implements OnInit, OnDestroy {
+export class OrgMemberFormComponent implements OnInit, OnDestroy {
 
-  businessId: number = null;
+  orgId: number = null;
   memberId: number = null;
   isAdd: boolean = true;
   memberObj = {
@@ -36,8 +36,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
               private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
-              private router: Router, private restService: RestService) {
-  }
+              private router: Router, private restService: RestService) { }
 
   ngOnInit() {
     this.initForm();
@@ -45,7 +44,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       (params) => {
         this.memberId = +params['mid'] ? +params['mid'] : null;
-        this.businessId = +params['bid'] ? +params['bid'] : null;
+        this.orgId = +params['oid'] ? +params['oid'] : null;
         if (this.memberId)
           this.getMembership();
       });
@@ -78,7 +77,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     if (!this.memberId)
       return;
     this.progressService.enable();
-    this.restService.get(`joiners/biz/${this.businessId}/${this.memberId}`).subscribe(
+    this.restService.get(`joiners/org/${this.orgId}/${this.memberId}`).subscribe(
       (data) => {
         this.member = data[0];
         this.progressService.disable();
@@ -125,13 +124,13 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     });
     data.mid = this.memberId;
     data.pid = this.memberObj.id;
-    data.bid = this.businessId;
+    data.oid = this.orgId;
     data.position_id = this.positionObj.id;
     this.progressService.enable();
     this.upsertBtnShouldDisabled = true;
     this.deleteBtnShouldDisabled = true;
     this.restService.post('joiner/upsert/membership', data).subscribe((next) => {
-        this.snackBar.open(this.isAdd ? 'Membership was added to this business' : 'Membership was updated successfully',
+        this.snackBar.open(this.isAdd ? 'Membership was added to this organizaton' : 'Membership was updated successfully',
           null, {
             duration: 2300,
           });
@@ -208,5 +207,4 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     }
     else this.anyChanges = false;
   }
-
 }
