@@ -26,7 +26,6 @@ export class BusinessComponent implements OnInit {
   totalBiz: number = null;
   aligningObj = {};
   rows = [];
-
   constructor(private router: Router, private breadCrumbService: BreadcrumbService,
               private searchService: SearchService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private dialog: MatDialog,

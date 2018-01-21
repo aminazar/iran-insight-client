@@ -8,15 +8,13 @@ import {RestService} from '../../../../shared/services/rest.service';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 import * as moment from 'moment';
 
-
 @Component({
-  selector: 'ii-biz-member-view',
-  templateUrl: './biz-member-view.component.html',
-  styleUrls: ['./biz-member-view.component.scss']
+  selector: 'ii-org-member-view',
+  templateUrl: './org-member-view.component.html',
+  styleUrls: ['./org-member-view.component.scss']
 })
-
-export class BizMemberViewComponent implements OnInit, OnDestroy {
-  bid: number = null;
+export class OrgMemberViewComponent implements OnInit, OnDestroy {
+  oid: number = null;
   memberId: number = null;
   member: any = null;
 
@@ -29,12 +27,12 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       (params) => {
         this.memberId = +params['mid'] ? +params['mid'] : null;
-        this.bid = +params['bid'] ? +params['bid'] : null;
+        this.oid = +params['oid'] ? +params['oid'] : null;
         if (this.memberId) {
           this.breadcrumbService.pushChild('Membership Details', this.router.url, false);
           this.progressService.enable();
 
-          this.restService.get(`joiners/biz/${this.bid}/${this.memberId}`).subscribe(
+          this.restService.get(`joiners/org/${this.oid}/${this.memberId}`).subscribe(
             (data) => {
               this.member = data[0];
               this.progressService.disable();
@@ -50,7 +48,7 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
 
   openForm(id?: number): void {
     this.memberId = id;
-    this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
+    this.router.navigate([`/admin/organization/member/form/${this.oid}/${this.memberId}`]);
   }
 
   deleteMembership(mid: number = null): void {
@@ -93,5 +91,4 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-
 }

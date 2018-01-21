@@ -46,34 +46,6 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProduct(bid, id: number = null): void {
-    // console.log('***');
-    // this.productId = id;
-    // const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-    //   width: '330px',
-    //   height: '230px'
-    // });
-    // rmDialog.afterClosed().subscribe(
-    //   (res) => {
-    //     if (res) {
-    //       this.authService.deleteProduct(id).subscribe(
-    //         (data) => {
-    //           this.productId = null;
-    //           this.snackBar.open('Product delete successfully', null, {
-    //             duration: 2300,
-    //           });
-    //           this.searching();
-    //         },
-    //         (err) => {
-    //           console.error('Cannot delete this product. Error: ', err);
-    //           this.snackBar.open('Cannot delete this product. Please try again', null, {
-    //             duration: 2300
-    //           });
-    //         }
-    //       );
-    //     }
-    //   },
-    //   (err) => console.log('Error in closing component. Error: ', err)
-    // );
   }
 
   search(data) {
@@ -138,9 +110,6 @@ export class ProductComponent implements OnInit {
     else
       this.productId  = id;
     this.router.navigate(['/admin/product/' + id]);
-  }
-
-  findingChangedElement(productId) {
   }
 }
 

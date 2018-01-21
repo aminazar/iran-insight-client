@@ -9,49 +9,48 @@ import {RemovingConfirmComponent} from '../../../../shared/components/removing-c
 import * as moment from 'moment';
 
 @Component({
-  selector: 'ii-business-members',
-  templateUrl: './business-members.component.html',
-  styleUrls: ['./business-members.component.scss']
+  selector: 'ii-org-members',
+  templateUrl: './org-members.component.html',
+  styleUrls: ['./org-members.component.scss']
 })
-export class BusinessMembersComponent implements OnInit, OnDestroy {
+export class OrgMembersComponent implements OnInit, OnDestroy {
 
-  bid: number;
+  oid: number;
   members: IMember[] = [];
   memberId: number = null;
   add = false;
   offset = 0;
   limit = 8;
-  totalBizMembers: number = null;
-  bizMembers = [];
+  totalOrgMembers: number = null;
+  orgMembers = [];
   rows = [];
   aligningObj = {};
 
   constructor(private router: Router, private breadCrumbService: BreadcrumbService, private snackBar: MatSnackBar,
               private progressService: ProgressService, private activatedRoute: ActivatedRoute,
-              private restService: RestService, private dialog: MatDialog) {
-  }
+              private restService: RestService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.breadCrumbService.pushChild('Members', this.router.url, false);
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.bid = params['bid'];
-      this.getBizMember();
+      this.oid = params['oid'];
+      this.getOrgMember();
     });
   }
 
   openForm(id ?: number): void {
     this.memberId = id;
-    this.router.navigate([`/admin/business/member/form/${this.bid}/${this.memberId}`]);
+    this.router.navigate([`/admin/organization/member/form/${this.oid}/${this.memberId}`]);
   }
 
   openView(id: number = null): void {
     this.memberId = id;
-    this.router.navigate([`/admin/business/member/${this.bid}/${this.memberId}`]);
+    this.router.navigate([`/admin/organization/member/${this.oid}/${this.memberId}`]);
   }
 
   deleteMembership(mid: number = null): void {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
+      width: '400px',
       height: '230px'
     });
 
@@ -65,7 +64,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
                 duration: 2000,
               });
               this.progressService.disable();
-              this.getBizMember();
+              this.getOrgMember();
             },
             (error) => {
               this.snackBar.open('Cannot delete this membership. Please try again', null, {
@@ -85,15 +84,15 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   changeOffset(data) {
     this.limit = data.pageSize ? data.pageSize : 10;
     this.offset = data.pageIndex * this.limit;
-    this.getBizMember();
+    this.getOrgMember();
   }
 
-  getBizMember() {
+  getOrgMember() {
     this.progressService.enable();
-    this.restService.get(`joiners/biz/${this.bid}/${this.offset}/${this.limit}`).subscribe(
+    this.restService.get(`joiners/org/${this.oid}/${this.offset}/${this.limit}`).subscribe(
       (data) => {
-        this.bizMembers = data;
-        this.totalBizMembers = this.bizMembers && this.bizMembers.length > 0 ? parseInt(this.bizMembers[0].total) : 0;
+        this.orgMembers = data;
+        this.totalOrgMembers = this.orgMembers && this.orgMembers.length > 0 ? parseInt(this.orgMembers[0].total) : 0;
         this.aligningItems();
         this.progressService.disable();
       },
@@ -108,7 +107,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   aligningItems() {
-    if (this.totalBizMembers <= 0) {
+    if (this.totalOrgMembers <= 0) {
       this.aligningObj = {};
       this.rows = [];
       return;
@@ -116,8 +115,8 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
 
     let colCounter = 0;
     let rowCounter = 0;
-    this.aligningObj = this.bizMembers.length > 0 ? {0: []} : {};
-    this.bizMembers.forEach(el => {
+    this.aligningObj = this.orgMembers.length > 0 ? {0: []} : {};
+    this.orgMembers.forEach(el => {
       if (colCounter > 3) {
         this.aligningObj[++rowCounter] = [];
         colCounter = 0;
@@ -131,8 +130,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('biz-member component destroyed');
-    this.bid = null;
+    this.oid = null;
     this.members = null;
     this.memberId = null;
   }
@@ -140,4 +138,5 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
   membershipIsDead(m) {
     return (m && moment(m.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
   }
+
 }
