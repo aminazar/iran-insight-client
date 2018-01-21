@@ -11,10 +11,10 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     return this.authService.isLoggedIn.map((res: boolean) => {
-      if (res)
+      if (res && this.authService.isAdmin)
         return true;
 
-      this.router.navigate(['admin/login']);
+      this.router.navigate(['login']);
       return false;
     });
   }

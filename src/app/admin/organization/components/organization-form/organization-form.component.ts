@@ -260,6 +260,7 @@ export class OrganizationFormComponent extends AbstractFormComponent implements 
     return (this.formId &&
     this.originalForm &&
     this.originalForm.end_date &&
-    this.originalForm.end_date >= this.originalForm.start_date);
+    this.originalForm.end_date >= this.originalForm.start_date &&
+    moment(this.originalForm.end_date) <= moment());
   }
 }

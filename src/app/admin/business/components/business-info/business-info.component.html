@@ -12,8 +12,8 @@
           <ng-template matStepLabel>اطلاعات فارسی</ng-template>
           <mat-card>
             <mat-card-content dir="rtl">
-              <div>
-                <mat-input-container class="field-90 farsi" role="name-fa">
+              <div class="field-container">
+                <mat-input-container class="field farsi" role="name-fa">
                   <input matInput type="text" placeholder="نام کسب و کار" formControlName="name_fa" role="name-fa"
                          tabindex="6"/>
                 </mat-input-container>
@@ -35,7 +35,11 @@
               <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid" role="submit-button" tabindex="20">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21">
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="ended">not_interested</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
+                      [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
             </mat-card-actions>
@@ -47,8 +51,8 @@
           <ng-template matStepLabel>‌‌Basic Info</ng-template>
           <mat-card>
             <mat-card-content>
-              <div>
-                <mat-input-container class="field-90">
+              <div class="field-container">
+                <mat-input-container class="field">
                   <input matInput type="text" placeholder="Business Name" formControlName="name" role="name-en"
                          tabindex="1"/>
                 </mat-input-container>
@@ -89,6 +93,26 @@
                   <input matInput type="text" placeholder="URL" formControlName="url" role="url" tabindex="5"/>
                 </mat-input-container>
               </div>
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
+                <div fxFlex="50" class="field-container">
+                  <mat-form-field class="field">
+                    <input matInput [matDatepicker]="start_date_picker" placeholder="Start Date" formControlName="start_date"
+                           role="start-date" tabindex="6"/>
+                    <mat-datepicker-toggle matSuffix [for]="start_date_picker" role="start-date-picker"
+                                           tabindex="7"></mat-datepicker-toggle>
+                    <mat-datepicker #start_date_picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" class="field-container">
+                  <mat-form-field class="field">
+                    <input matInput [matDatepicker]="end_date_picker" placeholder="End Date" formControlName="end_date"
+                           role="end-date" tabindex="8"/>
+                    <mat-datepicker-toggle matSuffix [for]="end_date_picker" role="end-date-picker"
+                                           tabindex="9"></mat-datepicker-toggle>
+                    <mat-datepicker #end_date_picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
             </mat-card-content>
             <mat-card-actions>
               <button mat-icon-button matStepperPrevious role="previous-1">
@@ -101,7 +125,10 @@
                       >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="ended">not_interested</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
@@ -130,8 +157,8 @@
         <form (ngSubmit)="upsertBusiness()" [formGroup]="farsiForm">
           <mat-card>
             <mat-card-content dir="rtl">
-              <div>
-                <mat-input-container class="field-90 farsi" role="name-fa">
+              <div class="field-container">
+                <mat-input-container class="field farsi" role="name-fa">
                   <input matInput type="text" placeholder="نام کسب و کار" formControlName="name_fa" role="name-fa"
                          tabindex="6"/>
                 </mat-input-container>
@@ -154,7 +181,10 @@
                       >
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="ended">not_interested</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>
@@ -171,8 +201,8 @@
         <form (ngSubmit)="upsertBusiness()" [formGroup]="basicForm">
           <mat-card>
             <mat-card-content>
-              <div>
-                <mat-input-container class="field-90">
+              <div class="field-container">
+                <mat-input-container class="field">
                   <input matInput type="text" placeholder="Business Name" formControlName="name" role="name-en"
                          tabindex="1"/>
                 </mat-input-container>
@@ -221,10 +251,13 @@
               <button mat-icon-button role="next-sm-1" (click)="nextStep()">
                 <mat-icon aria-label="next">navigate_next</mat-icon>
               </button>
+              <button mat-icon-button color="warn" type="button" *ngIf="!add && !bizIsEnd()" (click)="endBusiness()" tabindex="21">
+                <mat-icon aria-label="ended">not_interested</mat-icon>
+              </button>
               <button mat-icon-button color="accent" type="submit" role="submit-button" tabindex="20" [disabled]="!basicForm.valid">
                 <mat-icon aria-label="accept">done</mat-icon>
               </button>
-              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="21"
+              <button mat-icon-button color="warn" type="button" *ngIf="!add" (click)="deleteBusiness()" tabindex="22"
                       [disabled]="deleteDisabled">
                 <mat-icon aria-label="delete">delete</mat-icon>
               </button>

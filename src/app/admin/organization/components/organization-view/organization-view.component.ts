@@ -114,6 +114,6 @@ export class OrganizationViewComponent implements OnInit {
   }
 
   orgIsEnd() {
-    return (this.data && this.data.org_end_date >= this.data.org_start_date);
+    return (this.data && this.data.org_end_date >= this.data.org_start_date && moment(this.data.org_end_date) <= moment());
   }
 }

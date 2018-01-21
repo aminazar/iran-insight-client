@@ -8,6 +8,7 @@ const Admin_ROUTES: Routes = [
   {
     path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard], children:
     [
+      {path: '', redirectTo: '/admin/person', pathMatch: 'full', canActivate: [AuthGuard]},
       {path: 'type', loadChildren: 'app/admin/type/type.module#TypeModule', canActivate: [AuthGuard]},
       {path: 'person', loadChildren: 'app/admin/person/person.module#PersonModule', canActivate: [AuthGuard]},
       {path: 'product', loadChildren: 'app/admin/product/product.module#ProductModule', canActivate: [AuthGuard]},

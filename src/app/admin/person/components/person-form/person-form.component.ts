@@ -74,7 +74,7 @@ export class PersonFormComponent extends AbstractFormComponent implements OnInit
         Validators.maxLength(500),
       ]],
       phone_no: [null, [
-        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,8}$/)
+        Validators.pattern(/^[\+]?[(]?[0-9]{3}?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,5}$/)
       ]],
       mobile_no: [null, [
         Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/)

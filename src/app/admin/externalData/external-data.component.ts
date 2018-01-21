@@ -14,6 +14,7 @@ import {Observable} from 'rxjs/Observable';
 })
 export class ExternalDataComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('table') table;
   offset = 0;
   limit = 10;
   phrase = null;
@@ -26,6 +27,8 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
   catCtrl: FormControl;
   displayedColumns = ['select', 'position', 'hhi', 'name', 'type', 'class', 'category', 'market_share', 'province'];
   checkedList = [];
+  sortColumn = null;
+  direction = 'asc';
 
   constructor(private restService: RestService, private progressService: ProgressService,
               private snackBar: MatSnackBar) {
@@ -47,6 +50,14 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
     this.dataSource = new MatTableDataSource<ExData>();
     this.selection = new SelectionModel<ExData>(true, []);
 
+    this.sort.sortChange.subscribe(
+      (data) => {
+        this.sortColumn = data.active;
+        this.direction = data.direction;
+        this.getData();
+      }
+    );
+
     this.getData();
     this.getCategories();
   }
@@ -60,6 +71,8 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
     this.restService.post('exData/get/' + this.offset + '/' + this.limit, {
       phrase: this.phrase ? this.phrase.trim() : null,
       category: this.category ? this.category.trim() : null,
+      sort_column: this.sortColumn ? this.sortColumn : null,
+      direction: this.direction ? this.direction : null,
     })
       .subscribe(
         (data) => {
@@ -128,6 +141,7 @@ export class ExternalDataComponent implements OnInit, AfterViewInit {
 
   applyFilter(phrase) {
     this.phrase = phrase;
+    this.offset = 0;
     this.getData();
   }
 

@@ -9,7 +9,7 @@
            fxLayoutAlign.sm="center center" fxLayoutAlign="center center" *ngIf="!isInvestor">
         <div fxFlex="40">
           Choose Investor Type
-          <mat-radio-group [(ngModel)]="investor" tabindex="1">
+          <mat-radio-group [(ngModel)]="investor" (ngModelChange)="changeInvestor()" tabindex="1">
             <div fxLayout="column" fxLayout.sm="row" fxLayoutAlign="start start" fxLayoutAlign.sm="center center">
               <div fxFlex="50" style="margin-bottom: 8px;">
                 <mat-radio-button [value]="investorType.person">Person</mat-radio-button>
@@ -61,7 +61,9 @@
             <mat-input-container class="field">
               <input matInput type="text" placeholder="Amount" formControlName="amount" role="amount" tabindex="3"/>
             </mat-input-container>
-            <mat-error class="error-msg" *ngIf="investmentForm.controls['amount'].hasError('pattern')">User only number (Can use floating point numbers)</mat-error>
+            <mat-error class="error-msg" *ngIf="investmentForm.controls['amount'].hasError('pattern')">User only number
+              (Can use floating point numbers)
+            </mat-error>
           </div>
           <div fxFlex="30" class="field-container">
             <mat-select formControlName="currency" placeholder="Choose Currency" tabindex="4">
@@ -70,16 +72,21 @@
           </div>
           <div fxFlex="30" class="field-container">
             <mat-input-container class="field">
-              <input matInput type="text" placeholder="Or add if not exist" formControlName="currency" tabindex="5"/>
+              <input matInput type="text" placeholder="Or add if not exist" formControlName="other_currency" tabindex="5"/>
             </mat-input-container>
-            <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">Please choose currency</mat-error>
+            <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">Please choose
+              currency
+            </mat-error>
           </div>
         </div>
         <div>
           <mat-input-container>
-            <input matInput type="number" placeholder="Investment Cycle" formControlName="investment_cycle" role="investment-cycle" min="1"/>
+            <input matInput type="number" placeholder="Investment Cycle" formControlName="investment_cycle"
+                   role="investment-cycle" min="1"/>
           </mat-input-container>
-          <mat-error class="error-msg" *ngIf="investmentForm.controls['investment_cycle'].hasError('min')">The minimum value is 1</mat-error>
+          <mat-error class="error-msg" *ngIf="investmentForm.controls['investment_cycle'].hasError('min')">The minimum
+            value is 1
+          </mat-error>
         </div>
         <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
           <div fxFlex="50">
@@ -97,7 +104,8 @@
         </div>
         <div role="submit-button">
           <button mat-icon-button color="accent" type="submit"
-                  [disabled]="upsertBtnShouldDisabled || (!investmentForm.valid || (investmentId && !anyChanges)) || (!investorObj.id && !investmentObj.id)" tabindex="20">
+                  [disabled]="upsertBtnShouldDisabled || (!investmentForm.valid || (investmentId && !anyChanges)) || (!investorObj.id && !investmentObj.id)"
+                  tabindex="20">
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
           <button mat-icon-button color="warn" type="button" *ngIf="investmentId" (click)="deleteInvestment()"
