@@ -105,9 +105,11 @@ export class ConsultancyFormComponent implements OnInit {
           if (data.pid) {
             this.consultingObj.id = data.pid;
             this.consultingObj.name = data.person_display_name || data.person_display_name_fa;
+            this.consulting = this.consultingType.person;
           } else if (data.oid) {
             this.consultingObj.id = data.oid;
-            this.consultingObj.name = data.name || data.name_fa;
+            this.consultingObj.name = data.org_name || data.org_name_fa;
+            this.consulting = this.consultingType.organization;
           }
         }
 

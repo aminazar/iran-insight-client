@@ -115,9 +115,11 @@ export class InvestmentFormComponent implements OnInit {
           if (data.pid) {
             this.investorObj.id = data.pid;
             this.investorObj.name = data.person_display_name || data.perosn_display_name_fa;
+            this.investor = this.investorType.person;
           } else if (data.oid) {
             this.investorObj.id = data.oid;
-            this.investorObj.name = data.name || data.name_fa;
+            this.investorObj.name = data.org_name || data.org_name_fa;
+            this.investor = this.investorType.organization;
           }
         }
 
