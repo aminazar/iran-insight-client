@@ -11,15 +11,15 @@
         <thead>
         <td>No.</td>
         <td>Name</td>
-        <td>Persian Name</td>
-        <td>Remove</td>
+        <td style="text-align: right">Persian Name</td>
+        <td style="text-align: right">Remove</td>
         </thead>
         <tbody>
         <tr *ngFor="let item of userExpertiseList; let i = index">
           <td>{{i+1}}</td>
           <td>{{item.name_en}}</td>
-          <td class="farsi">{{item.name_fa}}</td>
-          <td>
+          <td style="text-align: right">{{item.name_fa}}</td>
+          <td style="text-align: right">
             <button mat-icon-button (click)="removePersonExpertise(item.expertise_id)" color="warn">
               <mat-icon aria-label="clear person expertise">delete</mat-icon>
             </button>

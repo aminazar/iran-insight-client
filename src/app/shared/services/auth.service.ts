@@ -25,7 +25,6 @@ export class AuthService {
         this.displayName.next(data.displayName);
       },
       (err) => {
-        console.log('Not logged in: ', err);
         this.isLoggedIn.next(false);
         this.isAdmin.next(false);
         this.userId.next(null);
@@ -99,7 +98,7 @@ export class AuthService {
     return this.restService.get('product/one/' + productId);
   }
 
-  //TODO: delete specific expertise (backend needed too)
+  // TODO: delete specific expertise (backend needed too)
   deleteExpertise(personId, expertiseId) {
 
   }

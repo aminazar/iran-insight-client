@@ -96,7 +96,7 @@ export class AbstractSearchComponent implements OnInit {
   }
 
   searching() {
-
+    this.offset = 0;
     this.progressService.enable();
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {

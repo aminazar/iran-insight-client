@@ -60,7 +60,7 @@
            fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
         <div fxFlex="50">
           <div class="view-title">Birth Date</div>
-          <div class="view-content" *ngIf="person.birth_date">{{person.birthd_date}}</div>
+          <div class="view-content" *ngIf="person.birth_date">{{person.birth_date}}</div>
           <div class="view-content" *ngIf="!person.birth_date">-</div>
         </div>
         <div fxFlex="50">
@@ -68,15 +68,15 @@
           <div class="view-content">{{person.notify_period}}</div>
         </div>
       </div>
-      <div>
+      <div style="margin: 10px">
         <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-          <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/expertises/' + person.pid]"><i class="fa fa-certificate">Expertises</i></a>
-          <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/membership/' + person.pid]"><i class="fa fa-handshake-o">Membership</i></a>
+          <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/expertise/' + person.pid]"><i class="fa fa-certificate">Expertises</i></a>
+          <!--<a fxFlex="50" class="clickable-link" [routerLink]="['/admin/membership/' + person.pid]"><i class="fa fa-handshake-o">Membership</i></a>-->
         </div>
-        <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-          <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/business/' + person.pid]"><i class="fa fa-university">Businesses</i></a>
-          <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/organization/' + person.pid]"><i class="fa fa-industry">Organizations</i></a>
-        </div>
+        <!--<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">-->
+          <!--<a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/business/' + person.pid]"><i class="fa fa-university">Businesses</i></a>-->
+          <!--<a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/organization/' + person.pid]"><i class="fa fa-industry">Organizations</i></a>-->
+        <!--</div>-->
       </div>
     </mat-card-content>
     <mat-card-actions>

@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
+import {AuthService} from '../../shared/services/auth.service';
 
 @Component({
   selector: 'ii-home',
@@ -9,10 +10,14 @@ import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private breadCrumbService: BreadcrumbService) {
+  constructor(private router: Router, private breadCrumbService: BreadcrumbService,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
     this.breadCrumbService.pushChild('Home', this.router.url, true);
+
+    if (this.authService.isAdmin)
+      this.router.navigate(['admin']);
   }
 }

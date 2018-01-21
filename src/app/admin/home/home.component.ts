@@ -13,7 +13,6 @@ export class AdminHomeComponent implements OnInit {
     {label: 'Person', path: '/admin/person'},
     {label: 'Business', path: '/admin/business'},
     {label: 'Organization', path: '/admin/organization'},
-    {label: 'Product', path: '/admin/product'},
     {label: 'Event', path: '/admin/event'},
     {label: 'Type', path: '/admin/type'},
     {label: 'Expertise', path: '/admin/expertise'},

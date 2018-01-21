@@ -112,6 +112,6 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
   }
 
   bizIsEnd() {
-    return (this.data && this.data.end_date >= this.data.start_date);
+    return (this.data && this.data.end_date >= this.data.start_date && moment(this.data.end_date) <= moment());
   }
 }
