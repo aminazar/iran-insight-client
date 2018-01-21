@@ -5,7 +5,7 @@
       <!--<span>{{header_title}}</span>-->
       <span class="fill-remaining-space"></span>
       <span *ngIf="isLoggedIn" style="font-size: 0.8em;">
-        <button mat-button [matMenuTriggerFor]="menu">{{authService.displayName.getValue()}}</button>
+        <button mat-button [matMenuTriggerFor]="menu">{{btnLabel}}</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="showProfile()">My Profile</button>
           <button mat-menu-item (click)="logout()">Logout</button>
