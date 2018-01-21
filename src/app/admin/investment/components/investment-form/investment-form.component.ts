@@ -294,4 +294,11 @@ export class InvestmentFormComponent implements OnInit {
       return null;
     }
   }
+
+  changeInvestor() {
+    this.investorObj = {
+      name: null,
+      id: null,
+    };
+  }
 }

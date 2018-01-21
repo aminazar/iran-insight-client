@@ -9,7 +9,7 @@
            fxLayoutAlign.sm="center center" fxLayoutAlign="center center" *ngIf="!isInvestor">
         <div fxFlex="40">
           Choose Investor Type
-          <mat-radio-group [(ngModel)]="investor" tabindex="1">
+          <mat-radio-group [(ngModel)]="investor" (ngModelChange)="changeInvestor()" tabindex="1">
             <div fxLayout="column" fxLayout.sm="row" fxLayoutAlign="start start" fxLayoutAlign.sm="center center">
               <div fxFlex="50" style="margin-bottom: 8px;">
                 <mat-radio-button [value]="investorType.person">Person</mat-radio-button>

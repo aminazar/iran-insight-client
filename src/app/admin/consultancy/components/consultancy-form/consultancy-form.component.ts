@@ -6,7 +6,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {AuthService} from '../../../../shared/services/auth.service';
-import {forEach} from '@angular/router/src/utils/collection';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
 
 enum ConsultingType {
@@ -265,5 +264,12 @@ export class ConsultancyFormComponent implements OnInit {
       if (this.consultingObj.id !== tempId)
         this.anyChanges = true;
     }
+  }
+
+  changeConsulting() {
+    this.consultingObj = {
+      name: null,
+      id: null,
+    };
   }
 }
