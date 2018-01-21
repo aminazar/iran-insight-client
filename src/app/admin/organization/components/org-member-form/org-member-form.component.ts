@@ -17,7 +17,7 @@ export class OrgMemberFormComponent implements OnInit, OnDestroy {
 
   orgId: number = null;
   memberId: number = null;
-  isAdd: boolean = true;
+  isAdd = true;
   memberObj = {
     name: null,
     id: null,
@@ -204,7 +204,6 @@ export class OrgMemberFormComponent implements OnInit, OnDestroy {
         if (this.positionObj.id !== this.loadedValue.position_id)
           this.anyChanges = true;
       }
-    }
-    else this.anyChanges = false;
+    } else this.anyChanges = false;
   }
 }

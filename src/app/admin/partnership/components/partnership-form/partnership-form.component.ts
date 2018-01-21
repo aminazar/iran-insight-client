@@ -12,20 +12,16 @@ import {RemovingConfirmComponent} from '../../../../shared/components/removing-c
   styleUrls: ['./partnership-form.component.css']
 })
 export class PartnershipFormComponent extends AbstractFormComponent implements OnInit {
-
   personId: number;
   personName: string;
-
   possessorId: number;
   possessorName: number;
   possessorNameFa: number;
-
   joinerId: number;
   joinerName: string;
   joinerNameFa: string;
 
   ngOnInit() {
-
     this.viewName = 'Partnership';
     super.ngOnInit();
     this.initForm();
@@ -34,10 +30,7 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
       this.personId = params['id'];
       this.personName = decodeURIComponent(params['personName']);
       this.initPartnership();
-
     });
-
-
   }
 
   initForm() {
@@ -57,7 +50,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
   }
 
   initPartnership() {
-
     if (!this.formId) {
       this.possessorId = this.personId;
       return;
@@ -97,7 +89,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
   }
 
   changeJoiner(event) {
-
     this.joinerId = event.pid;
     this.joinerName = event.display_name_en;
     this.joinerNameFa = event.display_name_fa;
@@ -110,7 +101,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
     this.joinerNameFa = null;
     this.form.controls['is_confirmed'].setValue(false);
     this.fieldChanged();
-
   }
 
   getCurrentJoinerIds(): number[] {
@@ -125,7 +115,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
   }
 
   modifyPartnership() {
-
     const partnershipData: any = {
       id: this.formId,
       pid1: this.possessorId,
@@ -150,7 +139,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
         });
 
         this.anyChanges = false;
-
         if (!this.formId) {
           this.form.reset();
           this.removeJoiner();
@@ -224,7 +212,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
   }
 
   deletePartnership() {
-
     if (!this.formId)
       return;
 
@@ -233,9 +220,7 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
     });
 
     rmDialog.afterClosed().subscribe(res => {
-
       if (res) {
-
         this.progressService.enable();
         this.restService.delete(`person/partnership/${this.formId}`).subscribe(data => {
 
@@ -249,7 +234,6 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
           this.breadcrumbService.popChild();
 
         }, err => {
-
           this.progressService.disable();
           this.progressService.disable();
           this.upsertBtnShouldDisabled = false;
@@ -261,5 +245,4 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
 
     });
   }
-
 }

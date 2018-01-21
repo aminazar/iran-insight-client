@@ -92,7 +92,7 @@ export class OrgMembersComponent implements OnInit, OnDestroy {
     this.restService.get(`joiners/org/${this.oid}/${this.offset}/${this.limit}`).subscribe(
       (data) => {
         this.orgMembers = data;
-        this.totalOrgMembers = this.orgMembers && this.orgMembers.length > 0 ? parseInt(this.orgMembers[0].total) : 0;
+        this.totalOrgMembers = this.orgMembers && this.orgMembers.length > 0 ? parseInt(this.orgMembers[0].total, 10) : 0;
         this.aligningItems();
         this.progressService.disable();
       },

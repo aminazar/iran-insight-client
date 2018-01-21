@@ -17,7 +17,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
 
   businessId: number = null;
   memberId: number = null;
-  isAdd: boolean = true;
+  isAdd = true;
   memberObj = {
     name: null,
     id: null,
@@ -205,8 +205,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
         if (this.positionObj.id !== this.loadedValue.position_id)
           this.anyChanges = true;
       }
-    }
-    else this.anyChanges = false;
+    } else this.anyChanges = false;
   }
 
 }

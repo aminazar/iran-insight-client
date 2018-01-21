@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RestService} from '../../../../shared/services/rest.service';
 import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProgressService} from '../../../../shared/services/progress.service';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
@@ -78,9 +78,8 @@ export class InvestmentFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^-?\d*(\.\d+)?$/),
       ]],
-      currency: [this.loadedValue.currency, [
-        Validators.required,
-      ]],
+      currency: [],
+      other_currency: [],
       is_lead: [this.loadedValue.is_lead ? this.loadedValue.is_lead : false, [
         Validators.required
       ]],
@@ -89,7 +88,10 @@ export class InvestmentFormComponent implements OnInit {
       ]],
       investment_cycle: [this.loadedValue.investment_cycle ? this.loadedValue.investment_cycle : null, [
         Validators.min(1),
+        Validators.required,
       ]],
+    }, {
+      validator: this.checkCurrency,
     });
 
     this.investmentForm.valueChanges.subscribe(
@@ -113,13 +115,24 @@ export class InvestmentFormComponent implements OnInit {
           if (data.pid) {
             this.investorObj.id = data.pid;
             this.investorObj.name = data.person_display_name || data.perosn_display_name_fa;
+            this.investor = this.investorType.person;
           } else if (data.oid) {
             this.investorObj.id = data.oid;
-            this.investorObj.name = data.name || data.name_fa;
+            this.investorObj.name = data.org_name || data.org_name_fa;
+            this.investor = this.investorType.organization;
           }
         }
 
         this.initForm();
+
+        // Set currency
+        const currencyFromList = this.currencyList.find(el => el.value === this.loadedValue.currency) ?
+          this.currencyList.find(el => el.value === this.loadedValue.currency).value : null;
+
+        this.investmentForm.controls['currency'].setValue(currencyFromList);
+        this.investmentForm.controls['other_currency'].setValue(currencyFromList ? null : this.loadedValue.currency);
+
+
         this.progressService.disable();
       },
       (err) => {
@@ -272,5 +285,22 @@ export class InvestmentFormComponent implements OnInit {
       if (this.investorObj.id !== tempId)
         this.anyChanges = true;
     }
+  }
+
+  checkCurrency(AC: AbstractControl) {
+    const currency = AC.get('currency').value;
+    const otherCurrency = AC.get('other_currency').value;
+    if (!currency && !otherCurrency) {
+      AC.get('currency').setErrors({notEmpty: true});
+    } else {
+      return null;
+    }
+  }
+
+  changeInvestor() {
+    this.investorObj = {
+      name: null,
+      id: null,
+    };
   }
 }
