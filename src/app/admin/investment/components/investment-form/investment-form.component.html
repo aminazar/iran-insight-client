@@ -9,7 +9,7 @@
            fxLayoutAlign.sm="center center" fxLayoutAlign="center center" *ngIf="!isInvestor">
         <div fxFlex="40">
           Choose Investor Type
-          <mat-radio-group [(ngModel)]="investor" (ngModelChange)="changeInvestor()" tabindex="1">
+          <mat-radio-group [(ngModel)]="investor" tabindex="1">
             <div fxLayout="column" fxLayout.sm="row" fxLayoutAlign="start start" fxLayoutAlign.sm="center center">
               <div fxFlex="50" style="margin-bottom: 8px;">
                 <mat-radio-button [value]="investorType.person">Person</mat-radio-button>
@@ -65,15 +65,10 @@
               (Can use floating point numbers)
             </mat-error>
           </div>
-          <div fxFlex="30" class="field-container">
+          <div fxFlex="60" class="field-container">
             <mat-select formControlName="currency" placeholder="Choose Currency" tabindex="4">
               <mat-option *ngFor="let cur of currencyList" [value]="cur.value">{{cur.name}} - {{cur.value}}</mat-option>
             </mat-select>
-          </div>
-          <div fxFlex="30" class="field-container">
-            <mat-input-container class="field">
-              <input matInput type="text" placeholder="Or add if not exist" formControlName="other_currency" tabindex="5"/>
-            </mat-input-container>
             <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">Please choose
               currency
             </mat-error>

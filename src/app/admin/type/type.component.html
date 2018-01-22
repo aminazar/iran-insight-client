@@ -2,7 +2,7 @@
   <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'type'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-  <button mat-fab color="accent" (click)="openForm('form', null)">
+  <button mat-fab color="accent" (click)="openForm('form', null, null)">
     <mat-icon aria-label="add new person">add</mat-icon>
   </button>
 </div>
@@ -30,10 +30,10 @@
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="openForm('view', type.id, type.table_name)" color="primary">
+          <button mat-icon-button (click)="openForm('view', type.table_name, type.id)" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="openForm('form', type.id, type.table_name)" color="accent">
+          <button mat-icon-button (click)="openForm('form', type.table_name, type.id)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
           <button mat-icon-button (click)="deleteType(type.id, type.table_name)" color="warn">
