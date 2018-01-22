@@ -31,7 +31,16 @@ export class HeaderComponent implements OnInit {
       },
       (err) => {
         this.isLoggedIn = false;
-        console.log('Error when subscribing on authService.isLoggedIn: ', err);
+        console.error('Error when subscribing on authService.isLoggedIn: ', err);
+      }
+    );
+
+    this.authService.displayName.subscribe(
+      (data) => {
+        this.btnLabel = data;
+      },
+      (err) => {
+        console.error('Error when subscribing on authService.displayName: ', err);
       }
     );
 

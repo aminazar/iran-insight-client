@@ -56,6 +56,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
   latitude = 35.696491;
   longitude = 51.379926;
   organizerHasError = false;
+  originalOrganizer = this.organizerType.person;
 
   constructor(private snackBar: MatSnackBar, private dialog: MatDialog,
               private progressService: ProgressService, private restService: RestService,
@@ -154,6 +155,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
         else
           this.organizer = this.organizerType.organization;
 
+        this.originalOrganizer = this.organizer;
         this.originalEvent = data;
         this.originalEvent.start_date = data.start_date ? moment(data.start_date).format('YYYY-MM-DD') : null;
         this.originalEvent.end_date = data.end_date ? moment(data.end_date).format('YYYY-MM-DD') : null;
@@ -392,13 +394,14 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
         break;
     }
 
+    this.originalOrganizer = this.organizer;
     this.eventChanged();
   }
 
   directToOrganizer() {
     if (this.organizerId) {
       let url = '/admin/';
-      switch (this.organizer) {
+      switch (this.originalOrganizer) {
         case this.organizerType.person:
           url += 'person';
           break;
