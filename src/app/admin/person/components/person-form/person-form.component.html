@@ -135,11 +135,6 @@
         <div *ngIf="formId">
           <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
             <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/expertise/' + formId]"><i class="fa fa-certificate">Expertise</i></a>
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/membership/' + formId]"><i class="fa fa-handshake-o">Membership</i></a>
-          </div>
-          <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/business/' + formId]"><i class="fa fa-university">Businesses</i></a>
-            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/person/organization/' + formId]"><i class="fa fa-industry">Organizations</i></a>
           </div>
         </div>
         <div role="submit-button">

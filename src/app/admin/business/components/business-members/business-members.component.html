@@ -38,6 +38,6 @@
 </div>
 </div>
 <div>
-    <mat-paginator [length]="totalBizMembers" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+    <mat-paginator [length]="totalBizMembers" [pageSize]="limit" [pageSizeOptions]="[4, 8, 12, 20]"
                    (page)="changeOffset($event)"></mat-paginator>
 </div>

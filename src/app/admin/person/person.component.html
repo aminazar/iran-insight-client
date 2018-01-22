@@ -29,18 +29,11 @@
           <div *ngIf="p.pid === cardId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['/admin/person/expertises/' + p.pid]"><i class="fa fa-certificate"></i> Expertises</a>
-              <a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"></i> Membership</a>
-            </div>
-            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university"></i> Businesses</a>
-              <a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"></i> Organizations</a>
+              <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['/admin/person/investment', p.pid, p.display_name_en || p.display_name_fa]" ><i class="fa fa-money"></i> Investments</a>
               <a fxFlex="50" [routerLink]="['/admin/person/consultancy', p.pid, p.display_name_en || p.display_name_fa]"><i class="fa fa-adjust"></i> Consultancies</a>
-            </div>
-            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
             </div>
           </div>
         </mat-card-content>

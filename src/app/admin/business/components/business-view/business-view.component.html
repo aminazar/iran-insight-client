@@ -51,18 +51,17 @@
           <a class="clickable-link" [routerLink]="['/admin/business/members/'+ bid]"><i class="fa fa-user-circle-o"></i>
             Members</a>
         </div>
-        <div class="view-content">
-          <label *ngFor="let mem of data.members">
-            {{mem}} -
-          </label>
-        </div>
+        <!--<div class="view-content">-->
+          <!--<label *ngFor="let mem of data.members">-->
+            <!--{{mem}} - -->
+          <!--</label>-->
+        <!--</div>-->
       </div>
       <div>
         <div class="view-title">
           <a class="clickable-link" [routerLink]="['/admin/business/product/'+ bid]"><i class="fa fa-product-hunt"></i>
             Products</a>
         </div>
-        <div class="view-content">{{data.product}}</div>
       </div>
     </mat-card-content>
     <mat-card-actions>
