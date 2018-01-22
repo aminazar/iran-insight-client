@@ -38,7 +38,7 @@ export class TypeComponent extends AbstractSearchComponent implements OnInit {
     );
   }
 
-  openForm(state: string, id: number = null, tableName) {
+  openForm(state: string, tableName, id: number = null) {
     super.open(state, id, false);
 
     this.router.navigate([state + '/' + (tableName ? tableName : null) + '/' + id], {relativeTo: this.activatedRoute});
