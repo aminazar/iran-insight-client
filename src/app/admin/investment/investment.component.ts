@@ -12,6 +12,7 @@ import {RemovingConfirmComponent} from '../../shared/components/removing-confirm
   styleUrls: ['./investment.component.css']
 })
 export class InvestmentComponent implements OnInit {
+  cardId = null;
   id = null;
   investmentRelationName = '';
   isInvestor = false;
@@ -79,6 +80,7 @@ export class InvestmentComponent implements OnInit {
         if (data)
           this.restService.delete('investment/' + id).subscribe(
             (rs) => {
+              this.cardId = null;
               this.investmentList = this.investmentList.filter(el => el.id !== id);
               this.aligningItems();
               this.snackBar.open('The investment is deleted successfully', null, {
@@ -136,5 +138,12 @@ export class InvestmentComponent implements OnInit {
     });
 
     this.rows = Object.keys(this.aligningObj);
+  }
+
+  select(id) {
+    if (this.cardId === id)
+      this.cardId = null;
+    else
+      this.cardId = id;
   }
 }

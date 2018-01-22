@@ -29,7 +29,7 @@ export class OrganizationViewComponent implements OnInit {
         this.oid = +params['oid'] ? +params['oid'] : null;
 
         if (this.oid)
-          this.breadcrumbService.pushChild('View', this.router.url, false);
+          this.breadcrumbService.pushChild('Organization Details', this.router.url, false);
 
         this.progressService.enable();
         this.restService.get(`organization/${this.oid}`).subscribe(

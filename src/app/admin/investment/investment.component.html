@@ -9,7 +9,7 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
     <div fxFlex="25" *ngFor="let inv of aligningObj[rw]" class="outer-card">
-      <mat-card class="card-view" [ngClass]="{'selected-card mat-elevation-z12': inv.id === cardId}" style="min-height: 270px;">
+      <mat-card class="card-view" (click)="select(inv.id)" [ngClass]="{'mat-elevation-z12': inv.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>{{inv.investmentRelationName}}</mat-card-title>
         </mat-card-header>

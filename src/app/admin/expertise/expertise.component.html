@@ -10,7 +10,7 @@
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" *ngFor="let e of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(e.expertise_id)"
-                [ngClass]="{'mat-elevation-z24': e.expertise_id === expertiseId}">
+                [ngClass]="{'mat-elevation-z24': e.expertise_id === cardId}">
         <mat-card-header>
           <mat-card-title>
             <label class="name">{{e.name_en}}</label>

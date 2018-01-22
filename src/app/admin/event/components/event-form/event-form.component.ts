@@ -410,7 +410,7 @@ export class EventFormComponent implements OnInit, CanComponentDeactivate {
           break;
       }
 
-      url += ('/' + this.organizerId);
+      url += ('/view/' + this.organizerId);
 
       this.router.navigate([url]);
     }

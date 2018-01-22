@@ -86,7 +86,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       } else {
         this.initForm();
       }
-      this.breadCrumbService.pushChild(this.add ? 'Add' : 'Update', this.router.url, false);
+      this.breadCrumbService.pushChild((this.add ? 'Add' : 'Update') + ' Business', this.router.url, false);
     });
 
     this.initLocation();

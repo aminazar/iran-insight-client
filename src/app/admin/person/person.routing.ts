@@ -15,6 +15,7 @@ const Person_ROUTES: Routes = [
   {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
   {path: 'consultancy', loadChildren: 'app/admin/consultancy/consultancy.module#ConsultancyModule', canActivate: [AuthGuard]},
   {path: 'expertise/:pid', component: PersonExpertiseComponent, canActivate: [AuthGuard]},
+  {path: 'event', loadChildren: 'app/admin/event/event.module#EventModule', canActivate: [AuthGuard]},
 ];
 
 export const personRouting = RouterModule.forChild(Person_ROUTES);
