@@ -17,14 +17,18 @@ export class HeaderComponent implements OnInit {
   mode: any;
   value: any;
   bufferValue: any;
+  btnLabel = '';
 
-  constructor(private progressService: ProgressService, private authService: AuthService,
+  constructor(private progressService: ProgressService, public authService: AuthService,
               private router: Router) {
   }
 
   ngOnInit() {
     this.authService.isLoggedIn.subscribe(
-      (data) => this.isLoggedIn = data,
+      (data) => {
+        this.isLoggedIn = data;
+        this.btnLabel = data && !!this.authService.displayName.getValue() ? this.authService.displayName.getValue() : 'Logout';
+      },
       (err) => {
         this.isLoggedIn = false;
         console.log('Error when subscribing on authService.isLoggedIn: ', err);

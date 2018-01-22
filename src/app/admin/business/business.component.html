@@ -43,13 +43,13 @@
           <button mat-icon-button color="primary">
             <mat-icon aria-label="view" (click)="openView(b.bid)" color="primary">visibility</mat-icon>
           </button>
+          <button mat-icon-button (click)="endBusiness(b)" color="warn" *ngIf="!bizIsEnd(b)">
+            <mat-icon aria-label="ended">not_interested</mat-icon>
+          </button>
           <button mat-icon-button (click)="openForm(b.bid)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="endBusiness(b)" color="warn" *ngIf="!bizIsEnd(b)">
-            <mat-icon aria-label="lock">lock</mat-icon>
-          </button>
-          <button mat-icon-button (click)="deleteBusiness(b)" color="accent">
+          <button mat-icon-button (click)="deleteBusiness(b)" color="warn">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </mat-card-actions>
@@ -58,6 +58,6 @@
   </div>
 </div>
 <div>
-  <mat-paginator [length]="totalBiz" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+  <mat-paginator [length]="totalBiz" [pageIndex]="offset / limit" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>

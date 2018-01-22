@@ -11,7 +11,7 @@
        fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" *ngFor="let partnership of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(partnership.id)"
-                [ngClass]="{'selected-card mat-elevation-z12': partnership.id === cardId}" style="min-height: 270px;">
+                [ngClass]="{'mat-elevation-z12': partnership.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
             <div>{{partnership.description}}</div>
@@ -57,7 +57,7 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+  <mat-paginator [length]="totalCards" [pageIndex]="offset / limit" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
 

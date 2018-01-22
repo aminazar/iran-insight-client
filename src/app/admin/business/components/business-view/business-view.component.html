@@ -10,21 +10,23 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
-           fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
-        <div fxFlex="100">
-          <img src="{{data.logo}}" class="logo"/>
-        </div>
-      </div>
+      <!--<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"-->
+           <!--fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">-->
+        <!--<div fxFlex="100">-->
+          <!--<img src="{{data.logo}}" class="logo"/>-->
+        <!--</div>-->
+      <!--</div>-->
       <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
            fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center">
         <div fxFlex="50">
           <div class="view-title">Address</div>
-          <div class="view-content">{{data.address}}</div>
+          <div class="view-content" *ngIf="data.address">{{data.address}}</div>
+          <div class="view-content" *ngIf="!data.address">-</div>
         </div>
         <div fxFlex="50" dir="rtl" class="farsi">
           <div class="view-title">آدرس</div>
-          <div class="view-content">{{data.address_fa}}</div>
+          <div class="view-content" *ngIf="data.address_fa">{{data.address_fa}}</div>
+          <div class="view-content" *ngIf="!data.address_fa">-</div>
         </div>
       </div>
       <div style="margin: 20px;">
@@ -38,7 +40,10 @@
       </div>
       <div>
         <div class="view-title"><i class="fa fa-phone" aria-hidden="true"></i> TEL</div>
-        <div class="view-content">{{data.tel}}</div>
+        <div class="view-content">
+          <span *ngIf="data.tel">{{data.tel}}</span>
+          <span *ngIf="!data.tel">-</span>
+        </div>
       </div>
       <div>
         <div class="view-title"><i class="fa fa-internet-explorer" aria-hidden="true"></i> URL</div>
@@ -51,11 +56,6 @@
           <a class="clickable-link" [routerLink]="['/admin/business/members/'+ bid]"><i class="fa fa-user-circle-o"></i>
             Members</a>
         </div>
-        <!--<div class="view-content">-->
-          <!--<label *ngFor="let mem of data.members">-->
-            <!--{{mem}} - -->
-          <!--</label>-->
-        <!--</div>-->
       </div>
       <div>
         <div class="view-title">
@@ -65,13 +65,13 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
+      <button mat-icon-button (click)="endBusiness()" color="warn" *ngIf="!bizIsEnd()">
+        <mat-icon aria-label="ended">not_interested</mat-icon>
+      </button>
       <button mat-icon-button (click)="editBusiness()" color="accent">
         <mat-icon aria-label="edit">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="endBusiness()" color="warn" *ngIf="!bizIsEnd()">
-        <mat-icon aria-label="lock">lock</mat-icon>
-      </button>
-      <button mat-icon-button (click)="deleteBusiness()" color="accent">
+      <button mat-icon-button (click)="deleteBusiness()" color="warn">
         <mat-icon aria-label="delete">delete</mat-icon>
       </button>
     </mat-card-actions>

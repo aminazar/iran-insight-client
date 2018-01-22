@@ -1,14 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-// import {FormControl} from "@angular/forms";
-// import {startWith} from "rxjs/operators/startWith";
-// import {Observable} from "rxjs/Observable";
-// import {map} from "rxjs/operators/map";
-import {RestService} from "../../../../shared/services/rest.service";
-import {MatDialog, MatSnackBar} from "@angular/material";
-import {PersonExpertiseInterface} from "../../interfaces/personExpertise.interface";
-import {RemovingConfirmComponent} from "../../../../shared/components/removing-confirm/removing-confirm.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {BreadcrumbService} from "../../../../shared/services/breadcrumb.service";
+import {RestService} from '../../../../shared/services/rest.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {PersonExpertiseInterface} from '../../interfaces/personExpertise.interface';
+import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service';
 
 @Component({
   selector: 'ii-person-expertise',
@@ -78,26 +74,25 @@ export class PersonExpertiseComponent implements OnInit {
   }
 
   removePersonExpertise(id) {
-    let rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '230px'
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
     });
 
     rmDialog.afterClosed().subscribe(
       (data) => {
         if (data) {
           this.restService.delete('expertise/' + this.personId + '/' + id).subscribe(
-            (data) => {
-              this.snackBar.open("Person's expertise delete successfully", null, {
+            (dt) => {
+              this.snackBar.open(`Person's expertise delete successfully`, null, {
                 duration: 2000,
               });
 
-              let item = this.userExpertiseList.find(el => el.expertise_id === id);
+              const item = this.userExpertiseList.find(el => el.expertise_id === id);
               this.userExpertiseList = this.userExpertiseList.filter(el => el.expertise_id !== id);
               this.currentExpertiseIds = this.currentExpertiseIds.filter(el => el != id);
             },
             (error) => {
-              this.snackBar.open("Cannot delete this person's expertise. Please try again", null, {
+              this.snackBar.open(`Cannot delete this person's expertise. Please try again`, null, {
                 duration: 2700
               });
             }
@@ -138,11 +133,11 @@ export class PersonExpertiseComponent implements OnInit {
               duration: 3000,
             });
           }
-        )
+        );
       },
       (err) => {
         console.log('Cannot get expertise details. Error: ', err);
       }
-    )
+    );
   }
 }

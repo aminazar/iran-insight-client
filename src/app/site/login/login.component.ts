@@ -38,7 +38,10 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
       .then(() => {
-        this.router.navigate(['home']);
+        if (this.authService.isAdmin)
+          this.router.navigate(['admin']);
+        else
+          this.router.navigate(['home']);
       })
       .catch(() => {
         this.snackBar.open('Cannot login. Please try again', null, {

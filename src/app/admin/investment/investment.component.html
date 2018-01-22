@@ -14,9 +14,14 @@
           <mat-card-title>{{inv.investmentRelationName}}</mat-card-title>
         </mat-card-header>
         <mat-card-content style="min-height: 100px">
+          <div *ngIf="isInvestor"><b>Invest on</b> {{inv.biz_name || inv.biz_name_fa}}</div>
+          <div *ngIf="!isInvestor">
+            <div *ngIf="inv.pid && !inv.oid"><b>Invested by</b> {{inv.person_display_name || inv.person_display_name_fa}} (Person)</div>
+            <div *ngIf="!inv.pid && inv.oid"><b>Invested by</b> {{inv.org_name || inv.org_name_fa}} (Organization)</div>
+          </div>
           <div>Amount: {{inv.amount}}</div>
           <div>Currency: {{inv.currency}}</div>
-          <div *ngIf="inv.is_lead" color="accent">Is Leader</div>
+          <div *ngIf="inv.is_lead" color="accent">Is Leaderer</div>
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button (click)="open('view', inv.id)" color="primary">

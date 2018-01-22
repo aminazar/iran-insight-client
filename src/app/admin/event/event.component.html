@@ -55,7 +55,7 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalEvents" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+  <mat-paginator [length]="totalEvents" [pageIndex]="offset / limit" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>
 

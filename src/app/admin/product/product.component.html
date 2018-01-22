@@ -39,6 +39,6 @@
   </div>
 </div>
 <div>
-  <mat-paginator [length]="totalProducts" [pageSize]="10" [pageSizeOptions]="[4, 8, 16, 32]"
+  <mat-paginator [length]="totalProducts" [pageIndex]="offset / limit" [pageSize]="10" [pageSizeOptions]="[4, 8, 16, 32]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>

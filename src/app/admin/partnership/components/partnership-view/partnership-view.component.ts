@@ -32,27 +32,22 @@ export class PartnershipViewComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.route.params.subscribe((params: Params) => {
-
       this.personId = params['id'];
       this.formId = params['formId'];
       this.personName = decodeURIComponent(params['personName']);
-      this.initPartnership();
 
+      this.breadcrumbService.pushChild('Partnership Details', this.router.url, false);
+
+      this.initPartnership();
     });
   }
 
   initPartnership() {
-
     this.progressService.enable();
-
     this.restService.get(`person/partnership/${this.formId}`).subscribe(
       (res) => {
-
-        console.log('-> ', res);
         this.partnership = res[0];
-
         this.progressService.disable();
       },
       (err) => {
@@ -62,12 +57,7 @@ export class PartnershipViewComponent implements OnInit {
     );
   }
 
-
-
-
-
   deletePartnership() {
-
     if (!this.formId)
       return;
 
@@ -76,12 +66,9 @@ export class PartnershipViewComponent implements OnInit {
     });
 
     rmDialog.afterClosed().subscribe(res => {
-
       if (res) {
-
         this.progressService.enable();
         this.restService.delete(`person/partnership/${this.formId}`).subscribe(data => {
-
           this.progressService.disable();
           this.snackBar.open('life cycle event has been deleted', null, {
             duration: 3200,
@@ -93,8 +80,12 @@ export class PartnershipViewComponent implements OnInit {
         });
       }
     }, err => {
-
+      console.error('Error: ', err);
     });
   }
 
+  editPartnership() {
+    this.breadcrumbService.popChild();
+    this.router.navigate(['../../form/', this.formId]);
+  }
 }

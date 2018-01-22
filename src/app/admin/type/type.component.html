@@ -46,6 +46,6 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+  <mat-paginator [length]="totalCards" [pageIndex]="offset / limit" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>

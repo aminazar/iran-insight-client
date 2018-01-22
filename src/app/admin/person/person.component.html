@@ -28,8 +28,8 @@
           </div>
           <div *ngIf="p.pid === cardId">
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-              <a fxFlex="50" [routerLink]="['/admin/person/expertises/' + p.pid]"><i class="fa fa-certificate"></i> Expertises</a>
               <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
+              <a fxFlex="50" [routerLink]="['/admin/person/expertise/' + p.pid]"><i class="fa fa-certificate"></i> Expertises</a>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['/admin/person/investment', p.pid, p.display_name_en || p.display_name_fa]" ><i class="fa fa-money"></i> Investments</a>
@@ -54,6 +54,6 @@
 </div>
 
 <div>
-  <mat-paginator [length]="totalCards" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
+  <mat-paginator [length]="totalCards" [pageIndex]="offset / limit" [pageSize]="8" [pageSizeOptions]="[4, 8, 12, 20]"
                  (page)="changeOffset($event)"></mat-paginator>
 </div>

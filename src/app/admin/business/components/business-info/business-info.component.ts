@@ -302,6 +302,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     return (!this.add &&
             this.loadedValue &&
             this.loadedValue.end_date &&
-            this.loadedValue.end_date >= this.loadedValue.start_date);
+            this.loadedValue.end_date >= this.loadedValue.start_date &&
+            moment(this.loadedValue.end_date) <= moment());
   }
 }

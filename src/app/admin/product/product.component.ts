@@ -67,7 +67,7 @@ export class ProductComponent implements OnInit {
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(
       (data) => {
         this.products = data.product;
-        this.totalProducts = this.products && this.products.length > 0 ? parseInt(this.products[0].total) : 0;
+        this.totalProducts = this.products && this.products.length > 0 ? parseInt(this.products[0].total, 10) : 0;
         this.aligningItems();
         this.progressService.disable();
       },

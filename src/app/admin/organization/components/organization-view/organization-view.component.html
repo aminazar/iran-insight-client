@@ -44,13 +44,13 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
+      <button mat-icon-button (click)="endOrg()" color="warn" *ngIf="!orgIsEnd()">
+        <mat-icon aria-label="ended">not_interested</mat-icon>
+      </button>
       <button mat-icon-button (click)="editOrg()" color="accent">
         <mat-icon aria-label="edit">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="endOrg()" color="warn" *ngIf="!orgIsEnd()">
-        <mat-icon aria-label="end">lock</mat-icon>
-      </button>
-      <button mat-icon-button (click)="deleteOrg()" color="accent">
+      <button mat-icon-button (click)="deleteOrg()" color="warn">
         <mat-icon aria-label="delete">delete</mat-icon>
       </button>
     </mat-card-actions>

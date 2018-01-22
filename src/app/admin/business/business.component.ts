@@ -193,6 +193,6 @@ export class BusinessComponent implements OnInit {
   }
 
   bizIsEnd(biz) {
-    return (biz && biz.end_date && biz.end_date >= biz.start_date);
+    return (biz && biz.end_date && biz.end_date >= biz.start_date && moment(biz.end_date) <= moment());
   }
 }

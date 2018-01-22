@@ -46,8 +46,14 @@ import { OrgMemberViewComponent } from './components/org-member-view/org-member-
       apiKey: 'AIzaSyDtglbLDTFZFa1rE-glHm7bFxnp9iANHro'
     }),
   ],
-  declarations: [OrganizationComponent, OrganizationFormComponent,
-                 OrganizationViewComponent, OrgMembersComponent, OrgMemberFormComponent, OrgMemberViewComponent],
+  declarations: [
+    OrganizationComponent,
+    OrganizationFormComponent,
+    OrganizationViewComponent,
+    OrgMembersComponent,
+    OrgMemberFormComponent,
+    OrgMemberViewComponent
+  ],
 })
 export class OrganizationModule {
 }

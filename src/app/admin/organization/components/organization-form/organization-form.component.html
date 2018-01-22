@@ -81,14 +81,14 @@
           </div>
         </div>
         <div role="submit-button">
+          <button mat-icon-button color="warn" type="button" *ngIf="formId && !orgIsEnd()" (click)="endOrg()" tabindex="21">
+            <mat-icon aria-label="ended">not_interested</mat-icon>
+          </button>
           <button mat-icon-button color="accent" type="submit"
             [disabled]="upsertBtnShouldDisabled || (!form.valid || (formId && !anyChanges))" tabindex="20">
             <mat-icon aria-label="accept">done</mat-icon>
           </button>
-          <button mat-icon-button color="warn" type="button" *ngIf="!orgIsEnd()" (click)="endOrg()" tabindex="21">
-            <mat-icon aria-label="end">lock</mat-icon>
-          </button>
-          <button mat-icon-button color="accent" type="button" (click)="deleteOrg()"
+          <button mat-icon-button color="warn" type="button" *ngIf="formId && !orgIsEnd()" (click)="deleteOrg()"
                   [disabled]="deleteBtnShouldDisabled" tabindex="22">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
