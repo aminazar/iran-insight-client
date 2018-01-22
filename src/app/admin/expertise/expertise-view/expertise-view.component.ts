@@ -4,7 +4,9 @@ import {BreadcrumbService} from '../../../shared/services/breadcrumb.service';
 import {ProgressService} from '../../../shared/services/progress.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {expertiseRouting} from '../expertise.routing';
-import {MatSnackBar} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {RemovingConfirmComponent} from '../../../shared/components/removing-confirm/removing-confirm.component';
+import {RestService} from '../../../shared/services/rest.service';
 
 @Component({
   selector: 'ii-expertise-view',
@@ -17,7 +19,7 @@ export class ExpertiseViewComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
               private router: Router, private progressService: ProgressService,
-              private authService: AuthService, private snackBar: MatSnackBar) {
+              private authService: AuthService, private snackBar: MatSnackBar, private dialog: MatDialog, private restService: RestService) {
   }
 
   ngOnInit() {
@@ -48,7 +50,36 @@ export class ExpertiseViewComponent implements OnInit {
   }
 
   deleteExpertise() {
-    // TODO: delete expertise
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
+
+    rmDialog.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          this.progressService.enable();
+          this.restService.delete(`/expertise/${this.expertiseId}`).subscribe(
+            (dt) => {
+              this.snackBar.open(`Expertise delete successfully`, null, {
+                duration: 2000,
+              });
+              this.progressService.disable();
+
+              this.breadcrumbService.popChild();
+            },
+            (error) => {
+              this.snackBar.open(`Cannot delete this expertise. Please try again`, null, {
+                duration: 2700
+              });
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.error('Error in dialog: ', err);
+      }
+    );
   }
 
 }

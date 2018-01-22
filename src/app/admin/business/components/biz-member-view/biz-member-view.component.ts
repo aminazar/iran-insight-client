@@ -55,8 +55,7 @@ export class BizMemberViewComponent implements OnInit, OnDestroy {
 
   deleteMembership(mid: number = null): void {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
-      width: '330px',
-      height: '230px'
+      width: '400px',
     });
 
     rmDialog.afterClosed().subscribe(
