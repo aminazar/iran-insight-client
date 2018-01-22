@@ -43,6 +43,9 @@
               <a fxFlex="50" [routerLink]="['/admin/person/investment', p.pid, p.display_name_en || p.display_name_fa]" ><i class="fa fa-money"></i> Investments</a>
               <a fxFlex="50" [routerLink]="['/admin/person/consultancy', p.pid, p.display_name_en || p.display_name_fa]"><i class="fa fa-adjust"></i> Consultancies</a>
             </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
+              <a fxFlex="50" [routerLink]="['event/'+ p.pid]"><i class="fa fa-users"></i> Events</a>
+            </div>
           </div>
         </mat-card-content>
         <mat-card-actions>

@@ -1,7 +1,14 @@
 <div>
   <br/>
-  <ii-suggestion [name]="name.toLowerCase()" [placeholder]="name + ' attends to event'" [currentIds]="currentAttendanceIds" [idColumn]="id"
-                 [fieldNameEn]="fieldName" [fieldNameFa]="fieldNameFa" (add)="addAttendee($event)"></ii-suggestion>
+  <ii-suggestion [name]="name.toLowerCase()"
+                 [placeholder]="name + ' attends to event'"
+                 [currentIds]="currentAttendanceIds"
+                 [idColumn]="id"
+                 [fieldNameEn]="fieldName"
+                 [fieldNameFa]="fieldNameFa"
+                 [descriptionFieldName]="name.toLowerCase() === 'person' ? 'username' : null"
+                 [descriptionFieldNameFa]="name.toLowerCase() === 'person' ? 'username' : null"
+                 (add)="addAttendee($event)"></ii-suggestion>
   <div class="rs-table" *ngIf="attendanceList.length > 0">
     <table class="table table-striped table-responsive">
       <thead>
@@ -14,7 +21,7 @@
       <tr *ngFor="let item of attendanceList; let i = index">
         <td>{{i+1}}</td>
         <td>
-          <a [routerLink]="['/admin/' + name.toLowerCase() + '/' + item.attendee_id]">{{item.name}}</a>
+          <a [routerLink]="['/admin/' + name.toLowerCase() + '/view/' + item.attendee_id]">{{item.name}}</a>
         </td>
         <td>
           <mat-select *ngIf="attendanceTypes.length > 0" [(value)]="item.attendance_type_id" placeholder="'Type of Attendee'" (selectionChange)="updateAttendee(item.attendance_id, $event)">

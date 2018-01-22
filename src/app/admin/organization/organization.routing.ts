@@ -18,6 +18,7 @@ const ORGANIZATION_ROUTES: Routes = [
   {path: 'tag/:id/:name', loadChildren: 'app/admin/tag/tag.module#TagModule', canActivate: [AuthGuard]},
   {path: 'investment', loadChildren: 'app/admin/investment/investment.module#InvestmentModule', canActivate: [AuthGuard]},
   {path: 'consultancy', loadChildren: 'app/admin/consultancy/consultancy.module#ConsultancyModule', canActivate: [AuthGuard]},
+  {path: 'event', loadChildren: 'app/admin/event/event.module#EventModule', canActivate: [AuthGuard]},
 ];
 
 export const organizationRouting = RouterModule.forChild(ORGANIZATION_ROUTES);

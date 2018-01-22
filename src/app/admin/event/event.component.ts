@@ -4,10 +4,8 @@ import {BreadcrumbService} from '../../shared/services/breadcrumb.service';
 import {SearchService} from '../../shared/services/search.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressService} from '../../shared/services/progress.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as moment from 'moment';
-import {EventFormComponent} from './components/event-form/event-form.component';
-import {EventViewComponent} from './components/event-view/event-view.component';
 import {RemovingConfirmComponent} from '../../shared/components/removing-confirm/removing-confirm.component';
 import {RestService} from '../../shared/services/rest.service';
 import {StorageService} from '../../shared/services/storage.service';
@@ -30,15 +28,40 @@ export class EventComponent implements OnInit {
   rows = [];
   searchInFirst = true;
   initSearchData: any = null;
+  isSpecific = false;
+  specifierObj = {
+    id: null,
+    name: null,
+  };
 
   constructor(private breadCrumService: BreadcrumbService, private searchService: SearchService,
               private snackBar: MatSnackBar, private progressService: ProgressService,
-              private router: Router, public dialog: MatDialog,
+              private router: Router, public dialog: MatDialog, private route: ActivatedRoute,
               private restService: RestService, private storageService: StorageService) {
   }
 
   ngOnInit() {
-    this.breadCrumService.pushChild('Event', this.router.url, true);
+    let specifier = null;
+
+    if (this.router.url.includes('person'))
+      specifier = 'person';
+    else if (this.router.url.includes('business'))
+      specifier = 'business';
+    else if (this.router.url.includes('organization'))
+      specifier = 'organization';
+    this.isSpecific = !!(specifier);
+
+    this.route.params.subscribe(
+      (params) => this.specifierObj.id = +params['id'] ? +params['id'] : null,
+      (err) => console.error('Error in parsing url parameters: ', err)
+    );
+
+    if (this.isSpecific)
+      this.specifierObj.name = specifier;
+
+    this.breadCrumService.pushChild('Event' + (this.isSpecific ? (' of ' + specifier) : ''),
+      this.router.url,
+      this.isSpecific ? false : true);
 
     const preData = this.storageService.getData('event');
     if (preData) {
@@ -72,7 +95,7 @@ export class EventComponent implements OnInit {
       offset: this.offset,
       limit: this.limit,
     });
-    this.router.navigate(['/admin/event/' + this.eventId]);
+    this.router.navigate(['/admin/event/view/' + this.eventId]);
   }
 
   deleteEvent(id: number = null): void {
@@ -118,6 +141,12 @@ export class EventComponent implements OnInit {
   searching() {
     this.showInDeep = false;
     this.eventId = null;
+
+    if (this.isSpecific) {
+      this.searchData.options.relatedTo = this.specifierObj;
+      this.searchData.options.show_all = false;
+    } else
+      delete this.searchData.options.relatedTo;
 
     this.progressService.enable();
     this.searchService.search(this.searchData, this.offset, this.limit).subscribe(

@@ -61,6 +61,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
           this.progressService.enable();
           this.restService.delete(`/joiner/delete/membership/${mid}`).subscribe(
             (data) => {
+              this.memberId = null;
               this.snackBar.open('Membership delete successfully', null, {
                 duration: 2000,
               });
@@ -93,7 +94,7 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
     this.restService.get(`joiners/biz/${this.bid}/${this.offset}/${this.limit}`).subscribe(
       (data) => {
         this.bizMembers = data;
-        this.totalBizMembers = this.bizMembers && this.bizMembers.length > 0 ? parseInt(this.bizMembers[0].total) : 0;
+        this.totalBizMembers = this.bizMembers && this.bizMembers.length > 0 ? parseInt(this.bizMembers[0].total, 10) : 0;
         this.aligningItems();
         this.progressService.disable();
       },
@@ -139,5 +140,12 @@ export class BusinessMembersComponent implements OnInit, OnDestroy {
 
   membershipIsDead(m) {
     return (m && moment(m.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
+  }
+
+  select(id) {
+    if (this.memberId === id)
+      this.memberId = null;
+    else
+      this.memberId = id;
   }
 }
