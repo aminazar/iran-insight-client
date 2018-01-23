@@ -7,7 +7,7 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="25" *ngFor="let m of aligningObj[rw]" class="member-card">
-      <mat-card class="card-view" [class.selected-member]="m.mid === memberId" [ngClass]="{'selected-card mat-elevation-z24': m.mid === memberId, 'dead-entity': membershipIsDead(m)}">
+      <mat-card class="card-view" (click)="select(m.mid)" [class.selected-member]="m.mid === memberId" [ngClass]="{'mat-elevation-z24': m.mid === memberId, 'dead-entity': membershipIsDead(m)}">
         <mat-card-content>
           <div>
             <b>name (En): </b><span>{{m.display_name_en}}</span>

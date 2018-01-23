@@ -11,7 +11,7 @@
        fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" *ngFor="let lce of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(lce.id)"
-                [ngClass]="{'selected-card mat-elevation-z12': lce.id === cardId}" style="min-height: 270px;">
+                [ngClass]="{'mat-elevation-z12': lce.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
             <div>{{lce.lce_type_name}}</div>

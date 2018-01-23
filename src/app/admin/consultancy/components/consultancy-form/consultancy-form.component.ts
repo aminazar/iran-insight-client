@@ -40,6 +40,7 @@ export class ConsultancyFormComponent implements OnInit {
     name: null,
     id: null,
   };
+  originalConsulting = this.consultingType.person;
 
   constructor(private restService: RestService, private breadcrumbService: BreadcrumbService,
               private router: Router, private route: ActivatedRoute,
@@ -111,6 +112,8 @@ export class ConsultancyFormComponent implements OnInit {
             this.consultingObj.name = data.org_name || data.org_name_fa;
             this.consulting = this.consultingType.organization;
           }
+
+          this.originalConsulting = this.consulting;
         }
 
         this.initForm();
@@ -221,6 +224,8 @@ export class ConsultancyFormComponent implements OnInit {
     this.consultingObj.name = this.consulting === this.consultingType.person ?
       (data.display_name_en || data.display_name_fa) :
       (data.name || data.name_fa);
+
+    this.originalConsulting = this.consulting;
     this.fieldChanged();
   }
 
@@ -236,9 +241,9 @@ export class ConsultancyFormComponent implements OnInit {
     if (this.isConsulting)
       url += 'business/view/' + this.consultancyObj.id;
     else {
-      if (this.consulting === this.consultingType.person)
+      if (this.originalConsulting === this.consultingType.person)
         url += 'person';
-      else if (this.consulting === this.consultingType.organization)
+      else if (this.originalConsulting === this.consultingType.organization)
         url += 'organization';
 
       url += '/view/' + this.consultingObj.id;
@@ -266,12 +271,5 @@ export class ConsultancyFormComponent implements OnInit {
       if (this.consultingObj.id !== tempId)
         this.anyChanges = true;
     }
-  }
-
-  changeConsulting() {
-    this.consultingObj = {
-      name: null,
-      id: null,
-    };
   }
 }

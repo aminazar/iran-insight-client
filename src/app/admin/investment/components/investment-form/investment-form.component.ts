@@ -42,6 +42,7 @@ export class InvestmentFormComponent implements OnInit {
     id: null,
   };
   currencyList = CurrencyList;
+  originalInvestor = this.investorType.person;
 
   constructor(private restService: RestService, private breadcrumbService: BreadcrumbService,
               private router: Router, private route: ActivatedRoute,
@@ -78,8 +79,9 @@ export class InvestmentFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^-?\d*(\.\d+)?$/),
       ]],
-      currency: [],
-      other_currency: [],
+      currency: [this.loadedValue.currency ? this.loadedValue.currency : null, [
+        Validators.required,
+      ]],
       is_lead: [this.loadedValue.is_lead ? this.loadedValue.is_lead : false, [
         Validators.required
       ]],
@@ -90,8 +92,6 @@ export class InvestmentFormComponent implements OnInit {
         Validators.min(1),
         Validators.required,
       ]],
-    }, {
-      validator: this.checkCurrency,
     });
 
     this.investmentForm.valueChanges.subscribe(
@@ -121,18 +121,13 @@ export class InvestmentFormComponent implements OnInit {
             this.investorObj.name = data.org_name || data.org_name_fa;
             this.investor = this.investorType.organization;
           }
+
+          this.originalInvestor = this.investor;
         }
 
         this.initForm();
 
         // Set currency
-        const currencyFromList = this.currencyList.find(el => el.value === this.loadedValue.currency) ?
-          this.currencyList.find(el => el.value === this.loadedValue.currency).value : null;
-
-        this.investmentForm.controls['currency'].setValue(currencyFromList);
-        this.investmentForm.controls['other_currency'].setValue(currencyFromList ? null : this.loadedValue.currency);
-
-
         this.progressService.disable();
       },
       (err) => {
@@ -240,6 +235,7 @@ export class InvestmentFormComponent implements OnInit {
     this.investorObj.name = this.investor === this.investorType.person ?
       (data.display_name_en || data.display_name_fa) :
       (data.name || data.name_fa);
+    this.originalInvestor = this.investor;
     this.fieldChanged();
   }
 
@@ -255,9 +251,9 @@ export class InvestmentFormComponent implements OnInit {
     if (this.isInvestor)
       url += 'business/view/' + this.investmentObj.id;
     else {
-      if (this.investor === this.investorType.person)
+      if (this.originalInvestor === this.investorType.person)
         url += 'person';
-      else if (this.investor === this.investorType.organization)
+      else if (this.originalInvestor === this.investorType.organization)
         url += 'organization';
 
       url += '/view/' + this.investorObj.id;
@@ -285,22 +281,5 @@ export class InvestmentFormComponent implements OnInit {
       if (this.investorObj.id !== tempId)
         this.anyChanges = true;
     }
-  }
-
-  checkCurrency(AC: AbstractControl) {
-    const currency = AC.get('currency').value;
-    const otherCurrency = AC.get('other_currency').value;
-    if (!currency && !otherCurrency) {
-      AC.get('currency').setErrors({notEmpty: true});
-    } else {
-      return null;
-    }
-  }
-
-  changeInvestor() {
-    this.investorObj = {
-      name: null,
-      id: null,
-    };
   }
 }

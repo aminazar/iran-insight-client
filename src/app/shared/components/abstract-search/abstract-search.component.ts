@@ -54,7 +54,7 @@ export class AbstractSearchComponent implements OnInit {
   }
 
 
-  open(state: string, id: number = null) {
+  open(state: string, id: number = null, navigate = true) {
     this.cardId = id;
     this.storageService.saveData(this.key, {
       searchData: this.searchData,
@@ -62,13 +62,17 @@ export class AbstractSearchComponent implements OnInit {
       offset: this.offset,
       limit: this.limit,
     });
-    this.router.navigate([state + '/' + id], {relativeTo: this.activatedRoute});
+    if (navigate)
+      this.router.navigate([state + '/' + id], {relativeTo: this.activatedRoute});
   }
 
-  deleteCard(id: number = null): Observable<any> {
+  deleteCard(id: number = null, name = ''): Observable<any> {
     this.cardId = id;
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
+      data: {
+        name: name,
+      }
     });
 
     return rmDialog.afterClosed();

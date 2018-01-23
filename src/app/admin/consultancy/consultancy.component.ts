@@ -12,6 +12,7 @@ import {RemovingConfirmComponent} from '../../shared/components/removing-confirm
   styleUrls: ['./consultancy.component.css']
 })
 export class ConsultancyComponent implements OnInit {
+  cardId = null;
   id = null;
   consultancyRelationName = '';
   isConsulting = false;
@@ -79,6 +80,7 @@ export class ConsultancyComponent implements OnInit {
         if (data)
           this.restService.delete('consultancy/' + id).subscribe(
             (rs) => {
+              this.cardId = null;
               this.consultancyList = this.consultancyList.filter(el => el.id !== id);
               this.aligningItems();
               this.snackBar.open('The consultancy is deleted successfully', null, {
@@ -136,5 +138,12 @@ export class ConsultancyComponent implements OnInit {
     });
 
     this.rows = Object.keys(this.aligningObj);
+  }
+
+  select(id) {
+    if (this.cardId === id)
+      this.cardId = null;
+    else
+      this.cardId = id;
   }
 }

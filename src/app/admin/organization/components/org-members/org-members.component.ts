@@ -58,6 +58,7 @@ export class OrgMembersComponent implements OnInit, OnDestroy {
           this.progressService.enable();
           this.restService.delete(`/joiner/delete/membership/${mid}`).subscribe(
             (data) => {
+              this.memberId = null;
               this.snackBar.open('Membership delete successfully', null, {
                 duration: 2000,
               });
@@ -137,4 +138,10 @@ export class OrgMembersComponent implements OnInit, OnDestroy {
     return (m && moment(m.membership_end_time).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
   }
 
+  select(id) {
+    if (this.memberId === id)
+      this.memberId = null;
+    else
+      this.memberId = id;
+  }
 }

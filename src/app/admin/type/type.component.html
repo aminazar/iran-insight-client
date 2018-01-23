@@ -2,7 +2,7 @@
   <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'type'" (searching)="search($event)"></ii-search-fields>
 </div>
 <div fxLayout="row" class="row">
-  <button mat-fab color="accent" (click)="open('form', null)">
+  <button mat-fab color="accent" (click)="openForm('form', null, null)">
     <mat-icon aria-label="add new person">add</mat-icon>
   </button>
 </div>
@@ -10,8 +10,8 @@
 <div *ngFor="let rw of rows">
   <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutAlign.sm="center center" fxLayoutAlign.xs="center center" class="row">
     <div fxFlex="25" *ngFor="let type of aligningObj[rw]" class="outer-card">
-      <mat-card class="card-view" (click)="select(type.pid)"
-                [ngClass]="{'selected-card mat-elevation-z12': type.pid === cardId}" style="min-height: 270px;">
+      <mat-card class="card-view" (click)="select(type.id)"
+                [ngClass]="{'mat-elevation-z12': type.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
           <mat-card-title>
             <div>{{type.table_name}}</div>
@@ -30,13 +30,13 @@
           </div>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-icon-button (click)="open('view', p.pid )" color="primary">
+          <button mat-icon-button (click)="openForm('view', type.table_name, type.id)" color="primary">
             <mat-icon aria-label="view">visibility</mat-icon>
           </button>
-          <button mat-icon-button (click)="open('form', p.pid)" color="accent">
+          <button mat-icon-button (click)="openForm('form', type.table_name, type.id)" color="accent">
             <mat-icon aria-label="edit">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="deleteType(p.pid)" color="warn">
+          <button mat-icon-button (click)="deleteType(type.id, type.table_name)" color="warn">
             <mat-icon aria-label="delete">delete</mat-icon>
           </button>
         </mat-card-actions>

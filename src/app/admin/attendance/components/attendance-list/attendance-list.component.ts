@@ -57,8 +57,10 @@ export class AttendanceListComponent implements OnInit {
                 duration: 2300,
               });
 
+              const personId = this.attendanceList.find(el => el.attendance_id === id).attendee_id;
+
               this.attendanceList = this.attendanceList.filter(el => el.attendance_id !== id);
-              this.currentAttendanceIds = this.currentAttendanceIds.filter(el => el !== id);
+              this.currentAttendanceIds = this.currentAttendanceIds.filter(el => el !== personId);
             },
             (error) => {
               this.snackBar.open('Cannot delete this attendance. Please try again', null, {
@@ -77,14 +79,14 @@ export class AttendanceListComponent implements OnInit {
       pid: (this.name.toLowerCase() === 'person') ? attObj.pid : null,
       bid: (this.name.toLowerCase() === 'business') ? attObj.bid : null,
       oid: (this.name.toLowerCase() === 'organization') ? attObj.oid : null,
-      attendance_type_id: 1,
+      attendance_type_id: null,
     }).subscribe(
       (data) => {
         this.attendanceList.push({
           name: (this.name.toLowerCase() === 'person') ?
             (attObj.display_name_en || attObj.display_name_fa) :
             (attObj.name || attObj.name_fa),
-          attendance_type_id: 1,
+          attendance_type_id: null,
           attendee_id: attObj[(this.name.toLowerCase() === 'person' ? 'pid' : (this.name.toLowerCase() === 'business' ? 'bid' : 'oid'))],
           attendance_id: data
         });

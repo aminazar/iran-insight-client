@@ -7,7 +7,7 @@ import {LeavingGuard} from '../leavingGuard';
 const TYPE_ROUTES: Routes = [
     { path: '', component: TypeComponent, pathMatch: 'full'},
   // {path: 'view/:id', component: PersonViewComponent},
-  {path: 'form/:formId', component: TypeFormComponent, canDeactivate: [LeavingGuard]},
+  {path: 'form/:typeName/:formId', component: TypeFormComponent, canDeactivate: [LeavingGuard]},
 
 ];
 

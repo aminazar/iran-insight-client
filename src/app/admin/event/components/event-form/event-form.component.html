@@ -27,9 +27,15 @@
             </mat-radio-group>
           </div>
           <div fxFlex="60" tabindex="2" class="organizer-field field-container">
-            <ii-suggestion *ngIf="organizerIsPerson()" [idColumn]="'pid'" [name]="'person'"
-                           [fieldNameEn]="'display_name_en'" [fieldNameFa]="'display_name_fa'"
-                           [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
+            <ii-suggestion *ngIf="organizerIsPerson()"
+                           [idColumn]="'pid'"
+                           [name]="'person'"
+                           [fieldNameEn]="'display_name_en'"
+                           [fieldNameFa]="'display_name_fa'"
+                           [currentIds]="organizerId"
+                           [descriptionFieldName]="'username'"
+                           [descriptionFieldNameFa]="'username'"
+                           (add)="setOrganizer($event)"></ii-suggestion>
             <ii-suggestion *ngIf="organizerIsBiz()" [idColumn]="'bid'" [name]="'business'"
                            [fieldNameEn]="'name'" [fieldNameFa]="'name_fa'"
                            [currentIds]="organizerId" (add)="setOrganizer($event)"></ii-suggestion>
@@ -119,7 +125,7 @@
         </div>
         <div *ngIf="eventId">
           <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
-            <a fxFlex="50" class="clickable-link" [routerLink]="['./attendee/' + eventId]"><i class="fa fa-bullhorn"></i>Attendee</a>
+            <a fxFlex="50" class="clickable-link" [routerLink]="['/admin/attendance/attendee/' + eventId]"><i class="fa fa-bullhorn"></i>Attendee</a>
           </div>
         </div>
         <div role="submit-button">

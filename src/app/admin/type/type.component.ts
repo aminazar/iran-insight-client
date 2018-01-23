@@ -16,28 +16,31 @@ export class TypeComponent extends AbstractSearchComponent implements OnInit {
 
   }
 
-  deleteType(id: number = null): void {
-
-    super.deleteCard(id).subscribe((res) => {
-        // if (res)
-          // this.authService.deletePerson(id).subscribe(
-          //   (data) => {
-          //     this.cardId = null;
-          //     this.snackBar.open('Person is deleted successfully', null, {
-          //       duration: 2300
-          //     });
-          //     this.searching();
-          //   },
-          //   (err) => {
-          //     console.error('Cannot delete this person. Error: ', err);
-          //     this.snackBar.open('Cannot delete this person. Please try again.', null, {
-          //       duration: 3200
-          //     });
-          //   }
-          // );
+  deleteType(id: number = null, tableName): void {
+    super.deleteCard(id, tableName + ' type').subscribe(
+      (res) => {
+        if (res)
+          this.restService.delete('type/' + tableName + '/' + id).subscribe(
+            (data) => {
+              this.cardId = null;
+              this.snackBar.open('This type is deleted successfully', null, {
+                duration: 2300,
+              });
+              this.searching();
+            },
+            (err) => {
+              console.error('Cannot delete this type. Error: ', err);
+            }
+          );
       },
-      (err) => {}
+      (err) => {
+      }
     );
   }
 
+  openForm(state: string, tableName, id: number = null) {
+    super.open(state, id, false);
+
+    this.router.navigate([state + '/' + (tableName ? tableName : null) + '/' + id], {relativeTo: this.activatedRoute});
+  }
 }
