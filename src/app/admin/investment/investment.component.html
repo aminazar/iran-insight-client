@@ -11,7 +11,9 @@
     <div fxFlex="25" *ngFor="let inv of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(inv.id)" [ngClass]="{'mat-elevation-z12': inv.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
-          <mat-card-title>{{inv.investmentRelationName}}</mat-card-title>
+          <mat-card-title>
+            {{inv.investmentRelationName}}
+          </mat-card-title>
         </mat-card-header>
         <mat-card-content style="min-height: 100px">
           <div *ngIf="isInvestor"><b>Invest on</b> {{inv.biz_name || inv.biz_name_fa}}</div>
@@ -21,7 +23,7 @@
           </div>
           <div>Amount: {{inv.amount}}</div>
           <div>Currency: {{inv.currency}}</div>
-          <div *ngIf="inv.is_lead" color="accent">Is Leaderer</div>
+          <div *ngIf="inv.is_lead" color="accent">Is Leader</div>
         </mat-card-content>
         <mat-card-actions>
           <button mat-icon-button (click)="open('view', inv.id)" color="primary">

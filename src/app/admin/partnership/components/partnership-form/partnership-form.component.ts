@@ -134,7 +134,7 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
     this.deleteBtnShouldDisabled = true;
     this.restService.put(`person/partnership`, partnershipData).subscribe(
       (data) => {
-        this.snackBar.open(this.formId ? 'Partnership is updated' : 'Life cycle event is added', null, {
+        this.snackBar.open(this.formId ? 'Partnership is updated' : 'Partnership is added', null, {
           duration: 2300,
         });
 
@@ -225,7 +225,7 @@ export class PartnershipFormComponent extends AbstractFormComponent implements O
         this.restService.delete(`person/partnership/${this.formId}`).subscribe(data => {
 
           this.progressService.disable();
-          this.snackBar.open('life cycle event has been deleted', null, {
+          this.snackBar.open('Partnership has been deleted', null, {
             duration: 3200,
           });
 

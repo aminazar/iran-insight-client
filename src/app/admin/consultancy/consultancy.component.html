@@ -1,5 +1,4 @@
 <div style="margin: 20px; font-weight: bold;">Consultancy of {{consultancyRelationName}}</div>
-
 <div fxLayout="row" class="row">
   <button mat-fab color="accent" (click)="open('form', null)">
     <mat-icon aria-label="add new investment">add</mat-icon>
@@ -11,11 +10,18 @@
     <div fxFlex="25" *ngFor="let cns of aligningObj[rw]" class="outer-card">
       <mat-card class="card-view" (click)="select(cns.id)" [ngClass]="{'mat-elevation-z12': cns.id === cardId}" style="min-height: 270px;">
         <mat-card-header>
-          <mat-card-title>{{cns.consultancyRelationName}}</mat-card-title>
+          <mat-card-title>
+            {{cns.consultancyRelationName}}
+          </mat-card-title>
         </mat-card-header>
         <mat-card-content style="min-height: 100px">
+          <div *ngIf="isConsulting"><b>Consult on</b> {{cns.biz_name || cns.biz_name_fa}}</div>
+          <div *ngIf="!isConsulting">
+            <div *ngIf="cns.pid && !cns.oid"><b>Consulted by</b> {{cns.person_display_name || cns.person_display_name_fa}} (Person)</div>
+            <div *ngIf="!cns.pid && cns.oid"><b>Consulted by</b> {{cns.org_name || cns.org_name_fa}} (Organization)</div>
+          </div>
           <div>Subject: {{cns.subject}}</div>
-          <div *ngIf="cns.subject_fa">عنوان: {{cns.subject_fa}}</div>
+          <div *ngIf="cns.subject_fa">عنوان : {{cns.subject_fa}}</div>
           <div *ngIf="cns.is_mentor" color="accent">Is Mentor</div>
         </mat-card-content>
         <mat-card-actions>
