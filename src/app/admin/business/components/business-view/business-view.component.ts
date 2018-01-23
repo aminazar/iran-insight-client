@@ -34,7 +34,6 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
         this.progressService.enable();
         this.restService.get(`business/oneAll/${this.bid}`).subscribe(
           (res) => {
-            console.log(res);
             this.data = res;
             this.progressService.disable();
           },
