@@ -1,114 +1,123 @@
 <div fxLayout="row">
-  <mat-card fxFlex="60" fxFlex.xs="100" fxFlex.sm="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
-    <mat-card-title>
-      <label *ngIf="investmentId">Update Investment</label>
-      <label *ngIf="!investmentId">Add Investment</label>
-    </mat-card-title>
-    <mat-card-content>
-      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
-           fxLayoutAlign.sm="center center" fxLayoutAlign="center center" *ngIf="!isInvestor">
-        <div fxFlex="40">
-          Choose Investor Type
-          <mat-radio-group [(ngModel)]="investor" tabindex="1">
-            <div fxLayout="column" fxLayout.sm="row" fxLayoutAlign="start start" fxLayoutAlign.sm="center center">
-              <div fxFlex="50" style="margin-bottom: 8px;">
-                <mat-radio-button [value]="investorType.person">Person</mat-radio-button>
-              </div>
-              <div fxFlex="50" style="margin-bottom: 8px;">
-                <mat-radio-button [value]="investorType.organization">Organization</mat-radio-button>
-              </div>
+    <mat-card fxFlex="60" fxFlex.xs="100" fxFlex.sm="100" fxFlexOffset="20" fxFlexOffset.sm="0" fxFlexOffset.xs="0">
+        <mat-card-header>
+            <mat-card-title>
+                <div *ngIf="investmentId">Update Investment</div>
+                <div *ngIf="!investmentId">Add New Investment</div>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+                 fxLayoutAlign.sm="center center" fxLayoutAlign="center center" *ngIf="!isInvestor">
+                <div fxFlex="40">
+                    Choose Investor Type
+                    <mat-radio-group [(ngModel)]="investor" tabindex="1">
+                        <div fxLayout="column" fxLayout.sm="row" fxLayoutAlign="start start"
+                             fxLayoutAlign.sm="center center">
+                            <div fxFlex="50" style="margin-bottom: 8px;">
+                                <mat-radio-button [value]="investorType.person">Person</mat-radio-button>
+                            </div>
+                            <div fxFlex="50" style="margin-bottom: 8px;">
+                                <mat-radio-button [value]="investorType.organization">Organization</mat-radio-button>
+                            </div>
+                        </div>
+                    </mat-radio-group>
+                </div>
+                <div fxFlex="60" tabindex="2">
+                    <ii-suggestion [name]="investor === investorType.person ? 'person' : 'organization'"
+                                   [placeholder]="'Investor Name'"
+                                   [currentIds]="investorObj.id ? [investorObj.id] : null"
+                                   [fieldNameFa]="investor === investorType.person ? 'display_name_fa' : 'name_fa'"
+                                   [fieldNameEn]="investor === investorType.person ? 'display_name_en' : 'name'"
+                                   [idColumn]="investor === investorType.person ? 'pid' : 'oid'"
+                                   [descriptionFieldName]="investor === investorType.person ? 'username' : null"
+                                   [descriptionFieldNameFa]="investor === investorType.person ? 'username' : null"
+                                   (add)="setInvestor($event)"></ii-suggestion>
+                    <div *ngIf="investorObj.id">
+                        <a class="clickable-link" (click)="directToInvDone()">
+                            <span>Investor is </span>
+                            <span>"{{investorObj.name}}"</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-          </mat-radio-group>
-        </div>
-        <div fxFlex="60" tabindex="2">
-          <ii-suggestion [name]="investor === investorType.person ? 'person' : 'organization'"
-                         [placeholder]="'Investor Name'"
-                         [currentIds]="investorObj.id ? [investorObj.id] : null"
-                         [fieldNameFa]="investor === investorType.person ? 'display_name_fa' : 'name_fa'"
-                         [fieldNameEn]="investor === investorType.person ? 'display_name_en' : 'name'"
-                         [idColumn]="investor === investorType.person ? 'pid' : 'oid'"
-                         [descriptionFieldName]="investor === investorType.person ? 'username' : null"
-                         [descriptionFieldNameFa]="investor === investorType.person ? 'username' : null"
-                         (add)="setInvestor($event)"></ii-suggestion>
-          <div *ngIf="investorObj.id">
-            <a class="clickable-link" (click)="directToInvDone()">
-              <span>Investor is </span>
-              <span>"{{investorObj.name}}"</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="isInvestor">
-        <ii-suggestion [name]="'business'"
-                       [placeholder]="'Invest on'"
-                       [currentIds]="investmentObj.id ? [investmentObj.id] : null"
-                       [fieldNameFa]="'name_fa'"
-                       [fieldNameEn]="'name'"
-                       [idColumn]="'bid'"
-                       (add)="setTargetBusiness($event)"></ii-suggestion>
-        <div *ngIf="investmentObj.id">
-          <a class="clickable-link" (click)="directToInvDone()">
-            <span>Invest on </span>
-            <span>"{{investmentObj.name}}"</span>
-            <span> business</span>
-          </a>
-        </div>
-      </div>
-      <form (ngSubmit)="modifyInvestment()" [formGroup]="investmentForm">
-        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
-             fxLayoutAlign.sm="center center" fxLayoutAlign="center center">
-          <div fxFlex="40" class="field-container">
-            <mat-input-container class="field">
-              <input matInput type="text" placeholder="Amount" formControlName="amount" role="amount" tabindex="3"/>
-            </mat-input-container>
-            <mat-error class="error-msg" *ngIf="investmentForm.controls['amount'].hasError('pattern')">User only number
-              (Can use floating point numbers)
-            </mat-error>
-          </div>
-          <div fxFlex="60" class="field-container">
-            <mat-select formControlName="currency" placeholder="Choose Currency" tabindex="4">
-              <mat-option *ngFor="let cur of currencyList" [value]="cur.value">{{cur.name}} - {{cur.value}}</mat-option>
-            </mat-select>
-            <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">Please choose
-              currency
-            </mat-error>
-          </div>
-        </div>
-        <div>
-          <mat-input-container>
-            <input matInput type="number" placeholder="Investment Cycle" formControlName="investment_cycle"
-                   role="investment-cycle" min="1"/>
-          </mat-input-container>
-          <mat-error class="error-msg" *ngIf="investmentForm.controls['investment_cycle'].hasError('min')">The minimum
-            value is 1
-          </mat-error>
-        </div>
-        <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
-          <div fxFlex="50">
-            <mat-checkbox formControlName="is_lead" tabindex="6">
-              <span *ngIf="investmentForm.controls['is_lead'].value === true">Is Leader</span>
-              <span *ngIf="investmentForm.controls['is_lead'].value === false">Is not Leader</span>
-            </mat-checkbox>
-          </div>
-          <div fxFlex="50">
-            <mat-checkbox formControlName="is_confirmed" tabindex="7">
-              <span *ngIf="investmentForm.controls['is_confirmed'].value === true">Confirmed</span>
-              <span *ngIf="investmentForm.controls['is_confirmed'].value === false">Not Confirmed</span>
-            </mat-checkbox>
-          </div>
-        </div>
-        <div role="submit-button">
-          <button mat-icon-button color="accent" type="submit"
-                  [disabled]="upsertBtnShouldDisabled || (!investmentForm.valid || (investmentId && !anyChanges)) || (!investorObj.id && !investmentObj.id)"
-                  tabindex="20">
-            <mat-icon aria-label="accept">done</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" type="button" *ngIf="investmentId" (click)="deleteInvestment()"
-                  [disabled]="deleteBtnShouldDisabled" tabindex="21">
-            <mat-icon aria-label="delete">delete</mat-icon>
-          </button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+            <div *ngIf="isInvestor">
+                <ii-suggestion [name]="'business'"
+                               [placeholder]="'Invest on'"
+                               [currentIds]="investmentObj.id ? [investmentObj.id] : null"
+                               [fieldNameFa]="'name_fa'"
+                               [fieldNameEn]="'name'"
+                               [idColumn]="'bid'"
+                               (add)="setTargetBusiness($event)"></ii-suggestion>
+                <div *ngIf="investmentObj.id">
+                    <a class="clickable-link" (click)="directToInvDone()">
+                        <span>Invest on </span>
+                        <span>"{{investmentObj.name}}"</span>
+                        <span> business</span>
+                    </a>
+                </div>
+            </div>
+            <form (ngSubmit)="modifyInvestment()" [formGroup]="investmentForm">
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start"
+                     fxLayoutAlign.sm="center center" fxLayoutAlign="center center">
+                    <div fxFlex="40" class="field-container">
+                        <mat-input-container class="field">
+                            <input matInput type="text" placeholder="Amount" formControlName="amount" role="amount"
+                                   tabindex="3"/>
+                        </mat-input-container>
+                        <mat-error class="error-msg" *ngIf="investmentForm.controls['amount'].hasError('pattern')">User
+                            only number
+                            (Can use floating point numbers)
+                        </mat-error>
+                    </div>
+                    <div fxFlex="60" class="field-container">
+                        <mat-select formControlName="currency" placeholder="Choose Currency" tabindex="4">
+                            <mat-option *ngFor="let cur of currencyList" [value]="cur.value">{{cur.name}} -
+                                {{cur.value}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error class="error-msg" *ngIf="investmentForm.controls['currency'].hasError('required')">
+                            Please choose
+                            currency
+                        </mat-error>
+                    </div>
+                </div>
+                <div>
+                    <mat-input-container>
+                        <input matInput type="number" placeholder="Investment Cycle" formControlName="investment_cycle"
+                               role="investment-cycle" min="1"/>
+                    </mat-input-container>
+                    <mat-error class="error-msg" *ngIf="investmentForm.controls['investment_cycle'].hasError('min')">The
+                        minimum
+                        value is 1
+                    </mat-error>
+                </div>
+                <div faLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start start">
+                    <div fxFlex="50">
+                        <mat-checkbox formControlName="is_lead" tabindex="6">
+                            <span *ngIf="investmentForm.controls['is_lead'].value === true">Is Leader</span>
+                            <span *ngIf="investmentForm.controls['is_lead'].value === false">Is not Leader</span>
+                        </mat-checkbox>
+                    </div>
+                    <div fxFlex="50">
+                        <mat-checkbox formControlName="is_confirmed" tabindex="7">
+                            <span *ngIf="investmentForm.controls['is_confirmed'].value === true">Confirmed</span>
+                            <span *ngIf="investmentForm.controls['is_confirmed'].value === false">Not Confirmed</span>
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <div role="submit-button">
+                    <button mat-icon-button color="accent" type="submit"
+                            [disabled]="upsertBtnShouldDisabled || (!investmentForm.valid || (investmentId && !anyChanges)) || (!investorObj.id && !investmentObj.id)"
+                            tabindex="20">
+                        <mat-icon aria-label="accept">done</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" type="button" *ngIf="investmentId" (click)="deleteInvestment()"
+                            [disabled]="deleteBtnShouldDisabled" tabindex="21">
+                        <mat-icon aria-label="delete">delete</mat-icon>
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
 </div>

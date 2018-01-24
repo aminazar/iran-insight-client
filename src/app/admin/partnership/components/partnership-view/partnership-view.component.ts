@@ -70,7 +70,7 @@ export class PartnershipViewComponent implements OnInit {
         this.progressService.enable();
         this.restService.delete(`person/partnership/${this.formId}`).subscribe(data => {
           this.progressService.disable();
-          this.snackBar.open('life cycle event has been deleted', null, {
+          this.snackBar.open('Partnership has been deleted', null, {
             duration: 3200,
           });
           this.breadcrumbService.popChild();
@@ -85,7 +85,7 @@ export class PartnershipViewComponent implements OnInit {
   }
 
   editPartnership() {
-    this.breadcrumbService.popChild();
-    this.router.navigate(['../../form/', this.formId]);
+    this.breadcrumbService.popChild(false);
+    this.router.navigate(['../../form/' + this.formId], {relativeTo: this.route});
   }
 }

@@ -30,6 +30,30 @@ export class ExpertiseComponent extends AbstractSearchComponent implements OnIni
   }
 
   deleteExpertise(id: number = null): void {
-    // TODO: delete
+    super.deleteCard(id).subscribe(
+      (res) => {
+        if (res) {
+          this.progressService.enable();
+          this.restService.delete(`/expertise/${id}`).subscribe(
+            (data) => {
+              this.cardId = null;
+              this.snackBar.open('Expertise is deleted successfully', null, {
+                duration: 2300,
+              });
+              this.searching();
+              this.progressService.disable();
+            },
+            (err) => {
+              console.error('Cannot delete this expertise. Error: ', err);
+              this.snackBar.open('Cannot delete this expertise. Please try again.', null, {
+                duration: 3200,
+              });
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => console.error('Error in closing component. Error: ', err)
+    );
   }
 }

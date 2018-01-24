@@ -11,6 +11,7 @@ import {isUndefined} from "util";
 import {ProgressService} from "../../../shared/services/progress.service";
 import {AuthService} from "../../../shared/services/auth.service";
 import {ActionEnum} from "../../../shared/enum/action.enum";
+import {RemovingConfirmComponent} from '../../../shared/components/removing-confirm/removing-confirm.component';
 
 @Component({
   selector: 'ii-expertise-form',
@@ -174,11 +175,40 @@ export class ExpertiseFormComponent implements OnInit, OnDestroy {
   }
 
   deleteExpertise() {
+    const rmDialog = this.dialog.open(RemovingConfirmComponent, {
+      width: '400px',
+    });
 
+    rmDialog.afterClosed().subscribe(
+      (data) => {
+        if (data) {
+          this.progressService.enable();
+          this.restService.delete(`/expertise/${this.expertiseId}`).subscribe(
+            (dt) => {
+              this.snackBar.open(`Expertise delete successfully`, null, {
+                duration: 2000,
+              });
+              this.progressService.disable();
+
+              this.breadcrumbService.popChild();
+            },
+            (error) => {
+              this.snackBar.open(`Cannot delete this expertise. Please try again`, null, {
+                duration: 2700
+              });
+              this.progressService.disable();
+            }
+          );
+        }
+      },
+      (err) => {
+        console.error('Error in dialog: ', err);
+      }
+    );
   }
 
   fieldChanged() {
-    if(!this.originalExpertise)
+    if (!this.originalExpertise)
       return;
 
     this.anyChanges = false;

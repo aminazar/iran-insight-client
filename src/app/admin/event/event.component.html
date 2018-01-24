@@ -1,8 +1,8 @@
 <div fxLayout="row" class="row">
   <ii-search-fields fxFlex="100" [searchInFirst]="searchInFirst" [initItems]="initSearchData" [target]="'event'" (searching)="search($event)"></ii-search-fields>
 </div>
-<div fxLayout="row" class="row">
-  <button mat-fab color="accent" (click)="openForm()">
+<div fxLayout="row" class="row" *ngIf="!isSpecific">
+  <button mat-fab color="accent" (click)="openForm()" >
     <mat-icon aria-label="add new event">add</mat-icon>
   </button>
 </div>
