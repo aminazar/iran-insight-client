@@ -16,7 +16,7 @@
                     <b>Username: </b><span>{{m.username}}</span>
                 </div>
                 <div>
-                    <b [ngClass]="m.is_active ? 'success' : 'warn'">{{m.is_active ? 'active user' : 'not activeuser'}}</b>
+                    <b [ngClass]="m.is_active ? 'success' : 'warn'">{{m.is_active ? 'approved' : 'waiting to approve'}}</b>
                 </div>
                 <div>
                     <b>{{m.is_representative ? 'representative' : 'ordinary member'}}</b>
