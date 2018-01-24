@@ -7,6 +7,7 @@ import {BreadcrumbService} from '../../../../shared/services/breadcrumb.service'
 import {RestService} from '../../../../shared/services/rest.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RemovingConfirmComponent} from '../../../../shared/components/removing-confirm/removing-confirm.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ii-biz-member-form',
@@ -123,6 +124,18 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     Object.keys(this.membershipForm.controls).forEach(el => {
       data[el] = this.membershipForm.controls[el].value;
     });
+
+
+    if ( data.end_time !== null) {
+      if (moment(data.start_time).format('YYYY-MM-DD') > moment(data.end_time).format('YYYY-MM-DD')) {
+        this.snackBar.open('Not valid end date',
+          null, {
+            duration: 2300,
+          });
+        return;
+      }
+    }
+
     data.mid = this.memberId;
     data.pid = this.memberObj.id;
     data.bid = this.businessId;
@@ -150,7 +163,7 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
         }
       },
       (err) => {
-        console.log('Cannot get business details. Error: ', err);
+        console.log('Cannot get membership details. Error: ', err);
         this.progressService.disable();
         this.upsertBtnShouldDisabled = false;
         this.deleteBtnShouldDisabled = false;
