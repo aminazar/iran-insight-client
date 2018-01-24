@@ -66,7 +66,7 @@
                         <div fxFlex="50" class="field-container">
                             <mat-form-field class="field">
                                 <input matInput [matDatepicker]="start_time_picker" placeholder="Start Date"
-                                       formControlName="start_time"
+                                       formControlName="start_time" [max]="membershipForm.controls['end_time'].value ? membershipForm.controls['end_time'].value : ''"
                                        role="start-date" tabindex="6"/>
                                 <mat-datepicker-toggle matSuffix [for]="start_time_picker" role="start-date-picker"
                                                        tabindex="7"></mat-datepicker-toggle>
@@ -77,7 +77,7 @@
                         <div fxFlex="50" class="field-container">
                             <mat-form-field class="field">
                                 <input matInput [matDatepicker]="end_time_picker" placeholder="End Date"
-                                       formControlName="end_time"
+                                       formControlName="end_time" [min]="membershipForm.controls['start_time'].value ? membershipForm.controls['start_time'].value : '' "
                                        role="end-date" tabindex="8"/>
                                 <mat-datepicker-toggle matSuffix [for]="end_time_picker" role="end-date-picker"
                                                        tabindex="9"></mat-datepicker-toggle>

@@ -33,6 +33,8 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
   upsertBtnShouldDisabled = false;
   deleteBtnShouldDisabled = false;
   anyChanges = false;
+  minDate = null;
+  maxDate = null;
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar,
               public dialog: MatDialog, private progressService: ProgressService,
@@ -170,6 +172,9 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  datepickerMinMax() {
+ }
 
   deleteMembership(mid: number = null): void {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
