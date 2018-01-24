@@ -85,7 +85,7 @@ export class PartnershipViewComponent implements OnInit {
   }
 
   editPartnership() {
-    this.breadcrumbService.popChild();
-    this.router.navigate(['../../form/', this.formId]);
+    this.breadcrumbService.popChild(false);
+    this.router.navigate(['../../form/' + this.formId], {relativeTo: this.route});
   }
 }
