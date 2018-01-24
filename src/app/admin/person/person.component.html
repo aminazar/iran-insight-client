@@ -27,14 +27,6 @@
             <label *ngIf="!p.firstname_en && !p.firstname_fa && !p.surname_en && !p.surname_fa">-</label>
           </div>
           <div *ngIf="p.pid === cardId">
-            <!--<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">-->
-              <!--<a fxFlex="50" [routerLink]="['/admin/person/expertises/' + p.pid]"><i class="fa fa-certificate"></i> Expertises</a>-->
-              <!--<a fxFlex="50" [routerLink]="['../membership/' + p.pid]"><i class="fa fa-handshake-o"></i> Membership</a>-->
-            <!--</div>-->
-            <!--<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">-->
-              <!--<a fxFlex="50" [routerLink]="['./person/business/' + p.pid]"><i class="fa fa-university"></i> Businesses</a>-->
-              <!--<a fxFlex="50" [routerLink]="['./person/organization/' + p.pid]"><i class="fa fa-industry"></i> Organizations</a>-->
-            <!--</div>-->
             <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="start start">
               <a fxFlex="50" [routerLink]="['./partnership/' , p.pid , getBestName(p) ]"><i class="fa fa-comments" aria-hidden="true"></i> Partnership</a>
               <a fxFlex="50" [routerLink]="['/admin/person/expertise/' + p.pid]"><i class="fa fa-certificate"></i> Expertises</a>

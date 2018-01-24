@@ -51,9 +51,7 @@ export class OrgMembersComponent implements OnInit, OnDestroy {
   deleteMembership(mid: number = null): void {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
-      height: '230px'
     });
-
     rmDialog.afterClosed().subscribe(
       (status) => {
         if (status) {

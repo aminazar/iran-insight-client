@@ -49,8 +49,8 @@
             <tbody>
             <tr>
               <td>{{joinerName}}</td>
-              <td class="farsi">{{joinerNameFa}}</td>
-              <td class="farsi">
+              <td>{{joinerNameFa}}</td>
+              <td>
                 <button mat-icon-button (click)="removeJoiner()" color="warn">
                   <mat-icon aria-label="clear person expertise">delete</mat-icon>
                 </button>
@@ -74,7 +74,7 @@
           </div>
           <div fxFlex="50" dir="rtl" class="field-container">
             <mat-input-container class="field farsi">
-              <input matInput type="text" placeholder="توضیح" formControlName="description_fa" role="description_fa"
+              <input matInput type="text" placeholder="توضیحات" formControlName="description_fa" role="description_fa"
                      tabindex="6"/>
             </mat-input-container>
           </div>

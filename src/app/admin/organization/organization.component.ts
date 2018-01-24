@@ -82,4 +82,5 @@ export class OrganizationComponent extends AbstractSearchComponent implements On
   orgIsEnd(org) {
     return (org && org.end_date && org.end_date >= org.start_date && moment(org.end_date) <= moment());
   }
+
 }
