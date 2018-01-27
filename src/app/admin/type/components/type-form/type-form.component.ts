@@ -133,7 +133,7 @@ export class TypeFormComponent extends AbstractFormComponent implements OnInit {
         if (!this.formId) {
           this.form.reset();
         } else {
-          this.formId = data[0].id;
+          this.formId = data.id;
         }
 
         this.progressService.disable();

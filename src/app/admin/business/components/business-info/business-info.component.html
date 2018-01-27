@@ -37,7 +37,7 @@
                                     (click)="endBusiness()" tabindex="21">
                                 <mat-icon aria-label="ended">not_interested</mat-icon>
                             </button>
-                            <button mat-icon-button color="accent" type="submit" [disabled]="!farsiForm.valid"
+                            <button mat-icon-button color="accent" type="submit" [disabled]="(!farsiForm.valid || !basicForm.valid) || upsertDisabled || !changed"
                                     role="submit-button" tabindex="20">
                                 <mat-icon aria-label="accept">done</mat-icon>
                             </button>
@@ -143,7 +143,7 @@
                                     (click)="endBusiness()" tabindex="21">
                                 <mat-icon aria-label="ended">not_interested</mat-icon>
                             </button>
-                            <button mat-icon-button color="accent" type="submit" [disabled]="!basicForm.valid"
+                            <button mat-icon-button color="accent" type="submit" [disabled]="(!farsiForm.valid || !basicForm.valid) || !changed || upsertDisabled"
                                     role="submit-button" tabindex="20"
                             >
                                 <mat-icon aria-label="accept">done</mat-icon>

@@ -106,7 +106,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.farsiForm = new FormBuilder().group({
       name_fa: [this.loadedValue.name_fa],
       address_fa: [this.loadedValue.address_fa, [
-        Validators.maxLength(500),
+        Validators.maxLength(50),
       ]],
     });
 
@@ -114,7 +114,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       bid: [this.bid],
       name: [this.loadedValue.name, [Validators.required]],
       address: [this.loadedValue.address, [
-        Validators.maxLength(500),
+        Validators.maxLength(50),
         Validators.required,
       ]],
       tel: [this.loadedValue.tel, [
@@ -141,6 +141,16 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.generalForm = new FormBuilder().group({});
 
     this.financialForm = new FormBuilder().group({});
+
+    this.farsiForm.valueChanges.subscribe(
+      (dt) => this.fieldChanged(),
+      (er) => console.error('Error when subscribing on form valueChanges: ', er)
+    );
+
+    this.basicForm.valueChanges.subscribe(
+      (dt) => this.fieldChanged(),
+      (er) => console.error('Error when subscribing on form valueChanges: ', er)
+    );
   }
 
   initLocation() {
@@ -172,25 +182,29 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     return this.basicForm.controls['longitude'].value;
   }
 
-  upsertBusiness() {
-    const bizData: any = {};
-    let i = 0;
+  fieldChanged() {
+    if (!this.loadedValue || !Object.keys(this.loadedValue))
+      return;
+    this.changed = false;
+
     ['farsiForm', 'basicForm'].forEach(form => {
       if (this[form].valid) {
-        for (const key in this[form].controls) {
-          i++;
-          console.log(i, ':', this[form].controls[key].value);
-          console.log('***', ':', this.loadedValue[key]);
-          console.log('+++', ':', this[form].controls.hasOwnProperty(key));
-          console.log('///', ':', this.loadedValue[key] !== this[form].controls[key].value);
-          console.log('---------------------------');
-          if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value) {
-            bizData[key] = this[form].controls[key].value;
+        for (const key in this[form].controls)
+          if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value)
             this.changed = true;
-          }
-        }
+      }
+      else
+        this.changed = false;
+    });
+  }
+
+  upsertBusiness() {
+    const bizData: any = {};
+    ['farsiForm', 'basicForm'].forEach(form => {
+      if (this[form].valid) {
+        for (const key in this[form].controls)
+            bizData[key] = this[form].controls[key].value;
         console.log(bizData);
-        console.log('changed1 : ',this.changed);
       }
     });
 
@@ -224,8 +238,6 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             this.deleteDisabled = false;
           });
     }
-
-    console.log('changed2 : ',this.changed);
   }
 
   // upsertBusiness() {

@@ -173,9 +173,6 @@ export class BizMemberFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  datepickerMinMax() {
- }
-
   deleteMembership(mid: number = null): void {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
       width: '400px',
