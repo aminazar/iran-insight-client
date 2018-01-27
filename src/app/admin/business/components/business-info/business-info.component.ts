@@ -200,7 +200,6 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             this.progressService.disable();
             this.loadedValue = bizData;
             if (this.add) {
-              // this.loadedValue.bid = data;
               this.initForm();
             }
 
@@ -209,10 +208,6 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             this.deleteDisabled = false;
           },
           err => {
-            // this.snackBar.open('Cannot ' + (this.add ? 'add' : 'update') + ' this business: ' + err.message, null, {
-            //   duration: 3200,
-            // });
-            // this.initForm();
             this.progressService.disable();
             this.upsertDisabled = false;
             this.deleteDisabled = false;

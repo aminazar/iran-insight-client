@@ -7,16 +7,19 @@
 <div *ngFor="let rw of rows">
 <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center" class="row">
     <div fxFlex="25" *ngFor="let m of aligningObj[rw]" class="member-card">
-        <mat-card class="card-view" (click)="select(m.mid)" [class.selected-member]="m.mid === memberId" [ngClass]="{'mat-elevation-z24': m.mid === memberId, 'dead-entity': membershipIsDead(m)}">
+        <mat-card class="card-view" (click)="select(m.mid)" [ngClass]="{'mat-elevation-z24': m.mid === memberId, 'dead-entity': membershipIsDead(m)}">
             <mat-card-content>
                 <div>
-                    <b>name (En): </b><span>{{m.display_name_en}}</span>
+                    <b>Username : </b><span>{{m.username}}</span>
                 </div>
                 <div>
-                    <b>Username: </b><span>{{m.username}}</span>
+                    <b>name (En) : </b><span>{{m.display_name_en}}</span>
                 </div>
                 <div>
-                    <b [ngClass]="m.is_active ? 'success' : 'warn'">{{m.is_active ? 'active user' : 'not activeuser'}}</b>
+                    <b>Position (En) : </b><span>{{m.position_name ? m.position_name : '-'}}</span>
+                </div>
+                <div>
+                    <b [ngClass]="m.is_active ? 'success' : 'warn'">{{m.is_active ? 'approved user' : 'waiting to approve'}}</b>
                 </div>
                 <div>
                     <b>{{m.is_representative ? 'representative' : 'ordinary member'}}</b>
