@@ -10,6 +10,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as moment from 'moment';
 import {EndingEntityComponent} from '../../../../shared/components/ending-entity/ending-entity.component';
+import {isUndefined} from 'util';
 
 export const MY_FORMATS = {
   parse: {
@@ -173,13 +174,23 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
 
   upsertBusiness() {
     const bizData: any = {};
+    let i = 0;
     ['farsiForm', 'basicForm'].forEach(form => {
       if (this[form].valid) {
-        for (const key in this[form].controls)
+        for (const key in this[form].controls) {
+          i++;
+          console.log(i, ':', this[form].controls[key].value);
+          console.log('***', ':', this.loadedValue[key]);
+          console.log('+++', ':', this[form].controls.hasOwnProperty(key));
+          console.log('///', ':', this.loadedValue[key] !== this[form].controls[key].value);
+          console.log('---------------------------');
           if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value) {
             bizData[key] = this[form].controls[key].value;
             this.changed = true;
           }
+        }
+        console.log(bizData);
+        console.log('changed1 : ',this.changed);
       }
     });
 
@@ -213,7 +224,53 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
             this.deleteDisabled = false;
           });
     }
+
+    console.log('changed2 : ',this.changed);
   }
+
+  // upsertBusiness() {
+  //   const bizData: any = {};
+  //   ['farsiForm', 'basicForm'].forEach(form => {
+  //     if (this[form].valid) {
+  //       for (const key in this[form].controls)
+  //         if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value) {
+  //           bizData[key] = this[form].controls[key].value;
+  //           this.changed = true;
+  //         }
+  //     }
+  //   });
+  //
+  //   if (this.add)
+  //     delete bizData.bid;
+  //   else
+  //     bizData.bid = this.bid;
+  //
+  //   if (this.changed && this.farsiForm.valid && this.basicForm.valid) {
+  //     this.progressService.enable();
+  //     this.upsertDisabled = true;
+  //     this.deleteDisabled = true;
+  //
+  //     this.restService.post('business/profile', bizData)
+  //       .subscribe(
+  //         data => {
+  //           this.snackBar.open(`Business is ${this.add ? 'added' : 'updated'}.`, null, {duration: 2300});
+  //           this.progressService.disable();
+  //           this.loadedValue = bizData;
+  //           if (this.add) {
+  //             this.initForm();
+  //           }
+  //
+  //           this.changed = false;
+  //           this.upsertDisabled = false;
+  //           this.deleteDisabled = false;
+  //         },
+  //         err => {
+  //           this.progressService.disable();
+  //           this.upsertDisabled = false;
+  //           this.deleteDisabled = false;
+  //         });
+  //   }
+  // }
 
   deleteBusiness() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {

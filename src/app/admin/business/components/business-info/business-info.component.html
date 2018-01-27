@@ -112,7 +112,7 @@
                                 <div fxFlex="50" class="field-container">
                                     <mat-form-field class="field">
                                         <input matInput [matDatepicker]="start_date_picker" placeholder="Start Date"
-                                               formControlName="start_date"
+                                               formControlName="start_date" [max]="basicForm.controls['end_date'].value ? basicForm.controls['end_date'].value : ''"
                                                role="start-date" tabindex="6"/>
                                         <mat-datepicker-toggle matSuffix [for]="start_date_picker"
                                                                role="start-date-picker"
@@ -123,7 +123,7 @@
                                 <div fxFlex="50" class="field-container">
                                     <mat-form-field class="field">
                                         <input matInput [matDatepicker]="end_date_picker" placeholder="End Date"
-                                               formControlName="end_date"
+                                               formControlName="end_date" [min]="basicForm.controls['start_date'].value ? basicForm.controls['start_date'].value : '' "
                                                role="end-date" tabindex="8"/>
                                         <mat-datepicker-toggle matSuffix [for]="end_date_picker" role="end-date-picker"
                                                                tabindex="9"></mat-datepicker-toggle>
