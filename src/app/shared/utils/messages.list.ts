@@ -24,6 +24,11 @@ const errors: IError[] = [
     friendlyMessage: 'There is no business with this id',
     error: new Error('insert or update on table "association" violates foreign key constraint "association_bid_fkey"'),
     code: 500,
+  }, {
+    friendlyMessage_fa: '',
+    friendlyMessage: '',
+    error: new Error(`Cannot read property 'pid' of undefined`),
+    code: 500,
   }
 ];
 

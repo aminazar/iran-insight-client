@@ -21,12 +21,13 @@ export class ErrorInterceptor implements HttpInterceptor {
           let found = false;
           errors.forEach(e => {
             if (err.error === e.error.message && err.status === e.code) {
-              this.snackBar.open(e.friendlyMessage , 'Dismiss');
+              if (e.friendlyMessage.length > 0)
+                this.snackBar.open(e.friendlyMessage, 'Dismiss');
               found = true;
             }
           });
           if (!found) {
-            this.snackBar.open(err.error.error || err.error , null, {duration: 3000});
+            this.snackBar.open(err.error.error || err.error, null, {duration: 3000});
           }
           console.error(`Backend returned code ${err.status}, body was: `, err.error);
         }
