@@ -106,7 +106,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.farsiForm = new FormBuilder().group({
       name_fa: [this.loadedValue.name_fa],
       address_fa: [this.loadedValue.address_fa, [
-        Validators.maxLength(50),
+        Validators.maxLength(500),
       ]],
     });
 
@@ -119,6 +119,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       ]],
       tel: [this.loadedValue.tel, [
         Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,8}$/),
+        Validators.maxLength(12),
         Validators.required,
       ]],
       url: [this.loadedValue.url, [
