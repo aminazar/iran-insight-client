@@ -59,22 +59,69 @@ export class BusinessViewComponent implements OnInit, OnDestroy {
         name: this.data.name || this.data.name_fa,
       }
     });
-
     rmDialog.afterClosed().subscribe(
-      (data) => {
-        if (data)
-          this.restService.delete('delete/' + this.bid).subscribe(
-            (rs) => this.breadCrumbService.popChild(),
-            (er) => {
-              console.error('Cannot delete this business: ', er);
+      (status) => {
+        if (status) {
+          this.progressService.enable();
+          this.restService.delete('business/' + this.bid).subscribe(
+            (data) => {
+              this.snackBar.open('Business delete successfully', null, {
+                duration: 2000,
+              });
+              this.progressService.disable();
+
+              this.breadCrumbService.popChild();
+            },
+            (error) => {
+              this.snackBar.open('Cannot delete this Business. Please try again', null, {
+                duration: 2700
+              });
+              this.progressService.disable();
             }
           );
+        }
       },
       (err) => {
-        console.error('Error in closing component. Error: ', err);
+        console.log('Error in dialog: ', err);
       }
     );
   }
+
+  // deleteBusiness() {
+  //   rmDialog.afterClosed().subscribe(
+  //     (data) => {
+  //
+  //       if (data) {
+  //         this.progressService.enable();
+  //         this.upsertDisabled = true;
+  //         this.deleteDisabled = true;
+  //
+  //         this.restService.delete('delete/' + this.loadedValue.bid).subscribe(
+  //           () => {
+  //             this.router.navigate(['admin', 'business'])
+  //               .then(() => {
+  //                 this.snackBar.open('Business is deleted successfully', null, {
+  //                   duration: 2000,
+  //                 });
+  //               });
+  //             this.progressService.disable();
+  //             this.upsertDisabled = false;
+  //             this.deleteDisabled = false;
+  //           },
+  //           (error) => {
+  //             this.progressService.disable();
+  //             this.upsertDisabled = false;
+  //             this.deleteDisabled = false;
+  //           }
+  //         );
+  //       }
+  //     },
+  //     (err) => {
+  //       console.error('Error in dialog: ', err);
+  //     }
+  //   );
+  // }
+
 
   endBusiness() {
     const lcDialog = this.dialog.open(EndingEntityComponent, {

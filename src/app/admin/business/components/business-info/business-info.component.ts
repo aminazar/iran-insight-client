@@ -251,7 +251,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.upsertDisabled = true;
           this.deleteDisabled = true;
 
-          this.restService.delete('delete/' + this.loadedValue.bid).subscribe(
+          this.restService.delete('business/' + this.loadedValue.bid).subscribe(
             () => {
               this.router.navigate(['admin', 'business'])
                 .then(() => {
