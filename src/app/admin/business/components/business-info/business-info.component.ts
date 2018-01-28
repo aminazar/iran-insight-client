@@ -114,12 +114,12 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       bid: [this.bid],
       name: [this.loadedValue.name, [Validators.required]],
       address: [this.loadedValue.address, [
-        Validators.maxLength(50),
+        Validators.maxLength(500),
         Validators.required,
       ]],
       tel: [this.loadedValue.tel, [
         Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,8}$/),
-        Validators.maxLength(12),
+        Validators.maxLength(13),
         Validators.required,
       ]],
       url: [this.loadedValue.url, [
@@ -189,13 +189,9 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.changed = false;
 
     ['farsiForm', 'basicForm'].forEach(form => {
-      if (this[form].valid) {
         for (const key in this[form].controls)
           if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value)
             this.changed = true;
-      }
-      else
-        this.changed = false;
     });
   }
 
@@ -205,7 +201,6 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       if (this[form].valid) {
         for (const key in this[form].controls)
             bizData[key] = this[form].controls[key].value;
-        console.log(bizData);
       }
     });
 
@@ -240,50 +235,6 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           });
     }
   }
-
-  // upsertBusiness() {
-  //   const bizData: any = {};
-  //   ['farsiForm', 'basicForm'].forEach(form => {
-  //     if (this[form].valid) {
-  //       for (const key in this[form].controls)
-  //         if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value) {
-  //           bizData[key] = this[form].controls[key].value;
-  //           this.changed = true;
-  //         }
-  //     }
-  //   });
-  //
-  //   if (this.add)
-  //     delete bizData.bid;
-  //   else
-  //     bizData.bid = this.bid;
-  //
-  //   if (this.changed && this.farsiForm.valid && this.basicForm.valid) {
-  //     this.progressService.enable();
-  //     this.upsertDisabled = true;
-  //     this.deleteDisabled = true;
-  //
-  //     this.restService.post('business/profile', bizData)
-  //       .subscribe(
-  //         data => {
-  //           this.snackBar.open(`Business is ${this.add ? 'added' : 'updated'}.`, null, {duration: 2300});
-  //           this.progressService.disable();
-  //           this.loadedValue = bizData;
-  //           if (this.add) {
-  //             this.initForm();
-  //           }
-  //
-  //           this.changed = false;
-  //           this.upsertDisabled = false;
-  //           this.deleteDisabled = false;
-  //         },
-  //         err => {
-  //           this.progressService.disable();
-  //           this.upsertDisabled = false;
-  //           this.deleteDisabled = false;
-  //         });
-  //   }
-  // }
 
   deleteBusiness() {
     const rmDialog = this.dialog.open(RemovingConfirmComponent, {
