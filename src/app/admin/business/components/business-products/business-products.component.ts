@@ -47,6 +47,7 @@ export class BusinessProductsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+
   openForm(id: number = null): void {
     // Navigate to new page (3 tabs: Information, Expertise and Partnership)
     this.productId = id;

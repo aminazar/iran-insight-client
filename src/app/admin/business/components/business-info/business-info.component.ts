@@ -10,6 +10,7 @@ import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as moment from 'moment';
 import {EndingEntityComponent} from '../../../../shared/components/ending-entity/ending-entity.component';
+import {isUndefined} from 'util';
 
 export const MY_FORMATS = {
   parse: {
@@ -118,6 +119,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
       ]],
       tel: [this.loadedValue.tel, [
         Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{2}[-\s\.]?[0-9]{0,8}$/),
+        Validators.maxLength(13),
         Validators.required,
       ]],
       url: [this.loadedValue.url, [
@@ -140,6 +142,16 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     this.generalForm = new FormBuilder().group({});
 
     this.financialForm = new FormBuilder().group({});
+
+    this.farsiForm.valueChanges.subscribe(
+      (dt) => this.fieldChanged(),
+      (er) => console.error('Error when subscribing on form valueChanges: ', er)
+    );
+
+    this.basicForm.valueChanges.subscribe(
+      (dt) => this.fieldChanged(),
+      (er) => console.error('Error when subscribing on form valueChanges: ', er)
+    );
   }
 
   initLocation() {
@@ -171,15 +183,24 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
     return this.basicForm.controls['longitude'].value;
   }
 
+  fieldChanged() {
+    if (!this.loadedValue || !Object.keys(this.loadedValue))
+      return;
+    this.changed = false;
+
+    ['farsiForm', 'basicForm'].forEach(form => {
+        for (const key in this[form].controls)
+          if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value)
+            this.changed = true;
+    });
+  }
+
   upsertBusiness() {
     const bizData: any = {};
     ['farsiForm', 'basicForm'].forEach(form => {
       if (this[form].valid) {
         for (const key in this[form].controls)
-          if (this[form].controls.hasOwnProperty(key) && this.loadedValue[key] !== this[form].controls[key].value) {
             bizData[key] = this[form].controls[key].value;
-            this.changed = true;
-          }
       }
     });
 
@@ -230,7 +251,7 @@ export class BusinessInfoComponent implements OnInit, OnDestroy {
           this.upsertDisabled = true;
           this.deleteDisabled = true;
 
-          this.restService.delete('delete/' + this.loadedValue.bid).subscribe(
+          this.restService.delete('business/' + this.loadedValue.bid).subscribe(
             () => {
               this.router.navigate(['admin', 'business'])
                 .then(() => {
